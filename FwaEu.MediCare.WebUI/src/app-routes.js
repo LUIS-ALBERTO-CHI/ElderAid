@@ -1,0 +1,45 @@
+const context = import.meta.glob('/**/index-routes.js', { eager: true });
+import { defineAsyncComponent } from 'vue';
+const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
+const PublicLayoutComponent = defineAsyncComponent(() => import('@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue'));
+
+let globalRoutes = [
+    {
+        name: 'index',
+        path: "/",
+        component: Home,
+        meta: {
+            allowAnonymous: true,
+            breadcrumb: {
+                titleKey: 'homePageTitle'
+            },
+            layout: PublicLayoutComponent
+        },
+	    props: (route) => ({ searchCriteria: route.query.searchCriteria ? JSON.parse(route.query.searchCriteria): undefined })
+    },
+    {
+        name: 'default',
+        path: "/Home",
+        component: Home,
+        meta: {
+            allowAnonymous: true,
+            breadcrumb: {
+                titleKey: 'homeTitle'
+            },
+            layout: PublicLayoutComponent
+        }
+    },
+    {
+        path: '/:pathMatch(.*)',
+        redirect: "/"
+    }
+];
+Object.keys(context).forEach(function (path) {
+	let exportedModule = context[path];
+	let exportedRoutes = exportedModule.default;
+    if (exportedRoutes) {
+        globalRoutes = globalRoutes.concat(exportedRoutes);
+    }
+});
+
+export default globalRoutes;

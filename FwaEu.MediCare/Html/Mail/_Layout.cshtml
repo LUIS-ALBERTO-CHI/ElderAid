@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	@RenderSection("MetaSection", required: false)
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="R&eacute;servation de places de spectacles &agrave; prix r&eacute;duits, pour des pi&egrave;ces de th&eacute;&acirc;tre, de concerts, de soir&eacute;es &agrave; Paris, Lyon, Marseille et dans toute la France. Guide des pi&egrave;ces de th&eacute;&acirc;tre et spectacle avec vos critiques.">
+
+	<!-- Font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+
+	<link rel="shortcut icon" href="favicon.png">
+	@*TODO: Title https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/5883*@
+</head>
+<body>
+	<form id="mainform" runat="server">
+		<table cellpadding="0" cellspacing="0" border="0" style="width: 100%; font-family: 'Tahoma', 'Verdana', Sans-Serif;"> @*TODO: background color*@
+			<tr>
+				<td style="width: 100px;">
+					@*TODO: Logo https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/5883*@
+				</td>
+				<td style="padding-left: 32px; vertical-align: middle" align="left">
+					<h3 style="color: #ffffff">
+						@*TODO: Title https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/5883*@
+					</h3>
+				</td>
+			</tr>
+		</table>
+
+		@RenderBody()
+
+		<table id="Footer" cellpadding="0" cellspacing="0" border="0" style="width: 100%; font-size: 11px; font-family: 'Tahoma', 'Verdana', Sans-Serif;">
+			<tr>
+				<td style="padding-top: 10px; vertical-align: top;">
+					@this.ViewBag.Version
+				</td>
+				<td style="width: 33%; text-align: center; padding-top: 10px; vertical-align: top;">
+					@*TODO: Company logo https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/5883*@
+				</td>
+				<td style="width: 33%; text-align: right; padding-top: 10px; vertical-align: top;">
+					@this.ViewBag.ApplicationName
+					-
+					@this.ViewBag.CopyrightYears
+				</td>
+			</tr>
+		</table>
+		@RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "homeTitle": "Accueil",
+  "edit": "Détails",
+  "modification": "Modification",
+
+  "labelActivity": "Champs d'activité",
+  "labelDescription": "Description",
+  "labelTarget": "Public visé",
+  "labelContacts": "Coordonnées",
+  "labelSchedule": "Horaires",
+  "labelKeywords": "Mots-clés",
+  "labelActions": "Groupe thématique",
+
+  "textSubject": "Information a propos l'acteur : {actorName}",
+  "textSalutation": "Bonjour,",
+  "textBody": "Veuillez trouver ci-dessous les coordonnées afin de joindre l’interlocuteur souhaité :",
+  "textClosing": "Cordialement,",
+  "textSignatureLine": "L’administrateur"
+}

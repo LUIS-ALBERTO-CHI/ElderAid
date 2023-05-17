@@ -1,0 +1,279 @@
+@import "toolbar";
+@import "devextreme-overrides";
+@import "noty-overrides";
+@import "buttons";
+@import "header-toolbar";
+
+:root {
+	--primary-bg-color: #F7F9FA;
+	--secondary-bg-color: #B7CBD3;
+	--primary-text-color: #374649;
+	--secondary-text-color: #0078D4;
+	--alt-secondary-text-color: #7098a7;
+}
+
+html,
+body {
+  margin: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+.app {
+  @import "@/Fwamework/DevExtreme/Themes/generated/variables.base";
+  background-color: #F8F8F8;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-size: 1.0rem;
+  line-height: 1.5rem;
+}
+
+p,
+.block {
+  margin: 10px 0px 0px 0px;
+}
+
+#app:not(.admin) {
+  a {
+    color: #ff5a5f;
+    cursor: pointer;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  input[type=text] {
+    height: 50px;
+    border-radius: 25px;
+  }
+
+  input[type=button] {
+    height: 50px;
+    border: 1px solid var(--main-bg-color);
+  }
+
+  input[type=number] {
+    height: 30px;
+    border-radius: 4px;
+    border: 1px solid var(--main-bg-color);
+    width: 60px;
+  }
+
+  input[type=checkbox] {
+    margin: 0px 6px;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  .input-icons {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .input-icons .action-button {
+    padding: 12px 16px;
+    color: #FFFFFF;
+    min-width: 60px;
+    position: absolute;
+    font-size: 26px;
+    background-color: var(--secondary-color);
+    right: 0px;
+    height: 100%;
+    border-radius: 0 25px 25px 0;
+  }
+
+  select {
+    width: 100%;
+    border-radius: 4px;
+    background-color: var(--secondary-bg-color);
+    height: 50px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:hover {
+    opacity: 0.7;
+  }
+
+  button.secondary-color {
+    background-color: var(--secondary-color);
+    color: #FFFFFF;
+  }
+
+  button.primary-color {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+  }
+
+  button.btn-rounded {
+    border-radius: 25px;
+    cursor: pointer;
+    height: 50px;
+    border: none;
+    text-transform: uppercase;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  button.btn-rounded i {
+    font-size: 24px;
+    padding-right: 10px;
+  }
+
+  .horizontal-rule {
+    height: 1px;
+    background-color: var(--secondary-bg-color);
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+a {
+	color: var(--secondary-text-color);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+body h1 {
+	font-family: 'Nunito';
+	text-transform: uppercase;
+	color: var(--alt-secondary-text-color);
+}
+
+body .box {
+	box-shadow: none;
+	background-color: #FFFFFF;
+	border-radius: 20px;
+}
+
+body .box .box.box-with-border {
+	border-radius: 10px;
+	border: 1px solid var(--secondary-bg-color);
+}
+
+body .company-selection-header-component .dx-dropdowneditor.dx-dropdowneditor-field-clickable .dx-texteditor-input {
+	color: var(--secondary-text-color);
+}
+
+body .application-name {
+	background-color: inherit;
+	color: var(--secondary-text-color);
+}
+
+.dx-submenu .dx-menu-item i {
+	color: var(--secondary-text-color);
+}
+
+.dx-menu-base .dx-menu-item-content .dx-menu-item-text {
+	padding: 10px 30px;
+}
+
+.dx-menu-base .dx-menu-item-content {
+	padding: 5px 8px;
+}
+
+
+body #nprogress .bar {
+	z-index: 1600;
+	background-color: var(--secondary-text-color) !important;
+}
+
+body #nprogress .bar .peg {
+	display: none;
+}
+
+body #nprogress .spinner .spinner-icon {
+	border-top-color: var(--secondary-text-color);
+	border-left-color: var(--secondary-text-color);
+}
+
+.dx-datagrid .user-date {
+	line-height: unset;
+}
+
+.title-toolbar-action-align h1 + div .toolbar {
+	margin-top: -52px;
+}
+
+.text-ellipsis {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.date-and-numeric-column,
+.dx-datagrid-rowsview .dx-row > td.date-and-numeric-column,
+.dx-datagrid-rowsview .dx-row > tr > td.date-and-numeric-column {
+	text-overflow: clip;
+	text-align: right;
+}
+
+body .page-container {
+	margin-top: 9px;
+}
+
+.form-spacer {
+	margin-top: 10px;
+}
+
+.item-counter {
+	height: 18px;
+	line-height: 18px;
+	width: 18px;
+	color: white;
+	position: absolute;
+	z-index: 10;
+	left: 34px;
+	top: 5px;
+	text-align: center;
+	font-size: 9px;
+	font-weight: bold;
+	background-color: #ED0000;
+	border-radius: 100%;
+}
+
+/* VUE TRANSITIONS */
+.fade-enter-active, .fade-leave-active {
+	transition: opacity 200ms;
+}
+
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+}
+
+@media screen and (max-width: 599px) {
+	body #nprogress .spinner .spinner-icon {
+		display: none;
+	}
+}

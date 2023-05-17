@@ -1,0 +1,109 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>FwaEu.MediCare</RootNamespace>
+    <StartupObject>FwaEu.MediCare.Program</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Actor\Import\ActorDataImporter - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Development.local.json" />
+    <Content Remove="Html\Mail\_Layout.cshtml" />
+	<Content Remove="Actor\Mail\ActorRequestMailModel.cshtml" />
+  </ItemGroup>
+
+	
+  <ItemGroup>
+    <EmbeddedResource Include="Html\Mail\_Layout.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Actor\Mail\ActorRequestMailModel.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+	</ItemGroup>
+  <ItemGroup>
+
+    <PackageReference Include="Aspose.Cells" Version="21.4.0" />
+    <PackageReference Include="FluentNHibernate" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="MySql.Data" Version="8.0.27" />
+    <PackageReference Include="NHibernate" Version="5.3.8" />
+    <PackageReference Include="NHibernate.Caches.CoreMemoryCache" Version="5.7.0" />
+    <PackageReference Include="Pluralize.NET.Core" Version="1.0.0" />
+    <PackageReference Include="Seq.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DevelopmentData\Users\" />
+    <Folder Include="Integration\AfterUpdateSchema\" />
+    <Folder Include="Integration\BeforeUpdateSchema\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.Development.local.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FwaEu.Fwamework\FwaEu.Fwamework.csproj" />
+    <ProjectReference Include="..\FwaEu.Modules\FwaEu.Modules.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Actor\Mail\ActorAcceptRequest.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActorAcceptRequest.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Actor\Mail\ActorRejectRequest.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActorRejectRequest.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Actor\Mail\ActorRequest.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActorRequest.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Actor\Mail\ActorAcceptRequest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActorAcceptRequest.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Actor\Mail\ActorRejectRequest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActorRejectRequest.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Actor\Mail\ActorRequest.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActorRequest.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

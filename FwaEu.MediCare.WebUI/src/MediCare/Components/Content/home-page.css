@@ -1,0 +1,132 @@
+:root {
+  --main-bg-color: #03192b;
+  --secondary-bg-color: #F3F3F3;
+  --primary-color: #01BAB6;
+  --secondary-color: #FF5A5F;
+}
+
+/* Header / Footer */
+.app-header {
+  position: fixed;
+  background-color: var(--main-bg-color);
+  top: 0;
+  z-index: 9;
+  margin: 0 auto; /* Will not center vertically and won't work in IE6/7. */
+  width: 100%;
+  padding: 6px 32px;
+}
+
+.app-header .container-logo {
+  max-width: 100%;
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-header .container-logo .cites-educatives {
+  max-width: 50%;
+  max-height: 180px;
+}
+.app-header .container-logo .logo {
+  max-width: 50%;
+  max-height: 100px;
+}
+
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 9;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-top: 1px solid var(--main-bg-color);
+    padding: 12px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+    .app-footer .logo-fix {
+        max-width: 100%;
+        max-height: 100px;
+    }
+
+    .app-footer .logo {
+        max-width: 100%;
+        max-height: 100px;
+    }
+
+/* Home Page */
+.page-home {
+  height: 100%;
+  margin: 0px !important;
+}
+
+.home-content {
+  padding: 180px 60px;
+  background-color: #FFFFFF;
+  position: relative;
+  width: 100%;
+}
+
+.panel-title {
+  max-width: 500px;
+  margin: auto;
+}
+
+.panel-description {
+  max-width: 900px;
+  margin: auto;
+  text-align: left;
+  padding: 5px;
+  justify-content: space-between;
+  text-align: justify;
+}
+
+.panel-search {
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+.input-field {
+  width: 100%;
+  padding-left: 25px;
+  border: 1px solid var(--main-bg-color);
+  border-radius: 25px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.flex-section {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.justify-content-center {
+  justify-content: center
+}
+
+@media screen and (max-width: 499px) {
+  .home-content {
+    padding: 120px 26px;
+  }
+}
+
+.connexion-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+}

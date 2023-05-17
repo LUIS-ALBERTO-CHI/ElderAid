@@ -1,0 +1,77 @@
+
+#app .dx-field-item-label-text
+{
+	color: #0078D4;
+}
+
+
+#app .dx-field-item-label-location-top
+{
+	margin-bottom: 5px;
+}
+
+
+#app .dx-fileuploader-wrapper,
+#app .dx-fileuploader-input-wrapper
+{
+	padding: 0px;
+	border: none;
+}
+
+
+#app .dx-fileuploader-dragover .dx-fileuploader-input-label
+{
+	font-weight: bold;
+}
+
+#app .dx-fileuploader-dragover .dx-fileuploader-input-container
+{
+	border: 2px dashed #0078D4;
+	background-color: #FAFAFA;
+}
+
+#app .dx-fileuploader-dragover .dx-fileuploader-input
+{
+	padding: 10px 3px;
+	margin-bottom: 0px;
+}
+
+#app .dx-fileuploader-dragover .dx-fileuploader-input-label
+{
+	padding: 10px 9px;
+}
+
+
+#app .dx-fileuploader-files-container
+{
+	padding: 5px 10px;
+	margin-top: 10px;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+}
+
+#app .dx-fileuploader-empty .dx-fileuploader-files-container
+{
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+#app .dx-fileuploader-content
+{
+	text-align: center; /* To center the button */
+}
+
+
+	#app .dx-fileuploader-content .dx-fileuploader-input-wrapper,
+	#app .dx-fileuploader-content .dx-fileuploader-files-container
+	{
+		text-align: left; /* Reset */
+	}
+
+#app .dx-button.dx-fileuploader-upload-button
+{
+	background-color: #5cb85c; /* Sucess */
+	border-color: transparent;
+	color: #fff;
+}

@@ -1,0 +1,22 @@
+{
+    "dxHtmlEditor-bold": "Gras",
+    "dxHtmlEditor-color": "Couleur de police",
+    "dxHtmlEditor-link": "Ajouter un hyperlien",
+    "dxHtmlEditor-background": "Couleur de l'arrière plan",
+    "dxHtmlEditor-font": "Police",
+    "dxHtmlEditor-italic": "Italique",
+    "dxHtmlEditor-size": "Taille",
+    "dxHtmlEditor-strike": "Barré",
+    "dxHtmlEditor-underline": "Souligner",
+    "dxHtmlEditor-blockquote": "Citation",
+    "dxHtmlEditor-header": "Entête",
+    "dxHtmlEditor-orderedList": "Liste ordonnée",
+    "dxHtmlEditor-bulletList": "Liste à puces",
+    "dxHtmlEditor-alignLeft": "Aligner à gauche",
+    "dxHtmlEditor-alignCenter": "Centrer",
+    "dxHtmlEditor-alignRight": "Aligner à droite",
+    "dxHtmlEditor-alignJustify": "Justifier",
+    "dxHtmlEditor-clear": "Supprimer le formattage",
+    "dxHtmlEditor-undo": "Annuler",
+    "dxHtmlEditor-redo": "Refaire"
+}

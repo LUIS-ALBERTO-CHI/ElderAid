@@ -1,0 +1,21 @@
+{
+    "name": "Nom",
+    "subtitle": "Sous-titre",
+    "activityIds": "Activités",
+    "targetAgeFrom": "Age minimum",
+    "targetAgeTo": "Age maximum",
+    "invariantId": "Identifiant invariant",
+    "description": "Description",
+    "handicapAccessibility": "Accessibilité handicap",
+    "educationCityAction": "Education citoyenne",
+    "schedules": "Horaires",
+    "keywords": "Mots clés",
+    "save": "Enregistrer",
+    "targetAgeFromError": "L'age doit être inférieur à l'age maximum",
+    "targetAgeToError": "L'age doit être supérieur à l'age minimum",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "unauthorizedRequest": "You are not allowed to validate this request",
+    "newActor": "Nouvel acteur",
+    "oldActor": "Acteur existant"
+}

@@ -1,0 +1,17 @@
+{
+	"exclude": [
+		"**/bin",
+		"**/dist",
+		"**/node_modules",
+		"**/obj"
+	],
+	"compilerOptions": {
+		"moduleResolution": "Node",
+		"target": "ES2022",
+		"baseUrl": ".",
+		"noImplicitThis": true,
+		"paths": {
+			"@/*": [ "./src/*" ]
+		}
+	}
+}
