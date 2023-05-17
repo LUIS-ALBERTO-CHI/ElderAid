@@ -1,9 +1,0 @@
-{
-	"title": "Authentication",
-	"button": "Login",
-	"login": "User name",
-	"password": "Password",
-	"messageLogin": "User name is required",
-	"messagePassword": "Password is required",
-	"loginErrorMessage": "Wrong user name and/or password"
-}

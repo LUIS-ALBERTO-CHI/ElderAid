@@ -1,7 +1,0 @@
-{
-	"permissionInvariantId": "Permission",
-	"roleId": "Rôle",
-	"rolePermissionLinksTitle": "Rôles / Permissions",
-	"rolePermissionLinksDescription": "Gérer les associations des permissions aux rôles",
-	"usersAndPermissions": "Utilisateurs et droits"
-}

@@ -1,5 +1,0 @@
-{
-    "loadedMessages": "Component specific messages",
-    "currentLanguage" : "Current language",
-    "localizationSamplePageMessage" : "This page loads dynamically the messages for current language and it simulates asynchronous data loading"
-}

@@ -1,7 +1,0 @@
-{
-	"switchedOffText": "Non",
-	"switchedOnText": "Oui",
-	"grantFullAccess": "Accorder un accès total",
-	"name": "Nom",
-	"cannotGrantAccessMessage": "Vous ne pouvez pas changer l'accès total pour cet utilisateur car vous n'avez pas l'accès total pour ce périmètre."
-}
