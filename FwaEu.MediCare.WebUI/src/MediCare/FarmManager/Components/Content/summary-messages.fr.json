@@ -1,9 +1,0 @@
-{
-	"askConfirmationForDelete": "Voulez-vous vraiment supprimer cette ferme ?",
-	"confirm": "Confirmation",
-	"remove": "Supprimer",
-	"farmDeleted": "La ferme a été supprimée.",
-	"opened": "Ouverte",
-	"closed": "Fermée",
-	"state": "Etat : {stateLabel}"
-}
