@@ -1,0 +1,9 @@
+{
+  "baseCurrencyCode": "Base currency",
+  "date": "Used from",
+  "exchangeRates": "Exchange rates",
+  "exchangeRatesDescription": "Manage currency exchange rate to another",
+  "isInverse": "Is inversed",
+  "quotedCurrencyCode": "Quoted currency",
+  "value": "Rate"
+}

@@ -1,0 +1,8 @@
+{
+	"importResult": "Résultat",
+	"selectButtonText": "Parcourir...",
+	"labelText": "ou Déposer des fichiers ici",
+	"uploadButtonText": "Importer",
+	"uploadOtherFiles": "Importer d'autres fichiers",
+	"errorImport": "Erreur lors de l'import de fichiers"
+}

@@ -1,0 +1,9 @@
+{
+  "baseCurrencyCode": "Devise source",
+  "date": "Utilisée à partir de",
+  "exchangeRates": "Taux de change",
+  "exchangeRatesDescription":  "Gérer les conversions de devises à une autre",
+  "isInverse": "Est inversée",
+  "quotedCurrencyCode": "Devise de destination",
+  "value": "Taux"
+}

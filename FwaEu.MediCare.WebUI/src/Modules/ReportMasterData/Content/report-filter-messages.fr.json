@@ -1,0 +1,7 @@
+{
+	"reportFiltersTitle": "Filtres",
+	"reportFiltersDescription": "Configuration des pré-filtres (localisation, source de données...)",
+	"dotNetTypeName": "Type de données",
+	"dataSourceType": "Type de la source",
+	"dataSourceArgument": "Argument"
+}

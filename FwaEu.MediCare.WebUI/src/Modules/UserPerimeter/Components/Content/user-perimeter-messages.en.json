@@ -1,0 +1,7 @@
+{
+	"switchedOffText": "No",
+	"switchedOnText": "Yes",
+	"grantFullAccess": "Grant full access",
+	"name": "Name",
+	"cannotGrantAccessMessage": "You cannot grant full access for this user because you don't have full access to this perimeter."
+}

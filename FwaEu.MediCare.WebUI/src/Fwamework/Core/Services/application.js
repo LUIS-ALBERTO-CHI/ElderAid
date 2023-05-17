@@ -1,0 +1,62 @@
+import { createApp } from 'vue';
+import ModuleRegistry from "@/Fwamework/Core/Services/module-registry";
+
+export default class Application {
+
+	/** @param {import('vue/types/vue').VueConfiguration } vueConfig */
+	constructor(vueConfig) {
+		this.vueConfig = vueConfig;
+		let originalCreated = this.vueConfig.created;
+		this.vueConfig.created = function () {
+
+			const vueInstance = this;
+			if (originalCreated)
+				originalCreated.bind(vueInstance)();
+
+			ModuleRegistry.getAll().forEach(function (module) {
+
+				/**************** Call onApplicationCreated for all aplication modules ****************/
+				//onApplicationCreated can be async but we won't wait for it because vuejs created event cannot be asynchronous
+				module.onApplicationCreated(vueInstance);
+			});
+		};
+		this.vueApp = createApp(this.vueConfig);
+
+		//TODO: Remove when updating to Vue 3.3 https://vuejs.org/guide/components/provide-inject.html#working-with-reactivity
+		this.vueApp.config.unwrapInjectedRef = true;
+	}
+
+	/** @type {import('vue').App} */
+	vueApp
+
+	/** @type {import('vue/types/vue').VueConfiguration} */
+	vueConfig
+
+	initialized = false
+
+	/**
+	 * @param { import('./abstract-module-class').default } module
+	 */
+	useModule(module) {
+
+		ModuleRegistry.add(module);
+		return this;
+	}
+
+	/**
+	 * @param {string} el
+	 */
+	async mountAsync(el) {
+		
+		if (!this.initialized) {
+			for (let module of ModuleRegistry.getAll()) {
+
+				if (module.onInitAsync) {
+					await module.onInitAsync(this.vueApp);
+				}
+			}
+			this.initialized = true;
+		}
+		this.vueApp.mount(el);
+	}
+}

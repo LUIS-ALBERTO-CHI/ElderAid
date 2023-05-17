@@ -1,0 +1,19 @@
+*njsproj.user
+/obj
+/bin
+
+.DS_Store
+**/node_modules/**
+**/dist/**
+**/dev-dist/**
+
+# local env files
+.env.local
+.env.*.local
+
+# local json files
+*.Local.json
+
+# Log files
+npm-debug.log*
+public/appSettings.*.js

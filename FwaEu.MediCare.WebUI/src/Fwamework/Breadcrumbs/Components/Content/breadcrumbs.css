@@ -1,0 +1,46 @@
+.breadcrumbs
+{
+	padding: 10px;
+	color: #707070;
+}
+
+	.breadcrumbs,
+	.breadcrumbs i {
+		font-size: 14px;
+		color: #707070;
+	}
+
+		.breadcrumbs i {
+			position: relative;
+			top: 1px;
+			vertical-align: baseline;
+			color: var(--secondary-text-color);
+		}
+
+
+		.breadcrumbs .breadcrumb-node-text,
+		.breadcrumbs .breadcrumb-node a
+		{
+			display: inline-block;
+			padding: 3px 5px;
+			margin: 0px 2px;
+			border-radius: 20px;
+			color: #707070;
+			text-decoration: none;
+		}
+
+		.breadcrumbs .breadcrumb-last-node {
+			color: var(--secondary-text-color);
+			font-weight: bold;
+		}
+
+		.breadcrumbs .breadcrumb-node a:hover,
+		.breadcrumbs .breadcrumb-node a:focus {
+			background-color: #E9E9E9;
+			color: var(--secondary-text-color);
+		}
+
+		.breadcrumbs .breadcrumb-node a:active
+		{
+			background-color: #C6C6C6;
+		}
