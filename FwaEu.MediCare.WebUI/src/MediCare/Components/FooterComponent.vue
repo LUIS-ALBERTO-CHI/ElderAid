@@ -1,15 +1,16 @@
 <template>
 	<footer class="footer">
 		<div>
+			<a v-if="!showLogoutLink" class="connexion-container" @click="goToLoginFront">Se connecter</a>
+			<a v-else class="connexion-container" @click="logoutAsync">Se déconnecter</a>
 			{{ getVersionLabel() }}
 			-
-			Copyright © 2021, <a href="https://www.fwa.eu" target="_blank">FWA</a>
-			<span v-if="showAdministrationLink"> - <a :href="administrationLink">Administration</a></span>
+			Copyright © 2023, <a href="https://www.fwa.eu" target="_blank">FWA</a>
 			<div class="logos">
 				<a href="https://www.fwa.eu" target="_blank">
 					<img class="logo" alt="" src="../Content/logo-fwa.png" />
 				</a>
-				<img class="logo company-logo" alt="" src="../Content/logo-cites-educatives.svg" />
+				<img class="logo company-logo" alt="" src="../Content/logo.png" />
 			</div>
 		</div>
 	</footer>
@@ -22,6 +23,8 @@
 	import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
 	import UserFormatterService from "@/Fwamework/Users/Services/user-formatter-service";
 	import UserService from '@/Fwamework/Users/Services/user-service';
+    import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
+
 
 	export default {
 		mixins: [LocalizationMixing],
@@ -38,7 +41,6 @@
 				showAdministrationLink: false,
 				showLogoutLink: false,
 				userName: null,
-				saleOrderLink: null
 			}
 		},
 		async created() {
@@ -67,7 +69,15 @@
 			},
 			getVersionLabel() {
 				return this.$t("versionMask", [ApplicationInfoService.get()?.version]);
-			}
+			},
+            goToLoginFront() {
+                this.$router.push("/Login")
+            },
+            async logoutAsync() {
+                AuthenticationService.logoutAsync().then(() => {
+                    this.$router.push("/Login")
+                });
+            },
 		}
 	}
 </script>

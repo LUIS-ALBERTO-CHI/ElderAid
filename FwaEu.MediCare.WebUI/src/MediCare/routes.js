@@ -6,7 +6,7 @@ export default [
 	{
 		path: '/Login',
 		name: 'Login',
-		component: LoginFrontPageComponent,
+		component: LoginPageComponent,
 		meta: {
 			zoneName: 'admin',
 			allowAnonymous: true

@@ -54,6 +54,8 @@ using FwaEu.Modules.Authentication.Impersonate;
 using FwaEu.Modules.Authentication.JsonWebToken;
 
 using FwaEu.Fwamework.Mail;
+using FwaEu.MediCare.Users;
+using FwaEu.MediCare.Permissions;
 
 namespace FwaEu.MediCare
 {
@@ -153,11 +155,13 @@ namespace FwaEu.MediCare
 				services.AddFwameworkModuleNHibernateLogging(context);
                 services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
 
+                services.AddApplicationPermissionsByIsAdmin();
                 services.AddMasterDataPermissions();
 
                 services.AddApplicationInformation(context);
                 services.AddRelativePathProviders(this._environment);
                 services.AddApplicationDatabase(context, authenticationFeatures);
+                services.AddApplicationUserServices(context);
                 services.AddApplicationMailServices(context);
 				services.AddMailListenersServices();
 				services.AddApplicationGlobalization();

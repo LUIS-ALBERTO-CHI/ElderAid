@@ -1,30 +1,17 @@
-const context = import.meta.glob('/**/index-routes.js', { eager: true });
+const context = import.meta.glob('/**/routes.js', { eager: true });
 import { defineAsyncComponent } from 'vue';
 const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
 const PublicLayoutComponent = defineAsyncComponent(() => import('@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue'));
 
 let globalRoutes = [
     {
-        name: 'index',
+        name: 'default',
         path: "/",
         component: Home,
         meta: {
-            allowAnonymous: true,
+            allowAnonymous: false,
             breadcrumb: {
                 titleKey: 'homePageTitle'
-            },
-            layout: PublicLayoutComponent
-        },
-	    props: (route) => ({ searchCriteria: route.query.searchCriteria ? JSON.parse(route.query.searchCriteria): undefined })
-    },
-    {
-        name: 'default',
-        path: "/Home",
-        component: Home,
-        meta: {
-            allowAnonymous: true,
-            breadcrumb: {
-                titleKey: 'homeTitle'
             },
             layout: PublicLayoutComponent
         }

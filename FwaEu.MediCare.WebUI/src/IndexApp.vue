@@ -3,23 +3,20 @@
         <div :class="cssClasses">
             <component v-if="pageLayout" :is="pageLayout" :title="currentPageTitle" :is-x-small="screen.isXSmall" :is-large="screen.isLarge">
                 <template #content-header>
-                    <breadcrumbs></breadcrumbs>
                 </template>
                 <header class="app-header">
-                    <a href="">
-                        <div class="container-logo">
-                            <img class="cites-educatives" alt="" src="@/MediCare/Content/logo-cites-educatives.svg" />
-                            <img class="logo" alt="" :src="getUrlFile('/logo.svg')" />
-                        </div>
+                    <a @click="goHome" style="float:left;">
+                        <img alt="" src="@/MediCare/Content/logo.png" style="height:30px;" />
                     </a>
+                        <a @click="goProfil" style="float:right;">
+                            Mon profil
+                        </a>
                 </header>
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>
                 <footer class="app-footer">
-                    <img v-if="secondLogoFooterEnabled" class="logo" alt="" :src="getUrlFile('/logo-ministry.png')" />
-                    <img class="logo-fix" alt="" src="@/MediCare/Content/logo-ministry.png" />
-                    {{ trackGoogleAnalytics() }}
+                    <application-footer-component />
                 </footer>
             </component>
         </div>
@@ -34,7 +31,7 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import Breadcrumbs from "@/Fwamework/Breadcrumbs/Components/BreadcrumbsComponent.vue";
     import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
-    import { page } from 'vue-analytics';
+
 
     function getScreenSizeInfo() {
         const screenSizes = sizes();
@@ -107,11 +104,11 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
             getRoutePageTitle(route) {
                 return route.meta?.pageTitle ?? (route.meta?.pageTitleKey ? this.$t(route.meta?.pageTitleKey) : null);
             },
-            trackGoogleAnalytics() {
-                if (Configuration.googleAnalytics.enableFullPtah)
-                    page(this.$route.fullPath)
-                else
-                    page(this.$route.path)
+            goHome() {
+                this.$router.push("/Default");
+            },
+            goProfil() {
+                this.$router.push("/UserSettings");
             },
             getUrlFile(nameOfFile) {
                 return path + nameOfFile;
