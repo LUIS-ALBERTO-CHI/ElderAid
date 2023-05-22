@@ -5,13 +5,17 @@
                 <template #content-header>
                 </template>
                 <header class="app-header">
-                    <a @click="goHome" style="float:left;">
+                    <!-- <a @click="goHome" style="float:left;">
                         <img alt="" src="@/MediCare/Content/logo.png" style="height:30px;" />
-                    </a>
-                        <a @click="goProfil" style="float:right;">
+                    </a> -->
+                        <!-- <a @click="goProfil" style="float:right;">
                             Mon profil
-                        </a>
+                        </a> -->
+                        <breadcrumbs/>
                 </header>
+                <!-- <div class="ehpad-type-header ">
+
+                </div> -->
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>

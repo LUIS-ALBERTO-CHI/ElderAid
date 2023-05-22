@@ -7,8 +7,8 @@
 :root {
 	--primary-bg-color: #F7F9FA;
 	--secondary-bg-color: #B7CBD3;
-	--primary-text-color: #374649;
-	--secondary-text-color: #0078D4;
+	--primary-text-color: #3f6767;
+	--secondary-text-color: white;
 	--alt-secondary-text-color: #7098a7;
 }
 
@@ -43,118 +43,107 @@ p,
   margin: 10px 0px 0px 0px;
 }
 
-#app:not(.admin) {
-  a {
-    color: #ff5a5f;
-    cursor: pointer;
-  }
+// #app:not(.admin) {
+//   a {
+//     color: #ff5a5f;
+//     cursor: pointer;
+//   }
 
-  a:hover {
-    text-decoration: underline;
-  }
+//   a:hover {
+//     text-decoration: underline;
+//   }
 
-  input[type=text] {
-    height: 50px;
-    border-radius: 25px;
-  }
+//   input[type=text] {
+//     height: 50px;
+//     border-radius: 25px;
+//   }
 
-  input[type=button] {
-    height: 50px;
-    border: 1px solid var(--main-bg-color);
-  }
+//   input[type=button] {
+//     height: 50px;
+//     border: 1px solid var(--main-bg-color);
+//   }
 
-  input[type=number] {
-    height: 30px;
-    border-radius: 4px;
-    border: 1px solid var(--main-bg-color);
-    width: 60px;
-  }
+//   input[type=number] {
+//     height: 30px;
+//     border-radius: 4px;
+//     border: 1px solid var(--main-bg-color);
+//     width: 60px;
+//   }
 
-  input[type=checkbox] {
-    margin: 0px 6px;
-  }
+//   input[type=checkbox] {
+//     margin: 0px 6px;
+//   }
 
-  textarea {
-    width: 100%;
-  }
+//   textarea {
+//     width: 100%;
+//   }
 
-  .input-icons {
-    width: 100%;
-    position: relative;
-    cursor: pointer;
-  }
+//   .input-icons {
+//     width: 100%;
+//     position: relative;
+//     cursor: pointer;
+//   }
 
-  .input-icons .action-button {
-    padding: 12px 16px;
-    color: #FFFFFF;
-    min-width: 60px;
-    position: absolute;
-    font-size: 26px;
-    background-color: var(--secondary-color);
-    right: 0px;
-    height: 100%;
-    border-radius: 0 25px 25px 0;
-  }
+//   .input-icons .action-button {
+//     padding: 12px 16px;
+//     color: #FFFFFF;
+//     min-width: 60px;
+//     position: absolute;
+//     font-size: 26px;
+//     background-color: var(--secondary-color);
+//     right: 0px;
+//     height: 100%;
+//     border-radius: 0 25px 25px 0;
+//   }
 
-  select {
-    width: 100%;
-    border-radius: 4px;
-    background-color: var(--secondary-bg-color);
-    height: 50px;
-  }
+//   select {
+//     width: 100%;
+//     border-radius: 4px;
+//     background-color: var(--secondary-bg-color);
+//     height: 50px;
+//   }
 
-  button {
-    cursor: pointer;
-  }
+//   button {
+//     cursor: pointer;
+//   }
 
-  button:hover {
-    opacity: 0.7;
-  }
+//   button:hover {
+//     opacity: 0.7;
+//   }
 
-  button.secondary-color {
-    background-color: var(--secondary-color);
-    color: #FFFFFF;
-  }
+//   button.secondary-color {
+//     background-color: var(--secondary-color);
+//     color: #FFFFFF;
+//   }
 
-  button.primary-color {
-    background-color: var(--primary-color);
-    color: #FFFFFF;
-  }
+//   button.primary-color {
+//     background-color: var(--primary-color);
+//     color: #FFFFFF;
+//   }
 
-  button.btn-rounded {
-    border-radius: 25px;
-    cursor: pointer;
-    height: 50px;
-    border: none;
-    text-transform: uppercase;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-  }
+//   button.btn-rounded {
+//     border-radius: 25px;
+//     cursor: pointer;
+//     height: 50px;
+//     border: none;
+//     text-transform: uppercase;
+//     padding: 0 20px;
+//     display: flex;
+//     align-items: center;
+//   }
 
-  button.btn-rounded i {
-    font-size: 24px;
-    padding-right: 10px;
-  }
+//   button.btn-rounded i {
+//     font-size: 24px;
+//     padding-right: 10px;
+//   }
 
-  .horizontal-rule {
-    height: 1px;
-    background-color: var(--secondary-bg-color);
-    width: 100%;
-    margin: 10px 0;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
+//   .horizontal-rule {
+//     height: 1px;
+//     background-color: var(--secondary-bg-color);
+//     width: 100%;
+//     margin: 10px 0;
+//   }
+// }
 
 a {
 	color: var(--secondary-text-color);

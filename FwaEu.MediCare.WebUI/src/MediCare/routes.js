@@ -1,5 +1,5 @@
-const LoginFrontPageComponent = () => import('@/MediCare/Components/LoginFrontPageComponent.vue');
 const LoginPageComponent = () => import('@/Fwamework/Authentication/Components/LoginPageComponent.vue');
+const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
 
 
 export default [
@@ -11,5 +11,10 @@ export default [
 			zoneName: 'admin',
 			allowAnonymous: true
 		}
-	}
+	},
+	{
+		path: '/SearchPatient',
+		name: 'SearchPatient',
+		component: Home,
+	},
 ]
