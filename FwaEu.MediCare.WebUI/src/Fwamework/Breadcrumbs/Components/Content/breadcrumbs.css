@@ -1,13 +1,13 @@
 .breadcrumbs
 {
 	padding: 10px;
-	color: #707070;
+	color: white;
 }
 
 	.breadcrumbs,
 	.breadcrumbs i {
 		font-size: 14px;
-		color: #707070;
+		color: white;
 	}
 
 		.breadcrumbs i {
@@ -25,7 +25,7 @@
 			padding: 3px 5px;
 			margin: 0px 2px;
 			border-radius: 20px;
-			color: #707070;
+			color: white;
 			text-decoration: none;
 		}
 

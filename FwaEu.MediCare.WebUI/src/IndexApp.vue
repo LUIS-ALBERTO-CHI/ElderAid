@@ -11,11 +11,14 @@
                         <!-- <a @click="goProfil" style="float:right;">
                             Mon profil
                         </a> -->
-                        <breadcrumbs/>
+                        <div class="main-header">
+                            <i v-show="isTurnBackEnabled" class="fa-solid fa-turn-down-left" style="color: white; font-size: 22px;"></i>
+                            <breadcrumbs v-show="isBreadcrumbsEnabled"/>
+                        </div>
+                        <div class="ehpad-type-header">
+                        </div>
                 </header>
-                <!-- <div class="ehpad-type-header ">
 
-                </div> -->
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>
@@ -88,6 +91,12 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
                 return {
                     '--bg-color': this.customBgColor
                 }
+            },
+            isBreadcrumbsEnabled() {
+                return this.$route.path !== '/Login';
+            },
+            isTurnBackEnabled() {
+                return this.$route.path !== '/' && this.$route.path !== '/Login';
             }
         },
         methods: {

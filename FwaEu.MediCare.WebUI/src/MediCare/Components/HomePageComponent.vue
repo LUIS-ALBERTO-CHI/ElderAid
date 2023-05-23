@@ -6,7 +6,7 @@
                     <div class="vignette-icon-area" style="background-color: #94a595;">
                         <i class="fa-regular fa-user vignette-icon" />
                     </div>
-                    <span class="vignette-text">130 Patients</span>
+                    <span class="vignette-text">130 patients</span>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon"/>
             </div>

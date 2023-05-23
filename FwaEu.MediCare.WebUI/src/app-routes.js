@@ -11,7 +11,7 @@ let globalRoutes = [
         meta: {
             allowAnonymous: false,
             breadcrumb: {
-                titleKey: 'homePageTitle'
+                titleKey: 'Accueil'
             },
             layout: PublicLayoutComponent
         }
