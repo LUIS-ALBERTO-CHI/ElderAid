@@ -1,5 +1,7 @@
-const LoginFrontPageComponent = () => import('@/MediCare/Components/LoginFrontPageComponent.vue');
 const LoginPageComponent = () => import('@/Fwamework/Authentication/Components/LoginPageComponent.vue');
+const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
+const SearchPatientPageComponent = () => import('@/MediCare/Components/SearchPatientPageComponent.vue');
+
 
 
 export default [
@@ -9,7 +11,18 @@ export default [
 		component: LoginPageComponent,
 		meta: {
 			zoneName: 'admin',
-			allowAnonymous: true
+			allowAnonymous: true,
 		}
-	}
+	},
+	{
+		path: '/SearchPatient',
+		name: 'SearchPatient',
+		component: SearchPatientPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Recherche de patient',
+				parentName: 'default'
+			},
+		}
+	},
 ]

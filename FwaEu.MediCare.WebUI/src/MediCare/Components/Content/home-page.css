@@ -1,22 +1,37 @@
 :root {
-  --main-bg-color: #03192b;
+  --main-bg-color: #319b42;
   --secondary-bg-color: #F3F3F3;
-  --primary-color: #01BAB6;
-  --secondary-color: #FF5A5F;
+  --primary-color: #3f6767;
+  --secondary-color: #aaff5a;
 }
 
 /* Header / Footer */
 .app-header {
   position: fixed;
-  background-color: var(--main-bg-color);
   top: 0;
   z-index: 9;
   margin: 0 auto; /* Will not center vertically and won't work in IE6/7. */
   width: 100%;
-  padding: 6px 32px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  /* padding: 6px 32px; */
 }
 
-.app-header .container-logo {
+.main-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 10px;
+}
+
+.ehpad-type-header {
+  background-color: yellow;
+  width: 100%;
+  height: 10px;
+}
+/* .app-header .container-logo {
   max-width: 100%;
   max-height: 100px;
   display: flex;
@@ -31,13 +46,17 @@
 .app-header .container-logo .logo {
   max-width: 50%;
   max-height: 100px;
-}
+} */
+
 
 .app-footer {
     position: fixed;
     bottom: 0;
+    z-index: 9;
     width: 100%;
     background-color: #FFFFFF;
+    border-top: 1px solid var(--main-bg-color);
+    padding: 12px 32px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -61,7 +80,7 @@
 }
 
 .home-content {
-  padding: 180px 60px;
+  padding: 80px 40px;
   background-color: #FFFFFF;
   position: relative;
   width: 100%;
@@ -81,17 +100,7 @@
   text-align: justify;
 }
 
-.panel-search {
-  max-width: 500px;
-  margin: 40px auto;
-}
 
-.input-field {
-  width: 100%;
-  padding-left: 25px;
-  border: 1px solid var(--main-bg-color);
-  border-radius: 25px;
-}
 
 .text-align-center {
   text-align: center;
@@ -113,11 +122,6 @@
   justify-content: center
 }
 
-@media screen and (max-width: 499px) {
-  .home-content {
-    padding: 120px 26px;
-  }
-}
 
 .connexion-container {
   display: flex;
@@ -127,3 +131,56 @@
   width: 100%;
   margin-top: 40px;
 }
+
+.vignette-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.vignette-item {
+  border: 2px solid #3f6767;
+  border-radius: 10px;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+}
+.vignette-item:hover {
+  background-color: #e4e1e1;
+}
+
+.vignette-icon-area {
+  height: 100%;
+  width: 80px;
+  border-radius: 8% 25% 25% 8% / 10% 50% 50% 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color: white;
+
+}
+
+.vignette-main-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.vignette-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.chevron-icon {
+  font-size: 25px;
+  color: var(--primary-color);
+  margin-right: 10px;
+}
+
