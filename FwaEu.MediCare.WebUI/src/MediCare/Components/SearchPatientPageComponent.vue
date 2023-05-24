@@ -1,45 +1,49 @@
 <template>
-    <div class="page-home">
-       
+    <div class="search-patient-container ">
+        <Dropdown class="select-sector" placeholder="Selectionner un secteur"/>
+        <span class="p-input-icon-right">
+            <i class="fa fa-solid fa-close"/>
+            <InputText class="search-input" placeholder="Rechercher un patient"/>
+        </span>
+        <div class="patient-list">
+            <div v-for="patient in patients" :key="patient.firstname">
+                <div  :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
+                    <span>{{`${patient.firstname} ${patient.lastname}`}}</span>
+                    <div class="room-patient-area">
+                        <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>B302</span>
+                        <span v-show="!patient.isActive">Inactif</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
-    import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+    import patientsData from './patients.json';
 
-    import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
-    const path = Configuration.application.customResourcesPath;
-    import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
+    import Dropdown from 'primevue/dropdown';
+    import InputText from 'primevue/inputtext';
+
+
 
     export default {
         inject: ["deviceInfo"],
-        mixins: [LocalizationMixing],
-        i18n: {
-            messages: {
-                getMessagesAsync(locale) {
-                    return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
-                }
-            }
+        components: {
+            Dropdown,
+            InputText
         },
         data() {
             return {
-                isCurrentUserAuthenticated: false,
+                patients: []
             };
         },
         async created() {
-            this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
+            this.patients = patientsData;
+            console.log(this.patients);
         },
         methods: {
-            goToLoginFront() {
-                this.$router.push("/Login")
-            },
-            async logoutAsync() {
-                AuthenticationService.logoutAsync().then(() => {
-                    this.$router.push("/Login")
-                });
-            },
-            goToPatientPage() {
-                this.$router.push("/SearchPatient")
-            }
         },
     }
 </script>
+<style type="text/css" scoped src="./Content/search-patient-page.css">
+</style>

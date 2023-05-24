@@ -39,6 +39,8 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
 
+    import "primevue/resources/themes/lara-light-indigo/theme.css";
+    import "primevue/resources/primevue.min.css";
 
     function getScreenSizeInfo() {
         const screenSizes = sizes();
@@ -142,7 +144,6 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
 <style lang="scss" src="@/MediCare/Content/application-styles.scss" />
 <style type="text/css" src="@/MediCare/Components/Content/home-page.css"></style>
 <style type="text/css" src="@/MediCare/Content/slider.css"></style>
-<style type="text/css" src="@/MediCare/Components/Content/search.css"></style>
 
 <style scoped>
     .app-header {

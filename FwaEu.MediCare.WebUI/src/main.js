@@ -48,6 +48,8 @@ import SetupImpersonateAuthenticationHandler from "./Modules/ImpersonateAuthenti
 
 import { ApplicationModule } from "@/MediCare/application-module";
 
+import PrimeVue from 'primevue/config';
+
 const application = new Application(IndexApp)
 .useModule(new CoreModule({
 	//NOTE: We currently use the same version as server because managing the version for both server and client will require unnecessary efforts			
@@ -97,5 +99,5 @@ const application = new Application(IndexApp)
 		}
 	))
 	.useModule(new UtilsModule());
-
+application.vueApp.use(PrimeVue);
 application.mountAsync("#app");
