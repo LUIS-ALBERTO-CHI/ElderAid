@@ -88,7 +88,7 @@
 		}
 
 	.login-box-content {
-		color: var(--secondary-text-color);
+		color: #7092be;
 		font-weight: bold;
 		font-size: 20px;
 		text-align: center;
