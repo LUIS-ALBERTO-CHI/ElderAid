@@ -5,26 +5,16 @@
                 <template #content-header>
                 </template>
                 <header class="app-header">
-                    <!-- <a @click="goHome" style="float:left;">
-                        <img alt="" src="@/MediCare/Content/logo.png" style="height:30px;" />
-                    </a> -->
-                        <!-- <a @click="goProfil" style="float:right;">
-                            Mon profil
-                        </a> -->
                         <div class="main-header">
-                            <i v-show="isTurnBackEnabled" class="fa-solid fa-turn-down-left" style="color: white; font-size: 22px;"></i>
+                            <i v-show="isTurnBackEnabled" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
                             <breadcrumbs v-show="isBreadcrumbsEnabled"/>
-                        </div>
-                        <div class="ehpad-type-header">
                         </div>
                 </header>
 
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>
-                <footer class="app-footer">
-                    <application-footer-component />
-                </footer>
+                <!-- -->
             </component>
         </div>
     </div>
