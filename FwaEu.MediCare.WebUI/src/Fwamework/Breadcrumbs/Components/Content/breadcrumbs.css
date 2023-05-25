@@ -6,7 +6,7 @@
 
 	.breadcrumbs,
 	.breadcrumbs i {
-		font-size: 12px;
+		font-size: 14px;
 		color: white;
 	}
 
@@ -31,7 +31,7 @@
 
 		.breadcrumbs .breadcrumb-last-node {
 			color: var(--secondary-text-color);
-			font-weight: bold;
+			opacity: 0.6;
 		}
 
 		.breadcrumbs .breadcrumb-node a:hover,

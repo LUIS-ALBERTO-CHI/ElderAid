@@ -1,0 +1,29 @@
+.patient-page-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.patient-main-info-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.room-patient-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+}
+
+.patient-info-item {
+    height: 60px;
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px 0px var(--primary-color);
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+}
+
