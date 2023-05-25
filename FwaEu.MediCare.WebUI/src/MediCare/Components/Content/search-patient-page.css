@@ -74,9 +74,6 @@
     flex-shrink: 0;
 }
 
-.patient-name { 
-    /* color: var(--primary-text-color); */
-}
 
 .display-patients-text {
     color: #1A0DAB;

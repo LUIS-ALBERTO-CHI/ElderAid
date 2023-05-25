@@ -4,10 +4,10 @@
             <i class="fa fa-solid fa-close"/>
             <InputText v-model="searchPatient" class="search-input" placeholder="Rechercher un patient"/>
         </span>
-        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector" placeholder="Secteur"/>
+        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector"/>
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
-                <div  :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
+                <div @click="goToPatientPage"  :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
                     <span class="patient-name">{{`${patient.firstname} ${patient.lastname}`}}</span>
                     <div class="room-patient-area">
                         <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
@@ -19,7 +19,7 @@
         <div v-show="filteredPatients.length == 0" class="patient-not-found">
             <i class="fa-solid fa-heart-pulse icon-not-found"></i>
             <span>Aucun patient trouvé</span>
-            <span>Vérifier votre filtre de secteur ou contactez la pharmacie</span>
+            <span>{{ selectedBuilding == "Tous les secteurs" ? 'Contactez la pharmacie': 'Vérifiez votre filtre de secteur ou contactez la pharmacie'}}</span>
         </div>
         <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
     </div>
@@ -43,7 +43,7 @@
         data() {
             return {
                 patients: [],
-                selectedBuilding: 0,
+                selectedBuilding: "Tous les secteurs",
                 searchPatient: "",
                 buildingOptions: ["Tous les secteurs","Batiment A", "Batiment B", "Batiment C"],
                 displayInactivePatients: false
@@ -51,7 +51,7 @@
         },
         async created() {
             this.patients = patientsData;
-            //get research from local storage if it exists
+            // get research from local storage if it exists
             if (localStorage.getItem("searchPatient")) {
                 this.searchPatient = localStorage.getItem("searchPatient");
             }
@@ -59,12 +59,18 @@
         methods: {
             changeDisplayInactive() {
                 this.displayInactivePatients = !this.displayInactivePatients;
+            },
+            goToPatientPage() {
+                console.log(this.selectedBuilding)
+                this.$router.push({ name: "Patient" });
             }
         },
         computed: {
             filteredPatients() {
                 var patients = this.patients.filter(patient => {
-                    return patient.firstname.toLowerCase().includes(this.searchPatient.toLowerCase()) || patient.lastname.toLowerCase().includes(this.searchPatient.toLowerCase());
+                    return patient.firstname.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
+                    patient.lastname.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
+                    patient.roomNumber.toLowerCase().includes(this.searchPatient.toLowerCase());
                 });
                 // remove all inactive patients if displayInactivePatients is true
                 if (!this.displayInactivePatients) {
@@ -76,7 +82,7 @@
             }
         },
         beforeUnmount() {
-            //keep research in local storage
+            // keep research in local storage
             localStorage.setItem("searchPatient", this.searchPatient);
         }
     }
