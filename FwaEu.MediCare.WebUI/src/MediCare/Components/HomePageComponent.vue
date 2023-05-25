@@ -1,13 +1,45 @@
 <template>
-    <div class="page-home" >
-        <div class="panel-title text-align-center">
-            <h3> Titre ici  </h3>
+    <div class="page-home">
+        <div class="vignette-list">
+            <div class="vignette-item">
+                <div @click="goToPatientPage" class="vignette-main-info">
+                    <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
+                    <span class="vignette-text">130 patients</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon"/>
+            </div>
+            <div class="vignette-item">
+                <div class="vignette-main-info">
+                        <i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;"/>
+                    <span class="vignette-text">Commandes</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon"/>
+            </div>
+            <div class="vignette-item">
+                <div class="vignette-main-info">
+                    <i class="fa-regular fa-inbox vignette-icon fa-fw" style="color: #d9c4b3;"/>
+                    <span class="vignette-text">Stock pharmacie</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon"/>
+            </div>
+            <div class="vignette-item">
+                <div class="vignette-main-info">
+                    <i class="fa-regular fa-truck vignette-icon fa-fw" style="color: #a5ae9d;"/>
+                    <span class="vignette-text">Livraison</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon"/>
+            </div>
+            <div class="vignette-item">
+                <div class="vignette-main-info">
+                    <i class="fa-regular fa-gear vignette-icon fa-fw" style="color: #bb8a7c;"/>
+                    <span class="vignette-text">Mon profil</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon"/>
+            </div>
         </div>
-        
-        <div class="panel-description">
-            Here is description
-        </div>
-      
+        <footer >
+            <application-footer-component />
+        </footer> 
     </div>
 </template>
 <script>
@@ -44,6 +76,9 @@
                     this.$router.push("/Login")
                 });
             },
+            goToPatientPage() {
+                this.$router.push("/SearchPatient")
+            }
         },
     }
 </script>

@@ -37,11 +37,6 @@
         margin-top: -50px;
     }
 
-    @media screen and (max-width: 480px) {
-        .cite-educative-layout {
-            margin-top: 10px;
-        }
-    }
 
 
 		.anonymous-page-layout {

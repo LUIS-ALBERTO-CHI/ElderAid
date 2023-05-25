@@ -1,0 +1,85 @@
+<template>
+    <div class="search-patient-container ">
+        <span class="p-input-icon-right">
+            <i class="fa fa-solid fa-close"/>
+            <InputText v-model="searchPatient" class="search-input" placeholder="Rechercher un patient"/>
+        </span>
+        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector" placeholder="Secteur"/>
+        <div v-show="filteredPatients.length > 0" class="patient-list">
+            <div v-for="patient in filteredPatients" :key="patient.firstname">
+                <div  :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
+                    <span class="patient-name">{{`${patient.firstname} ${patient.lastname}`}}</span>
+                    <div class="room-patient-area">
+                        <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
+                        <span v-show="!patient.isActive">Inactif</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-show="filteredPatients.length == 0" class="patient-not-found">
+            <i class="fa-solid fa-heart-pulse icon-not-found"></i>
+            <span>Aucun patient trouvé</span>
+            <span>Vérifier votre filtre de secteur ou contactez la pharmacie</span>
+        </div>
+        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
+    </div>
+</template>
+<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
+<script>
+    import patientsData from './patients.json';
+
+    import Dropdown from 'primevue/dropdown';
+    import InputText from 'primevue/inputtext';
+
+
+
+    export default {
+        inject: ["deviceInfo"],
+        components: {
+            Dropdown,
+            InputText
+        },
+        data() {
+            return {
+                patients: [],
+                selectedBuilding: 0,
+                searchPatient: "",
+                buildingOptions: ["Tous les secteurs","Batiment A", "Batiment B", "Batiment C"],
+                displayInactivePatients: false
+            };
+        },
+        async created() {
+            this.patients = patientsData;
+            //get research from local storage if it exists
+            if (localStorage.getItem("searchPatient")) {
+                this.searchPatient = localStorage.getItem("searchPatient");
+            }
+        },
+        methods: {
+            changeDisplayInactive() {
+                this.displayInactivePatients = !this.displayInactivePatients;
+            }
+        },
+        computed: {
+            filteredPatients() {
+                var patients = this.patients.filter(patient => {
+                    return patient.firstname.toLowerCase().includes(this.searchPatient.toLowerCase()) || patient.lastname.toLowerCase().includes(this.searchPatient.toLowerCase());
+                });
+                // remove all inactive patients if displayInactivePatients is true
+                if (!this.displayInactivePatients) {
+                    patients = patients.filter(patient => {
+                        return patient.isActive;
+                    });
+                }
+                return patients;
+            }
+        },
+        beforeUnmount() {
+            //keep research in local storage
+            localStorage.setItem("searchPatient", this.searchPatient);
+        }
+    }
+</script>
+<style type="text/css" scoped src="./Content/search-patient-page.css">
+</style>

@@ -5,19 +5,16 @@
                 <template #content-header>
                 </template>
                 <header class="app-header">
-                    <a @click="goHome" style="float:left;">
-                        <img alt="" src="@/MediCare/Content/logo.png" style="height:30px;" />
-                    </a>
-                        <a @click="goProfil" style="float:right;">
-                            Mon profil
-                        </a>
+                        <div class="main-header">
+                            <i v-show="isTurnBackEnabled" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
+                            <breadcrumbs v-show="isBreadcrumbsEnabled"/>
+                        </div>
                 </header>
+
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>
-                <footer class="app-footer">
-                    <application-footer-component />
-                </footer>
+                <!-- -->
             </component>
         </div>
     </div>
@@ -32,6 +29,8 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
 
+    import "primevue/resources/themes/lara-light-indigo/theme.css";
+    import "primevue/resources/primevue.min.css";
 
     function getScreenSizeInfo() {
         const screenSizes = sizes();
@@ -84,6 +83,12 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
                 return {
                     '--bg-color': this.customBgColor
                 }
+            },
+            isBreadcrumbsEnabled() {
+                return this.$route.path !== '/Login';
+            },
+            isTurnBackEnabled() {
+                return this.$route.path !== '/' && this.$route.path !== '/Login';
             }
         },
         methods: {
@@ -129,7 +134,6 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
 <style lang="scss" src="@/MediCare/Content/application-styles.scss" />
 <style type="text/css" src="@/MediCare/Components/Content/home-page.css"></style>
 <style type="text/css" src="@/MediCare/Content/slider.css"></style>
-<style type="text/css" src="@/MediCare/Components/Content/search.css"></style>
 
 <style scoped>
     .app-header {
