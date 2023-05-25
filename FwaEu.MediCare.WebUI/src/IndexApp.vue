@@ -10,11 +10,9 @@
                             <breadcrumbs v-show="isBreadcrumbsEnabled"/>
                         </div>
                 </header>
-
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
                 </div>
-                <!-- -->
             </component>
         </div>
     </div>
