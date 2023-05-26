@@ -38,7 +38,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 10px;
-    height: calc(100vh - 300px);
+    max-height: calc(100vh - 300px);
     overflow-y: scroll;
     padding: 8px;
 }
@@ -54,6 +54,10 @@
     border-left: 12px solid #81d0c6;
     opacity: 1;
     background-color: white;
+}
+
+.patient-item:hover {
+    background-color: #e4e1e1;
 }
 
 .patient-item-inactive {
