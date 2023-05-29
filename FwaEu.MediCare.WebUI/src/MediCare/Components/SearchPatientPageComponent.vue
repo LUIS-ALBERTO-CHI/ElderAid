@@ -1,13 +1,13 @@
 <template>
     <div class="search-patient-container ">
         <span class="p-input-icon-right">
-            <i class="fa fa-solid fa-close"/>
-            <InputText v-model="searchPatient" class="search-input" placeholder="Rechercher un patient"/>
+            <i class="fa fa-solid fa-close" />
+            <InputText v-model="searchPatient" class="search-input" placeholder="Rechercher un patient" />
         </span>
-        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector"/>
+        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector" />
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
-                <div @click="goToPatientPage"  :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
+                <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
                     <span class="patient-name">{{`${patient.firstname} ${patient.lastname}`}}</span>
                     <div class="room-patient-area">
                         <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
@@ -60,8 +60,8 @@
             changeDisplayInactive() {
                 this.displayInactivePatients = !this.displayInactivePatients;
             },
-            goToPatientPage() {
-                console.log(this.selectedBuilding)
+            goToPatientPage(patient) {
+                localStorage.setItem("patient", JSON.stringify(patient));
                 this.$router.push({ name: "Patient" });
             }
         },
