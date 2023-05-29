@@ -4,11 +4,11 @@
             <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
             <div class="room-patient-area">
                 <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
-                <span >Inactif</span>
+                <span>{{patient.isActive ? 'Actif': 'Inactif'}}</span>
             </div>
         </div>
-        <span>Dernière mise à jour: 29/10/2000 à 9:12:33</span>
-        <div class="patient-info-item">
+        <span>Dernière mise à jour : 29/10/2000 à 9:12:33</span>
+        <div @click="goToTreatmentPage" class="patient-info-item">
             <span>15 traitements fixes en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -35,32 +35,29 @@
         <Button style="margin-top: 20px;" label="Commander un autre produit" />
     </div>
 </template>
-
+<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
 <script>
 
     import Button from 'primevue/button';
 
 
     export default {
-        inject: ["deviceInfo"],
         components: {
             Button
         },
         data() {
             return {
-                patient: {
-                    firstname: "Mia",
-                    lastname: "Roberts",
-                    isActive: false,
-                    roomNumber: "B607"
-                },
+                patient: {},
             };
         },
         async created() {
-
+            var patient = localStorage.getItem("patient");
+            this.patient = JSON.parse(patient);
         },
         methods: {
-
+            goToTreatmentPage() {
+                this.$router.push({ name: "Treatment" });
+            }
         },
         computed: {
 
