@@ -1,13 +1,6 @@
 <template>
     <div class="patient-page-container">
-        <div class="patient-main-info-container">
-            <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
-            <div class="room-patient-area">
-                <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
-                <span>{{patient.isActive ? 'Actif': 'Inactif'}}</span>
-            </div>
-        </div>
-        <span>Dernière mise à jour : 29/10/2000 à 9:12:33</span>
+        <patient-info-component />
         <div @click="goToTreatmentPage" class="patient-info-item">
             <span>15 traitements fixes en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
@@ -20,7 +13,7 @@
             <span>4 matériels de soin</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div class="patient-info-item">
+        <div @click="goToPatientOrdersPage" class="patient-info-item">
             <span>8 commandes, dont 4 en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -39,11 +32,13 @@
 <script>
 
     import Button from 'primevue/button';
+    import PatientInfoComponent from './PatientInfoComponent.vue';
 
 
     export default {
         components: {
-            Button
+            Button,
+            PatientInfoComponent
         },
         data() {
             return {
@@ -57,6 +52,10 @@
         methods: {
             goToTreatmentPage() {
                 this.$router.push({ name: "Treatment" });
+            },
+            goToPatientOrdersPage() {
+                console.log("g")
+                this.$router.push({ name: "PatientOrders" });
             }
         },
         computed: {
