@@ -1,13 +1,6 @@
 <template>
-    <div class="patient-page-container">
-        <div class="patient-main-info-container">
-            <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
-            <div class="room-patient-area">
-                <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
-                <span>{{patient.isActive ? 'Actif': 'Inactif'}}</span>
-            </div>
-        </div>
-        <span>Dernière mise à jour : 29/10/2000 à 9:12:33</span>
+    <div class="treatment-page-container">
+        <patient-info-component />
         <Accordion :activeIndex="0">
             <AccordionTab>
                 <template #header>
@@ -52,6 +45,7 @@
     import AccordionTab from 'primevue/accordiontab';
     import SelectButton from 'primevue/selectbutton';
     import InputNumber from 'primevue/inputnumber';
+    import PatientInfoComponent from './PatientInfoComponent.vue';
 
     export default {
         components: {
@@ -59,7 +53,8 @@
             Accordion,
             AccordionTab,
             SelectButton,
-            InputNumber
+            InputNumber,
+            PatientInfoComponent
         },
         data() {
             return {
@@ -95,5 +90,4 @@
     }
 </script>
 <style type="text/css" scoped src="./Content/treatment-page.css">
-    @import "./Content/treatment-page.css";
 </style>
