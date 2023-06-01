@@ -1,13 +1,13 @@
 <template>
     <div class="patient-container">
         <div class="patient-main-info-container">
-            <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
-            <div class="room-patient-area">
-                <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
-                <span :class="patient.isActive ? 'active-patient-text' : 'inactive-patient-text'">{{patient.isActive ? 'Actif': 'Inactif'}}</span>
+            <div class="patient-area">
+                <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
+                <i class="fa-solid fa-circle " :class="patient.isActive ? 'active-patient-text' : 'inactive-patient-text'" />
             </div>
+            <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
         </div>
-        <span>Dernière mise à jour : 29/10/2000 à 9:12:33</span>
+        <span>Mise à jour: 29/10/22 à 9:12</span>
     </div>
 
 </template>
@@ -47,20 +47,19 @@
         color: var(--alt-secondary-text-color);
     }
 
-    .room-patient-area {
+    .patient-area {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        row-gap: 5px;
+        column-gap: 10px;
     }
 
     .active-patient-text {
-        font-weight: bold;
         color: #22C55E
     }
 
     .inactive-patient-text {
-        font-weight: bold;
-        color: #EF4444;
+        color: #484349;
+        opacity: 0.5;
     }
 </style>
