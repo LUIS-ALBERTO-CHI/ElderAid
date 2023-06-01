@@ -12,7 +12,7 @@
 
                     </div>
                     <div class="button-order-item-container" v-show="selectedItemIndex === index">
-                        <Button severity="danger" style="height: 50px !important;" label="Annuler la commande" />
+                        <Button v-show="isOrderDelivered(patientOrder)" severity="danger" style="height: 50px !important;" label="Annuler la commande" />
                         <Button style="height: 50px !important;" label="Commander à nouveau" />
                     </div>
                 </div>
@@ -52,8 +52,6 @@
             };
         },
         async created() {
-            var patient = localStorage.getItem("patient");
-            this.patient = JSON.parse(patient);
         },
         methods: {
             displayButton(index) {
@@ -68,6 +66,9 @@
                 }
                 else
                     return "patient-order-item-waiting";
+            },
+            isOrderDelivered(patientOrder) {
+                return patientOrder.state === "Livrée";
             }
         },
         computed: {

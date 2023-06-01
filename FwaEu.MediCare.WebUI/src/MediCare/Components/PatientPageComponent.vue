@@ -54,7 +54,6 @@
                 this.$router.push({ name: "Treatment" });
             },
             goToPatientOrdersPage() {
-                console.log("g")
                 this.$router.push({ name: "PatientOrders" });
             }
         },
