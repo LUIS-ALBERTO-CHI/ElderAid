@@ -21,7 +21,7 @@
             <span>3 traitements effacés</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div class="patient-info-item">
+        <div @click="goToStockConsumptionPage" class="patient-info-item">
             <span>Consommation du stock pharmacie</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -54,8 +54,10 @@
                 this.$router.push({ name: "Treatment" });
             },
             goToPatientOrdersPage() {
-                console.log("g")
                 this.$router.push({ name: "PatientOrders" });
+            },
+            goToStockConsumptionPage() {
+                this.$router.push({ name: "StockConsumption" });
             }
         },
         computed: {

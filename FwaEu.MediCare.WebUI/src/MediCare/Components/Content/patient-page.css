@@ -16,3 +16,6 @@
     color: var(--alt-secondary-text-color);
 }
 
+.patient-info-item:hover {
+    background-color: #e4e1e1;
+}
