@@ -12,7 +12,7 @@
 
                     </div>
                     <div class="button-order-item-container" v-show="selectedItemIndex === index">
-                        <Button v-show="isOrderDelivered(patientOrder)" severity="danger" style="height: 50px !important;" label="Annuler la commande" />
+                        <Button v-show="!isOrderDelivered(patientOrder)" severity="danger" style="height: 50px !important;" label="Annuler la commande" />
                         <Button style="height: 50px !important;" label="Commander à nouveau" />
                     </div>
                 </div>
