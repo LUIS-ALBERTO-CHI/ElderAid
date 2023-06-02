@@ -68,7 +68,7 @@
 }
 
 .home-content {
-  padding: 140px 40px 0px 40px;
+  padding: 120px 20px 0px 20px;
   background-color: #f7f9fa;
   position: relative;
   width: 100%;
@@ -124,7 +124,7 @@
 .vignette-list {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  row-gap: 15px;
 }
 
 .vignette-item {

@@ -25,7 +25,7 @@
             <span>Consommation du stock pharmacie</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button style="margin-top: 20px;" label="Commander un autre produit" />
+        <Button @click="goToOrderOtherProductPage" style="margin-top: 20px;" label="Commander un autre produit" />
     </div>
 </template>
 <!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
@@ -58,6 +58,9 @@
             },
             goToStockConsumptionPage() {
                 this.$router.push({ name: "StockConsumption" });
+            },
+            goToOrderOtherProductPage() {
+                this.$router.push({ name: "OrderOtherProduct" });
             }
         },
         computed: {
