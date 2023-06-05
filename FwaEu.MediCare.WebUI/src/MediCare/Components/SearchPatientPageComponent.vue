@@ -9,7 +9,7 @@
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
                     <div class="name-patient-area">
-                        <span>{{`${patient.firstname} ${patient.lastname}`}}</span>
+                        <span>{{cuttedName(patient)}}</span>
                         <i v-show="!patient.isActive" class="fa-solid fa-circle patient-state" />
                     </div>
                     <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
@@ -73,6 +73,13 @@
                 this.$nextTick(() => {
                     this.$refs.searchInput.$el.focus();
                 });
+            },
+            cuttedName(patient) {
+                var name = `${patient.firstname} ${patient.lastname}`;
+                if (name.length > 25) {
+                    name = name.substring(0, 25) + "...";
+                }
+                return name;
             }
         },
         computed: {
@@ -89,7 +96,7 @@
                     });
                 }
                 return patients;
-            }
+            },
         },
         beforeUnmount() {
             // keep research in local storage

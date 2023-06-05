@@ -29,7 +29,7 @@
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
-            <div class="vignette-item">
+            <div @click="goToProfilPage" class="vignette-item">
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-gear vignette-icon fa-fw" style="color: #bb8a7c;" />
                     <span class="vignette-text">Mon profil</span>
@@ -79,7 +79,10 @@
             goToPatientPage() {
                 this.$router.push("/SearchPatient")
                 localStorage.removeItem("searchPatient")
-            }
+            },
+            goToProfilPage() {
+                this.$router.push("/UserSettings")
+            },
         },
     }
 </script>
