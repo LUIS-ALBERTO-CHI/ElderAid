@@ -7,7 +7,7 @@
                 <header class="app-header">
                         <div class="main-header">
                             <i v-show="isTurnBackEnabled" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
-                            <breadcrumbs v-show="isBreadcrumbsEnabled"/>
+                            <breadcrumbs v-show="isBreadcrumbsEnabled" />
                         </div>
                 </header>
                 <div class="home-content">
@@ -23,7 +23,7 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
     const path = Configuration.application.publicUrl + Configuration.application.customResourcesPath;
     import DefaultPageLayout from '@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue';
-    import Breadcrumbs from "@/Fwamework/Breadcrumbs/Components/BreadcrumbsComponent.vue";
+    import Breadcrumbs from "@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedComponent.vue";
     import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
 
