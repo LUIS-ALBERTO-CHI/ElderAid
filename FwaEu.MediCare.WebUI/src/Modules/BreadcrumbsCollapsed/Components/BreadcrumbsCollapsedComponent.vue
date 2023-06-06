@@ -1,42 +1,42 @@
 <template>
-    <router-link v-show="isTurnBackEnabled !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
-        <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
-    </router-link>
-    <div class="breadcrumbs">
-        {{ }}
-        <div class="breadcrimbs">
-            <div :style="{ visibility: isCollapsed ? 'hidden' : 'unset' }"
-                 class="crumbContainer"
-                 ref="crumbsRef">
-                <span v-for="(link, index) in breadcrumbs" :key="getNodeKey(link)" class="breadcrumb-node">
-                    <router-link v-if="notLastElement(index) && !isPathAbsolute(link.to)" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                    <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
-                    <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
-                    <span v-if="notLastElement(index)" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
-                </span>
-
-            </div>
-            <div :style="{ visibility: isCollapsed ? 'unset' : 'hidden' }"
-                 class="crumbContainerCollapsed">
-                <div class="dropdown">
-                    <button>...</button>
-                    <div class="dropdownContent">
-                        <span v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" class="breadcrumb-node">
-                            <router-link :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                        </span>
-                    </div>
+    <div class="main-container"> 
+        <router-link v-show="isTurnBackEnabled !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
+            <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
+        </router-link>
+        <div class="breadcrumbs">
+            {{ }}
+            <div class="breadcrimbs">
+                <div :style="{ visibility: isCollapsed ? 'hidden' : 'unset' }"
+                     class="crumbContainer"
+                     ref="crumbsRef">
+                    <span v-for="(link, index) in breadcrumbs" :key="getNodeKey(link)" class="breadcrumb-node">
+                        <router-link v-if="notLastElement(index) && !isPathAbsolute(link.to)" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
+                        <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
+                        <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
+                        <span v-if="notLastElement(index)" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
+                    </span>
                 </div>
-                <span v-for="(link, index) in crumbsVisible" :key="getNodeKey(link)" class="breadcrumb-node">
-                    <router-link v-if="crumbsVisible.length -1 != index" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                    <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
-                    <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
-                    <span v-if="crumbsVisible.length -1 != index" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
-                </span>
+                <div :style="{ visibility: isCollapsed ? 'unset' : 'hidden' }"
+                     class="crumbContainerCollapsed">
+                    <div class="dropdown">
+                        <button class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
+                        <div class="dropdownContent">
+                            <span v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" class="breadcrumb-node">
+                                <router-link :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
+                            </span>
+                        </div>
+                    </div>
+                    <span v-for="(link, index) in crumbsVisible" :key="getNodeKey(link)" class="breadcrumb-node">
+                        <router-link v-if="crumbsVisible.length -1 != index" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
+                        <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
+                        <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
+                        <span v-if="crumbsVisible.length -1 != index" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </template>
-
 <script>
     import BreadcrumbService from '../Services/breadcrumbs-service'
     import { useBreacrumbsCollapsed } from '../Services/breadcrumbs-collapsed-service'
@@ -46,7 +46,7 @@
         props: {
             nodeSeparator: {
                 type: String,
-                default: '/'
+                default: '>'
             }
         },
         setup() {
@@ -136,7 +136,6 @@
         display: flex;
         flex: 1;
         width: 100%;
-        gap: 1rem;
         font-size: 14px;
         white-space: nowrap;
         width: min-content;
@@ -146,40 +145,58 @@
         display: flex;
         flex: 1;
         width: 100%;
-        gap: 1rem;
         font-size: 16px;
         white-space: nowrap;
         position: absolute;
         top: 0;
+        align-items: center;
     }
 
     .dropdown {
-        display: inline-block;
-        position: relative;
-        height: auto;
+        height: 100%;
         scrollbar-width: none;
     }
 
+    .dropdown-button {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        padding-bottom: 5px;
+    }
+
+    .dropdown-button-icon {
+        color: white;
+        font-size: 18px;
+    }
+
     .dropdownContent {
-        background-color: white;
+        background-color: var(--primary-bg-color);
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
         display: none;
         position: absolute;
         flex-direction: column;
-        width: 220px;
+        width: auto;
         overflow: auto;
         box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.4);
-        padding-block-start: 8px;
         height: auto;
     }
 
     .dropdown:hover .dropdownContent {
         display: flex;
+        flex-direction: column;
     }
 
     .dropdownContent .breadcrumb-node .breadcrumb-node-link {
-        padding: 9px;
         margin: 9px;
-        color: black;
+        color: white;
     }
+    .main-container {
+        display: flex;
+        align-items: center;
+      }
 </style>
-<!--<style src="./Content/breadcrumbs.css" />-->
+<style src="./Content/breadcrumbs.css" />
