@@ -2,13 +2,12 @@ import { ref, onMounted } from "vue";
 import { onIntersect } from "./breadcrumbs-intersect";
 
 
-export function useBreacrumbsCollapsed(crumbs) {
+export function useBreacrumbsCollapsed() {
     const observer = ref({});
     const crumbsRef = ref(null);
     const isCollapsed = ref(false);
 
-    onMounted((instance) => {
-        console.log(instance)
+    onMounted(() => {
         observer.value = onIntersect(crumbsRef.value, onCollapse, onExitCollapse);
     });
 
