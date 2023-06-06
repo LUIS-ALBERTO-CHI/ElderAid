@@ -1,6 +1,9 @@
 <template>
+    <router-link v-show="isTurnBackEnabled !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
+        <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
+    </router-link>
     <div class="breadcrumbs">
-
+        {{ }}
         <div class="breadcrimbs">
             <div :style="{ visibility: isCollapsed ? 'hidden' : 'unset' }"
                  class="crumbContainer"
@@ -11,7 +14,7 @@
                     <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
                     <span v-if="notLastElement(index)" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
                 </span>
-               
+
             </div>
             <div :style="{ visibility: isCollapsed ? 'unset' : 'hidden' }"
                  class="crumbContainerCollapsed">
@@ -47,7 +50,7 @@
             }
         },
         setup() {
-            const { crumbsRef, isCollapsed} = useBreacrumbsCollapsed();
+            const { crumbsRef, isCollapsed } = useBreacrumbsCollapsed();
 
             return {
                 crumbsRef,
@@ -56,6 +59,7 @@
         },
         data() {
             return {
+                parentNode: { text: '', to: '/', parentNode: '' },
                 crumbsCollapsed: [],
                 crumbsVisible: [],
                 resolvedNodes: [],
@@ -91,7 +95,7 @@
                 return index !== 0;
             },
             getLinkText(text, index) {
-                if ( this.notLastElement(index) && this.notFirstElement(index)) {
+                if (this.notLastElement(index) && this.notFirstElement(index)) {
                     return "...";
                 }
                 return text;
@@ -101,12 +105,19 @@
             },
             nodeClicked(node) {
                 BreadcrumbService.nodeClicked.emitAsync({ component: this, node });
+
+                const parentName = this.isTurnBackEnabled;
+                this.parentNode.text = parentName;
+                this.parentNode.to = '/' + parentName;
             }
         },
         computed: {
             breadcrumbs() {
                 // .slice makes a copy of the array, instead of mutating the orginal
                 return this.resolvedNodes.slice(0).reverse();
+            },
+            isTurnBackEnabled() {
+                return this.$route.meta.breadcrumb.parentName;
             }
         },
         beforeUnmount() {
@@ -166,7 +177,7 @@
     }
 
     .dropdownContent .breadcrumb-node .breadcrumb-node-link {
-        padding : 9px;
+        padding: 9px;
         margin: 9px;
         color: black;
     }

@@ -6,7 +6,6 @@
                 </template>
                 <header class="app-header">
                         <div class="main-header">
-                            <i v-show="isTurnBackEnabled" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
                             <breadcrumbs v-show="isBreadcrumbsEnabled" />
                         </div>
                 </header>
@@ -84,9 +83,6 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
             },
             isBreadcrumbsEnabled() {
                 return this.$route.path !== '/Login';
-            },
-            isTurnBackEnabled() {
-                return this.$route.path !== '/' && this.$route.path !== '/Login';
             }
         },
         methods: {
