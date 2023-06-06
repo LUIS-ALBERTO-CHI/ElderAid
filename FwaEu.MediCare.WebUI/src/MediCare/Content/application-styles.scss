@@ -4,13 +4,17 @@
 @import "buttons";
 @import "header-toolbar";
 
+// Modifiez la couleur de base des boutons
+$button-primary-color: #ff0000;
+
+
 :root {
 	--primary-bg-color: #7092be;
 	--secondary-bg-color: #B7CBD3;
 	--primary-text-color: #3f6767;
-	--secondary-text-color: white;
+	--secondary-text-color: #7092be;
 	--alt-secondary-text-color: #333333;
-  	--button-background-color: #6366F1;
+  	--button-background-color: #7092be;
 }
 
 html,

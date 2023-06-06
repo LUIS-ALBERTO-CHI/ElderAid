@@ -30,7 +30,7 @@
 		}
 
 		.breadcrumbs .breadcrumb-last-node {
-			color: var(--secondary-text-color);
+			color: white;
 			opacity: 0.6;
 		}
 

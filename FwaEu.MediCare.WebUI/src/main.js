@@ -48,6 +48,9 @@ import SetupImpersonateAuthenticationHandler from "./Modules/ImpersonateAuthenti
 
 import { ApplicationModule } from "@/MediCare/application-module";
 
+import { PatientsModule } from "@/MediCare/Patients/patients-module";
+
+
 import PrimeVue from 'primevue/config';
 
 const application = new Application(IndexApp)
@@ -90,7 +93,8 @@ const application = new Application(IndexApp)
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
 	.useModule(new ApplicationUsersModule())
-
+	.useModule(new PatientsModule())
+	
 	.useModule(new PermissionsByIsAdminModule())
 	.useModule(new RoutingModule({
 			routerOptions: {
@@ -99,5 +103,6 @@ const application = new Application(IndexApp)
 		}
 	))
 	.useModule(new UtilsModule());
+
 application.vueApp.use(PrimeVue);
 application.mountAsync("#app");

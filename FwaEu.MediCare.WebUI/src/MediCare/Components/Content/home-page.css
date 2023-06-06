@@ -198,3 +198,27 @@
 .p-accordion .p-accordion-tab {
   margin-bottom: 10px;
 }
+
+.p-button {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+
+}
+
+.p-button:enabled:hover {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}
+.p-selectbutton .p-button.p-highlight {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}

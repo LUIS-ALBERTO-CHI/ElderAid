@@ -77,6 +77,7 @@
 		.login-page .box {
 			max-width: 730px;
 			margin: 0px auto;
+			width: 100%;
 		}
 
 		.login-box-container{
