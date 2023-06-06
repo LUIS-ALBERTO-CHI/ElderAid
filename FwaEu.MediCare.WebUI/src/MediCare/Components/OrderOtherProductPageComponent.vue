@@ -39,7 +39,7 @@
                     isInHistory: true,
                 },
                 {
-                    name: "Lingettes nettoyantes 10x15cm sach 100 pce",
+                    name: "Lingettes nettoyantes 10x15cm sach 100 pce Lingettes nettoyantes 10x15cm sach 100 pceLingettes nettoyantes 10x15cm sach 100 pce",
                     isFavorite: false,
                     isInHistory: true,
                 },
