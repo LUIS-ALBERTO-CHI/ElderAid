@@ -1,0 +1,22 @@
+.order-article-page-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.command-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.article-container {
+    display: flex;
+}
+
+.article-info-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: 50%;
+    border-right: 1px solid var(--alt-secondary-text-color);
+}

@@ -8,7 +8,7 @@
         </span>
         <div class="patient-list">
             <div v-for="(product, index) in filteredProducts" :key="index">
-                <div class="patient-item">
+                <div class="patient-item" @click="goToArticlePage">
                     <span>{{product.name}}</span>
                     <div class="icons-container">
                         <i v-show="isProductFavorite(product)" class="fa-solid fa-heart favorite-icon"></i>
@@ -79,6 +79,10 @@
                 this.$nextTick(() => {
                     this.$refs.searchInput.$el.focus();
                 });
+            },
+            goToArticlePage() {
+                console.log("gg")
+                this.$router.push({ name: 'OrderArticle' });
             }
         },
         computed: {

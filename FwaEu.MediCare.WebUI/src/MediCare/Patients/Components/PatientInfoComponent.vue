@@ -2,7 +2,7 @@
     <div class="patient-container">
         <div class="patient-main-info-container">
             <div class="patient-area">
-                <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
+                <span style="font-weight: bold;">{{cuttedName(patient)}}</span>
                 <i class="fa-solid fa-circle " :class="patient.isActive ? 'active-patient-text' : 'inactive-patient-text'" />
             </div>
             <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
@@ -27,6 +27,13 @@
             this.patient = JSON.parse(patient);
         },
         methods: {
+            cuttedName(patient) {
+                var name = `${patient.firstname} ${patient.lastname}`;
+                if (name.length > 25) {
+                    name = name.substring(0, 25) + "...";
+                }
+                return name;
+            }
         },
         computed: {
 
