@@ -1,10 +1,9 @@
 <template>
-    <div class="main-container"> 
-        <router-link v-show="isTurnBackEnabled !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
+    <div class="main-container">
+        <router-link v-show="parentName !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
             <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
         </router-link>
         <div class="breadcrumbs">
-            {{ }}
             <div class="breadcrimbs">
                 <div :style="{ visibility: isCollapsed ? 'hidden' : 'unset' }"
                      class="crumbContainer"
@@ -70,11 +69,14 @@
             async $route(to) {
                 await this.resolveBreadcrumb(to);
             },
-            'isCollapsed'(value) {
+            'breadcrumbs'() {
                 const crumbs = this.breadcrumbs;
                 this.crumbsCollapsed = crumbs.slice(0, crumbs.length - 2);
                 this.crumbsVisible = crumbs.slice(crumbs.length - 2, crumbs.length);
             }
+        },
+        async mounted() {
+            await this.resolveBreadcrumb(this.$route);
         },
         methods: {
             getNodeKey(node) {
@@ -106,7 +108,9 @@
             nodeClicked(node) {
                 BreadcrumbService.nodeClicked.emitAsync({ component: this, node });
 
-                const parentName = this.isTurnBackEnabled;
+                
+                const parentName = this.parentName;
+                console.log(parentName);
                 this.parentNode.text = parentName;
                 this.parentNode.to = '/' + parentName;
             }
@@ -116,7 +120,7 @@
                 // .slice makes a copy of the array, instead of mutating the orginal
                 return this.resolvedNodes.slice(0).reverse();
             },
-            isTurnBackEnabled() {
+            parentName() {
                 return this.$route.meta.breadcrumb.parentName;
             }
         },
