@@ -24,7 +24,8 @@
 
 .patient-item {
     color: var(--alt-secondary-text-color);
-    height: 60px;
+    height: auto;
+    min-height: 60px;
     border-radius: 6px;
     box-shadow: 0px 0px 5px 0px var(--primary-text-color);
     display: flex;
