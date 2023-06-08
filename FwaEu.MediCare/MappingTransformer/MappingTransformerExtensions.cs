@@ -6,7 +6,7 @@ namespace FwaEu.MediCare.MappingTransformer
 {
     public static class MappingTransformerExtensions
     {
-        public static IServiceCollection AddApplicationPatients(this IServiceCollection services)
+        public static IServiceCollection AddMappingTransformer(this IServiceCollection services)
         {
             services.AddTransient<IDatabaseMappingTransformer, DatabaseMappingTransformer>();
 
