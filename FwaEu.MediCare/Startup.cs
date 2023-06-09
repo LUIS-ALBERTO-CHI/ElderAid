@@ -59,6 +59,7 @@ using FwaEu.MediCare.Permissions;
 using FwaEu.MediCare.MappingTransformer;
 using FwaEu.MediCare.Patients;
 using FwaEu.MediCare.Orders;
+using FwaEu.MediCare.Referencials;
 
 namespace FwaEu.MediCare
 {
@@ -171,9 +172,10 @@ namespace FwaEu.MediCare
                 services.AddApplicationSwagger(authenticationFeatures, context);
                 services.AddFwaEuMediCareAssemblyProviderExtension();
 
-                services.AddMappingTransformer();
-                services.AddApplicationPatients(context);
-                services.AddApplicationOrders(context);
+                services.AddApplicationMappingTransformer();
+                services.AddApplicationReferencials();
+                //services.AddApplicationPatients();
+                //services.AddApplicationOrders();
 
                 services.AddApplicationHtml();
             }

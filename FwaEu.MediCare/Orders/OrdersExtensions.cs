@@ -6,11 +6,8 @@ namespace FwaEu.MediCare.Orders
 {
     public static class OrdersExtensions
     {
-        public static IServiceCollection AddApplicationOrders(this IServiceCollection services, ApplicationInitializationContext context)
+        public static IServiceCollection AddApplicationOrders(this IServiceCollection services)
         {
-            var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
-            repositoryRegister.Add<OrderEntityRepository>();
-
             return services;
         }
     }

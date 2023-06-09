@@ -1,6 +1,6 @@
-﻿using FluentNHibernate.Mapping;
-using FwaEu.Fwamework.Data.Database;
+﻿
 using FwaEu.Fwamework.Users;
+using System;
 
 namespace FwaEu.MediCare.Patients
 {
@@ -13,6 +13,7 @@ namespace FwaEu.MediCare.Patients
         public string LastName { get; set; }
         public string RoomName { get; set; }
         public bool? IsActive { get; set; }
+        public DateTime? UpdatedOn { get; set; }
         public override string ToString()
         {
             return this.ToFullNameString();
@@ -20,24 +21,4 @@ namespace FwaEu.MediCare.Patients
     }
 
 
-    public class PatientEntityClassMap : ClassMap<PatientEntity>
-    {
-        public PatientEntityClassMap()
-        {
-            Not.LazyLoad();
-            ReadOnly();
-
-            Id(entity => entity.Id).GeneratedBy.Identity();
-            Map(entity => entity.BuildingId);
-            Map(entity => entity.LastName);
-            Map(entity => entity.FirstName);
-            Map(entity => entity.RoomName);
-            Map(entity => entity.IsActive);
-        }
-    }
-
-
-    public class PatientEntityRepository : DefaultRepository<PatientEntity, int>
-    {
-    }
 }
