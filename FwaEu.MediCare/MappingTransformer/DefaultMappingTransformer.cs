@@ -13,12 +13,9 @@ namespace FwaEu.MediCare.MappingTransformer
     {
         public async Task<List<TTarget>> GetGenericModelAsync<TSource, TTarget>(ISession session, string query, Dictionary<string, object> parameters = null)
         {
-            query += ", :DatabaseName";
             var storedProcedure = session.CreateSQLQuery(query);
 
             parameters = parameters ?? new Dictionary<string, object>();
-            parameters.Add("DatabaseName", "MediCare-Wild");
-
             
             foreach (var item in parameters)
             {

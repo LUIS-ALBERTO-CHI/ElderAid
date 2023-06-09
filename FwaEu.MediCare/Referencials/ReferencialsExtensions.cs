@@ -13,7 +13,6 @@ namespace FwaEu.MediCare.Referencials
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
 
-            //services.AddTransient<BuildingMasterDataProvider>();
             return services;
         }
     }
