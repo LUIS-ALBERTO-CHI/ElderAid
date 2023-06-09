@@ -48,7 +48,7 @@
     import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
     const path = Configuration.application.customResourcesPath;
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
-    //import UsersMasterDataService from "@/Modules/UserMasterData/Services/users-master-data-service";
+
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
 
     export default {
@@ -63,24 +63,15 @@
         },
         data() {
             return {
-                isCurrentUserAuthenticated: false,
-                //buildingOptions: {
-                //    valueExpr: "id",
-                //    displayExpr: "name",
-                //    dataSource: BuildingDataSourceOptions
-                //},
-                //userSelectBoxOptions: {
-                //    dataSource: UsersDataSourceOptions,
-                //    valueExpr: 'id',
-                //    displayExpr: 'fullName',
-                //    searchEnabled: true,
-                //}
+                isCurrentUserAuthenticated: false
             };
         },
         async created() {
             this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
-            const result = await BuildingsMasterDataService.getAllAsync();
-            console.log(result);
+
+            // NOTE : To be removed
+            const buildings = await BuildingsMasterDataService.getAllAsync();
+            console.log(buildings);
         },
         methods: {
             goToLoginFront() {
