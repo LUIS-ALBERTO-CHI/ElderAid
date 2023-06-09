@@ -4,7 +4,7 @@
             <i @click="removeSearch" class="fa fa-solid fa-close" :style="searchPatient.length == 0 ? 'opacity: 0.5;' : ''" />
             <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Rechercher un patient" />
         </span>
-        <Dropdown v-model="selectedBuilding" :options="buildingOptions" class="select-sector" />
+        <Dropdown v-model="selectedBuilding" :options="buildingOptions"  />
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">

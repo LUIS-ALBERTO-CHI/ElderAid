@@ -71,7 +71,6 @@
         },
         methods: {
             orderSubmit(quantity) {
-                console.log(quantity)
                 this.isOrderSubmitted = true;
             }
         },

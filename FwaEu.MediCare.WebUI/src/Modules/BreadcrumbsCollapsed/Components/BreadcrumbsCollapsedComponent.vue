@@ -110,7 +110,6 @@
 
                 
                 const parentName = this.parentName;
-                console.log(parentName);
                 this.parentNode.text = parentName;
                 this.parentNode.to = '/' + parentName;
             }
