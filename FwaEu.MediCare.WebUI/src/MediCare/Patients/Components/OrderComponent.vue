@@ -26,8 +26,8 @@
         </div>
         <Button v-else @click="showConfirmation()" style="height: 35px !important;" label="Commander" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
-            <Button  style="height: 35px !important; width: 50%;" label="4 autres formats" icon="fa fa-solid fa-angle-right" iconPos="right"/>
-            <Button  style="height: 35px !important; width: 50%;" label="8 substitutions"  icon="fa fa-solid fa-angle-right" iconPos="right"/>
+            <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="4 autres formats" icon="fa fa-solid fa-angle-right" iconPos="right"/>
+            <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="8 substitutions"  icon="fa fa-solid fa-angle-right" iconPos="right"/>
         </div>
     </div>
 

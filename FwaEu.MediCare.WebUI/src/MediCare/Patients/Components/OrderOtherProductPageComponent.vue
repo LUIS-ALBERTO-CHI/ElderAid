@@ -81,7 +81,6 @@
                 });
             },
             goToArticlePage() {
-                console.log("gg")
                 this.$router.push({ name: 'OrderArticle' });
             }
         },

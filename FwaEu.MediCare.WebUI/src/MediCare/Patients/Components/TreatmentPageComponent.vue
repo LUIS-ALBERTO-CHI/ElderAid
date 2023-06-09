@@ -14,30 +14,7 @@
                             <span class="header-subtitle">{{treatment.date}}</span>
                         </div>
                     </template>
-                    <div class="accordion-content">
-                        <span>Commander une quantité :</span>
-                        <div v-show="moreQuantityDisplayedIndex != index" class="quantity-container">
-                            <div style="width: 75%;">
-                                <SelectButton @change="handleOptionChange" class="quantity-select-button" v-model="selectedQuantity" :options="quantityOptions" />
-                            </div>
-                            <i @click="displayMoreQuantity(index)" class="fa fa-solid fa-plus add-icon"></i>
-                        </div>
-                        <div v-show="moreQuantityDisplayedIndex == index">
-                            <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal" style="width: 75%;"
-                                         decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
-                                         incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
-
-                        </div>
-                        <SelectButton class="custom-select-button" v-model="selectedOption" :options="selectOptions" />
-                        <div class="confirmation-container" v-if="showConfirmationIndex === index">
-                            <span>Etes vous sûre de commander?</span>
-                            <div class="confirmaton-button-container">
-                                <Button label="OUI" outlined style="border: none !important; height: 30px !important;" />
-                                <Button @click="hideConfirmation" label="NON" outlined style="border: none !important; height: 30px !important;" />
-                            </div>
-                        </div>
-                        <Button v-else @click="showConfirmation(index)" style="height: 35px !important;" label="Commander" />
-                    </div>
+                        <OrderComponent @submitOrder="orderSubmit"/>
                 </AccordionTab>
             </template>
         </Accordion>
@@ -53,6 +30,7 @@
     import SelectButton from 'primevue/selectbutton';
     import InputNumber from 'primevue/inputnumber';
     import PatientInfoComponent from './PatientInfoComponent.vue';
+    import OrderComponent from './OrderComponent.vue';
 
     export default {
         components: {
@@ -61,7 +39,8 @@
             AccordionTab,
             SelectButton,
             InputNumber,
-            PatientInfoComponent
+            PatientInfoComponent,
+            OrderComponent
         },
         data() {
             return {
@@ -111,6 +90,9 @@
             },
             hideConfirmation() {
                 this.showConfirmationIndex = -1;
+            },
+            orderSubmit() {
+                console.log('order submit')
             }
         },
         computed: {

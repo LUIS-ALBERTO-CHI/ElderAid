@@ -1,0 +1,31 @@
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    column-gap: 10px;
+
+}
+
+.search-input {
+    width: 100%;
+}
+
+.new-order-container { 
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+
+.accordion-content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.more-command-text {
+    margin-top: 5px;
+    color: #1A0DAB;
+    text-decoration: underline;
+    align-self: center;
+}

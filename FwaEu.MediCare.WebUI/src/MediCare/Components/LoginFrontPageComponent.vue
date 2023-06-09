@@ -31,7 +31,6 @@
             };
         },
         created: async function () {
-            console.log("HNA")
             const loginComponent = shallowRef(await AuthenticationService.createLoginComponentAsync())?._value;
             if(loginComponent?.length > 0){
                 this.loginComponent = loginComponent[0].loginComponent;
