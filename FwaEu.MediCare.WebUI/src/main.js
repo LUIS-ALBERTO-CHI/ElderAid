@@ -48,6 +48,7 @@ import SetupImpersonateAuthenticationHandler from "./Modules/ImpersonateAuthenti
 
 import { ApplicationModule } from "@/MediCare/application-module";
 
+import { ReferencialsModule } from "@/MediCare/Referencials/referencials-module";
 import { PatientsModule } from "@/MediCare/Patients/patients-module";
 
 
@@ -93,6 +94,8 @@ const application = new Application(IndexApp)
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
 	.useModule(new ApplicationUsersModule())
+
+	.useModule(new ReferencialsModule())
 	.useModule(new PatientsModule())
 	
 	.useModule(new PermissionsByIsAdminModule())

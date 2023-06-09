@@ -48,6 +48,8 @@
     import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
     const path = Configuration.application.customResourcesPath;
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
+    //import UsersMasterDataService from "@/Modules/UserMasterData/Services/users-master-data-service";
+    import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
 
     export default {
         inject: ["deviceInfo"],
@@ -62,10 +64,23 @@
         data() {
             return {
                 isCurrentUserAuthenticated: false,
+                //buildingOptions: {
+                //    valueExpr: "id",
+                //    displayExpr: "name",
+                //    dataSource: BuildingDataSourceOptions
+                //},
+                //userSelectBoxOptions: {
+                //    dataSource: UsersDataSourceOptions,
+                //    valueExpr: 'id',
+                //    displayExpr: 'fullName',
+                //    searchEnabled: true,
+                //}
             };
         },
         async created() {
             this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
+            const result = await BuildingsMasterDataService.getAllAsync();
+            console.log(result);
         },
         methods: {
             goToLoginFront() {
