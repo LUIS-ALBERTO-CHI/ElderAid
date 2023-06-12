@@ -120,7 +120,7 @@
                 return this.resolvedNodes.slice(0).reverse();
             },
             parentName() {
-                return this.$route.meta.breadcrumb.parentName;
+                return this.$route.meta.breadcrumb?.parentName;
             }
         },
         beforeUnmount() {
