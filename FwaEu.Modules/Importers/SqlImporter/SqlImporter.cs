@@ -48,15 +48,18 @@ namespace FwaEu.Modules.Importers.SqlImporter
 			var resultContext = context.ProcessResult.CreateContext($"Import of file {file.Name}", "SqlImport");
 			var content = await ReadSqlAsync(file);
 
-			//HACK: Pierre was sorry about this :(
-			var queries = Regex.Split(content, @"[\r\n\s]GO[\r\n\s]", RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+			var queries = Regex.Split(content, @"\bGO\b", RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
 			foreach (var query in queries)
 			{
 				resultContext.Add(new SqlProcessResultEntry(query));
 				try
-				{ 
-					await session.NhibernateSession.CreateSQLQuery(query).ExecuteUpdateAsync();
+				{
+					using (var command = session.NhibernateSession.Connection.CreateCommand())
+					{
+						command.CommandText = query;
+						await command.ExecuteNonQueryAsync();
+					}
 				}
 				catch(Exception ex)
 				{

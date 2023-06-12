@@ -1,11 +1,9 @@
 using FwaEu.Fwamework.Permissions.WebApi;
-using FwaEu.Fwamework.Users;
 using FwaEu.Fwamework.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace FwaEu.Fwamework.Users.WebApi
 		[ProducesResponseType(typeof(UserGetAllResponseModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
 		[RequirePermissions(nameof(UsersPermissionProvider.CanAdministrateUsers))]
-		public async Task<ActionResult<UserGetAllResponseModel>> GetAll([FromServices]IUserService userService)
+		public async Task<ActionResult<UserGetAllResponseModel>> GetAll([FromServices] IUserService userService)
 		{
 			var users = await userService.GetAllForAdminAsync();
 
@@ -56,8 +54,8 @@ namespace FwaEu.Fwamework.Users.WebApi
 		[ProducesResponseType(typeof(UserGetResponseModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<UserGetResponseModel>> Current(
-			[FromServices]ICurrentUserService currentUserService,
-			[FromServices]IUserService userService)
+			[FromServices] ICurrentUserService currentUserService,
+			[FromServices] IUserService userService)
 		{
 			var userId = currentUserService.User.Entity.Id;
 			return await this.GetByIdAsync(userId, userService);
@@ -67,7 +65,7 @@ namespace FwaEu.Fwamework.Users.WebApi
 		[ProducesResponseType(typeof(UserGetResponseModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<UserGetResponseModel>> Get(int id,
-			[FromServices]IUserService userService)
+			[FromServices] IUserService userService)
 		{
 			return await this.GetByIdAsync(id, userService);
 		}
@@ -86,7 +84,6 @@ namespace FwaEu.Fwamework.Users.WebApi
 		[ProducesResponseType(typeof(UserSaveResponseModel), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
-		[ProducesResponseType(typeof(UserSaveValidationErrorModel), StatusCodes.Status412PreconditionFailed)]
 		public async Task<ActionResult<UserSaveResponseModel>> Save(
 			[FromRoute] int id,
 			[FromBody] UserSaveModel model,
@@ -164,8 +161,14 @@ namespace FwaEu.Fwamework.Users.WebApi
 			}
 			catch (UserSaveValidationException ex)
 			{
-				return StatusCode(StatusCodes.Status412PreconditionFailed,
-					new UserSaveValidationErrorModel(ex.Message, ex.ErrorType));
+				var errorType = new UserSaveValidationErrorModel(ex.Message, ex.ErrorType, ex.UserPart);
+				HttpContext.Features.Set(errorType);
+				return Problem(
+					title: ex.UserPart,
+					detail: ex.Message,
+					type: ex.ErrorType,
+					statusCode: StatusCodes.Status412PreconditionFailed
+				);
 			}
 
 			return Ok(new UserSaveResponseModel()
@@ -179,7 +182,7 @@ namespace FwaEu.Fwamework.Users.WebApi
 		[ProducesResponseType(typeof(BadRequestObjectResult), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<object>> GetDetails(int id,
-			[FromServices]IServiceProvider serviceProvider)
+			[FromServices] IServiceProvider serviceProvider)
 		{
 			var userDetailsService = serviceProvider.GetService<IUserDetailsService>();
 			if (userDetailsService == null)

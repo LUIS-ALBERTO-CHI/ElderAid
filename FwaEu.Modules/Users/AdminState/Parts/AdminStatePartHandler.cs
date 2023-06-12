@@ -76,7 +76,7 @@ namespace FwaEu.Modules.Users.AdminState.Parts
 
 			if (user.IsAdmin && !this._currentUserService.User.Entity.IsAdmin)
 			{
-				throw new UserSaveValidationException("OnlyAdminCanDefineAdminProperty",
+				throw new UserSaveValidationException("adminState", "OnlyAdminCanDefineAdminProperty",
 					"Only an administrator can define that another user is administrator.");
 			}
 

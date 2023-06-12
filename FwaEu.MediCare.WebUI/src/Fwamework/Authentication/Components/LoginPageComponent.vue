@@ -77,7 +77,6 @@
 		.login-page .box {
 			max-width: 730px;
 			margin: 0px auto;
-			width: 100%;
 		}
 
 		.login-box-container{
@@ -89,7 +88,7 @@
 		}
 
 	.login-box-content {
-		color: #7092be;
+		color: var(--secondary-text-color);
 		font-weight: bold;
 		font-size: 20px;
 		text-align: center;

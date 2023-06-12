@@ -2,11 +2,8 @@ using FwaEu.Fwamework;
 using FwaEu.Fwamework.Formatting;
 using FwaEu.Fwamework.Imports;
 using FwaEu.Fwamework.ProcessResults;
-using FwaEu.Modules.GenericImporter.DataAccess;
-using FwaEu.Modules.Importers.ExcelImporter;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -68,10 +65,12 @@ namespace FwaEu.Modules.GenericImporter
 		public IServiceProvider ServiceProvider { get; }
 		public IModelBinder<TModel> ModelBinder { get; }
 
-		protected virtual TEventListener CreateEventListener(IServiceProvider serviceProvider, ServiceStore serviceStore)
+		protected virtual ModelImporterEventListeners<TEventListener> CreateEventListener(IServiceProvider serviceProvider, ServiceStore serviceStore)
 		{
-			var factory = serviceProvider.GetRequiredService<IModelImporterEventListenerFactory<TEventListener>>();
-			return factory.Create(serviceStore);
+			
+			var factories = serviceProvider.GetServices<IModelImporterEventListenerFactory<TEventListener>>();
+
+			return new ModelImporterEventListeners<TEventListener>(factories.Select(x => x.Create(serviceStore, serviceProvider)).ToArray());
 		}
 
 		protected abstract Task<ModelLoadResult<TModel>> LoadModelAsync(
@@ -96,7 +95,7 @@ namespace FwaEu.Modules.GenericImporter
 		protected virtual async Task ImportRowAsync(
 			ModelPropertyDescriptor[] keys, DataRow row,
 			ModelImporterContext context, ProcessResultContext processResultContext,
-			TEventListener eventListener)
+			ModelImporterEventListeners<TEventListener> eventListener)
 		{
 			var modelLoadResult = await this.LoadModelAsync(keys, row, context);
 
@@ -116,12 +115,11 @@ namespace FwaEu.Modules.GenericImporter
 			return context.ProcessResult.CreateContext($"Import of {typeof(TModel).Name}",
 				"ModelImporter", new { ModelName = typeof(TModel).Name });
 		}
-
 		protected virtual async Task ImportAsync(DataReader reader, ModelImporterContext context, ProcessResultContext processResultContext)
 		{
 			var keys = reader.GetProperties()
 				.Where(p => p.IsKey.HasFlag(IsKeyValue.True))
-				.ToArray();
+			.ToArray();
 
 			await using (var eventListener = this.CreateEventListener(this.ServiceProvider, context.ServiceStore))
 			{
@@ -138,7 +136,6 @@ namespace FwaEu.Modules.GenericImporter
 						continue;
 					}
 				}
-
 				await eventListener.OnImportFinished();
 			}
 		}

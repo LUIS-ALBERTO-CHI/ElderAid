@@ -27,13 +27,6 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate.Tracking
 		private (IServiceProvider, UserEntity) GetServiceProviderAndCurrentUser()
 		{
 			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
-
-			// NOTE: Example, when executing in a background service
-			if (serviceProvider == null)
-			{
-				return (ApplicationServices.ServiceProvider, null);
-			}
-
 			var currentUser = serviceProvider.GetService<ICurrentUserService>().User?.Entity;
 			return (serviceProvider, currentUser);
 		}
@@ -104,33 +97,36 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate.Tracking
 			return Task.FromResult(false);
 		}
 
-		private class DisablerState : IDisposable
-		{
-			public bool IsDisabled { get; private set; }
-
-			public DisablerState()
-			{
-				this.IsDisabled = true;
-			}
-			public void Dispose()
-			{
-				this.IsDisabled = false;
-			}
-		}
-
 		public class Disabler
 		{
-			private DisablerState disablerState;
+			private int DisableCount = 0;
 
 			public IDisposable Disable()
 			{
-				this.disablerState = new DisablerState();
-				return this.disablerState;
+				return new DisablerState(this);
 			}
 
-			public bool IsDisabled()
+			public bool IsDisabled() => DisableCount > 0;
+
+			private class DisablerState : IDisposable
 			{
-				return this.disablerState != null && this.disablerState.IsDisabled;
+				private Disabler Disabler;
+				private bool Disposed = false;
+
+				public DisablerState(Disabler disabler)
+				{
+					Disabler = disabler;
+					++Disabler.DisableCount;
+				}
+
+				public void Dispose()
+				{
+					if (!Disposed)
+					{
+						Disposed = true;
+						--Disabler.DisableCount;
+					}
+				}
 			}
 		}
 	}

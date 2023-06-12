@@ -35,9 +35,9 @@ namespace FwaEu.Modules.Permissions.ByRole
 			services.AddTransient<IPartHandler, RolePartHandler>();
 
 			services.For<RoleEntity>(context)
-				.AddRepository<RoleEntityRepository>()
-					.AddMasterDataProviderFactory()
-					.AddGenericAdminModelConfiguration();
+			 .AddRepository<RoleEntityRepository>()
+			 .AddMasterDataProviderFactory()	
+			 .AddGenericAdminModelConfiguration();
 
 			services.AddMasterDataProvider<RolePermissionMasterDataProvider>("RolePermissions");
 

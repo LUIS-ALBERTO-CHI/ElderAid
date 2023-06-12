@@ -1,7 +1,6 @@
 using FwaEu.Fwamework.Data.Database.Sessions;
 using NHibernate;
-using System;
-using System.Collections.Generic;
+using NHibernate.Dialect;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 	public interface INhibernateStatefulSessionAdapter : IStatefulSessionAdapter
 	{
 		ISession NhibernateSession { get; }
+		Task<T> GetSequenceNextValueAsync<T>(string sequenceName);
 	}
 
 	public class StatefulSessionAdapter : SessionAdapter<ISession>, INhibernateStatefulSessionAdapter
@@ -49,6 +49,16 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 		public override Sessions.ITransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
 		{
 			return new NhibernateTransactionAdapter(this.NhibernateSession.BeginTransaction(isolationLevel));
+		}
+
+		public override Dialect GetDialect()
+		{
+			return this.NhibernateSession.GetSessionImplementation().Factory.Dialect;
+		}
+
+		public override ISQLQuery CreateSQLQuery(string query)
+		{
+			return this.NhibernateSession.CreateSQLQuery(query);
 		}
 	}
 }

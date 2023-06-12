@@ -1,7 +1,7 @@
 import ModuleRegistry from '@/Fwamework/Core/Services/module-registry';
 import { I18n } from '@/Fwamework/Culture/Services/localization-service';
 import AsyncEventEmitter from '@/Fwamework/Core/Services/event-emitter-class';
-import { cloneDeep } from 'lodash-es';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default class MenuService {
 	_menuItems = null;

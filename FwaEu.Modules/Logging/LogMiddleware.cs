@@ -43,9 +43,11 @@ namespace FwaEu.Modules.Logging
 		{
 			var scope = new Dictionary<string, object>()
 			{
-				["Body"] = await GetRequestBodyAsync(httpContext.Request),
 				["CurrentUser"] = currentUserService.User?.Identity,
 			};
+
+			if (httpContext.Response?.StatusCode != StatusCodes.Status401Unauthorized)
+				scope.Add("Body", await GetRequestBodyAsync(httpContext.Request));
 
 			foreach (var key in exception.Data.Keys)
 			{
@@ -92,17 +94,28 @@ namespace FwaEu.Modules.Logging
 				var statusCode = httpContext.Response?.StatusCode;
 				if (statusCode >= StatusCodes.Status400BadRequest)
 				{
-					using ((logger.BeginScope(new Dictionary<string, object>
+					var loggerScopes = new Dictionary<string, object>
 					{
-						["Body"] = await GetRequestBodyAsync(httpContext.Request),
 						["StatusCode"] = statusCode,
 						["CurrentUser"] = currentUserService.User?.Identity,
-					})))
+					};
+
+					if (statusCode != StatusCodes.Status401Unauthorized)
+						loggerScopes.Add("Body", await GetRequestBodyAsync(httpContext.Request));
+
+					using (var loggerScope = logger.BeginScope(loggerScopes))
 					{
 						var statusCodeErrorLogger = loggerFactory.CreateLogger("StatusCodeError");
 						if (statusCode < StatusCodes.Status500InternalServerError)
 						{
-							statusCodeErrorLogger.LogWarning("A WebApi action returned an HTTP error");
+							if (statusCode == StatusCodes.Status401Unauthorized)
+							{
+								statusCodeErrorLogger.LogInformation("A WebApi action returned an HTTP error");
+							}
+							else
+							{
+								statusCodeErrorLogger.LogWarning("A WebApi action returned an HTTP error");
+							}
 						}
 						else
 						{

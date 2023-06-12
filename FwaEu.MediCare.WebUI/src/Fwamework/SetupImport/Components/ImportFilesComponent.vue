@@ -62,7 +62,6 @@
 	import FilesManagement from "@/Fwamework/DevExtreme/Services/files-management-service";
 	import DataService from "@/Fwamework/Data/Services/data-service";
 	import HttpService from '@/Fwamework/Core/Services/http-service';
-	import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 	import { DxTreeList, DxSelection, DxColumn, DxFilterRow } from 'devextreme-vue/tree-list';
 	import Box from '@/Fwamework/Box/Components/BoxComponent.vue';
 	import DxAccordion, { DxItem } from "devextreme-vue/accordion";

@@ -115,16 +115,26 @@
 			getGeneralInformationComponent() {
 				return this.$refs.generalInformation;
 			},
-			async saveUserAsync(userId, userToSave) {
+			async saveUserAsync(userId, userToSave, partHandlers) {
 				await UserService.saveAsync(userId, userToSave).then(() => {
 					this.$router.push({
 						name: 'Users'
 					});
 				}).catch(error => {
-					if (error.response.status === 412) {
-						NotificationService.showWarning(this.$t("emailInvalid"));
-					} else {
-						throw error;
+					if (error.response.data) {
+						if (error.response.data.title === "") {
+							NotificationService.showWarning(this.$t("emailInvalid"));
+						}
+						else {
+							for (const handler of partHandlers) {
+								if (handler.handleErrorAsync) {
+									handler.handleErrorAsync(error.response.data);
+								}
+								if (error.response.data.status === 412 && error.response.data.title == handler.partName) {
+									NotificationService.showWarning(this.$t(error.response.data.type));
+								}
+							}
+						}
 					}
 				});
 			},
@@ -148,10 +158,10 @@
 			},
 			isVisibleModel(user, handlerModel) {
 				return handlerModel.showForAdmin === undefined
-						||
-						(user.isAdmin && handlerModel.showForAdmin)
-						||
-						(!user.isAdmin && !handlerModel.showForAdmin);
+					||
+					(user.isAdmin && handlerModel.showForAdmin)
+					||
+					(!user.isAdmin && !handlerModel.showForAdmin);
 			},
 			getVisibleModels(user, handlerModels) {
 				const $this = this;

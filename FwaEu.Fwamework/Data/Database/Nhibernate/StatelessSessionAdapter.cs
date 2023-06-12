@@ -1,5 +1,6 @@
 using FwaEu.Fwamework.Data.Database.Sessions;
 using NHibernate;
+using NHibernate.Dialect;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -57,6 +58,16 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 		public override Sessions.ITransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
 		{
 			return new NhibernateTransactionAdapter(this.NhibernateSession.BeginTransaction(isolationLevel));
+		}
+
+		public override Dialect GetDialect()
+		{
+			return this.NhibernateSession.GetSessionImplementation().Factory.Dialect;
+		}
+
+		public override ISQLQuery CreateSQLQuery(string query)
+		{
+			return this.NhibernateSession.CreateSQLQuery(query);
 		}
 	}
 }

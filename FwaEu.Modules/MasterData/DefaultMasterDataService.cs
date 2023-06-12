@@ -38,23 +38,16 @@ namespace FwaEu.Modules.MasterData
 		public async Task<RelatedMasterDataChangesInfo[]> GetChangesInfosAsync(
 			RelatedParameters<MasterDataProviderGetChangesParameters>[] parameters)
 		{
-			var tasks = parameters.Select(p =>
-				new
-				{
-					p.Key,
-					Task = this.CreateProvider(p.Key)
-						.GetChangesInfoAsync(p.Parameters)
-				})
-				.ToArray();
+			var changesInfos = new List<RelatedMasterDataChangesInfo>();
 
-			//NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
-			foreach (var task in tasks)
+			////NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
+			foreach (var parameter in parameters)
 			{
-				await task.Task;
+				var result = await this.CreateProvider(parameter.Key)
+					.GetChangesInfoAsync(parameter.Parameters);
+				changesInfos.Add(new RelatedMasterDataChangesInfo(parameter.Key, result));
 			}
-
-			return tasks.Select(t => new RelatedMasterDataChangesInfo(t.Key, t.Task.Result))
-				.ToArray();
+			return changesInfos.ToArray();
 		}
 
 		public async Task<RelatedMasterDataGetModelsResult[]> GetModelsAsync(

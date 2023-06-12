@@ -22,7 +22,7 @@ namespace FwaEu.Fwamework.Users
 		{
 			var cacheEntry = (await this.ServiceProvider.GetService<IUsersByIdentityCache>()
 				.LoadAsync(this.Query()))
-				.FirstOrDefault(ui => ui.Identity == identity);
+				.FirstOrDefault(ui => ui.Identity.Equals(identity, StringComparison.InvariantCultureIgnoreCase));
 
 			if (cacheEntry == null)
 			{

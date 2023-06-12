@@ -17,6 +17,7 @@ using System.Globalization;
 using FwaEu.Fwamework.Globalization;
 using FwaEu.Modules.Mail.HtmlMailSender;
 using FwaEu.Modules.Authentication.JsonWebToken.Credentials;
+using FwaEu.Fwamework.Application;
 
 namespace FwaEu.Modules.PasswordRecovery
 {
@@ -28,7 +29,8 @@ namespace FwaEu.Modules.PasswordRecovery
 			IAuthenticationChangeInfoService authenticationChangeInfoService,
 			ICulturesService culturesService,
 			IHtmlMailSender<UserPasswordRecoveryMailModel> htmlMailSender,
-			IConfiguration config
+			IConfiguration config,
+			IApplicationInfo applicationInfo
 			)
 		{
 			this._sessionContext = sessionContext
@@ -48,6 +50,9 @@ namespace FwaEu.Modules.PasswordRecovery
 
 			this._config = config
 				?? throw new ArgumentNullException(nameof(config));
+
+			this._applicationInfo = applicationInfo
+				?? throw new ArgumentNullException(nameof(applicationInfo));
 		}
 
 		private readonly MainSessionContext _sessionContext;
@@ -56,6 +61,7 @@ namespace FwaEu.Modules.PasswordRecovery
 		private readonly ICulturesService _culturesService;
 		private readonly IHtmlMailSender<UserPasswordRecoveryMailModel> _htmlMailSender;
 		private readonly IConfiguration _config;
+		private readonly IApplicationInfo _applicationInfo;
 
 		public async Task ReinitializePasswordAsync(string email)
 		{
@@ -148,7 +154,7 @@ namespace FwaEu.Modules.PasswordRecovery
 				Link = model.Url,
 			}, message =>
 			{
-				message.Subject = UserPasswordRecovery.ResourceManager.GetString("PasswordRecovery", culture);
+				message.Subject = String.Format(UserPasswordRecovery.ResourceManager.GetString("PasswordRecovery", culture), _applicationInfo.Name);
 				message.To.Add(MailboxAddress.Parse(model.RecipientAddress));
 			});
 		}

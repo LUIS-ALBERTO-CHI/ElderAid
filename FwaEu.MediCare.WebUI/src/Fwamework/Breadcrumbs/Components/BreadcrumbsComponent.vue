@@ -1,5 +1,6 @@
 <template>
 	<div class="breadcrumbs">
+		<i class="dx-icon-home"></i>
 		<span v-for="(link, index) in breadcrumbs" :key="getNodeKey(link)" class="breadcrumb-node">
 			<router-link v-if="notLastElement(index) && !isPathAbsolute(link.to)" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{getLinkText(link.text, index)}}</router-link>
 			<a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{getLinkText(link.text, index)}}</a>

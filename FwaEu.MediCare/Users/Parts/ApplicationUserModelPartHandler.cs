@@ -71,20 +71,22 @@ namespace FwaEu.MediCare.Users
 				Email = loadingModel.Email,
 			});
 		}
+        //Cannot read properties of undefined (reading 'parentName')
 
-		private static void ValidateSaveModel(ApplicationUserModel model)
-		{
-			if (model.Email?.Length < 3
-				|| !model.Email.Contains("@")
-				|| model.Email.StartsWith("@")
-				|| model.Email.EndsWith("@"))
-			{
-				throw new UserSaveValidationException("InvalidEmail",
-					"Invalid email.");
-			}
-		}
 
-		public override Task<IPartSaveResult> SaveAsync(ApplicationUserModel model)
+        private static void ValidateSaveModel(ApplicationUserModel model)
+        {
+            if (model.Email?.Length < 3
+                || !model.Email.Contains("@")
+                || model.Email.StartsWith("@")
+                || model.Email.EndsWith("@"))
+            {
+                throw new UserSaveValidationException("", "InvalidEmail",
+                    "Invalid email.");
+            }
+        }
+
+        public override Task<IPartSaveResult> SaveAsync(ApplicationUserModel model)
 		{
 			var entity = (IApplicationPartEntityPropertiesAccessor)this._userSessionContext.SaveUserEntity;
 
