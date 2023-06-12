@@ -12,9 +12,14 @@ using System.Linq.Dynamic.Core;
 using System.Globalization;
 using FwaEu.Fwamework.Globalization;
 using System.Reflection;
+using NHibernate.SqlCommand;
 
 namespace FwaEu.Modules.MasterData
 {
+	public interface IEntityMasterDataProvider<TEntity>: IMasterDataProvider
+		where TEntity : class, IUpdatedOnTracked
+	{
+	}
 	public abstract class EntityMasterDataProvider<TEntity, TIdentifier, TModel, TRepository>
 		: EntityMasterDataProvider<TEntity, TIdentifier, TModel, TRepository, TIdentifier>
 		where TEntity : class, IUpdatedOnTracked
@@ -29,7 +34,7 @@ namespace FwaEu.Modules.MasterData
 		}
 	}
 
-	public abstract class EntityMasterDataProvider<TEntity, TIdentifier, TModel, TRepository, ITQueryByIdIdentifier> : IMasterDataProvider
+	public abstract class EntityMasterDataProvider<TEntity, TIdentifier, TModel, TRepository, ITQueryByIdIdentifier> : IEntityMasterDataProvider<TEntity>
 		where TEntity : class, IUpdatedOnTracked
 		where TModel : class
 		where TRepository : IRepository<TEntity, TIdentifier>, IQueryByIds<TEntity, ITQueryByIdIdentifier>

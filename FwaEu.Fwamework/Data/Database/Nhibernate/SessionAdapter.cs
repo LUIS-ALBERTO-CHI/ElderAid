@@ -1,8 +1,10 @@
 using FwaEu.Fwamework.Data;
 using FwaEu.Fwamework.Data.Database.Sessions;
+using NHibernate.Dialect;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,6 +33,17 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 		}
 
 		public abstract ITransaction BeginTransaction(IsolationLevel isolationLevel);
+		public abstract Dialect GetDialect();
+		public abstract NHibernate.ISQLQuery CreateSQLQuery(string query);
+
+		public virtual async Task<T> GetSequenceNextValueAsync<T>(string sequenceName)
+		{
+			var dialect = this.GetDialect();
+			var query = dialect.GetSequenceNextValString(sequenceName);
+
+			return (T)Convert.ChangeType(await this.CreateSQLQuery(query).UniqueResultAsync(), typeof(T), CultureInfo.InvariantCulture);
+		}
+
 
 		object ISessionAdapter.InnerSession => this.NhibernateSession;
 	}

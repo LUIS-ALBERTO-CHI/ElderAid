@@ -9,7 +9,7 @@ namespace FwaEu.Modules.GenericImporter
 {
 	public class EntityImporterEventListenerFactory : IModelImporterEventListenerFactory<IEntityImporterEventListener>
 	{
-		public IEntityImporterEventListener Create(ServiceStore serviceStore)
+		public IEntityImporterEventListener Create(ServiceStore serviceStore, IServiceProvider serviceProvider)
 		{
 			return new TransactionEntityImporterEventListener(serviceStore);
 		}
@@ -88,10 +88,9 @@ namespace FwaEu.Modules.GenericImporter
 
 			if (transaction != null)
 			{
-				await this._serviceStore.Get<IStatefulSessionAdapter>().FlushAsync();
-
 				if (action == ClearAction.Commit)
 				{
+					await this._serviceStore.Get<IStatefulSessionAdapter>().FlushAsync();
 					await transaction.CommitAsync();
 				}
 				else

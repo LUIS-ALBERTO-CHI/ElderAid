@@ -25,6 +25,7 @@ export default {
 		let storeOptions = Object.assign({
 			key: masterDataKeyFields.length === 1 ? masterDataKeyFields[0] : masterDataKeyFields,
 			loadMode: remoteOperations ? 'processed' : 'raw',
+			cacheRawData: false, //NOTE: cache is managed by masterdata
 			load: async function (loadOptions) {
 
 				if (!remoteOperations) {

@@ -5,7 +5,7 @@ import StringHelperService from '@/Modules/GenericAdmin/Services/string-helper-s
 import DataGridHelperService from '@/Modules/GenericAdmin/Services/data-grid-helper-service';
 import DotNetTypesToDevExtremeConverterService from '@/Fwamework/DevExtreme/Services/dot-net-types-to-devextreme-converter-service.js';
 import LocalizationService from '@/Fwamework/Culture/Services/localization-service';
-import { merge } from 'lodash-es';
+import merge from 'lodash/merge';
 
 class AbstractConfiguration
 {

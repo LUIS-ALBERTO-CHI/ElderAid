@@ -47,7 +47,7 @@ namespace FwaEu.Modules.Authentication.JsonWebToken.Credentials.Parts
 			return Task.FromResult<IPartSaveResult>(new PartSaveResult(afterSaveTask: async () =>
 			{
 				await this._changePasswordCredentialsService.ChangePasswordAsync(
-					this._userSessionContext.SaveUserEntity.Identity, model.NewPassword);
+					this._userSessionContext.SaveUserEntity.Identity, model.NewPassword, model.CurrentPassword);
 			}));
 		}
 

@@ -18,6 +18,7 @@ export default {
 	fillAsync: async function (user, component, context) {
 		if (component.modelValue.data.newPassword) {
 			user.parts[this.partName] = {
+				currentPassword: component.modelValue.data.currentPassword,
 				newPassword: component.modelValue.data.newPassword
 			};
 		}
@@ -33,6 +34,7 @@ export default {
 
 function createNewUserSettingsPart() {
 	return {
+		currentPassword: null,
 		newPassword: null,
 		confirmPassword: null
 	};

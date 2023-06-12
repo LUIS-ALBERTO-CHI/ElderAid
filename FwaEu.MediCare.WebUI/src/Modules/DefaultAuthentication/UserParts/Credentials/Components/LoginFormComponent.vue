@@ -3,7 +3,6 @@
 		<div class="dx-field">
 			<dx-text-box :placeholder="$t('login')"
 						 width="100%"
-						 mode="email"
 						 v-model:value="identity"
 						 @enter-key="onFormItemEntered">
 				<dx-validator>

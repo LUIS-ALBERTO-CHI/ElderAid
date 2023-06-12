@@ -3,6 +3,7 @@ import { I18n } from "@/Fwamework/Culture/Services/localization-service";
 import { hasPermissionAsync } from "@/Fwamework/Permissions/Services/current-user-permissions-service";
 import { CanAdministrateUsers } from "@/Fwamework/Users/users-permissions";
 import { defineAsyncComponent } from "vue";
+import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 export default {
 	partName: "permissions",

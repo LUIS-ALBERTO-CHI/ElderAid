@@ -70,7 +70,7 @@ namespace FwaEu.Modules.PasswordRecovery {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password recovery.
+        ///   Looks up a localized string similar to {0}, recovery of your password.
         /// </summary>
         internal static string PasswordRecovery {
             get {

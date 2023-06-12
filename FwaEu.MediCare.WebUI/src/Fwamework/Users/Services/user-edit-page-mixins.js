@@ -32,7 +32,7 @@ export default {
 		getGeneralInformationComponent() {
 			throw Error("getGeneralInformationComponent must be implemented");
 		},
-		saveUserAsync(userId, userToSave) {
+		saveUserAsync(userId, userToSave, partHandlers) {
 			throw Error("saveUserAsync must be implemented");
 		},
 		async loadAsync() {
@@ -132,9 +132,10 @@ export default {
 			}
 
 			if (isValid) {
-				await this.saveUserAsync(this.user.id, userToSave);
+				const partHandlers = this.getPartHandlers();
+				await this.saveUserAsync(this.user.id, userToSave, partHandlers);
 
-				for (const handler of this.getPartHandlers()) {
+				for (const handler of partHandlers) {
 					if (handler.onUserSavedAsync) {
 						await handler.onUserSavedAsync(userToSave, context);
 					}

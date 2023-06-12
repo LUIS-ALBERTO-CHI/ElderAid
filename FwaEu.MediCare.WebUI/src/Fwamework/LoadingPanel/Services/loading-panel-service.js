@@ -11,6 +11,7 @@ const getWaitIdentifier = function (loaderName) {
 };
 
 export function showLoadingPanel(asyncFunction, loaderName = ModalLoadingName) {
+
     let waitForFunction = waitInstance ? waitFor.bind(waitInstance.$root) : waitFor;
 
     return async function (...args) {

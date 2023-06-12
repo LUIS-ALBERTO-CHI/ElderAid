@@ -2,6 +2,7 @@ import LocalizationService, { I18n } from "@/Fwamework/Culture/Services/localiza
 import { hasPermissionAsync } from "@/Fwamework/Permissions/Services/current-user-permissions-service";
 import { CanAdministrateUsers } from "@/Fwamework/Users/users-permissions";
 import { createLanguageBox } from "@/Fwamework/Culture/Services/language-box-helper";
+import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 const multipleLanguages = LocalizationService.getSupportedLanguages().length > 1;
 

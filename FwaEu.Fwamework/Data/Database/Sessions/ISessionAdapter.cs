@@ -21,6 +21,8 @@ namespace FwaEu.Fwamework.Data.Database.Sessions
 
 		//NOTE : https://books.google.fr/books?id=7olML0aUpVsC&lpg=PA1&hl=fr&pg=PT211#v=onepage&q&f=false
 		ITransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
+
+		Task<T> GetSequenceNextValueAsync<T>(string sequenceName);
 	}
 
 	public interface IStatefulSessionAdapter : ISessionAdapter

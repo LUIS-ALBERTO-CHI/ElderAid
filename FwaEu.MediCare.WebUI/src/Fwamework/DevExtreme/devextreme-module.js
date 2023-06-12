@@ -29,7 +29,6 @@ export class DevextremeModule extends AbstractModule {
 		let localizationService = (await import('@/Fwamework/Culture/Services/localization-service')).default;
 		let culture = localizationService.getCurrentLanguage();
 		const devExtremeMessages = import.meta.glob('/node_modules/devextreme/localization/messages/*.json');
-		// debugger;
 		const deveExtremeCurrentCultureMessages = devExtremeMessages[Object.keys(devExtremeMessages).find(path => path.endsWith(`${culture}.json`))]();
 		
 		await Promise.all([

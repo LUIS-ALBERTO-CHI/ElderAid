@@ -8,6 +8,7 @@ import Router from "@/Fwamework/Routing/Services/vue-router-service";
 
 export class SentryModule extends AbstractModule {
 	onInitAsync(vueApp) {
+
 		SentryVue.init({
 			app: vueApp,
 			environment: import.meta.env.MODE,

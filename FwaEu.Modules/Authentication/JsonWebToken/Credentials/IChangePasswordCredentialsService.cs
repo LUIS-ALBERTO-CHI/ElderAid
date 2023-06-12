@@ -10,7 +10,7 @@ namespace FwaEu.Modules.Authentication.JsonWebToken.Credentials
 {
 	public interface IChangePasswordCredentialsService
 	{
-		Task ChangePasswordAsync(string identity, string newPassword);
+		Task ChangePasswordAsync(string identity, string newPassword, string currentPassword = null);
 	}
 
 	public class DefaultChangePasswordCredentialsService : IChangePasswordCredentialsService
@@ -34,7 +34,7 @@ namespace FwaEu.Modules.Authentication.JsonWebToken.Credentials
 		private readonly IPasswordHasher _passwordHasher;
 		private readonly IAuthenticationChangeInfoService _authenticationChangeInfoService;
 
-		public async Task ChangePasswordAsync(string identity, string newPassword)
+		public async Task ChangePasswordAsync(string identity, string newPassword, string currentPassword = null)
 		{
 			var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
 			var user = this._userSessionContext.SaveUserEntity;
@@ -47,12 +47,20 @@ namespace FwaEu.Modules.Authentication.JsonWebToken.Credentials
 			var repository = repositorySession.Create<UserCredentialsEntityRepository>();
 			var entity = (await repository.GetByUserIdAsync(user.Id))
 				?? new UserCredentialsEntity() { User = user };
-
+			if (currentPassword != null)
+			{
+				var currentPasswordHash = this._passwordHasher.Hash(currentPassword);
+				if (entity.PasswordHash != currentPasswordHash)
+				{
+					throw new UserSaveValidationException("credentials", "PasswordEnteredMustBeSameAsCurrentPassword",
+						"The current password you entered is not correct.");
+				}
+			}
 			if (newPassword != null)
 			{
 				if (newPassword.Length < 4)
 				{
-					throw new UserSaveValidationException("PasswordMustBeAtLeast4Chars",
+					throw new UserSaveValidationException("credentials", "PasswordMustBeAtLeast4Chars",
 						"The password must contain at least 4 chars.");
 				}
 
