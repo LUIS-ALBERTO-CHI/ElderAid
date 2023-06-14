@@ -80,7 +80,7 @@ const application = new Application(IndexApp)
 	.useModule(new LoadingPanelModule())
 	.useModule(new MasterDataModule({
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation
-		defaultStore: new IndexedDbMasterDataStore()
+		defaultStore: new InMemoryStore()
 	}))
 
 	

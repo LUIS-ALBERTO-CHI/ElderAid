@@ -18,19 +18,11 @@ export default {
 			};
 			request.onsuccess = () => resolve(request.result);
 			request.onupgradeneeded = async (event) => {
-				console.log(event)
-				const db = event.target.result;
-
-				if (typeof upgradeDatabase === 'function') {
-					await upgradeDatabase(db);
-				}
-
-				const upgradedDb = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
-				resolve(upgradedDb);
-				//await upgradeDatabase(request.result);
-
-				//const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
-				//resolve(db);
+				await upgradeDatabase(request.result, event.target.result);
+				debugger;
+				const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
+				console.warn(db)
+				resolve(db);
 			};
 		});
 	},
