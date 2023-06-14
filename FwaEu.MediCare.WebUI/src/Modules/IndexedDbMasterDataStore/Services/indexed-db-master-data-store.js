@@ -1,22 +1,64 @@
-import IndexedDbService from '@/Fwamework/IndexedDb/Services/indexed-db-service';
+import IndexedDbService from '@/Modules/IndexedDb/Services/indexed-db-service';
 import Store from '@/Fwamework/Storage/Services/abstract-store';
 
 
 const databaseVersion = 1;
 const databaseName = "masterData";
-const openMasterDataDataBaseAsync = async () => await IndexedDbService.openAsync(databaseName, databaseVersion, async dbUpgrade => {
+
+
+const openMasterDataDataBaseAsync = async () => {
+	let db = await IndexedDbService.openAsync(databaseName, databaseVersion);
+
+	if (db.version !== databaseVersion) {
+		// Close the existing connection
+		db.close();
+
+		// Perform the upgrade by opening a new connection with a higher version
+		db = await IndexedDbService.openAsync(databaseName, databaseVersion, upgradeDatabase);
+	}
+
+	return db;
+};
+
+
+
+const upgradeDatabase = async (db) => {
 
 	const masterDataManager = (await import("@/Fwamework/MasterData/Services/master-data-manager-service"));
 	const masterDataManagerService = masterDataManager.default;
 	const getMasterDataChangeInfoKey = masterDataManager.getMasterDataChangeInfoKey;
+	//const masterDataManager = (await import("@/Fwamework/MasterData/Services/master-data-manager-service")).default;
+	//const getMasterDataChangeInfoKey = (await import("@/Fwamework/MasterData/Services/master-data-manager-service")).getMasterDataChangeInfoKey;
 
+	// Loop for every object name
 	masterDataManagerService._masterDataRegistry.forEach(md => {
-		if (!dbUpgrade.objectStoreNames.contains(md.key)) {
-			dbUpgrade.createObjectStore(md.key, { keyPath: "__id", autoIncrement: true });
-			dbUpgrade.createObjectStore(getMasterDataChangeInfoKey(md.key), { keyPath: "__id", autoIncrement: true });
+		const masterDataKey = md.configuration.masterDataKey;
+		if (!db.objectStoreNames.contains(masterDataKey)) {
+			db.createObjectStore(masterDataKey, { keyPath: "__id", autoIncrement: true });
+			db.createObjectStore(getMasterDataChangeInfoKey(masterDataKey), { keyPath: "__id", autoIncrement: true });
 		}
 	});
-});
+};
+
+//const openMasterDataDataBaseAsync = async () => await IndexedDbService.openAsync(databaseName, databaseVersion, async dbUpgrade => {
+//	const masterDataManager = (await import("@/Fwamework/MasterData/Services/master-data-manager-service"));
+//	const masterDataManagerService = masterDataManager.default;
+//	const getMasterDataChangeInfoKey = masterDataManager.getMasterDataChangeInfoKey;
+
+//	masterDataManagerService._masterDataRegistry.forEach(md => {
+//		const masterDataKey = md.configuration.masterDataKey;
+//		if (!dbUpgrade.objectStoreNames.contains(masterDataKey)) {
+//			console.warn(dbUpgrade)
+//			console.warn(masterDataKey)
+//			dbUpgrade.createObjectStore(masterDataKey, { keyPath: "__id", autoIncrement: true });
+//			dbUpgrade.createObjectStore(getMasterDataChangeInfoKey(masterDataKey), { keyPath: "__id", autoIncrement: true });
+//		}
+//	});
+//});
+
+//Failed to execute 'createObjectStore' on 'IDBDatabase': The transaction is not active.
+
+//Failed to execute 'transaction' on 'IDBDatabase': One of the specified object stores was not found.
 
 /**
  * @param {String} cacheKey

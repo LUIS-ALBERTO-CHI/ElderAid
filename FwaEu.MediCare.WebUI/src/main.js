@@ -32,6 +32,7 @@ import { ApplicationUsersModule } from "@/MediCare/Users/users-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
+import IndexedDbMasterDataStore from "@/Modules/IndexedDbMasterDataStore/Services/indexed-db-master-data-store"
 import { PermissionsByIsAdminModule } from "@/MediCare/PermissionsByIsAdmin/permissions-by-is-admin-module";
 
 import { UserSettingsModule } from "@/Fwamework/UserSettings/user-settings-module";
@@ -79,7 +80,7 @@ const application = new Application(IndexApp)
 	.useModule(new LoadingPanelModule())
 	.useModule(new MasterDataModule({
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation
-		defaultStore: new InMemoryStore()
+		defaultStore: new IndexedDbMasterDataStore()
 	}))
 
 	

@@ -17,12 +17,20 @@ export default {
 				reject(error);
 			};
 			request.onsuccess = () => resolve(request.result);
-			request.onupgradeneeded = async () => {
+			request.onupgradeneeded = async (event) => {
+				console.log(event)
+				const db = event.target.result;
 
-				await upgradeDatabase(request.result);
+				if (typeof upgradeDatabase === 'function') {
+					await upgradeDatabase(db);
+				}
 
-				const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
-				resolve(db);
+				const upgradedDb = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
+				resolve(upgradedDb);
+				//await upgradeDatabase(request.result);
+
+				//const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
+				//resolve(db);
 			};
 		});
 	},
@@ -35,7 +43,6 @@ export default {
 	 */
 	async openAsync(databaseName, databaseVersion, upgradeDatabase) {
 		if (!firstOpenLock[databaseName]) {
-
 			firstOpenLock[databaseName] = this._internalOpenAsync(this.getDatabaseName(databaseName), databaseVersion, upgradeDatabase);
 			return await firstOpenLock[databaseName];
 		}
