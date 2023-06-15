@@ -173,8 +173,8 @@ namespace FwaEu.MediCare
                 services.AddFwaEuMediCareAssemblyProviderExtension();
 
                 services.AddApplicationMappingTransformer();
-                services.AddApplicationReferencials();
-                //services.AddApplicationPatients();
+                services.AddApplicationReferencials(context);
+                services.AddApplicationPatients(context);
                 //services.AddApplicationOrders();
 
                 services.AddApplicationHtml();

@@ -50,8 +50,8 @@
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
+     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
 
-    import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchronization/Services/indexed-db-service";
 
     export default {
         inject: ["deviceInfo"],
@@ -73,39 +73,9 @@
 
             // NOTE : To be removed
             const buildings = await BuildingsMasterDataService.getAllAsync();
+             const patients = await PatientsMasterDataService.getAllAsync();
             console.log(buildings);
-
-
-            //NOTE: Create an instance of the IndexedDB service
-            // const indixedDbService = new OfflineDataSynchronizationService('orders');
-
-            // Add each item from the list to the object store
-            //buildings.forEach((data) => {
-            //  indixedDbService.addToObjectStore({ id : data.id, name : data.name })
-            //    .then(() => {
-            //      console.log('Data added successfully');
-            //    })
-            //    .catch((error) => {
-            //      console.error('Error adding data', error);
-            //    });
-            //});
-
-            //indixedDbService.clearObjectStore()
-            //      .then(() => {
-            //        console.log('Data cleared successfully');
-            //      })
-            //      .catch((error) => {
-            //        console.error('Error clearing data', error)
-                  
-            //      });
-
-            //indixedDbService.readObjectStore()
-            //      .then((data) => {
-            //        console.log('Data retrieved:', data);
-            //      })
-            //      .catch((error) => {
-            //        console.error('Error retrieving data', error);
-            //      });
+            console.log(patients);
         },
         methods: {
             goToLoginFront() {

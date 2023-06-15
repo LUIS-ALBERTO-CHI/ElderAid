@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FluentNHibernate.Mapping;
+using FwaEu.Fwamework.Data.Database;
+using FwaEu.MediCare.Patients;
+using System;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -27,4 +30,5 @@ namespace FwaEu.MediCare.Referencials
         public DateTime? DateEnd { get; set; }
 
     }
+
 }
