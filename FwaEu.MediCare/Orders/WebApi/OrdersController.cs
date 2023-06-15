@@ -1,4 +1,5 @@
 ﻿using FwaEu.Fwamework.Data;
+using FwaEu.MediCare.Referencials.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,11 @@ namespace FwaEu.MediCare.Orders.WebApi
 
         // POST /Orders
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOrdersPostApi[] orders)
+        public async Task<IActionResult> Create(CreateOrdersPostApi[] orders, IBuildingService buildingService)
         {
             try
             {
+                var result = await buildingService.GetAllAsync();
                 return Ok();
             }
             catch (NotFoundException)

@@ -1,4 +1,6 @@
-﻿using FwaEu.MediCare.MappingTransformer;
+﻿using FluentNHibernate.Mapping;
+using FwaEu.Fwamework.Data.Database;
+using FwaEu.MediCare.MappingTransformer;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -9,12 +11,23 @@ namespace FwaEu.MediCare.Referencials
         public string Name { get; set; }
     }
 
-
-    public class BuildingEntityMappingTransformer
+    public class BuildingEntityClassMap : ClassMap<BuildingEntity>
     {
-        [MapToAttribute(nameof(BuildingEntity.Id))]
-        public int Id { get; set; }
-        [MapToAttribute(nameof(BuildingEntity.Name))]
-        public string Nom { get; set; }
+        public BuildingEntityClassMap()
+        {
+            Table("MEDICARE_EMS.dbo.MDC_Buildings");
+           
+            ReadOnly();
+            Not.LazyLoad();
+            SchemaAction.None();
+
+            Id(entity => entity.Id).Column("Id");
+            Map(entity => entity.Name).Column("Name");
+        }
+    }
+
+
+    public class BuildingEntityRepository : DefaultRepository<BuildingEntity, int>
+    {
     }
 }

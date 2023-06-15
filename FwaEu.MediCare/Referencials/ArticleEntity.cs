@@ -20,8 +20,9 @@ namespace FwaEu.MediCare.Referencials
         public double Unit { get; set; }
         public bool IsFavorite { get; set; }
         public string Packaging { get; set; }
-        public string ImageURL { get; set; }
+        public string ThumbnailURL { get; set; }
 
+        public string[] ImageURLs { get; set; }
 
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
