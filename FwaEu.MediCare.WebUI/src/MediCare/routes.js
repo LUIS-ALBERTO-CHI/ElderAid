@@ -1,4 +1,4 @@
-const LoginPageComponent = () => import('@/Fwamework/Authentication/Components/LoginPageComponent.vue');
+const LoginPageComponent = () => import('@/MediCare/Components/LoginFrontPageComponent.vue');
 
 export default [
 	{
