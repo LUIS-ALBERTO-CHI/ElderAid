@@ -17,11 +17,11 @@ export default {
 				reject(error);
 			};
 			request.onsuccess = () => resolve(request.result);
-			request.onupgradeneeded = async () => {
-
-				await upgradeDatabase(request.result);
-
+			request.onupgradeneeded = async (event) => {
+				await upgradeDatabase(request.result, event.target.result);
+				debugger;
 				const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
+				console.warn(db)
 				resolve(db);
 			};
 		});
@@ -35,7 +35,6 @@ export default {
 	 */
 	async openAsync(databaseName, databaseVersion, upgradeDatabase) {
 		if (!firstOpenLock[databaseName]) {
-
 			firstOpenLock[databaseName] = this._internalOpenAsync(this.getDatabaseName(databaseName), databaseVersion, upgradeDatabase);
 			return await firstOpenLock[databaseName];
 		}
