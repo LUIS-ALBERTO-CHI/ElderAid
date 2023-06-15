@@ -77,7 +77,7 @@
 
 
             //NOTE: Create an instance of the IndexedDB service
-            const indixedDbService = new OfflineDataSynchronizationService('orders');
+            // const indixedDbService = new OfflineDataSynchronizationService('orders');
 
             // Add each item from the list to the object store
             //buildings.forEach((data) => {
@@ -90,22 +90,22 @@
             //    });
             //});
 
-            indixedDbService.clearObjectStore()
-                  .then(() => {
-                    console.log('Data cleared successfully');
-                  })
-                  .catch((error) => {
-                    console.error('Error clearing data', error)
+            //indixedDbService.clearObjectStore()
+            //      .then(() => {
+            //        console.log('Data cleared successfully');
+            //      })
+            //      .catch((error) => {
+            //        console.error('Error clearing data', error)
                   
-                  });
+            //      });
 
-            indixedDbService.readObjectStore()
-                  .then((data) => {
-                    console.log('Data retrieved:', data);
-                  })
-                  .catch((error) => {
-                    console.error('Error retrieving data', error);
-                  });
+            //indixedDbService.readObjectStore()
+            //      .then((data) => {
+            //        console.log('Data retrieved:', data);
+            //      })
+            //      .catch((error) => {
+            //        console.error('Error retrieving data', error);
+            //      });
         },
         methods: {
             goToLoginFront() {

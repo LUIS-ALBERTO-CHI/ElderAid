@@ -6,7 +6,7 @@
                 <AccordionOrderComponent :order="order" :isPatientUnique="true">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;" label="Annuler la commande" />
-                        <Button style="height: 50px !important;" label="Commander à nouveau" />
+                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="orderAgainAsync()"/>
                     </div>
                 </AccordionOrderComponent>
             </div>
@@ -21,7 +21,10 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
 
+    import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchronization/Services/indexed-db-service";
+    import CheckInternetService from "@/MediCare/OfflineDataSynchronization/Services/check-internet-service";
 
+    import OrdersService from '@/MediCare/Orders/Services/orders-service'
 
     export default {
         components: {
@@ -58,6 +61,26 @@
         methods: {
             isOrderDelivered(patientOrder) {
                 return patientOrder.isDelivered;
+            },
+            async orderAgainAsync() {
+                const model = { patientId: 2, articleId: 2, quantity: 1, createdOn: new Date() };
+                await OrdersService.saveAsync([model])
+                    .then(result => {
+                        console.log("Order successfully passed"); return;
+                    })
+                    .catch(ex => {
+                        // NOTE: We will add the data into the IndexedDB 
+                        const indixedDbService = new OfflineDataSynchronizationService('orders');
+
+                        indixedDbService.addToObjectStore(model)
+                            .then(() => {
+                                console.log('Data added successfully');
+                            })
+                            .catch((error) => {
+                                console.error('Error adding data', error);
+                            });
+
+                    });
             }
         },
         computed: {
