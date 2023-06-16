@@ -5,7 +5,7 @@
                 <span style="font-weight: bold;">{{cuttedName(patient)}}</span>
                 <i class="fa-solid fa-circle " :class="patient.isActive ? 'active-patient-text' : 'inactive-patient-text'" />
             </div>
-            <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
+            <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomName}}</span>
         </div>
         <span>Mise à jour: 29/10/22 à 9:12</span>
     </div>
@@ -28,11 +28,8 @@
         },
         methods: {
             cuttedName(patient) {
-                var name = `${patient.firstname} ${patient.lastname}`;
-                if (name.length > 25) {
-                    name = name.substring(0, 25) + "...";
-                }
-                return name;
+                return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
+
             }
         },
         computed: {

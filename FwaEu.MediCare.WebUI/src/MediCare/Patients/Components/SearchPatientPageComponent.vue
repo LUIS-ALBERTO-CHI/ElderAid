@@ -4,7 +4,7 @@
             <i @click="removeSearch" class="fa fa-solid fa-close" :style="searchPatient.length == 0 ? 'opacity: 0.5;' : ''" />
             <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Rechercher un patient" />
         </span>
-        <Dropdown v-model="selectedBuilding" :options="buildingOptions"  />
+        <Dropdown v-model="selectedBuilding" :options="buildingOptions" />
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
@@ -12,7 +12,7 @@
                         <span>{{cuttedName(patient)}}</span>
                         <i v-show="!patient.isActive" class="fa-solid fa-circle patient-state" />
                     </div>
-                    <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
+                    <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomName}}</span>
                 </div>
             </div>
         </div>
@@ -31,6 +31,10 @@
 
     import Dropdown from 'primevue/dropdown';
     import InputText from 'primevue/inputtext';
+    import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
+    import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
+
+
 
 
 
@@ -43,16 +47,17 @@
         data() {
             return {
                 patients: [],
-                selectedBuilding: "Tous les secteurs",
                 searchPatient: "",
-                buildingOptions: ["Tous les secteurs", "Batiment A", "Batiment B", "Batiment C"],
+                buildingOptions: ["Tous les secteurs"],
+                selectedBuilding: "Tous les secteurs",
                 displayInactivePatients: false
             };
         },
         async created() {
             this.focusSearchBar();
-            this.patients = patientsData;
-            // get research from local storage if it exists
+            this.patients = await PatientsMasterDataService.getAllAsync();
+            this.buildingOptions = this.buildingOptions.concat(await BuildingsMasterDataService.getAllAsync());
+            this.selectedBuilding = this.buildingOptions[0]
             if (localStorage.getItem("searchPatient")) {
                 this.searchPatient = localStorage.getItem("searchPatient");
             }
@@ -68,6 +73,7 @@
             removeSearch() {
                 this.searchPatient = "";
                 this.focusSearchBar();
+                console.log(this.buildingOptions)
             },
             focusSearchBar() {
                 this.$nextTick(() => {
@@ -75,24 +81,26 @@
                 });
             },
             cuttedName(patient) {
-                var name = `${patient.firstname} ${patient.lastname}`;
-                if (name.length > 25) {
-                    name = name.substring(0, 25) + "...";
-                }
-                return name;
+                return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
             }
         },
         computed: {
             filteredPatients() {
                 var patients = this.patients.filter(patient => {
-                    return patient.firstname.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
-                        patient.lastname.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
-                        patient.roomNumber.toLowerCase().includes(this.searchPatient.toLowerCase());
+                    return patient.fullName.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
+                        patient.roomName.toLowerCase().includes(this.searchPatient.toLowerCase());
                 });
                 // remove all inactive patients if displayInactivePatients is true
                 if (!this.displayInactivePatients) {
                     patients = patients.filter(patient => {
                         return patient.isActive;
+                    });
+                }
+
+                // filter by building
+                if (this.selectedBuilding.id != null) {
+                    patients = patients.filter(patient => {
+                        return patient.buildingId == this.selectedBuilding.id;
                     });
                 }
                 return patients;
