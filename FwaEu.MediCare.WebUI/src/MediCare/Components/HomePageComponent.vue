@@ -50,7 +50,11 @@
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
-     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
+    import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
+    import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+
+
 
 
     export default {
@@ -73,7 +77,11 @@
 
             // NOTE : To be removed
             const buildings = await BuildingsMasterDataService.getAllAsync();
-             const patients = await PatientsMasterDataService.getAllAsync();
+            const patients = await PatientsMasterDataService.getAllAsync();
+            const orders = await OrdersMasterDataService.getAllAsync();
+            const articles = await ArticlesMasterDataService.getAllAsync();
+            console.log(articles);
+            console.log(orders);
             console.log(buildings);
             console.log(patients);
         },
