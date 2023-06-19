@@ -65,6 +65,9 @@
 .page-home {
   height: 100%;
   margin: 0px !important;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
 }
 
 .home-content {
@@ -158,6 +161,12 @@
 
 .vignette-text {
   font-size: 22px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+.organization-text {
+  font-size: 20px;
   font-weight: bold;
   color: var(--primary-text-color);
 }

@@ -1,5 +1,9 @@
 <template>
     <div class="page-home">
+        <div class="flex-section justify-content-center" v-if="isSingleOrganization">
+            <span class="organization-text">Organisation 1</span>
+        </div>
+        <Dropdown v-else v-model="selectedOrganization" :options="OrganizationsOptions" />
         <div class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -44,15 +48,14 @@
 </template>
 <script>
     import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
-
     import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
     const path = Configuration.application.customResourcesPath;
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
-
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import Dropdown from 'primevue/dropdown';
 
 
 
@@ -60,6 +63,9 @@
     export default {
         inject: ["deviceInfo"],
         mixins: [LocalizationMixing],
+        components: {
+            Dropdown
+        },
         i18n: {
             messages: {
                 getMessagesAsync(locale) {
@@ -69,7 +75,10 @@
         },
         data() {
             return {
-                isCurrentUserAuthenticated: false
+                isCurrentUserAuthenticated: false,
+                selectedOrganization: 'Organisation 1',
+                OrganizationsOptions: ['Organisation 1', 'Organisation 2', 'Organisation 3'],
+                isSingleOrganization: false,
             };
         },
         async created() {
@@ -95,6 +104,7 @@
                 });
             },
             goToPatientPage() {
+                console.log("dfsfd")
                 this.$router.push("/SearchPatient")
                 localStorage.removeItem("searchPatient")
             },
