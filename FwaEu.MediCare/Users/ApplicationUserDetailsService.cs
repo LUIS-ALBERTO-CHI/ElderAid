@@ -1,4 +1,3 @@
-using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.Fwamework.Users;
 using System;

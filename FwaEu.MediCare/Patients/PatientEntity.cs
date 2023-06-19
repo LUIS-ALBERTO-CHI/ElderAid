@@ -28,7 +28,7 @@ namespace FwaEu.MediCare.Patients
     {
         public PatientEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Patients");
+            Table("MDC_Patients");
             ReadOnly();
             Not.LazyLoad();
             SchemaAction.None();

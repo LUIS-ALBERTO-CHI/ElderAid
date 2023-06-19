@@ -60,6 +60,7 @@ using FwaEu.MediCare.MappingTransformer;
 using FwaEu.MediCare.Patients;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Referencials;
+using FwaEu.MediCare.GenericRepositorySession;
 
 namespace FwaEu.MediCare
 {
@@ -172,6 +173,7 @@ namespace FwaEu.MediCare
                 services.AddApplicationSwagger(authenticationFeatures, context);
                 services.AddFwaEuMediCareAssemblyProviderExtension();
 
+                services.AddApplicationGenericRepositorySession();
                 services.AddApplicationMappingTransformer();
                 services.AddApplicationReferencials(context);
                 services.AddApplicationPatients(context);

@@ -29,11 +29,10 @@ namespace FwaEu.MediCare.Orders.WebApi
 
         // POST /Orders
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOrdersPostApi[] orders, IBuildingService buildingService)
+        public async Task<IActionResult> Create(CreateOrdersPostApi[] orders)
         {
             try
             {
-                var result = await buildingService.GetAllAsync();
                 return Ok();
             }
             catch (NotFoundException)

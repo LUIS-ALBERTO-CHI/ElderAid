@@ -15,7 +15,7 @@ namespace FwaEu.MediCare.Referencials
     {
         public BuildingEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Buildings");
+            Table("MDC_Buildings");
            
             ReadOnly();
             Not.LazyLoad();

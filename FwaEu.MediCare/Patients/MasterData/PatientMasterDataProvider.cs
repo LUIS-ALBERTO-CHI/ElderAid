@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System;
 using System.Collections;
 using FwaEu.MediCare.Patients.Services;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FwaEu.MediCare.Patients.MasterData
 {
@@ -22,10 +24,11 @@ namespace FwaEu.MediCare.Patients.MasterData
         public Type IdType => typeof(string);
 
         private static DateTime? _dateTimeNow = null;
+        private static IEnumerable<PatientEntity> _cachedPatients;
 
         public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
         {
-            var count = (await _patientService.GetAllAsync()).Count;
+            var count = (await GetAllPatientsAsync()).Count();
 
             return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
         }
@@ -46,12 +49,22 @@ namespace FwaEu.MediCare.Patients.MasterData
             {
                 throw new NotSupportedException("OrderBy is not supported by building master-data.");
             }
-            return await _patientService.GetAllAsync();
+            return await GetAllPatientsAsync();
         }
 
         public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
         {
             throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+        }
+
+        private async Task<IEnumerable<PatientEntity>> GetAllPatientsAsync()
+        {
+            if (_cachedPatients == null)
+            {
+                _cachedPatients = await _patientService.GetAllAsync();
+            }
+
+            return _cachedPatients;
         }
     }
 }
