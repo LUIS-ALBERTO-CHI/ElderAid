@@ -1,26 +1,28 @@
-﻿using FwaEu.Fwamework.Data.Database;
-using FwaEu.Fwamework.Data.Database.Nhibernate;
-using FwaEu.Fwamework.Data.Database.Sessions;
-using FwaEu.MediCare.MappingTransformer;
+﻿using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.MediCare.GenericRepositorySession;
+
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
+
 using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Referencials.Services
 {
     public class BuildingService : IBuildingService
     {
-        private readonly MainSessionContext _sessionContext;
+        private readonly IGenericRepositorySessionService _genericRepositorySessionService;
 
-        public BuildingService(MainSessionContext sessionContext, IMappingTransformer databaseMappingTransformer)
+        public BuildingService(IGenericRepositorySessionService genericRepositorySessionService)
         {
-            _sessionContext = sessionContext;
+            _genericRepositorySessionService = genericRepositorySessionService;
         }
+
         public async Task<List<BuildingEntity>> GetAllAsync()
         {
-            var repository = _sessionContext.RepositorySession;
-            return await repository.Create<BuildingEntityRepository>().Query().ToListAsync();
+            var repositorySession = _genericRepositorySessionService.GetRepositorySession();
+            var repositoryy = repositorySession.Create<BuildingEntityRepository>();
+            return await repositoryy.Query().ToListAsync();
         }
     }
 }
