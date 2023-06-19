@@ -40,7 +40,7 @@ import { UsersMasterDataModule } from "@/Modules/UserMasterData/users-master-dat
 import { UserHistoryPartModule } from "@/Modules/UserHistory/user-history-part-module";
 import { UserAmdinStatePartModule } from "@/Modules/UserAdminState/user-admin-state-part-module";
 import DefaultAuthenticationHandler from "@/Modules/DefaultAuthentication/Services/default-authentication-handler";
-
+import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
 
 import AppRoutes from './app-routes';
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
@@ -97,7 +97,7 @@ const application = new Application(IndexApp)
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
 	.useModule(new ApplicationUsersModule())
-
+	.useModule(new OrganizationsModule())
 	.useModule(new ReferencialsModule())
 	.useModule(new PatientsModule())
 	.useModule(new OrdersModule())

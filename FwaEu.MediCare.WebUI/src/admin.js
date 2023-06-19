@@ -28,6 +28,7 @@ import { MasterDataModule } from "./Fwamework/MasterData/master-data-module";
 import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot-net-type-conversion-module";
 import { ApplicationUsersModule } from "@/MediCare/Users/users-module";
 /*import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";*/
+import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
 
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
 import { ImpersonateAuthenticationModule } from "./Modules/ImpersonateAuthentication/impersonate-authentication-module";
@@ -77,7 +78,7 @@ const application = new Application(App)
 	.useModule(new PermissionModule())
 	.useModule(new GenericAdminModule())
 	.useModule(new DataImportModule())
-
+	.useModule(new OrganizationsModule())
 	.useModule(new ApplicationModule())
 	.useModule(new UserCultureModule())
 	.useModule(new UsersMasterDataModule())

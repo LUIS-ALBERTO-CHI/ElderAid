@@ -1,0 +1,16 @@
+{
+	"organizationGroupTitle": "Référentiels",
+	"organizationTitle": "Organisations",
+
+	"databaseName": "Base de données",
+	"isActive": "Actif",
+	"pharmacyEmail": "Email",
+	"publicWebURL": "URL",
+	"publicMobileURL": "URL mobile",
+	"isStockPharmacyPerBox": "Stock en boite",
+	"orderPeriodicityDays": "Jour de commande",
+	"orderPeriodicityDayOfWeek": "Jour de commande en semaine",
+	"lastPeriodicityOrder": "Date de la dernière commande",
+	"periodicityOrderActivationDaysNumber": "Nombre de commande en activation"
+}
+
