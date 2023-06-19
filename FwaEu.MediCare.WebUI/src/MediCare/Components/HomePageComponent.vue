@@ -87,12 +87,12 @@
             // NOTE : To be removed
             const buildings = await BuildingsMasterDataService.getAllAsync();
             const patients = await PatientsMasterDataService.getAllAsync();
-            const orders = await OrdersMasterDataService.getAllAsync();
-            const articles = await ArticlesMasterDataService.getAllAsync();
-            console.log(articles);
-            console.log(orders);
-            console.log(buildings);
-            console.log(patients);
+            // const orders = await OrdersMasterDataService.getAllAsync();
+            // const articles = await ArticlesMasterDataService.getAllAsync();
+            // console.log(articles);
+            // console.log(orders);
+            // console.log(buildings);
+            // console.log(patients);
         },
         methods: {
             goToLoginFront() {
@@ -104,7 +104,6 @@
                 });
             },
             goToPatientPage() {
-                console.log("dfsfd")
                 this.$router.push("/SearchPatient")
                 localStorage.removeItem("searchPatient")
             },
