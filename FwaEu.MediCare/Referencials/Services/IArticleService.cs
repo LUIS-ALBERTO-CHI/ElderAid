@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Referencials.Services
 {
-    public interface IBuildingService
+    public interface IArticleService
     {
-        Task<List<BuildingEntity>> GetAllAsync();
+        Task<List<ArticleEntity>> GetAllAsync();
+
     }
 }

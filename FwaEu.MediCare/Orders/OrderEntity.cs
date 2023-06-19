@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FluentNHibernate.Mapping;
+using FwaEu.Fwamework.Data.Database;
+
+using System;
 
 namespace FwaEu.MediCare.Orders
 {
@@ -26,6 +29,30 @@ namespace FwaEu.MediCare.Orders
         {
             return Id == 0;
         }
+    }
+
+    public class OrderEntityClassMap : ClassMap<OrderEntity>
+    {
+        public OrderEntityClassMap()
+        {
+            Table("MEDICARE_EMS.dbo.MDC_Orders");
+
+            ReadOnly();
+            Not.LazyLoad();
+            SchemaAction.None();
+
+            Id(entity => entity.Id).Column("Id");
+            Map(entity => entity.ArticleId).Column("ArticleId");
+            Map(entity => entity.Quantity).Column("Quantity");
+            Map(entity => entity.PatientId).Column("PatientId");
+            Map(entity => entity.State).Column("State");
+            Map(entity => entity.UpdatedBy).Column("updatedBy");
+            Map(entity => entity.UpdatedOn).Column("updatedOn");
+        }
+    }
+
+    public class OrderEntityRepository : DefaultRepository<OrderEntity, int>
+    {
     }
 
 }

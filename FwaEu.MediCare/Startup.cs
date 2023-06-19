@@ -175,7 +175,7 @@ namespace FwaEu.MediCare
                 services.AddApplicationMappingTransformer();
                 services.AddApplicationReferencials(context);
                 services.AddApplicationPatients(context);
-                //services.AddApplicationOrders();
+                services.AddApplicationOrders(context);
 
                 services.AddApplicationHtml();
             }
