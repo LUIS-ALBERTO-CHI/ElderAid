@@ -51,16 +51,20 @@
         },
         methods: {
             goToTreatmentPage() {
-                this.$router.push({ name: "Treatment" });
+                //NOTE: hide for client
+                // this.$router.push({ name: "Treatment" });
             },
             goToPatientOrdersPage() {
-                this.$router.push({ name: "PatientOrders" });
+                //NOTE: hide for client
+                // this.$router.push({ name: "PatientOrders" });
             },
             goToStockConsumptionPage() {
-                this.$router.push({ name: "StockConsumption" });
+                //NOTE: hide for client
+                // this.$router.push({ name: "StockConsumption" });
             },
             goToOrderOtherProductPage() {
-                this.$router.push({ name: "OrderOtherProduct" });
+                //NOTE: hide for client
+                // this.$router.push({ name: "OrderOtherProduct" });
             }
         },
         computed: {
