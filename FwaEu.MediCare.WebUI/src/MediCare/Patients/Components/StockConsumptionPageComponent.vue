@@ -3,7 +3,7 @@
         <patient-info-component />
         <div v-for="(consumption, index) in consumptionStock" :key="index">
             <div class="stock-consumption-item">
-                <span>{{consumption.name}}</span>
+                <span class="stock-consumption-item-title">{{consumption.name}}</span>
                 <span>{{consumption.quantity}}</span>
                 <span>{{consumption.date}} par {{consumption.orderedBy}}</span>
             </div>

@@ -5,11 +5,11 @@
             <span>Médicaments</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div class="patient-info-item">
+        <div @click="goToTreatmentPage" class="patient-info-item">
             <span>4 matériels de soin</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div class="patient-info-item">
+        <div @click="goToTreatmentPage" class="patient-info-item">
             <span>2 protections</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -47,8 +47,7 @@
         },
         methods: {
             goToTreatmentPage() {
-                //NOTE: hide for client
-                // this.$router.push({ name: "Treatment" });
+                this.$router.push({ name: "Treatment" });
             },
             goToMedicationsPage() {
                 this.$router.push({ name: "PatientMedications" });
