@@ -1,4 +1,5 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.MediCare.ViewContext;
 using NHibernate;
 using System;
 using System.Data.Common;
@@ -19,7 +20,10 @@ namespace FwaEu.MediCare.GenericRepositorySession
         public RepositorySession<IStatefulSessionAdapter> GetRepositorySession()
         {
             var databaseName = "MEDICARE_EMS2";
-            DbConnection connection = ((ISession)_sessionContext.RepositorySession.Session.InnerSession).Connection;
+            //var contextService = this.ServiceProvider.GetRequiredService<IViewContextService>();
+            //var databaseName = "MEDICARE_EMS";
+            //if (contextService.Current?.DatabaseName != null)
+                DbConnection connection = ((ISession)_sessionContext.RepositorySession.Session.InnerSession).Connection;
             connection.ChangeDatabase(databaseName);
 
             return this._repositorySessionFactory.CreateSession(new CreateSessionOptions

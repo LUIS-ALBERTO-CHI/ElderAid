@@ -33,7 +33,7 @@ import { OrganizationsModule } from "@/MediCare/Organizations/organizations-modu
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
 import { ImpersonateAuthenticationModule } from "./Modules/ImpersonateAuthentication/impersonate-authentication-module";
 import SetupImpersonateAuthenticationHandler from "./Modules/ImpersonateAuthentication/Setup/setup-impersonate-authentication-handler";
-
+import { ViewContextModule } from "@/MediCare/ViewContext/view-context-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
@@ -94,6 +94,7 @@ const application = new Application(App)
 	}))
 	.useModule(new ApplicationUsersModule())
 	.useModule(new ApplicationCultureModule())
+	.useModule(new ViewContextModule())
 	.useModule(new PermissionsByIsAdminModule())
 	.useModule(new RoutingModule({
 		routerOptions: {

@@ -31,12 +31,30 @@ namespace FwaEu.MediCare.Initialization
             IAuthenticationFeatures authenticationFeatures, 
             NhibernateConfigurationOptions configurationOptions)
         {
-            yield return new OptionsBasedNhibernateConfigurationLoader(
-                serviceProvider: serviceProvider,
-                options: configurationOptions,
-                typesInWhichSearchForMappings: GetTypesInWhichSearchForMappings(authenticationFeatures));
+            var sectionConnectionStrings = serviceProvider.GetService<IConfiguration>().GetSection("ConnectionStrings");
+            var settingsConnectionStrings = sectionConnectionStrings.Get<Dictionary<string, string>>();
+            foreach (var connectionString in settingsConnectionStrings)
+            {
+                yield return new CodeBasedNhibernateConfigurationLoader(
+                    serviceProvider: serviceProvider,
+                    connectionStringName: connectionString.Key,
+                    databaseFeaturesType: typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures),
+                    typesInWhichSearchForMappings: GetTypesInWhichSearchForMappings(authenticationFeatures),
+                    configureDatabaseProperties: (properties) =>
+                    {
+                        properties.Dialect<MsSql2012Dialect>();
+                        properties.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+                    },
+                    finalizeConfiguration: (configuration) =>
+                    {
+                        configuration.Properties[NHibernate.Cfg.Environment.DefaultFlushMode] = NHibernate.FlushMode.Manual.ToString();
+                    }
+                );
+            }
 
         }
+
+
 
         private static void AddDatabaseFeatures(this IServiceCollection services, NhibernateConfigurationOptions configurationOptions)
         {

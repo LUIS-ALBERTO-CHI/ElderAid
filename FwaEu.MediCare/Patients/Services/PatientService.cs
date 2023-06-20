@@ -10,16 +10,15 @@ namespace FwaEu.MediCare.Patients.Services
 {
     public class PatientService : IPatientService
     {
-        private readonly IGenericRepositorySessionService _genericRepositorySessionService;
-
-        public PatientService(IGenericRepositorySessionService genericRepositorySessionService)
+        public PatientService(GenericSessionContext genericSessionContext)
         {
-            _genericRepositorySessionService = genericRepositorySessionService;
+            _genericSessionContext = genericSessionContext;
         }
+        private readonly GenericSessionContext _genericSessionContext;
 
         public async Task<List<PatientEntity>> GetAllAsync()
         {
-            var repositorySession = _genericRepositorySessionService.GetRepositorySession();
+            var repositorySession = _genericSessionContext.RepositorySession;
             var repositoryy = repositorySession.Create<PatientEntityRepository>();
             return await repositoryy.Query().ToListAsync();
         }
