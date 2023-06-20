@@ -20,7 +20,8 @@ export default {
 		user.parts[this.partName] = {
 			email: context.formModel.email,
 			firstName: context.formModel.firstName,
-			lastName: context.formModel.lastName
+			lastName: context.formModel.lastName,
+			login: context.formModel.login
 		};
 	}
 }
@@ -53,13 +54,23 @@ function createFormItemsAsync(user, initializeContext) {
 			editorOptions: {
 				inputAttr: { autocomplete: "nofill" }
 			}
-		}
+		},
+		{
+			dataField: "login",
+			label: { text: I18n.t('login') },
+			visibleIndex: 2,
+			validationRules: [],
+			editorOptions: {
+				inputAttr: { autocomplete: "nofill" }
+			}
+		},
 	];
 }
 function createNewUserPart() {
 	return {
 		email: null,
 		firstName: null,
-		lastName: null
+		lastName: null,
+		login: null
 	};
 }
