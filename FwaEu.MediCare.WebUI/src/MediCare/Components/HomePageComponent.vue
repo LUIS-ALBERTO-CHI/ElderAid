@@ -8,7 +8,7 @@
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
                     <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
-                    <span v-show="patients.length > 0" class="vignette-text">{{patients.length }} patients</span>
+                    <span v-show="patientsActive.length > 0" class="vignette-text">{{patientsActive.length }} patients</span>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
@@ -79,7 +79,7 @@
                 selectedOrganization: 'Organisation 1',
                 OrganizationsOptions: ['Organisation 1', 'Organisation 2', 'Organisation 3'],
                 isSingleOrganization: false,
-                patients: [],
+                patientsActive: [],
             };
         },
         async created() {
@@ -88,7 +88,7 @@
             // NOTE : To be removed
             const buildings = await BuildingsMasterDataService.getAllAsync();
             const patients = await PatientsMasterDataService.getAllAsync();
-            this.patients = patients;
+            this.patientsActive = patients.filter(x => x.isActive);
             // const orders = await OrdersMasterDataService.getAllAsync();
             // const articles = await ArticlesMasterDataService.getAllAsync();
             // console.log(articles);
