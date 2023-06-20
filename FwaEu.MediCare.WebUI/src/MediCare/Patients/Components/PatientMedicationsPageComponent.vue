@@ -1,0 +1,52 @@
+<template>
+    <div class="patient-page-container">
+        <patient-info-component />
+        <div @click="goToTreatmentPage" class="patient-info-item">
+            <span>15 traitements fixes en cours</span>
+            <i class="fa-regular fa-angle-right chevron-icon"></i>
+        </div>
+        <div @click="goToTreatmentPage" class="patient-info-item">
+            <span>4 traitements de réserve en cours</span>
+            <i class="fa-regular fa-angle-right chevron-icon"></i>
+        </div>
+        <div @click="goToTreatmentPage" class="patient-info-item">
+            <span>3 traitements effacés</span>
+            <i class="fa-regular fa-angle-right chevron-icon"></i>
+        </div>
+        <Button style="margin-top: 20px;" label="Commander un autre produit" />
+    </div>
+</template>
+<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+<script>
+
+    import Button from 'primevue/button';
+    import PatientInfoComponent from './PatientInfoComponent.vue';
+
+
+    export default {
+        components: {
+            Button,
+            PatientInfoComponent
+        },
+        data() {
+            return {
+                patient: {},
+            };
+        },
+        async created() {
+            var patient = localStorage.getItem("patient");
+            this.patient = JSON.parse(patient);
+        },
+        methods: {
+            goToTreatmentPage() {
+                this.$router.push({ name: "Treatment" });
+            },
+        },
+        computed: {
+
+        },
+
+    }
+</script>
+<style type="text/css" scoped src="./Content/patient-page.css">
+</style>
