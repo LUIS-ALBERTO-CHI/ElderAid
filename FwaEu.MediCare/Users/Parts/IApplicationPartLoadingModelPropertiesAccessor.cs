@@ -10,6 +10,7 @@ namespace FwaEu.MediCare.Users
 		string FirstName { get; }
 		string LastName { get; }
 		string Email { get; }
+		string Login { get; }
 	}
 
 	public interface IApplicationPartLoadingModelPropertiesAccessor

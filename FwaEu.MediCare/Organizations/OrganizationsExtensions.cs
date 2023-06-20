@@ -7,6 +7,8 @@ using FwaEu.MediCare.Organizations.MasterData;
 using FwaEu.Modules.GenericAdmin;
 
 using FwaEu.MediCare.Organizations.GenericAdmin;
+using FwaEu.Fwamework.Users.Parts;
+using FwaEu.MediCare.Organizations.Part.Services;
 
 namespace FwaEu.MediCare.Organizations
 {
@@ -23,6 +25,8 @@ namespace FwaEu.MediCare.Organizations
             services.AddMasterDataProvider<UserOrganizationsMasterDataProvider>("UserOrganizations");
 
             services.AddTransient<IGenericAdminModelConfiguration, OrganizationEntityToModelGenericAdminModelConfiguration>();
+
+            services.AddTransient<IPartHandler, OrganizationPartHandler>();
 
             return services;
         }

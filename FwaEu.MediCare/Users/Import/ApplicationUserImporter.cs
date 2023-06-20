@@ -96,8 +96,9 @@ namespace FwaEu.MediCare.Users.Import
 			IfExists(nameof(model.LastName), () => userEntity.LastName = model.LastName);
 			IfExists(nameof(model.State), () => userEntity.State = model.State.Value);
 			IfExists(nameof(model.IsAdmin), () => userEntity.IsAdmin = model.IsAdmin);
+            IfExists(nameof(model.Login), () => userEntity.Login = model.Login);
 
-			var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
+            var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
 
 			await repositorySession
 				.Create<ApplicationUserEntityRepository>()

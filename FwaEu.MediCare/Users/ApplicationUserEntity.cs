@@ -26,7 +26,9 @@ namespace FwaEu.MediCare.Users
 		public UserEntity UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
 
-		public override string ToString()
+        public string Login { get; set; }
+
+        public override string ToString()
 		{
 			return this.ToFullNameString();
 		}
@@ -76,7 +78,9 @@ namespace FwaEu.MediCare.Users
 
 			Map(entity => entity.LastName)
 			   .Not.Nullable();
-			this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
+			Map(entity => entity.Login);
+
+            this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
 		}
 	}
 }

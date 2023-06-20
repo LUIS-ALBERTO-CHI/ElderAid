@@ -27,7 +27,7 @@ import { AdministrationMenuModule } from "@/Fwamework/AdministrationMenu/adminis
 import { MasterDataModule } from "./Fwamework/MasterData/master-data-module";
 import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot-net-type-conversion-module";
 import { ApplicationUsersModule } from "@/MediCare/Users/users-module";
-/*import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";*/
+import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";
 import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
 
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
@@ -93,7 +93,8 @@ const application = new Application(App)
 		defaultStore: new InMemoryStore()
 	}))
 	.useModule(new ApplicationUsersModule())
-	/*.useModule(new PermissionsByIsAdminModule())*/
+	.useModule(new ApplicationCultureModule())
+	.useModule(new PermissionsByIsAdminModule())
 	.useModule(new RoutingModule({
 		routerOptions: {
 			routes: AdminRoutes

@@ -3,5 +3,6 @@
 	"firstName": "First name",
 	"lastName": "Last name",
 	"email": "Email",
-	"name": "Name"
+	"name": "Name",
+	"login": "Login"
 }

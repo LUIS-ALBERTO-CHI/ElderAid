@@ -8,7 +8,6 @@ namespace FwaEu.Modules.Authentication.JsonWebToken.Credentials.Parts
 {
 	public class CredentialsPartSaveModel
 	{
-		[Required]
 		public string CurrentPassword { get; set; }
 
 		[Required]

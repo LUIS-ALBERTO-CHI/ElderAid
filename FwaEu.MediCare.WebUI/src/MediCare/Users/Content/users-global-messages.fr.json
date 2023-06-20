@@ -3,5 +3,6 @@
 	"firstName": "Prénom",
 	"lastName": "Nom",
 	"email": "Courriel",
-	"name": "Nom"
+	"name": "Nom",
+	"login":  "Login"
 }
