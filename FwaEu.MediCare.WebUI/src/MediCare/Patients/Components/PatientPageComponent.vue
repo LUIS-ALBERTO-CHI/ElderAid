@@ -1,24 +1,20 @@
 <template>
     <div class="patient-page-container">
         <patient-info-component />
-        <div @click="goToTreatmentPage" class="patient-info-item">
-            <span>15 traitements fixes en cours</span>
-            <i class="fa-regular fa-angle-right chevron-icon"></i>
-        </div>
-        <div class="patient-info-item">
-            <span>4 traitements de réserve en cours</span>
+        <div @click="goToMedicationsPage" class="patient-info-item">
+            <span>Médicaments</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div class="patient-info-item">
             <span>4 matériels de soin</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div @click="goToPatientOrdersPage" class="patient-info-item">
-            <span>8 commandes, dont 4 en cours</span>
+        <div class="patient-info-item">
+            <span>2 protections</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div class="patient-info-item">
-            <span>3 traitements effacés</span>
+        <div @click="goToPatientOrdersPage" class="patient-info-item">
+            <span>8 commandes, dont 4 en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToStockConsumptionPage" class="patient-info-item">
@@ -54,16 +50,16 @@
                 //NOTE: hide for client
                 // this.$router.push({ name: "Treatment" });
             },
+            goToMedicationsPage() {
+                this.$router.push({ name: "PatientMedications" });
+            },
             goToPatientOrdersPage() {
-                //NOTE: hide for client
-                // this.$router.push({ name: "PatientOrders" });
+                this.$router.push({ name: "PatientOrders" });
             },
             goToStockConsumptionPage() {
-                //NOTE: hide for client
-                // this.$router.push({ name: "StockConsumption" });
+                this.$router.push({ name: "StockConsumption" });
             },
             goToOrderOtherProductPage() {
-                //NOTE: hide for client
                 // this.$router.push({ name: "OrderOtherProduct" });
             }
         },

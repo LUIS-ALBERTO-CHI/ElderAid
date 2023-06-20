@@ -5,6 +5,8 @@ const PatientOrdersPageComponent = () => import('@/MediCare/Patients/Components/
 const StockConsumptionPageComponent = () => import('@/MediCare/Patients/Components/StockConsumptionPageComponent.vue');
 const OrderOtherProductPageComponent = () => import('@/MediCare/Patients/Components/OrderOtherProductPageComponent.vue');
 const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
+const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
+
 
 export default [
 	{
@@ -36,7 +38,7 @@ export default [
 		meta: {
 			breadcrumb: {
 				titleKey: 'Traitement',
-				parentName: 'Patient'
+				parentName: 'PatientMedications'
 			},
 		}
 	},
@@ -84,4 +86,15 @@ export default [
 			},
 		}
 	},
+	{
+		path: '/Medications',
+		name: 'PatientMedications',
+		component: PatientMedicationsPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Médicaments',
+				parentName: 'Patient'
+			},
+		}
+	}
 ];
