@@ -27,6 +27,10 @@ export default {
 				allowFiltering: false,
 				visibleIndex: 3,
 				caption: pageComponent.$i18n.t('lastName')
+			},
+			{
+				dataField: 'parts.application.login',
+				caption: pageComponent.$i18n.t('login')
 			}
 		);
 	}
