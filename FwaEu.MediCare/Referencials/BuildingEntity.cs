@@ -1,14 +1,21 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
-using FwaEu.MediCare.MappingTransformer;
+using FwaEu.Fwamework.Data.Database.Tracking;
+using System;
 
 namespace FwaEu.MediCare.Referencials
 {
-    public class BuildingEntity
+    public class BuildingEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
+        public DateTime UpdatedOn { get { return _dateTime; } set { } }
+        private static DateTime _dateTime= DateTime.Now;
+        public bool IsNew()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class BuildingEntityClassMap : ClassMap<BuildingEntity>
@@ -27,7 +34,11 @@ namespace FwaEu.MediCare.Referencials
     }
 
 
-    public class BuildingEntityRepository : DefaultRepository<BuildingEntity, int>
+    public class BuildingEntityRepository : DefaultRepository<BuildingEntity, int>, IQueryByIds<BuildingEntity, int>
     {
+        public System.Linq.IQueryable<BuildingEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

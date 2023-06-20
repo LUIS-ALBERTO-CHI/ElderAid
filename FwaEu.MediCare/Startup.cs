@@ -62,6 +62,8 @@ using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.ViewContext;
+using FwaEu.MediCare.GenericSession;
 
 namespace FwaEu.MediCare
 {
@@ -175,6 +177,7 @@ namespace FwaEu.MediCare
                 services.AddFwaEuMediCareAssemblyProviderExtension();
 
                 services.AddApplicationOrganizations(context);
+                services.AddApplicationGenericSession();
                 services.AddApplicationGenericRepositorySession();
                 services.AddApplicationMappingTransformer();
                 services.AddApplicationReferencials(context);
@@ -182,6 +185,8 @@ namespace FwaEu.MediCare
                 services.AddApplicationOrders(context);
 
                 services.AddApplicationHtml();
+
+                services.AddApplicationViewContext();
             }
         }
 

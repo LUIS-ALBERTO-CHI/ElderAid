@@ -29,6 +29,7 @@ import { MasterDataModule } from "./Fwamework/MasterData/master-data-module";
 import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot-net-type-conversion-module";
 import { UserCultureModule } from "@/Modules/UserCulture/user-culture-module";
 import { ApplicationUsersModule } from "@/MediCare/Users/users-module";
+import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
@@ -41,6 +42,7 @@ import { UserHistoryPartModule } from "@/Modules/UserHistory/user-history-part-m
 import { UserAmdinStatePartModule } from "@/Modules/UserAdminState/user-admin-state-part-module";
 import DefaultAuthenticationHandler from "@/Modules/DefaultAuthentication/Services/default-authentication-handler";
 import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
+import { ViewContextModule } from "@/MediCare/ViewContext/view-context-module";
 
 import AppRoutes from './app-routes';
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
@@ -82,7 +84,6 @@ const application = new Application(IndexApp)
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation
 		defaultStore: new InMemoryStore()
 	}))
-
 	
 	.useModule(new DevextremeModule())
 
@@ -97,11 +98,12 @@ const application = new Application(IndexApp)
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
 	.useModule(new ApplicationUsersModule())
+	.useModule(new ApplicationCultureModule())
+	.useModule(new ViewContextModule())
 	.useModule(new OrganizationsModule())
 	.useModule(new ReferencialsModule())
 	.useModule(new PatientsModule())
 	.useModule(new OrdersModule())
-
 	
 	.useModule(new PermissionsByIsAdminModule())
 	.useModule(new RoutingModule({

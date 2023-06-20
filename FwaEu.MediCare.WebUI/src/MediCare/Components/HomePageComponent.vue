@@ -57,8 +57,9 @@
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import Dropdown from 'primevue/dropdown';
 
-
-
+    import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
+    import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
+    import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
 
     export default {
         inject: ["deviceInfo"],
@@ -74,12 +75,17 @@
             }
         },
         data() {
+            const $this = this;
             return {
                 isCurrentUserAuthenticated: false,
                 selectedOrganization: 'Organisation 1',
                 OrganizationsOptions: ['Organisation 1', 'Organisation 2', 'Organisation 3'],
                 isSingleOrganization: false,
                 patientsActive: [],
+                currentDatabase: ViewContextService.get()?.databaseName,
+                viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
+                    $this.currentDatabase = viewContext.databaseName;
+                })
             };
         },
         async created() {
@@ -95,6 +101,12 @@
             // console.log(orders);
             // console.log(buildings);
             // console.log(patients);
+            const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
+            const organizations = await OrganizationsMasterDataService.getAllAsync();
+           
+            //add ViewContext for RequireActivityRights
+            ViewContextService.set(new ViewContextModel(organizations[0].databaseName));
+            console.log(this.currentDatabase);
         },
         methods: {
             goToLoginFront() {

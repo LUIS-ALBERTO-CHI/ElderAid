@@ -16,6 +16,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DbManager\**" />
+    <Content Remove="DbManager\**" />
+    <EmbeddedResource Remove="DbManager\**" />
+    <None Remove="DbManager\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="appsettings.Development.local.json" />
     <Content Remove="Html\Mail\_Layout.cshtml" />
   </ItemGroup>

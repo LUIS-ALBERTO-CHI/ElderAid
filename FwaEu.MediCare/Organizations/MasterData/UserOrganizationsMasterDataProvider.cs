@@ -22,7 +22,7 @@ namespace FwaEu.MediCare.Organizations.MasterData
         }
         protected override Expression<Func<OrganizationUserLinkEntity, UserOrganizationMasterDataModel>> CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => new UserOrganizationMasterDataModel(entity.Id, entity.Organization.InvariantId, entity.Organization.Name, entity.User.Id);
+            return entity => new UserOrganizationMasterDataModel(entity.Id, entity.Organization.InvariantId, entity.Organization.Name, entity.Organization.DatabaseName, entity.User.Id);
         }
         protected override Expression<Func<OrganizationUserLinkEntity, bool>> CreateSearchExpression(string search,
             CultureInfo userCulture, CultureInfo defaultCulture)
@@ -33,17 +33,19 @@ namespace FwaEu.MediCare.Organizations.MasterData
 
 	public class UserOrganizationMasterDataModel
     {
-		public UserOrganizationMasterDataModel(int id, string invariantId, string name, int userId)
+		public UserOrganizationMasterDataModel(int id, string invariantId, string name, string databaseName, int userId)
 		{
 			this.Id = id;
             this.InvariantId = invariantId;
 			this.Name = name;
+            this.DataBaseName = databaseName;
             this.UserId = userId;
         }
 
 		public int Id { get; }
 		public string InvariantId { get; }
         public string Name { get; }
+        public string DataBaseName { get; }
         public int UserId { get; }
     }
 }
