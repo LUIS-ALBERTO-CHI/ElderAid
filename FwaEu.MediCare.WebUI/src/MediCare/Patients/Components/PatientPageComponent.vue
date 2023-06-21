@@ -59,7 +59,7 @@
                 this.$router.push({ name: "StockConsumption" });
             },
             goToOrderOtherProductPage() {
-                // this.$router.push({ name: "OrderOtherProduct" });
+                this.$router.push({ name: "OrderOtherProduct" });
             }
         },
         computed: {

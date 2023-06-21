@@ -125,7 +125,7 @@
                 this.$router.push("/UserSettings")
             },
             goToOrdersPage() {
-                // this.$router.push("/Orders")
+                this.$router.push("/Orders")
             },
         },
     }
