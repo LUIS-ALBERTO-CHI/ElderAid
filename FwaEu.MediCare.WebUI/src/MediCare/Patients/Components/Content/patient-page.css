@@ -19,3 +19,16 @@
 .patient-info-item:hover {
     background-color: #e4e1e1;
 }
+
+
+.periodic-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.alert-periodic-icon {
+    color: #ff9900;
+    font-size: 22px;
+}

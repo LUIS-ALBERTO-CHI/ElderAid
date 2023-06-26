@@ -21,7 +21,14 @@
             <span>Consommation du stock pharmacie</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button @click="goToOrderOtherProductPage" style="margin-top: 20px;" label="Commander un autre produit" />
+        <div  class="patient-info-item">
+            <div class="periodic-container">
+                <i class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
+                <span>2 commandes périodiques à valider</span>
+            </div>
+            <i class="fa-regular fa-angle-right chevron-icon"></i>
+        </div>
+        <Button @click="goToOrderOtherProductPage" style="margin-top: 20px; width: 100%;" label="Commander un autre produit" />
     </div>
 </template>
 <!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->

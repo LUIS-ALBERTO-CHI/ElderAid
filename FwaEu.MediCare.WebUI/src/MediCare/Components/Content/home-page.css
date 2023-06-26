@@ -131,8 +131,6 @@
 }
 
 .vignette-item {
-  /* border: 1px solid var(--main-bg-color);
-   */
   border-radius: 16px;
   box-shadow: 0px 0px 5px 0px var(--primary-text-color);
   width: 100%;
@@ -176,6 +174,7 @@
   color: var(--primary-text-color);
 }
 
+/* TODO: Trouver un moyen de faire fonctionner les selecteur css dans les scoped css*/
 /* Ne fonctionne pas dans les autres fichier css ... */
 .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
   width: 25px;
