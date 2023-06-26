@@ -9,7 +9,7 @@
     flex-direction: column;
     color: var(--alt-secondary-text-color);
     text-decoration: none;
-    width: 90%;
+    width: 100%;
     row-gap: 5px;
     height: auto;
 }
@@ -22,12 +22,14 @@
 .header-title {
     font-size: 16px;
     font-weight: bold;
+    width: 90%;
 }
 
 .header-subtitle {
     font-size: 14px;
     opacity: 0.8;
     font-weight: 500;
+    width: 90%;
 }
 
 .accordion-content {
@@ -57,4 +59,15 @@
 .confirmation-button-container {
     display: flex;
     column-gap: 10px;
+}
+
+.accordion-top-area { 
+    min-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 10px;
+}
+
+.bag-icon {
+    font-size: 22px;
 }

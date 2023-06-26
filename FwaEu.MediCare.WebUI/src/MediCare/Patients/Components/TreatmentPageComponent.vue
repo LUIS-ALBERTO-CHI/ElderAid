@@ -6,9 +6,12 @@
                 <AccordionTab>
                     <template #header>
                         <div class="accordion-header">
-                            <span class="header-title">
-                                {{ treatment.medicationOrdered }}
-                            </span>
+                            <div class="accordion-top-area">
+                                <span class="header-title">
+                                    {{ treatment.medicationOrdered }}
+                                </span>
+                                <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
+                            </div>
                             <span class="header-subtitle">{{treatment.initialMedication}}</span>
                             <span class="header-subtitle">{{treatment.frequency}}</span>
                             <span class="header-subtitle">{{treatment.date}}</span>
@@ -55,13 +58,15 @@
                     medicationOrdered: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
                     initialMedication: "Jelonet gaze coton paraffinée 10x10cm bte 10pce",
                     frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023"
+                    date: "De 23/02/2023 à 30/05/2023",
+                    isBag: true
                 },
                 {
                     medicationOrdered: "ANTIDRY lotion huilde amande 500ml",
                     initialMedication: "ANTIDRY calm lotion 500ml",
                     frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023"
+                    date: "De 23/02/2023 à 30/05/2023",
+                    isBag: false
                 }],
                 showConfirmationIndex: -1
             };

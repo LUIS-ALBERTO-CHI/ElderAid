@@ -24,7 +24,7 @@
                 <Button @click="showConfirmation()" label="NON" outlined style="border: none !important; height: 30px !important;" />
             </div>
         </div>
-        <Button v-else @click="showConfirmation()" style="height: 35px !important;" label="Commander" />
+        <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
             <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="4 autres formats" icon="fa fa-solid fa-angle-right" iconPos="right"/>
             <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="8 substitutions"  icon="fa fa-solid fa-angle-right" iconPos="right"/>
@@ -67,6 +67,12 @@ import InputNumber from 'primevue/inputnumber';
             submitOrder() {
                 this.$emit('submitOrder', this.selectedQuantity);
                 this.showConfirmationDisplayed = false;
+            },
+            getQuantitySentance() {
+                if (this.selectedQuantity <= 1)
+                    return `Commander ${this.selectedQuantity} comprimé`
+                else
+                    return `Commander ${this.selectedQuantity} comprimés`
             }
         },
         watch: {
