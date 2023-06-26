@@ -1,70 +1,40 @@
-﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.Modules.MasterData;
-using System.Threading.Tasks;
+﻿using FwaEu.Modules.MasterData;
 using System;
-using System.Collections;
-using FwaEu.MediCare.Referencials.Services;
-using System.Collections.Generic;
-using System.Linq;
+using FwaEu.Fwamework.Globalization;
+using FwaEu.MediCare.GenericRepositorySession;
+using System.Globalization;
+using System.Linq.Expressions;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
-    public class BuildingMasterDataProvider : IMasterDataProvider
+    public class BuildingMasterDataProvider : EntityMasterDataProvider<BuildingEntity, int, BuildingEntityMasterDataModel, BuildingEntityRepository>
     {
-        public BuildingMasterDataProvider(ICurrentDateTime currentDateTime, IBuildingService buildingService)
+        public BuildingMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
-            _buildingService = buildingService ?? throw new ArgumentNullException(nameof(buildingService));
-            if (!_dateTimeNow.HasValue)
-            {
-                _dateTimeNow = currentDateTime.Now;
-            }
         }
 
-        private readonly IBuildingService _buildingService;
-        public Type IdType => typeof(string);
-        private static IEnumerable<BuildingEntity> _cachedBuildings;
-
-        private static DateTime? _dateTimeNow = null;
-
-        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+        protected override Expression<Func<BuildingEntity, BuildingEntityMasterDataModel>>
+            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            var count = (await GetAllBuildingsAsync()).Count();
-
-            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
+            return entity => new BuildingEntityMasterDataModel(entity.Id, entity.Name);
         }
 
-        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
+        protected override Expression<Func<BuildingEntity, bool>> CreateSearchExpression(string search,
+            CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            if (parameters.Search != null)
-            {
-                throw new NotSupportedException("Search is not supported by building master-data.");
-            }
+            return entity => entity.Name.Contains(search);
+        }
+    }
 
-            if (parameters.Pagination != null)
-            {
-                throw new NotSupportedException("Pagination is not supported by building master-data.");
-            }
-
-            if (parameters.OrderBy != null)
-            {
-                throw new NotSupportedException("OrderBy is not supported by building master-data.");
-            }
-            return await GetAllBuildingsAsync();
+    public class BuildingEntityMasterDataModel
+    {
+        public BuildingEntityMasterDataModel(int id, string name)
+        {
+            Id = id;
+            Name = name;
         }
 
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
-        {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
-        }
-
-        private async Task<IEnumerable<BuildingEntity>> GetAllBuildingsAsync()
-        {
-            if (_cachedBuildings == null)
-            {
-                _cachedBuildings = await _buildingService.GetAllAsync();
-            }
-
-            return _cachedBuildings;
-        }
+        public int Id { get; }
+        public string Name { get; }
     }
 }

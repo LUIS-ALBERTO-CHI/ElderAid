@@ -1,4 +1,5 @@
 using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.ViewContext.WebApi;
 using Microsoft.AspNetCore.Http;
@@ -26,15 +27,17 @@ namespace FwaEu.MediCare.ViewContext
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly MainSessionContext _sessionContext;
+        private readonly ICurrentUserService _currentUserService;
 
-		public HttpHeaderViewContextService(
+        public HttpHeaderViewContextService(
 			IHttpContextAccessor httpContextAccessor,
-			MainSessionContext sessionContext)
+			MainSessionContext sessionContext,
+            ICurrentUserService currentUserService)
 		{
 			this._httpContextAccessor = httpContextAccessor
 				?? throw new ArgumentNullException(nameof(httpContextAccessor));
-
-			this._sessionContext = sessionContext
+            this._currentUserService = currentUserService;
+            this._sessionContext = sessionContext
 				?? throw new ArgumentNullException(nameof(sessionContext));
 		}
 
@@ -57,16 +60,23 @@ namespace FwaEu.MediCare.ViewContext
 				{
 					if (apiModel.DatabaseName != null)
 					{
-                        var entity = await this._sessionContext.RepositorySession.Create<OrganizationUserLinkEntityRepository>().Query()
-									.FirstOrDefaultAsync( x => x.Organization.DatabaseName.Equals(apiModel.DatabaseName, StringComparison.InvariantCultureIgnoreCase));
-						if (entity != null)
+						if (this._currentUserService.User.Entity.IsAdmin)
 						{
-							this.Current = new ViewContextModel(entity.Organization.DatabaseName);
-						}
+                            this.Current = new ViewContextModel(apiModel.DatabaseName);
+                        }
 						else
-						{
-							return ViewContextLoadResult.OutOfPerimeter;
-						}
+                        {
+                            var entity = await this._sessionContext.RepositorySession.Create<OrganizationUserLinkEntityRepository>().Query()
+                                    .FirstOrDefaultAsync(x => x.Organization.DatabaseName.Equals(apiModel.DatabaseName, StringComparison.InvariantCultureIgnoreCase));
+                            if (entity != null)
+                            {
+                                this.Current = new ViewContextModel(entity.Organization.DatabaseName);
+                            }
+                            else
+                            {
+                                return ViewContextLoadResult.OutOfPerimeter;
+                            }
+                        }
 					}
 				}
 			}

@@ -1,18 +1,16 @@
-﻿
-using FluentNHibernate.Mapping;
+﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
-using FwaEu.Fwamework.Users;
+using FwaEu.Fwamework.Data.Database.Tracking;
 using System;
+using System.Linq;
 
 namespace FwaEu.MediCare.Patients
 {
-    public class PatientEntity 
+    public class PatientEntity : IUpdatedOnTracked
     {
         // NOTE: PAT KID PAtient
         public int Id { get; set; }
-
         public int? BuildingId { get; set; }
-
         public string FullName { get; set; }
 
         // NOTE: Location
@@ -20,7 +18,9 @@ namespace FwaEu.MediCare.Patients
         // NOTE: PAT Deleted
         public bool? IsActive { get; set; }
         // NOTE: PAT Created
-        public DateTime? UpdatedOn { get; set; }
+        public DateTime UpdatedOn { get { return _dateTime; } set { } }
+        private static DateTime _dateTime = DateTime.Now;
+        public bool IsNew() => Id == 0;
     }
 
 
@@ -38,11 +38,15 @@ namespace FwaEu.MediCare.Patients
             Map(entity => entity.FullName).Column("FullName");
             Map(entity => entity.RoomName).Column("RoomName");
             Map(entity => entity.IsActive).Column("IsActive");
-            Map(entity => entity.UpdatedOn).Column("UpdatedOn");
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
 
-    public class PatientEntityRepository : DefaultRepository<PatientEntity, int>
+    public class PatientEntityRepository : DefaultRepository<PatientEntity, int>, IQueryByIds<PatientEntity, int>
     {
+        public IQueryable<PatientEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

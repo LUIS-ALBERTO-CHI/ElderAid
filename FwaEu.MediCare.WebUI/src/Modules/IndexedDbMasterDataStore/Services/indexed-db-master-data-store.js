@@ -1,27 +1,19 @@
-import IndexedDbService from '@/Modules/IndexedDb/Services/indexed-db-service';
+import IndexedDbService from '@/Fwamework/IndexedDb/Services/indexed-db-service';
 import Store from '@/Fwamework/Storage/Services/abstract-store';
-
 
 
 const databaseVersion = 1;
 const databaseName = "masterData";
-const openMasterDataDataBaseAsync = async () => await IndexedDbService.openAsync(databaseName, databaseVersion, async (dbUpgrade, dbUpgradeEvent) => {
+const openMasterDataDataBaseAsync = async () => await IndexedDbService.openAsync(databaseName, databaseVersion, async dbUpgrade => {
 
 	const masterDataManager = (await import("@/Fwamework/MasterData/Services/master-data-manager-service"));
 	const masterDataManagerService = masterDataManager.default;
 	const getMasterDataChangeInfoKey = masterDataManager.getMasterDataChangeInfoKey;
 
 	masterDataManagerService._masterDataRegistry.forEach(md => {
-		const masterDataKey = md.configuration.masterDataKey;
-		if (!dbUpgrade.objectStoreNames.contains(masterDataKey)) {
-			console.warn(dbUpgrade);
-			console.warn(dbUpgradeEvent);
-			const objectStoreEvent = dbUpgradeEvent.createObjectStore('myObjectStore', { keyPath: 'id', autoIncrement: true });
-			console.log(objectStoreEvent);
-			const objectStore = dbUpgrade.createObjectStore('myObjectStore', { keyPath: 'id', autoIncrement: true });
-			console.log(objectStore);
-			//dbUpgrade.createObjectStore(masterDataKey, { keyPath: "__id", autoIncrement: true });
-			//dbUpgrade.createObjectStore(getMasterDataChangeInfoKey(masterDataKey), { keyPath: "__id", autoIncrement: true });
+		if (!dbUpgrade.objectStoreNames.contains(md.key)) {
+			dbUpgrade.createObjectStore(md.key, { keyPath: "__id", autoIncrement: true });
+			dbUpgrade.createObjectStore(getMasterDataChangeInfoKey(md.key), { keyPath: "__id", autoIncrement: true });
 		}
 	});
 });

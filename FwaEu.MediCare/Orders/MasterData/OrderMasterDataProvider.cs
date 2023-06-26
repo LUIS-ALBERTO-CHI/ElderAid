@@ -1,59 +1,60 @@
-﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.MediCare.Orders.Services;
-using FwaEu.MediCare.Patients.Services;
-using FwaEu.MediCare.Referencials.Services;
+﻿using FwaEu.Fwamework.Globalization;
+using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Modules.MasterData;
 using System;
 using System.Collections;
+using System.Globalization;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Orders.MasterData
 {
-    public class OrderMasterDataProvider : IMasterDataProvider
+
+    public class OrderMasterDataProvider : EntityMasterDataProvider<OrderEntity, int, OrderEntityMasterDataModel, OrderEntityRepository>
     {
-        public OrderMasterDataProvider(ICurrentDateTime currentDateTime, IOrderService orderService)
+        public OrderMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
-            _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
-            if (!_dateTimeNow.HasValue)
-            {
-                _dateTimeNow = currentDateTime.Now;
-            }
         }
 
-        private readonly IOrderService _orderService;
-        public Type IdType => typeof(string);
-
-        private static DateTime? _dateTimeNow = null;
-
-        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+        protected override Expression<Func<OrderEntity, OrderEntityMasterDataModel>>
+            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            var count = (await _orderService.GetAllAsync()).Count;
-
-            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
+            return entity => new OrderEntityMasterDataModel(entity.Id, entity.Type, entity.Title, entity.Price, entity.AmountRemains, entity.Unit, entity.IsFavorite, entity.Packaging, entity.ThumbnailURL, entity.ImageURLs, entity.AlternativePackagingCount, entity.SubstitutionsCount);
         }
 
-        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
+        protected override Expression<Func<OrderEntity, bool>> CreateSearchExpression(string search,
+            CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            if (parameters.Search != null)
-            {
-                throw new NotSupportedException("Search is not supported by building master-data.");
-            }
-
-            if (parameters.Pagination != null)
-            {
-                throw new NotSupportedException("Pagination is not supported by building master-data.");
-            }
-
-            if (parameters.OrderBy != null)
-            {
-                throw new NotSupportedException("OrderBy is not supported by building master-data.");
-            }
-            return await _orderService.GetAllAsync();
-        }
-
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
-        {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+            return entity => entity.Title.Contains(search);
         }
     }
+
+    public class OrderEntityMasterDataModel
+    {
+        public OrderEntityMasterDataModel(int id, int articleId, double quantity, int? patientId, OrderState state, string updatedBy, DateTime updatedOn)
+        {
+            Id = id;
+            ArticleId = articleId;
+            Quantity = quantity;
+            PatientId = patientId;
+            State = state;
+            UpdatedBy = updatedBy;
+            UpdatedOn = updatedOn;
+        }
+        public int Id { get; }
+        public OrderType Type { get; }
+        public string Title { get; set; }
+        public double Price { get; set; }
+        public double AmountRemains { get; set; }
+        public double Unit { get; set; }
+        public bool IsFavorite { get; set; }
+        public string Packaging { get; set; }
+        public string ThumbnailURL { get; set; }
+
+        public string ImageURLs { get; set; }
+
+        public int? AlternativePackagingCount { get; set; }
+        public int? SubstitutionsCount { get; set; }
+    }
+
 }

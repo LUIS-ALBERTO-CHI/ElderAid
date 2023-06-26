@@ -1,57 +1,64 @@
-﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.MediCare.Referencials.Services;
-using FwaEu.Modules.MasterData;
+﻿using FwaEu.Modules.MasterData;
 using System.Threading.Tasks;
 using System;
-using System.Collections;
+using FwaEu.Fwamework.Globalization;
+using FwaEu.MediCare.GenericRepositorySession;
+using System.Globalization;
+using System.Linq.Expressions;
+using Aspose.Cells.Charts;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
-    public class ArticleMasterDataProvider : IMasterDataProvider
+    public class ArticleMasterDataProvider : EntityMasterDataProvider<ArticleEntity, int, ArticleEntityMasterDataModel, ArticleEntityRepository>
     {
-        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, IArticleService articleService)
+        public ArticleMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
-            _articleService = articleService ?? throw new ArgumentNullException(nameof(articleService));
-            if (!_dateTimeNow.HasValue)
-            {
-                _dateTimeNow = currentDateTime.Now;
-            }
         }
 
-        private readonly IArticleService _articleService;
-        public Type IdType => typeof(string);
-
-        private static DateTime? _dateTimeNow = null;
-
-        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+        protected override Expression<Func<ArticleEntity, ArticleEntityMasterDataModel>>
+            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            var count = (await _articleService.GetAllAsync()).Count;
-
-            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
+            return entity => new ArticleEntityMasterDataModel(entity.Id, entity.Type, entity.Title, entity.Price, entity.AmountRemains, entity.Unit, entity.IsFavorite, entity.Packaging, entity.ThumbnailURL, entity.ImageURLs, entity.AlternativePackagingCount, entity.SubstitutionsCount);
         }
 
-        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
+        protected override Expression<Func<ArticleEntity, bool>> CreateSearchExpression(string search,
+            CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            if (parameters.Search != null)
-            {
-                throw new NotSupportedException("Search is not supported by building master-data.");
-            }
+            return entity => entity.Title.Contains(search);
+        }
+    }
 
-            if (parameters.Pagination != null)
-            {
-                throw new NotSupportedException("Pagination is not supported by building master-data.");
-            }
-
-            if (parameters.OrderBy != null)
-            {
-                throw new NotSupportedException("OrderBy is not supported by building master-data.");
-            }
-            return await _articleService.GetAllAsync();
+    public class ArticleEntityMasterDataModel
+    {
+        public ArticleEntityMasterDataModel(int id, ArticleType type, string title, double price, double amountRemains, double unit, bool isFavorite, string packaging, string thumbnailURL, string imageURLs, int? alternativePackagingCount, int? substitutionsCount)
+        {
+            Id = id;
+            Type = type;
+            Title = title;
+            Price = price;
+            AmountRemains = amountRemains;
+            Unit = unit;
+            IsFavorite = isFavorite;
+            Packaging = packaging;
+            ThumbnailURL = thumbnailURL;
+            ImageURLs = imageURLs;
+            AlternativePackagingCount = alternativePackagingCount;
+            SubstitutionsCount = substitutionsCount;
         }
 
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
-        {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
-        }
+        public int Id { get; }
+        public ArticleType Type { get; }
+        public string Title { get; set; }
+        public double Price { get; set; }
+        public double AmountRemains { get; set; }
+        public double Unit { get; set; }
+        public bool IsFavorite { get; set; }
+        public string Packaging { get; set; }
+        public string ThumbnailURL { get; set; }
+
+        public string ImageURLs { get; set; }
+
+        public int? AlternativePackagingCount { get; set; }
+        public int? SubstitutionsCount { get; set; }
     }
 }

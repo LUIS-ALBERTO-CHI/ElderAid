@@ -11,5 +11,6 @@ namespace FwaEu.MediCare.Stock
 
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
+        public bool IsNew() => Id == 0;
     }
 }

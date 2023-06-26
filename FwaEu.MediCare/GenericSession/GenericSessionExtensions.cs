@@ -7,7 +7,7 @@ namespace FwaEu.MediCare.GenericSession
     {
         public static IServiceCollection AddApplicationGenericSession(this IServiceCollection services)
         {
-            services.AddScoped<GenericSessionContext>();
+            services.AddTransient<GenericSessionContext>();
             return services;
         }
 

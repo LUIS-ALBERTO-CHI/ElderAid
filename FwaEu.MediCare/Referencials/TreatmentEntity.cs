@@ -1,6 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
-using FwaEu.MediCare.Patients;
+using FwaEu.Fwamework.Data.Database.Tracking;
 using System;
 
 namespace FwaEu.MediCare.Referencials
@@ -12,7 +12,7 @@ namespace FwaEu.MediCare.Referencials
         Erased = 2
     }
 
-    public class TreatmentEntity
+    public class TreatmentEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
         public TreatmentType Type { get; set; }
@@ -26,7 +26,9 @@ namespace FwaEu.MediCare.Referencials
 
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
-
+        public DateTime UpdatedOn { get { return _dateTime; } set { } }
+        private static DateTime _dateTime = DateTime.Now;
+        public bool IsNew() => Id == 0;
     }
 
     public class TreatmentEntityClassMap : ClassMap<TreatmentEntity>
@@ -48,8 +50,10 @@ namespace FwaEu.MediCare.Referencials
     }
 
 
-    public class TreatmentEntityRepository : DefaultRepository<TreatmentEntity, int>
+    public class TreatmentEntityRepository : DefaultRepository<TreatmentEntity, int>, IQueryByIds<TreatmentEntity, int>
     {
+        public System.Linq.IQueryable<TreatmentEntity> QueryByIds(int[] ids)
+    {
+        throw new NotImplementedException();
     }
-
 }

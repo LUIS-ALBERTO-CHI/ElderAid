@@ -19,9 +19,7 @@ export default {
 			request.onsuccess = () => resolve(request.result);
 			request.onupgradeneeded = async (event) => {
 				await upgradeDatabase(request.result, event.target.result);
-				debugger;
 				const db = await $this._internalOpenAsync(databaseName, databaseVersion, upgradeDatabase);
-				console.warn(db)
 				resolve(db);
 			};
 		});

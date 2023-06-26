@@ -3,7 +3,7 @@
         <div class="flex-section justify-content-center" v-if="isSingleOrganization">
             <span class="organization-text">Organisation 1</span>
         </div>
-        <Dropdown v-else v-model="selectedOrganization" :options="OrganizationsOptions" />
+        <Dropdown v-else v-model="selectedOrganization" :options="OrganizationsOptions" @change="refreshMasterDataByDatabaseInvariantId" />
         <div class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -60,6 +60,9 @@
     import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
     import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
     import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
+    
+
+    import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
 
     export default {
         inject: ["deviceInfo"],
@@ -91,22 +94,22 @@
         async created() {
             this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
 
-            // NOTE : To be removed
-            const buildings = await BuildingsMasterDataService.getAllAsync();
-            const patients = await PatientsMasterDataService.getAllAsync();
-            this.patientsActive = patients.filter(x => x.isActive);
-            // const orders = await OrdersMasterDataService.getAllAsync();
-            // const articles = await ArticlesMasterDataService.getAllAsync();
-            // console.log(articles);
-            // console.log(orders);
-            // console.log(buildings);
-            // console.log(patients);
+            // NOTE : organizations contient la liste de toutes les organisations existantes dans l'entité OrganizationEntity
+            // userOrganizations contient la liste de toutes les organizations qu'il ont été affecté a l'utilisateur courant
+            // Si l'utilisateur est admin on lui affiche la liste de toutes les organizations sinon on va lui afficher que ceux qu'il les appartient
             const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
             const organizations = await OrganizationsMasterDataService.getAllAsync();
-           
-            //add ViewContext for RequireActivityRights
-            ViewContextService.set(new ViewContextModel(organizations[0].databaseName));
-            console.log(this.currentDatabase);
+
+            //NOTE: Add an InvariantId database to the ViewContext
+            ViewContextService.set(new ViewContextModel("MEDICARE_EMS"));
+
+            //NOTE: Loading data only when the currentdatabase invariantId is avlaible
+            if (this.currentDatabase != null) {
+
+                const patients = await PatientsMasterDataService.getAllAsync();
+                console.log(patients[0]?.fullName);
+                this.patientsActive = patients.filter(x => x.isActive);
+            }
         },
         methods: {
             goToLoginFront() {
@@ -127,6 +130,18 @@
             goToOrdersPage() {
                 // this.$router.push("/Orders")
             },
+            async refreshMasterDataByDatabaseInvariantId(e) {
+
+                // NOTE : Update the ViewContext to save the selected database
+                ViewContextService.set(new ViewContextModel("MEDICARE_EMS2"));
+
+                // NOTE : refraichir toutes les masterdata
+                await MasterDataManagerService.clearCacheAsync();
+
+                // NOTE: Rafraîchir les
+                const patients = await PatientsMasterDataService.getAllAsync();
+                console.log(patients[0].fullName);
+            }
         },
     }
 </script>

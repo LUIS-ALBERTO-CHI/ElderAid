@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
+using FwaEu.Fwamework.Data.Database.Tracking;
 using System;
 
 namespace FwaEu.MediCare.Referencials
@@ -11,7 +12,7 @@ namespace FwaEu.MediCare.Referencials
         Protection = 2
     }
 
-    public class ArticleEntity
+    public class ArticleEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
 
@@ -28,8 +29,11 @@ namespace FwaEu.MediCare.Referencials
 
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
-
+        public DateTime UpdatedOn { get { return _dateTime; } set { } }
+        private static DateTime _dateTime = DateTime.Now;
+        public bool IsNew() => Id == 0;
     }
+
 
     public class ArticleEntityClassMap : ClassMap<ArticleEntity>
     {
@@ -49,13 +53,14 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.Packaging).Column("Contenant");
             Map(entity => entity.ThumbnailURL).Column("ThumbNailURL");
             Map(entity => entity.ImageURLs).Column("fullURLList");
-
         }
     }
 
-
-    public class ArticleEntityRepository : DefaultRepository<ArticleEntity, int>
+    public class ArticleEntityRepository : DefaultRepository<ArticleEntity, int>, IQueryByIds<ArticleEntity, int>
     {
+        public System.Linq.IQueryable<ArticleEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
-
 }
