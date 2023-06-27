@@ -62,6 +62,7 @@ using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.ViewContext;
 using FwaEu.MediCare.GenericSession;
+using FwaEu.MediCare.Authentication;
 
 namespace FwaEu.MediCare
 {
@@ -184,6 +185,7 @@ namespace FwaEu.MediCare
                 services.AddApplicationHtml();
 
                 services.AddApplicationViewContext();
+                services.AddApplicationAuthentication();
             }
         }
 
