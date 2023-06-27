@@ -45,7 +45,7 @@ namespace FwaEu.MediCare.Referencials
             Id(entity => entity.DateStart).Column("startDate");
             Id(entity => entity.DateEnd).Column("endDate");
             Id(entity => entity.Type).Column("state");
-
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
 
@@ -53,7 +53,8 @@ namespace FwaEu.MediCare.Referencials
     public class TreatmentEntityRepository : DefaultRepository<TreatmentEntity, int>, IQueryByIds<TreatmentEntity, int>
     {
         public System.Linq.IQueryable<TreatmentEntity> QueryByIds(int[] ids)
-    {
-        throw new NotImplementedException();
+        {
+            throw new NotImplementedException();
+        }
     }
 }

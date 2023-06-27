@@ -2,7 +2,7 @@
 
 namespace FwaEu.MediCare.Stock
 {
-    public class StockEntity
+    public class StockConsumptionEntity
     {
         public int Id { get; set; }
         public int ArticleId { get; set; }

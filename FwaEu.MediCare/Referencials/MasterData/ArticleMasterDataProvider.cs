@@ -1,64 +1,57 @@
-﻿using FwaEu.Modules.MasterData;
+﻿using FwaEu.Fwamework.Temporal;
+using FwaEu.MediCare.Referencials.Services;
+using FwaEu.Modules.MasterData;
 using System.Threading.Tasks;
 using System;
-using FwaEu.Fwamework.Globalization;
-using FwaEu.MediCare.GenericRepositorySession;
-using System.Globalization;
-using System.Linq.Expressions;
-using Aspose.Cells.Charts;
+using System.Collections;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
-    public class ArticleMasterDataProvider : EntityMasterDataProvider<ArticleEntity, int, ArticleEntityMasterDataModel, ArticleEntityRepository>
+    public class ArticleMasterDataProvider : IMasterDataProvider
     {
-        public ArticleMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
+        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, IArticleService articleService)
         {
+            _articleService = articleService ?? throw new ArgumentNullException(nameof(articleService));
+            if (!_dateTimeNow.HasValue)
+            {
+                _dateTimeNow = currentDateTime.Now;
+            }
         }
 
-        protected override Expression<Func<ArticleEntity, ArticleEntityMasterDataModel>>
-            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
+        private readonly IArticleService _articleService;
+        public Type IdType => typeof(string);
+
+        private static DateTime? _dateTimeNow = null;
+
+        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
         {
-            return entity => new ArticleEntityMasterDataModel(entity.Id, entity.Type, entity.Title, entity.Price, entity.AmountRemains, entity.Unit, entity.IsFavorite, entity.Packaging, entity.ThumbnailURL, entity.ImageURLs, entity.AlternativePackagingCount, entity.SubstitutionsCount);
+            var count = (await _articleService.GetAllAsync()).Count;
+
+            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
         }
 
-        protected override Expression<Func<ArticleEntity, bool>> CreateSearchExpression(string search,
-            CultureInfo userCulture, CultureInfo defaultCulture)
+        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
         {
-            return entity => entity.Title.Contains(search);
-        }
-    }
+            if (parameters.Search != null)
+            {
+                throw new NotSupportedException("Search is not supported by building master-data.");
+            }
 
-    public class ArticleEntityMasterDataModel
-    {
-        public ArticleEntityMasterDataModel(int id, ArticleType type, string title, double price, double amountRemains, double unit, bool isFavorite, string packaging, string thumbnailURL, string imageURLs, int? alternativePackagingCount, int? substitutionsCount)
-        {
-            Id = id;
-            Type = type;
-            Title = title;
-            Price = price;
-            AmountRemains = amountRemains;
-            Unit = unit;
-            IsFavorite = isFavorite;
-            Packaging = packaging;
-            ThumbnailURL = thumbnailURL;
-            ImageURLs = imageURLs;
-            AlternativePackagingCount = alternativePackagingCount;
-            SubstitutionsCount = substitutionsCount;
+            if (parameters.Pagination != null)
+            {
+                throw new NotSupportedException("Pagination is not supported by building master-data.");
+            }
+
+            if (parameters.OrderBy != null)
+            {
+                throw new NotSupportedException("OrderBy is not supported by building master-data.");
+            }
+            return await _articleService.GetAllAsync();
         }
 
-        public int Id { get; }
-        public ArticleType Type { get; }
-        public string Title { get; set; }
-        public double Price { get; set; }
-        public double AmountRemains { get; set; }
-        public double Unit { get; set; }
-        public bool IsFavorite { get; set; }
-        public string Packaging { get; set; }
-        public string ThumbnailURL { get; set; }
-
-        public string ImageURLs { get; set; }
-
-        public int? AlternativePackagingCount { get; set; }
-        public int? SubstitutionsCount { get; set; }
+        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
+        {
+            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+        }
     }
 }

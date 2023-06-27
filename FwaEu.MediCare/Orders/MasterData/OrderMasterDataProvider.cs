@@ -19,13 +19,8 @@ namespace FwaEu.MediCare.Orders.MasterData
         protected override Expression<Func<OrderEntity, OrderEntityMasterDataModel>>
             CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => new OrderEntityMasterDataModel(entity.Id, entity.Type, entity.Title, entity.Price, entity.AmountRemains, entity.Unit, entity.IsFavorite, entity.Packaging, entity.ThumbnailURL, entity.ImageURLs, entity.AlternativePackagingCount, entity.SubstitutionsCount);
-        }
-
-        protected override Expression<Func<OrderEntity, bool>> CreateSearchExpression(string search,
-            CultureInfo userCulture, CultureInfo defaultCulture)
-        {
-            return entity => entity.Title.Contains(search);
+            return entity => new OrderEntityMasterDataModel(entity.Id, entity.ArticleId, entity.Quantity, 
+                                                                  entity.PatientId, entity.State, entity.UpdatedBy, entity.UpdatedOn);
         }
     }
 
@@ -41,20 +36,15 @@ namespace FwaEu.MediCare.Orders.MasterData
             UpdatedBy = updatedBy;
             UpdatedOn = updatedOn;
         }
-        public int Id { get; }
-        public OrderType Type { get; }
-        public string Title { get; set; }
-        public double Price { get; set; }
-        public double AmountRemains { get; set; }
-        public double Unit { get; set; }
-        public bool IsFavorite { get; set; }
-        public string Packaging { get; set; }
-        public string ThumbnailURL { get; set; }
+        public int Id { get; set; }
 
-        public string ImageURLs { get; set; }
+        public int ArticleId { get; set; }
+        public double Quantity { get; set; }
+        public int? PatientId { get; set; }
+        public OrderState State { get; set; }
 
-        public int? AlternativePackagingCount { get; set; }
-        public int? SubstitutionsCount { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
     }
 
 }

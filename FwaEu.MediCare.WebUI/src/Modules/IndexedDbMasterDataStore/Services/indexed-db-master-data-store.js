@@ -1,4 +1,4 @@
-import IndexedDbService from '@/Fwamework/IndexedDb/Services/indexed-db-service';
+import IndexedDbService from '@/Modules/IndexedDb/Services/indexed-db-service';
 import Store from '@/Fwamework/Storage/Services/abstract-store';
 
 

@@ -1,60 +1,57 @@
-﻿using FwaEu.Modules.MasterData;
+﻿using FwaEu.Fwamework.Temporal;
+using FwaEu.MediCare.Referencials.Services;
+using FwaEu.Modules.MasterData;
 using System.Threading.Tasks;
 using System;
 using System.Collections;
-using FwaEu.Fwamework.Globalization;
-using FwaEu.MediCare.GenericRepositorySession;
-using System.Globalization;
-using System.Linq.Expressions;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
-
-    public class TreatmentMasterDataProvider : EntityMasterDataProvider<TreatmentEntity, int, TreatmentEntityMasterDataModel, TreatmentEntityRepository>
+    public class TreatmentMasterDataProvider : IMasterDataProvider
     {
-        public TreatmentMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
+        public TreatmentMasterDataProvider(ICurrentDateTime currentDateTime, ITreatmentService treatmentService)
         {
+            _treatmentService = treatmentService ?? throw new ArgumentNullException(nameof(treatmentService));
+            if (!_dateTimeNow.HasValue)
+            {
+                _dateTimeNow = currentDateTime.Now;
+            }
         }
 
-        protected override Expression<Func<TreatmentEntity, TreatmentEntityMasterDataModel>>
-            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
+        private readonly ITreatmentService _treatmentService;
+        public Type IdType => typeof(string);
+
+        private static DateTime? _dateTimeNow = null;
+
+        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
         {
-            return entity => new TreatmentEntityMasterDataModel(entity.Id, entity.Type, entity.ArticleType, entity.PrescribedArticleId, entity.AppliedArticleId, entity.DosageDescription, entity.DateStart, entity.DateEnd);
+            var count = (await _treatmentService.GetAllAsync()).Count;
+
+            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
         }
 
-        protected override Expression<Func<TreatmentEntity, bool>> CreateSearchExpression(string search,
-            CultureInfo userCulture, CultureInfo defaultCulture)
+        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
         {
-            return entity => entity.DosageDescription.Contains(search);
-        }
-    }
+            if (parameters.Search != null)
+            {
+                throw new NotSupportedException("Search is not supported by building master-data.");
+            }
 
-    public class TreatmentEntityMasterDataModel
-    {
-        public TreatmentEntityMasterDataModel(int id, TreatmentType type, ArticleType articleType, int prescribedArticleId, int appliedArticleId, string dosageDescription, DateTime? dateStart, DateTime? dateEnd)
-        {
-            Id = id;
-            Type = type;
-            ArticleType = articleType;
-            PrescribedArticleId = prescribedArticleId;
-            AppliedArticleId = appliedArticleId;
-            DosageDescription = dosageDescription;
-            DateStart = dateStart;
-            DateEnd = dateEnd;
+            if (parameters.Pagination != null)
+            {
+                throw new NotSupportedException("Pagination is not supported by building master-data.");
+            }
+
+            if (parameters.OrderBy != null)
+            {
+                throw new NotSupportedException("OrderBy is not supported by building master-data.");
+            }
+            return await _treatmentService.GetAllAsync();
         }
 
-        public int Id { get; set; }
-        public TreatmentType Type { get; set; }
-
-        public ArticleType ArticleType { get; set; }
-
-        public int PrescribedArticleId { get; set; }
-        public int AppliedArticleId { get; set; }
-
-        public string DosageDescription { get; set; }
-
-        public DateTime? DateStart { get; set; }
-        public DateTime? DateEnd { get; set; }
-
+        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
+        {
+            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+        }
     }
 }

@@ -5,9 +5,11 @@
                 <template #content-header>
                 </template>
                 <header class="app-header">
-                        <div class="main-header">
-                            <breadcrumbs v-show="isBreadcrumbsEnabled" />
-                        </div>
+                    <div class="main-header">
+                        <PublicHeaderToolbarComponent>
+                        </PublicHeaderToolbarComponent>
+                        
+                    </div>
                 </header>
                 <div class="home-content">
                     <router-view :key="$route.fullPath" />
@@ -22,12 +24,14 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
     const path = Configuration.application.publicUrl + Configuration.application.customResourcesPath;
     import DefaultPageLayout from '@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue';
-    import Breadcrumbs from "@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedComponent.vue";
     import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
 
     import "primevue/resources/themes/lara-light-indigo/theme.css";
     import "primevue/resources/primevue.min.css";
+
+    
+    import PublicHeaderToolbarComponent from "@/MediCare/Components/PublicHeaderToolbarComponent.vue";
 
     function getScreenSizeInfo() {
         const screenSizes = sizes();
@@ -80,9 +84,6 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
                 return {
                     '--bg-color': this.customBgColor
                 }
-            },
-            isBreadcrumbsEnabled() {
-                return this.$route.path !== '/Login';
             }
         },
         methods: {
@@ -120,7 +121,7 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
             unsubscribe(this.screenSizeChanged);
         },
         components: {
-            Breadcrumbs
+            PublicHeaderToolbarComponent
         }
     }
 </script>

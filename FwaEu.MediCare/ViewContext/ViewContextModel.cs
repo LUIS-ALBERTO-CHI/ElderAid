@@ -8,8 +8,9 @@ namespace FwaEu.MediCare.ViewContext
 
 		public ViewContextModel(string databaseName)
 		{
-			this.DatabaseName = databaseName;
-		}
+            this.DatabaseName = databaseName;
+
+        }
 
 		/// <summary>
 		/// Used by logs and also to convert view context to reporting parameters.
@@ -21,8 +22,8 @@ namespace FwaEu.MediCare.ViewContext
 			{
 				result = new Dictionary<string, object>()
 				{
-					{ "DatabaseName", this.DatabaseName }
-				};
+                    { "databaseName", this.DatabaseName }
+                };
 			}
 			return result;
 		}

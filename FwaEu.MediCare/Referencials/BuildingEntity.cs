@@ -27,6 +27,7 @@ namespace FwaEu.MediCare.Referencials
 
             Id(entity => entity.Id).Column("Id");
             Map(entity => entity.Name).Column("Name");
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
 

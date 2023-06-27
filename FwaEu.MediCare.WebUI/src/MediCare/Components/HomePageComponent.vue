@@ -85,9 +85,9 @@
                 OrganizationsOptions: ['Organisation 1', 'Organisation 2', 'Organisation 3'],
                 isSingleOrganization: false,
                 patientsActive: [],
-                currentDatabase: ViewContextService.get()?.databaseName,
+                currentDatabase: ViewContextService.get()?.id,
                 viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
-                    $this.currentDatabase = viewContext.databaseName;
+                    $this.currentDatabase = viewContext.id;
                 })
             };
         },
@@ -100,12 +100,10 @@
             const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
             const organizations = await OrganizationsMasterDataService.getAllAsync();
 
-            //NOTE: Add an InvariantId database to the ViewContext
-            ViewContextService.set(new ViewContextModel("MEDICARE_EMS"));
+            ViewContextService.set(new ViewContextModel(organizations[0]));
 
             //NOTE: Loading data only when the currentdatabase invariantId is avlaible
             if (this.currentDatabase != null) {
-
                 const patients = await PatientsMasterDataService.getAllAsync();
                 console.log(patients[0]?.fullName);
                 this.patientsActive = patients.filter(x => x.isActive);
@@ -131,17 +129,16 @@
                 // this.$router.push("/Orders")
             },
             async refreshMasterDataByDatabaseInvariantId(e) {
-
                 // NOTE : Update the ViewContext to save the selected database
-                ViewContextService.set(new ViewContextModel("MEDICARE_EMS2"));
+                const organizations = await OrganizationsMasterDataService.getAllAsync();
+                ViewContextService.set(new ViewContextModel( organizations[1]));
 
                 // NOTE : refraichir toutes les masterdata
                 await MasterDataManagerService.clearCacheAsync();
 
                 // NOTE: Rafraîchir les
                 const patients = await PatientsMasterDataService.getAllAsync();
-                console.log(patients[0].fullName);
             }
-        },
+        }
     }
 </script>

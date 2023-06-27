@@ -39,7 +39,7 @@ namespace FwaEu.MediCare.Referencials
     {
         public ArticleEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Articles");
+            Table("MDC_Articles");
 
             ReadOnly();
             Not.LazyLoad();

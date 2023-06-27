@@ -4,20 +4,20 @@ using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Orders.Services
+namespace FwaEu.MediCare.Referencials.Services
 {
-    public class OrderService : IOrderService
+    public class ArticleService : IArticleService
     {
         private readonly GenericSessionContext _sessionContext;
 
-        public OrderService(GenericSessionContext sessionContext)
+        public ArticleService(GenericSessionContext sessionContext)
         {
             _sessionContext = sessionContext;
         }
-        public async Task<List<OrderEntity>> GetAllAsync()
+        public async Task<List<ArticleEntity>> GetAllAsync()
         {
             var repository = _sessionContext.RepositorySession;
-            return await repository.Create<OrderEntityRepository>().Query().ToListAsync();
+            return await repository.Create<ArticleEntityRepository>().Query().ToListAsync();
         }
     }
 }
