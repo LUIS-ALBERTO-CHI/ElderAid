@@ -31,6 +31,7 @@ export default {
                 const indixedDbService = new OfflineDataSynchronizationService('orders');
                 const orders = await indixedDbService.readObjectStore();
                 await OrdersService.saveAsync(orders).then(async (result) => {
+
                     // Perform actions to notify your application about the online status
                     const indixedDbService = new OfflineDataSynchronizationService('orders');
                     await indixedDbService.clearObjectStore();

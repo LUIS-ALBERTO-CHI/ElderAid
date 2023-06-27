@@ -1,59 +1,50 @@
-﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.MediCare.Orders.Services;
-using FwaEu.MediCare.Patients.Services;
-using FwaEu.MediCare.Referencials.Services;
+﻿using FwaEu.Fwamework.Globalization;
+using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Modules.MasterData;
 using System;
 using System.Collections;
+using System.Globalization;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Orders.MasterData
 {
-    public class OrderMasterDataProvider : IMasterDataProvider
+
+    public class OrderMasterDataProvider : EntityMasterDataProvider<OrderEntity, int, OrderEntityMasterDataModel, OrderEntityRepository>
     {
-        public OrderMasterDataProvider(ICurrentDateTime currentDateTime, IOrderService orderService)
+        public OrderMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
-            _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
-            if (!_dateTimeNow.HasValue)
-            {
-                _dateTimeNow = currentDateTime.Now;
-            }
         }
 
-        private readonly IOrderService _orderService;
-        public Type IdType => typeof(string);
-
-        private static DateTime? _dateTimeNow = null;
-
-        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+        protected override Expression<Func<OrderEntity, OrderEntityMasterDataModel>>
+            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            var count = (await _orderService.GetAllAsync()).Count;
-
-            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
-        }
-
-        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
-        {
-            if (parameters.Search != null)
-            {
-                throw new NotSupportedException("Search is not supported by building master-data.");
-            }
-
-            if (parameters.Pagination != null)
-            {
-                throw new NotSupportedException("Pagination is not supported by building master-data.");
-            }
-
-            if (parameters.OrderBy != null)
-            {
-                throw new NotSupportedException("OrderBy is not supported by building master-data.");
-            }
-            return await _orderService.GetAllAsync();
-        }
-
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
-        {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+            return entity => new OrderEntityMasterDataModel(entity.Id, entity.ArticleId, entity.Quantity, 
+                                                                  entity.PatientId, entity.State, entity.UpdatedBy, entity.UpdatedOn);
         }
     }
+
+    public class OrderEntityMasterDataModel
+    {
+        public OrderEntityMasterDataModel(int id, int articleId, double quantity, int? patientId, OrderState state, string updatedBy, DateTime updatedOn)
+        {
+            Id = id;
+            ArticleId = articleId;
+            Quantity = quantity;
+            PatientId = patientId;
+            State = state;
+            UpdatedBy = updatedBy;
+            UpdatedOn = updatedOn;
+        }
+        public int Id { get; set; }
+
+        public int ArticleId { get; set; }
+        public double Quantity { get; set; }
+        public int? PatientId { get; set; }
+        public OrderState State { get; set; }
+
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
+    }
+
 }

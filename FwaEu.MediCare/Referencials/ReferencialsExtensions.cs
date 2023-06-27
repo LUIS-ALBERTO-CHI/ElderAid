@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using FwaEu.MediCare.Referencials.Services;
 using FwaEu.Modules.MasterData;
 using FwaEu.MediCare.Referencials.MasterData;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework;
+using FwaEu.MediCare.Referencials.Services;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -13,10 +13,9 @@ namespace FwaEu.MediCare.Referencials
         {
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<BuildingEntityRepository>();
-            services.AddTransient<IBuildingService, BuildingService>();
 
             repositoryRegister.Add<ArticleEntityRepository>();
-            services.AddTransient<IArticleService,  ArticleService>();
+            services.AddTransient<IArticleService, ArticleService>();
 
             repositoryRegister.Add<TreatmentEntityRepository>();
             services.AddTransient<ITreatmentService, TreatmentService>();

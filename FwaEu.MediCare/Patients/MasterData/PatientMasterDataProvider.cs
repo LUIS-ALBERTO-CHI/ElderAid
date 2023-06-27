@@ -1,70 +1,48 @@
-﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.Modules.MasterData;
-using System.Threading.Tasks;
+﻿using FwaEu.Modules.MasterData;
 using System;
-using System.Collections;
-using FwaEu.MediCare.Patients.Services;
-using System.Collections.Generic;
-using System.Linq;
+using FwaEu.Fwamework.Globalization;
+using System.Globalization;
+using System.Linq.Expressions;
+using FwaEu.MediCare.GenericRepositorySession;
 
 namespace FwaEu.MediCare.Patients.MasterData
 {
-    public class PatientMasterDataProvider : IMasterDataProvider
+    public class PatientMasterDataProvider : EntityMasterDataProvider<PatientEntity, int, PatientEntityMasterDataModel, PatientEntityRepository>
     {
-        public PatientMasterDataProvider(ICurrentDateTime currentDateTime, IPatientService patientService)
+        public PatientMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
-            _patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
-            if (!_dateTimeNow.HasValue)
-            {
-                _dateTimeNow = currentDateTime.Now;
-            }
         }
 
-        private readonly IPatientService _patientService;
-        public Type IdType => typeof(string);
-
-        private static DateTime? _dateTimeNow = null;
-        private static IEnumerable<PatientEntity> _cachedPatients;
-
-        public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+        protected override Expression<Func<PatientEntity, PatientEntityMasterDataModel>>
+            CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            var count = (await GetAllPatientsAsync()).Count();
-
-            return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
+            return entity => new PatientEntityMasterDataModel(entity.Id, entity.BuildingId, entity.FullName, entity.RoomName, entity.IsActive, entity.UpdatedOn);
         }
 
-        public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)
+        protected override Expression<Func<PatientEntity, bool>> CreateSearchExpression(string search,
+            CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            if (parameters.Search != null)
-            {
-                throw new NotSupportedException("Search is not supported by building master-data.");
-            }
+            return entity => entity.FullName.Contains(search);
+        }
+    }
 
-            if (parameters.Pagination != null)
-            {
-                throw new NotSupportedException("Pagination is not supported by building master-data.");
-            }
-
-            if (parameters.OrderBy != null)
-            {
-                throw new NotSupportedException("OrderBy is not supported by building master-data.");
-            }
-            return await GetAllPatientsAsync();
+    public class PatientEntityMasterDataModel
+    {
+        public PatientEntityMasterDataModel(int id, int? buildingId, string fullName, string roomName, bool? isActive, DateTime? updatedOn)
+        {
+            Id = id;
+            BuildingId = buildingId;
+            FullName = fullName;
+            RoomName = roomName;
+            IsActive = isActive;
+            UpdatedOn = updatedOn;
         }
 
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
-        {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
-        }
-
-        private async Task<IEnumerable<PatientEntity>> GetAllPatientsAsync()
-        {
-            if (_cachedPatients == null)
-            {
-                _cachedPatients = await _patientService.GetAllAsync();
-            }
-
-            return _cachedPatients;
-        }
+        public int Id { get; }
+        public int? BuildingId { get; }
+        public string FullName { get; }
+        public string RoomName { get; }
+        public bool? IsActive { get; }
+        public DateTime? UpdatedOn { get; }
     }
 }

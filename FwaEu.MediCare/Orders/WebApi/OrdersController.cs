@@ -1,5 +1,4 @@
 ﻿using FwaEu.Fwamework.Data;
-using FwaEu.MediCare.Referencials.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

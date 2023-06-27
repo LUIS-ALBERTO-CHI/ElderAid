@@ -1,7 +1,8 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
-
+using FwaEu.Fwamework.Data.Database.Tracking;
 using System;
+using System.Linq;
 
 namespace FwaEu.MediCare.Orders
 {
@@ -13,7 +14,7 @@ namespace FwaEu.MediCare.Orders
     }
 
 
-    public class OrderEntity
+    public class OrderEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
 
@@ -24,11 +25,7 @@ namespace FwaEu.MediCare.Orders
 
         public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
-
-        public bool IsNew()
-        {
-            return Id == 0;
-        }
+        public bool IsNew() => Id == 0;
     }
 
     public class OrderEntityClassMap : ClassMap<OrderEntity>
@@ -51,8 +48,11 @@ namespace FwaEu.MediCare.Orders
         }
     }
 
-    public class OrderEntityRepository : DefaultRepository<OrderEntity, int>
+    public class OrderEntityRepository : DefaultRepository<OrderEntity, int>, IQueryByIds<OrderEntity, int>
     {
+        public IQueryable<OrderEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
-
 }

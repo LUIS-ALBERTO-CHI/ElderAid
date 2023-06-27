@@ -11,11 +11,8 @@ namespace FwaEu.MediCare.Referencials
 
         public string Name { get; set; }
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
-        private static DateTime _dateTime= DateTime.Now;
-        public bool IsNew()
-        {
-            throw new NotImplementedException();
-        }
+        private static DateTime _dateTime = DateTime.Now;
+        public bool IsNew() => Id == 0;
     }
 
     public class BuildingEntityClassMap : ClassMap<BuildingEntity>
@@ -30,6 +27,7 @@ namespace FwaEu.MediCare.Referencials
 
             Id(entity => entity.Id).Column("Id");
             Map(entity => entity.Name).Column("Name");
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
 

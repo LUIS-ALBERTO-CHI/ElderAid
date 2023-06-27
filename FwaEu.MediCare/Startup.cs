@@ -11,7 +11,6 @@ using FwaEu.Fwamework.Data.Database.Nhibernate;
 using FwaEu.MediCare.Initialization;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Temporal;
-using Microsoft.Extensions.Hosting;
 using FwaEu.Fwamework.DependencyInjection;
 using FwaEu.Fwamework.Permissions;
 using FwaEu.Fwamework;
@@ -60,7 +59,6 @@ using FwaEu.MediCare.MappingTransformer;
 using FwaEu.MediCare.Patients;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Referencials;
-using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.ViewContext;
 using FwaEu.MediCare.GenericSession;
@@ -178,7 +176,6 @@ namespace FwaEu.MediCare
 
                 services.AddApplicationOrganizations(context);
                 services.AddApplicationGenericSession();
-                services.AddApplicationGenericRepositorySession();
                 services.AddApplicationMappingTransformer();
                 services.AddApplicationReferencials(context);
                 services.AddApplicationPatients(context);
@@ -225,15 +222,15 @@ namespace FwaEu.MediCare
                 .AllowAnyHeader()
                 .AllowCredentials());
 
-            application.UseRouting();
             application.UseAuthentication();
+            application.UseRouting();
+            application.UseAuthorization();
 
             application.UseWhen(IsNotSetupRoute, application => application
                     .UseFwameworkCurrentUser()
             );
 
-
-            application.UseAuthorization();
+            application.UseApplicationViewContext();
 
             application.UseEndpoints(endpoints =>
             {

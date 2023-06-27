@@ -1,5 +1,5 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
-using FwaEu.MediCare.MappingTransformer;
+using FwaEu.MediCare.GenericRepositorySession;
 using NHibernate.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,9 +8,9 @@ namespace FwaEu.MediCare.Referencials.Services
 {
     public class ArticleService : IArticleService
     {
-        private readonly MainSessionContext _sessionContext;
+        private readonly GenericSessionContext _sessionContext;
 
-        public ArticleService(MainSessionContext sessionContext, IMappingTransformer databaseMappingTransformer)
+        public ArticleService(GenericSessionContext sessionContext)
         {
             _sessionContext = sessionContext;
         }

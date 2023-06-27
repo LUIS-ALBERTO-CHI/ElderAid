@@ -1,0 +1,64 @@
+<template>
+	<vue-use-online>
+	</vue-use-online>
+	<breadcrumbs v-show="isBreadcrumbsEnabled" />
+</template>
+
+<script>
+	import Breadcrumbs from "@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedComponent.vue";
+
+	import VueUseOnline from "@/Fwamework/OnlineStatus/Components/OnlineStatusIndicator.vue";
+	import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchronization/Services/indexed-db-service";
+
+    import OrdersService from '@/MediCare/Orders/Services/orders-service';
+
+	export default {
+		components: {
+			Breadcrumbs,
+			VueUseOnline
+		},
+		data() {
+			return {
+				isOnline: OnlineService.isOnline()
+			};
+		},
+		async created() {
+		},
+        async mounted() {
+            OnlineService.onOnline(this.handleOnlineEventAsync);
+            OnlineService.onOffline(this.handleOfflineEvent);
+        },
+		methods: {
+            async handleOnlineEventAsync() {
+                console.log('Internet is online. Notifying application...');
+                const indixedDbService = new OfflineDataSynchronizationService('orders');
+				const orders = await indixedDbService.readObjectStore();
+				if (orders.length > 0)
+					await OrdersService.saveAsync(orders).then(async (result) => {
+
+						// Perform actions to notify your application about the online status
+						const indixedDbService = new OfflineDataSynchronizationService('orders');
+						await indixedDbService.clearObjectStore();
+
+					});
+
+            },
+            handleOfflineEvent() {
+                console.log('Internet is offline');
+            }
+		},
+		computed: {
+			isBreadcrumbsEnabled() {
+				return this.$route.path !== '/Login';
+			},
+		},
+		watch: {
+
+			isOnline() {
+				console.log("here");
+			}
+
+		}
+	}
+</script>

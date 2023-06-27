@@ -55,7 +55,7 @@ import { ReferencialsModule } from "@/MediCare/Referencials/referencials-module"
 import { PatientsModule } from "@/MediCare/Patients/patients-module";
 import { OrdersModule } from "@/MediCare/Orders/orders-module";
 
-
+import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
 
 import PrimeVue from 'primevue/config';
 
@@ -112,6 +112,7 @@ const application = new Application(IndexApp)
 			}
 		}
 	))
+	.useModule(new OnlineStatusModule())
 	.useModule(new UtilsModule());
 
 application.vueApp.use(PrimeVue);

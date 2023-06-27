@@ -1,7 +1,7 @@
 <template>
 	<footer class="footer">
 		<div>
-			<internetStatus />
+			<!--<internetStatus />-->
 			<a v-if="!showLogoutLink" class="connexion-container" @click="goToLoginFront">Se connecter</a>
 			<a v-else class="connexion-container" @click="logoutAsync">Se déconnecter</a>
 			{{ getVersionLabel() }}
@@ -28,12 +28,12 @@
 	import UserService from '@/Fwamework/Users/Services/user-service';
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 
-	import InternetStatus from "@/MediCare/OfflineDataSynchronization/Components/InternetStatusComponent.vue";
+	//import InternetStatus from "@/MediCare/OfflineDataSynchronization/Components/InternetStatusComponent.vue";
 
 	export default {
-        components: {
-            InternetStatus
-        },
+        //components: {
+        //    InternetStatus
+        //},
 		mixins: [LocalizationMixing],
 		i18n: {
 			messages: {

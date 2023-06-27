@@ -15,6 +15,10 @@ namespace FwaEu.MediCare.GenericRepositorySession
             IServiceProvider serviceProvider)
             : base(repositorySessionFactory, serviceProvider)
         {
+            var contextService = serviceProvider.GetRequiredService<IViewContextService>();
+            var databaseName = contextService.Current?.DatabaseName;
+            if(databaseName != null)
+                NhibernateSession.Connection.ChangeDatabase(databaseName);
         }
 
         protected override CreateSessionOptions GetCreateSessionOptions()

@@ -8,8 +8,14 @@ const viewContextChangedEmitter = new AsyncEventEmitter();
 
 export class ViewContextModel {
 
-	constructor(databaseName) {
-		this.databaseName = databaseName;
+	constructor(organization) {
+		this.id = organization.id;
+		this.name = organization.name;
+		this.orderPeriodicityDays = organization.orderPeriodicityDays;
+		this.orderPeriodicityDayOfWeek = organization.orderPeriodicityDayOfWeek;
+		this.lastPeriodicityOrder = organization.lastPeriodicityOrder;
+		this.periodicityOrderActivationDaysNumber = organization.periodicityOrderActivationDaysNumber;
+		this.isStockPharmacyPerBox = organization.isStockPharmacyPerBox;
 	}
 
 	databaseName = null
