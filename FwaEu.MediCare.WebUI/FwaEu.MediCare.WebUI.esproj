@@ -10,21 +10,4 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="src\Modules\DatePicker\" />
-    <Folder Include="src\Modules\PersistentNotifications\Components\Content\" />
-    <Folder Include="src\Modules\PersistentNotifications\Services\" />
-    <Folder Include="src\Modules\UserNotifications\Services\" />
-    <Folder Include="src\Modules\UserPerimeter\Components\Content\" />
-    <Folder Include="src\Modules\UserPerimeter\Content\" />
-    <Folder Include="src\Modules\UserPerimeter\Services\" />
-    <Folder Include="src\Modules\UserReport\Services\" />
-    <Folder Include="src\Modules\UserTasksList\Components\" />
-    <Folder Include="src\Modules\UserTasksList\Content\" />
-    <Folder Include="src\Modules\UserTasksList\Services\" />
-    <Folder Include="src\Modules\UserTasksNavigationMenu\Services\" />
-    <Folder Include="src\Modules\UserTasksNotification\Service\" />
-    <Folder Include="src\Modules\UserTasksUserNotifications\" />
-    <Folder Include="src\Modules\UserTasks\Services\" />
-  </ItemGroup>
 </Project>
