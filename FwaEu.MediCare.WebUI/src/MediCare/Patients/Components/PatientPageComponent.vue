@@ -9,7 +9,7 @@
             <span>4 matériels de soin</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div @click="goToTreatmentPage" class="patient-info-item">
+        <div @click="goToProtectionPage" class="patient-info-item">
             <span>2 protections</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -67,6 +67,9 @@
             },
             goToOrderOtherProductPage() {
                 this.$router.push({ name: "OrderOtherProduct" });
+            },
+            goToProtectionPage() {
+                this.$router.push({ name: "Protection" });
             }
         },
         computed: {
