@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.Development.Default.Local.json" />
+    <Content Remove="appsettings.Development.Local.json" />
     <Content Remove="Html\Mail\_Layout.cshtml" />
   </ItemGroup>
 
@@ -67,7 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appsettings.Development.Default.Local.json" />
+    <None Include="appsettings.Development.Local.json" />
   </ItemGroup>
 
   <ItemGroup>
