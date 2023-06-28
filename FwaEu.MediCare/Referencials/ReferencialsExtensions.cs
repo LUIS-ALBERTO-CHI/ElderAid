@@ -17,12 +17,16 @@ namespace FwaEu.MediCare.Referencials
             repositoryRegister.Add<ArticleEntityRepository>();
             services.AddTransient<IArticleService, ArticleService>();
 
+            repositoryRegister.Add<DosageFormEntityRepository>();
+            services.AddTransient<IDosageFormService, DosageFormService>();
+
             repositoryRegister.Add<TreatmentEntityRepository>();
             services.AddTransient<ITreatmentService, TreatmentService>();
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
             services.AddMasterDataProvider<ArticleMasterDataProvider>("Articles");
             services.AddMasterDataProvider<TreatmentMasterDataProvider>("Treatments");
+            services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
 
 
 
