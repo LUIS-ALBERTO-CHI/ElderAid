@@ -1,4 +1,3 @@
-using FwaEu.MediCare.Permissions.ByIsAdmin;
 using FwaEu.Fwamework.Permissions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
