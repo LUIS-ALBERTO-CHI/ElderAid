@@ -87,7 +87,7 @@ import InputNumber from 'primevue/inputnumber';
 
     }
 </script>
-<style type="text/css">
+<style scoped type="text/css">
 .order-container {
     display: flex;
     flex-direction: column;
@@ -119,6 +119,5 @@ import InputNumber from 'primevue/inputnumber';
 }
 .alert-container {
     color: #f44538;
-
 }
 </style>

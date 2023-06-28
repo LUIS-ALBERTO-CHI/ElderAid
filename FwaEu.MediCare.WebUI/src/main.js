@@ -33,8 +33,7 @@ import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
-import IndexedDbMasterDataStore from "@/Modules/IndexedDbMasterDataStore/Services/indexed-db-master-data-store"
-import { PermissionsByIsAdminModule } from "@/MediCare/PermissionsByIsAdmin/permissions-by-is-admin-module";
+import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
 
 import { UserSettingsModule } from "@/Fwamework/UserSettings/user-settings-module";
 import { UsersMasterDataModule } from "@/Modules/UserMasterData/users-master-data-module";
@@ -105,7 +104,7 @@ const application = new Application(IndexApp)
 	.useModule(new PatientsModule())
 	.useModule(new OrdersModule())
 	
-	.useModule(new PermissionsByIsAdminModule())
+	.useModule(new PermissionsByRoleModule())
 	.useModule(new RoutingModule({
 			routerOptions: {
 				routes: AppRoutes

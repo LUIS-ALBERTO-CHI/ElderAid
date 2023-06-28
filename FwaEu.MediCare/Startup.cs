@@ -54,7 +54,6 @@ using FwaEu.Modules.Authentication.JsonWebToken;
 
 using FwaEu.Fwamework.Mail;
 using FwaEu.MediCare.Users;
-using FwaEu.MediCare.Permissions;
 using FwaEu.MediCare.MappingTransformer;
 using FwaEu.MediCare.Patients;
 using FwaEu.MediCare.Orders;
@@ -62,6 +61,8 @@ using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.ViewContext;
 using FwaEu.MediCare.GenericSession;
+using FwaEu.Modules.Permissions.ByRole;
+using FwaEu.MediCare.Authentication;
 
 namespace FwaEu.MediCare
 {
@@ -161,7 +162,7 @@ namespace FwaEu.MediCare
 				services.AddFwameworkModuleNHibernateLogging(context);
                 services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
 
-                services.AddApplicationPermissionsByIsAdmin();
+                services.AddFwameworkModulePermissionsByRole(context);
                 services.AddMasterDataPermissions();
 
                 services.AddApplicationInformation(context);
@@ -184,6 +185,7 @@ namespace FwaEu.MediCare
                 services.AddApplicationHtml();
 
                 services.AddApplicationViewContext();
+                services.AddApplicationAuthentication();
             }
         }
 

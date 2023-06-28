@@ -37,7 +37,7 @@ import { ViewContextModule } from "@/MediCare/ViewContext/view-context-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
-import { PermissionsByIsAdminModule } from "@/MediCare/PermissionsByIsAdmin/permissions-by-is-admin-module";
+import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
 
 import { UserSettingsModule } from "@/Fwamework/UserSettings/user-settings-module";
 import DefaultAuthenticationHandler from "@/Modules/DefaultAuthentication/Services/default-authentication-handler";
@@ -95,7 +95,7 @@ const application = new Application(App)
 	.useModule(new ApplicationUsersModule())
 	.useModule(new ApplicationCultureModule())
 	.useModule(new ViewContextModule())
-	.useModule(new PermissionsByIsAdminModule())
+	.useModule(new PermissionsByRoleModule())
 	.useModule(new RoutingModule({
 		routerOptions: {
 			routes: AdminRoutes

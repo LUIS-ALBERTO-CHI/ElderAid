@@ -6,6 +6,8 @@ const StockConsumptionPageComponent = () => import('@/MediCare/Patients/Componen
 const OrderOtherProductPageComponent = () => import('@/MediCare/Patients/Components/OrderOtherProductPageComponent.vue');
 const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
+const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
+
 
 
 export default [
@@ -96,5 +98,16 @@ export default [
 				parentName: 'Patient'
 			},
 		}
-	}
+	},
+	{
+		path: '/Protection',
+		name: 'Protection',
+		component: ProtectionPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Protections',
+				parentName: 'Patient'
+			},
+		}
+	},
 ];
