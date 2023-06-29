@@ -23,11 +23,14 @@ namespace FwaEu.MediCare.Referencials
             services.AddTransient<ITreatmentService, TreatmentService>();
 
             repositoryRegister.Add<DosageFormEntityRepository>();
+
+            repositoryRegister.Add<CabinetEntityRepository>();
             
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
             services.AddMasterDataProvider<ArticleMasterDataProvider>("Articles");
             services.AddMasterDataProvider<TreatmentMasterDataProvider>("Treatments");
             services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
+            services.AddMasterDataProvider<CabinetMasterDataProvider>("Cabinets");
 
             services.AddTransient<IGenericAdminModelConfiguration, DosageFormEntityToModelGenericAdminModelConfiguration>();
 
