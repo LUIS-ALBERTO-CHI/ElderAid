@@ -54,7 +54,6 @@ using FwaEu.Modules.Authentication.JsonWebToken;
 
 using FwaEu.Fwamework.Mail;
 using FwaEu.MediCare.Users;
-using FwaEu.MediCare.MappingTransformer;
 using FwaEu.MediCare.Patients;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Referencials;
@@ -63,6 +62,7 @@ using FwaEu.MediCare.ViewContext;
 using FwaEu.MediCare.GenericSession;
 using FwaEu.Modules.Permissions.ByRole;
 using FwaEu.MediCare.Authentication;
+using FwaEu.MediCare.Stock;
 
 namespace FwaEu.MediCare
 {
@@ -177,10 +177,10 @@ namespace FwaEu.MediCare
 
                 services.AddApplicationOrganizations(context);
                 services.AddApplicationGenericSession();
-                services.AddApplicationMappingTransformer();
                 services.AddApplicationReferencials(context);
                 services.AddApplicationPatients(context);
                 services.AddApplicationOrders(context);
+                services.AddApplicationStock(context);
 
                 services.AddApplicationHtml();
 

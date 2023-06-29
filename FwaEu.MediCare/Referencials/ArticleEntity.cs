@@ -16,12 +16,15 @@ namespace FwaEu.MediCare.Referencials
     {
         public int Id { get; set; }
 
-        public ArticleType Type { get; set; }
+        public ArticleType ArticleType { get; set; }
         public string Title { get; set; }
+        public string GroupName { get; set; }
         public double Price { get; set; }
-        public double AmountRemains { get; set; }
-        public double Unit { get; set; }
-        public bool IsFavorite { get; set; }
+        public double? AmountRemains { get; set; }
+        public double CountInBox { get; set; }
+        public string Unit { get; set; }
+        public string InvoicingUnit { get; set; }
+        public bool? IsFavorite { get; set; }
         public string Packaging { get; set; }
         public string ThumbnailURL { get; set; }
 
@@ -46,13 +49,16 @@ namespace FwaEu.MediCare.Referencials
             SchemaAction.None();
 
             Id(entity => entity.Id).Column("Id");
-            Map(entity => entity.Title).Column("Name");
+            Map(entity => entity.Title).Column("Title");
             Map(entity => entity.Price).Column("Price");
-            Map(entity => entity.Type).Column("family");
+            Map(entity => entity.ArticleType).Column("Type");
             Map(entity => entity.AmountRemains).Column("LeftAtCharge");
-            Map(entity => entity.Packaging).Column("Contenant");
-            Map(entity => entity.ThumbnailURL).Column("ThumbNailURL");
-            Map(entity => entity.ImageURLs).Column("fullURLList");
+            Map(entity => entity.CountInBox).Column("CountInBox");
+            Map(entity => entity.Unit).Column("Unit");
+            Map(entity => entity.InvoicingUnit).Column("InvoicingUnit");
+            Map(entity => entity.Packaging).Column("Packaging");
+            Map(entity => entity.ThumbnailURL).Column("ThumbnailURL");
+            Map(entity => entity.ImageURLs).Column("ImageURLs");
         }
     }
 
