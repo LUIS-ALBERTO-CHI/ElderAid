@@ -115,4 +115,10 @@ const application = new Application(IndexApp)
 	.useModule(new UtilsModule());
 
 application.vueApp.use(PrimeVue);
+
+
+//NOTE: To make works chartjs-plugin-datalabels you need to register it globally i didn't find a better way to do it
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart } from 'chart.js';
+Chart.register(ChartDataLabels);
 application.mountAsync("#app");

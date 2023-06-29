@@ -7,6 +7,7 @@ const OrderOtherProductPageComponent = () => import('@/MediCare/Patients/Compone
 const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
 const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
+const IncontinenceLevelPageComponent = () => import('@/MediCare/Patients/Components/IncontinenceLevelPageComponent.vue');
 
 
 
@@ -107,6 +108,17 @@ export default [
 			breadcrumb: {
 				titleKey: 'Protections',
 				parentName: 'Patient'
+			},
+		}
+	},
+	{
+		path: '/IncontinenceLevel',
+		name: 'IncontinenceLevel',
+		component: IncontinenceLevelPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Niveau d\'incontinence',
+				parentName: 'Protection'
 			},
 		}
 	},
