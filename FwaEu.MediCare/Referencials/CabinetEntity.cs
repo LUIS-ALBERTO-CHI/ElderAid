@@ -37,7 +37,7 @@ namespace FwaEu.MediCare.Referencials
     {
         public System.Linq.IQueryable<CabinetEntity> QueryByIds(int[] ids)
         {
-            throw new NotImplementedException();
+            return this.Query().Where(entity => ids.Contains(entity.Id));
         }
     }
 }
