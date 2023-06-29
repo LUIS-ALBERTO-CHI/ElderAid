@@ -2,3 +2,6 @@
 /bin
 *.Local.json
 _dev
+.DS_STORE
+tasks.json
+launch.json
