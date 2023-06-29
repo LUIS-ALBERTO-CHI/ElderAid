@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.Development.Local.json" />
     <Content Remove="Html\Mail\_Layout.cshtml" />
   </ItemGroup>
 
@@ -64,10 +63,6 @@
     <Folder Include="DevelopmentData\Users\" />
     <Folder Include="Integration\AfterUpdateSchema\" />
     <Folder Include="Integration\BeforeUpdateSchema\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="appsettings.Development.Local.json" />
   </ItemGroup>
 
   <ItemGroup>

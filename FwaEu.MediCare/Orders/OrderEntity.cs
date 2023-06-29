@@ -23,7 +23,7 @@ namespace FwaEu.MediCare.Orders
         public int? PatientId { get; set; }
         public OrderState State { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
         public bool IsNew() => Id == 0;
     }
@@ -43,8 +43,8 @@ namespace FwaEu.MediCare.Orders
             Map(entity => entity.Quantity).Column("Quantity");
             Map(entity => entity.PatientId).Column("PatientId");
             Map(entity => entity.State).Column("State");
-            Map(entity => entity.UpdatedBy).Column("updatedBy");
-            Map(entity => entity.UpdatedOn).Column("updatedOn");
+            Map(entity => entity.UpdatedBy).Column("UpdatedBy");
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn");
         }
     }
 

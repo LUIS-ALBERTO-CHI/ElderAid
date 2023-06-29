@@ -26,7 +26,7 @@ namespace FwaEu.MediCare.Orders.MasterData
 
     public class OrderEntityMasterDataModel
     {
-        public OrderEntityMasterDataModel(int id, int articleId, double quantity, int? patientId, OrderState state, string updatedBy, DateTime updatedOn)
+        public OrderEntityMasterDataModel(int id, int articleId, double quantity, int? patientId, OrderState state, int? updatedBy, DateTime updatedOn)
         {
             Id = id;
             ArticleId = articleId;
@@ -43,7 +43,7 @@ namespace FwaEu.MediCare.Orders.MasterData
         public int? PatientId { get; set; }
         public OrderState State { get; set; }
 
-        public string UpdatedBy { get; set; }
+        public int? UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
     }
 

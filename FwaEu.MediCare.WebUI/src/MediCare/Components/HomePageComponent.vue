@@ -105,7 +105,7 @@
             //NOTE: Loading data only when the currentdatabase invariantId is avlaible
             if (this.currentDatabase != null) {
                 const patients = await PatientsMasterDataService.getAllAsync();
-                console.log(patients[0]?.fullName);
+                console.log(patients[0]);
                 this.patientsActive = patients.filter(x => x.isActive);
             }
         },

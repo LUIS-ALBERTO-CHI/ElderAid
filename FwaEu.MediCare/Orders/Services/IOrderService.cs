@@ -5,6 +5,8 @@ namespace FwaEu.MediCare.Orders.Services
 {
     public interface IOrderService
     {
-        Task<List<OrderEntity>> GetAllAsync();
+        Task<List<GetAllOrdersResponse>> GetAllAsync(GetAllOrdersPost model);
+
+        Task CreateOrdersAsync(CreateOrdersPost[] orders);
     }
 }
