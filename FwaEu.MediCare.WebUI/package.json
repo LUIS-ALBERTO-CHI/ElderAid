@@ -27,6 +27,8 @@
 		"@vueuse/core": "9.1.0",
 		"@vueuse/math": "9.1.0",
 		"axios": "0.27.2",
+		"chart.js": "^4.3.0",
+		"chartjs-plugin-datalabels": "^2.2.0",
 		"devextreme": "22.1.4",
 		"devextreme-aspnet-data-nojquery": "2.8.6",
 		"devextreme-vue": "22.1.4",

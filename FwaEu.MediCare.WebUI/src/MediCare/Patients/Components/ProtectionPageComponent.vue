@@ -3,7 +3,7 @@
         <PatientInfoComponent />
         <div class="protection-info-item">
             <div class="alert-content">
-                <span>Niveau d'incontience: légère</span>
+                <span @click="goToIncontinenceLevelPage">Niveau d'incontience: légère</span>
                 <div v-if="isAlert" :style="{ color: '#f44538'}" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
                     <span>Le forfait d'incontinence est dépassé</span>
@@ -17,7 +17,7 @@
         </div>
         <div style="display: flex; flex-direction: column; margin-top: 20px;">
             <div v-for="(protection, index) in protections" :key="index">
-                <ProtectionAccordionTabComponent  :protection="protection"/>
+                <ProtectionAccordionTabComponent :protection="protection" />
             </div>
         </div>
         <Button label="Imprimer le protocole"></Button>
@@ -43,7 +43,6 @@
             ProtectionAccordionTabComponent,
         },
         data() {
-            const ProtectionState = Object.freeze({ Normal: 1, Change: 2, Stop: 3 });
             return {
                 isAlert: true,
                 protections: [{
@@ -57,19 +56,14 @@
                     date: "De 23/02/2023 à 30/05/2023"
                 },
                 ],
-                ProtectionState,
-                protectionState: ProtectionState.Normal
             };
         },
         async created() {
         },
         methods: {
-            changePosology() {
-                this.protectionState = this.ProtectionState.Change;
+            goToIncontinenceLevelPage() {
+                this.$router.push({ name: 'IncontinenceLevel' });
             },
-            stopPosology() {
-                this.protectionState = this.ProtectionState.Stop;
-            }
         },
         computed: {
 
