@@ -1,10 +1,10 @@
 import AbstractConfiguration from '@/Modules/GenericAdmin/Services/abstract-configuration';
+import { hasPermissionAsync } from '@/Fwamework/Permissions/Services/current-user-permissions-service';
+import { CanAdministrateDosageFormMasterData } from '@/MediCare/Referencials/referencials-permissions';
 
 class DosageFormConfiguration extends AbstractConfiguration {
     constructor() {
         super();
-
-        this.columnsCustomizer.addCustomization('name', { index: 2000, width: 100 });
     }
 
     getResources(locale) {
@@ -25,5 +25,8 @@ export default {
     icon: "fa-solid fa-pills",
     getConfiguration: function () {
         return new DosageFormConfiguration();
+    },
+    async isAccessibleAsync() {
+        return await hasPermissionAsync(CanAdministrateDosageFormMasterData);
     }
 };

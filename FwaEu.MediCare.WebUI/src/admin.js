@@ -46,6 +46,8 @@ import BreadcrumbsService from "@/Fwamework/Breadcrumbs/Services/breadcrumbs-ser
 import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
 import AdminRoutes from "./admin-routes";
 
+import { ReferencialsModule } from "./MediCare/Referencials/referencials-module";
+
 BreadcrumbsService.onNodeResolved(async (e) => {
 	if (e.resolvingRoute?.name === 'default') {
 		e.node.to = Configuration.application.publicUrl;
@@ -87,6 +89,7 @@ const application = new Application(App)
 	.useModule(new UserSettingsModule())
 	.useModule(new NavigationIndicatorModule())
 	.useModule(new AdministrationMenuModule())
+	.useModule(new ReferencialsModule())
 
 	.useModule(new MasterDataModule({
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation

@@ -3,16 +3,22 @@ using System.Linq;
 using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.Fwamework.Users;
 
 namespace FwaEu.MediCare.Referencials
 {
-    public class DosageFormEntity : IUpdatedOnTracked
+    public class DosageFormEntity :IEntity, ICreationAndUpdateTracked
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime UpdatedOn { get { return _dateTime; } set { } }
-        private static DateTime _dateTime = DateTime.Now;
-        public bool IsNew() => Id == 0;
+        public UserEntity CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public UserEntity UpdatedBy { get; set; }
+        public DateTime UpdatedOn { get; set; }
+        public bool IsNew()
+        {
+            return this.Id == 0;
+        }
     }
     public class DosageFormEntityClassMap : ClassMap<DosageFormEntity>
     {
@@ -22,6 +28,7 @@ namespace FwaEu.MediCare.Referencials
             
             Id(entity => entity.Id).GeneratedBy.Identity();
             Map(entity => entity.Name).Not.Nullable().Unique();
+            this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
         }
     }
 

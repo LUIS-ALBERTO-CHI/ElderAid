@@ -1,3 +1,4 @@
+import GenericAdminConfigurationService from '@/Modules/GenericAdmin/Services/generic-admin-configuration-service';
 import AbstractModule from '@/Fwamework/Core/Services/abstract-module-class';
 import BuildingsMasterDataService from './Services/buildings-master-data-service';
 import ArticlesMasterDataService from './Services/articles-master-data-service';
