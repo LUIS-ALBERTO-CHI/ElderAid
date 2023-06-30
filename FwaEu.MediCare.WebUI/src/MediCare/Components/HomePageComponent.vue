@@ -106,6 +106,8 @@
             if (this.currentDatabase != null) {
                 const patients = await PatientsMasterDataService.getAllAsync();
                 console.log(patients[0]);
+                const articles = await ArticlesMasterDataService.getAllAsync();
+                console.log(articles);
                 this.patientsActive = patients.filter(x => x.isActive);
             }
 
