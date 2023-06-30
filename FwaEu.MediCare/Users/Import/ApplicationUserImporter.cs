@@ -109,8 +109,11 @@ namespace FwaEu.MediCare.Users.Import
 				var changePasswordService = this.ServiceProvider.GetRequiredService<IChangePasswordCredentialsService>();
 				await changePasswordService.ChangePasswordAsync(model.Email, model.Password);
 			}
-
 			await repositorySession.Session.FlushAsync();
-		}
+            await ((NHibernate.ISession)repositorySession.Session.InnerSession)
+			.CreateSQLQuery("EXEC SP_MDC_SyncUser :UserID")
+			.SetInt32("UserID", userEntity.Id)
+			.ExecuteUpdateAsync();
+        }
 	}
 }

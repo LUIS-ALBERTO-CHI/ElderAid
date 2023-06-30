@@ -93,7 +93,7 @@ namespace FwaEu.MediCare.Users
 		{
 			var entity = (IApplicationPartEntityPropertiesAccessor)this._userSessionContext.SaveUserEntity;
 
-			ValidateSaveModel(model);
+            ValidateSaveModel(model);
 
 			var emailChanged = entity.Email != model.Email;
 
@@ -103,12 +103,17 @@ namespace FwaEu.MediCare.Users
 			entity.Login = model.Login;
 
 			return Task.FromResult<IPartSaveResult>(
-				emailChanged//NOTE: Email change date is just tracked as an information, because on the next load of the current user, it will fail because the identity will not be found in the database
-				? new PartSaveResult(afterSaveTask: async () =>
-				{
-					await this._authenticationChangeInfoService.SetLastChangeDateAsync(entity.Id);
-				})
-				: null);
+				new PartSaveResult(afterSaveTask: async () =>
+				{	
+					if (emailChanged)
+					{
+                        await this._authenticationChangeInfoService.SetLastChangeDateAsync(entity.Id);
+                    }
+                    await ((NHibernate.ISession)_userSessionContext.SessionContext.RepositorySession.Session.InnerSession)
+					.CreateSQLQuery("EXEC SP_MDC_SyncUser :UserID")
+					.SetInt32("UserID", entity.Id)
+					.ExecuteUpdateAsync();
+                }));
 		}
 	}
 }
