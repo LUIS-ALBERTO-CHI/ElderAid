@@ -21,7 +21,7 @@
             <span>Consommation du stock pharmacie</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div  class="patient-info-item">
+        <div @click="goToPeriodicOrdersPage"  class="patient-info-item">
             <div class="periodic-container">
                 <i class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
                 <span>2 commandes périodiques à valider</span>
@@ -70,6 +70,9 @@
             },
             goToProtectionPage() {
                 this.$router.push({ name: "Protection" });
+            },
+            goToPeriodicOrdersPage() {
+                this.$router.push({ name: "PeriodicOrders" });
             }
         },
         computed: {
