@@ -2,7 +2,6 @@ using FwaEu.Fwamework.Authentication;
 using FwaEu.Fwamework.Permissions;
 using FwaEu.Fwamework.Users;
 using FwaEu.Fwamework.Users.Parts;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,13 +34,12 @@ namespace FwaEu.MediCare.Users
         private readonly CurrentUserPermissionService _currentUserPermissionService;
         private readonly IAuthenticationChangeInfoService _authenticationChangeInfoService;
         private readonly IUserSynchronizationService _userSynchronizationService;
-        private readonly ILogger _logger;
 
         public ApplicationUserModelPartHandler(UserSessionContext userSessionContext,
             CurrentUserPermissionService currentUserPermissionService,
             IAuthenticationChangeInfoService authenticationChangeInfoService,
-            IUserSynchronizationService userSynchronizationService,
-            ILoggerFactory loggerFactory)
+            IUserSynchronizationService userSynchronizationService
+        )
         {
             this._userSessionContext = userSessionContext
                 ?? throw new ArgumentNullException(nameof(userSessionContext));
@@ -54,8 +52,6 @@ namespace FwaEu.MediCare.Users
 
             this._userSynchronizationService = userSynchronizationService
                 ?? throw new ArgumentNullException(nameof(userSynchronizationService));
-
-            this._logger = loggerFactory.CreateLogger<HttpContextIdentityCurrentUserService>();
         }
 
         public override bool IsRequiredOnCreation => true;
@@ -119,14 +115,7 @@ namespace FwaEu.MediCare.Users
                     {
                         await this._authenticationChangeInfoService.SetLastChangeDateAsync(entity.Id);
                     }
-					try
-					{
-                        await this._userSynchronizationService.SyncUserAsync(entity.Id);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Error trying this operation");
-                    }
+                    await this._userSynchronizationService.SyncUserAsync(entity.Id);
                 }));
         }
     }

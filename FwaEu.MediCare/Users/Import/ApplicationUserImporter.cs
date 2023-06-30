@@ -9,7 +9,6 @@ using FwaEu.Modules.GenericImporter;
 using FwaEu.Modules.GenericImporter.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,8 +20,8 @@ namespace FwaEu.MediCare.Users.Import
             IModelBinder<ApplicationUserImportModel> modelBinder,
             UserSessionContext userSessionContext,
             IUserSynchronizationService userSynchronizationService,
-            CurrentUserPermissionService currentUserPermissionService,
-            ILoggerFactory loggerFactory)
+            CurrentUserPermissionService currentUserPermissionService
+            )
             : base(serviceProvider, modelBinder)
         {
             this._userSessionContext = userSessionContext
@@ -33,15 +32,11 @@ namespace FwaEu.MediCare.Users.Import
 
             this._userSynchronizationService = userSynchronizationService
                 ?? throw new ArgumentNullException(nameof(userSynchronizationService));
-
-            this._logger = loggerFactory.CreateLogger<HttpContextIdentityCurrentUserService>();
         }
 
         private readonly UserSessionContext _userSessionContext;
         private readonly CurrentUserPermissionService _currentUserPermissionService;
         private readonly IUserSynchronizationService _userSynchronizationService;
-        private readonly ILogger _logger;
-
         private async Task<bool> IsImportAuthorizedAsync()
         {
             var user = this._currentUserPermissionService.CurrentUserService.User?.Entity;
@@ -119,14 +114,7 @@ namespace FwaEu.MediCare.Users.Import
                 await changePasswordService.ChangePasswordAsync(model.Email, model.Password);
             }
             await repositorySession.Session.FlushAsync();
-            try
-            {
-                await this._userSynchronizationService.SyncUserAsync(userEntity.Id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error trying this operation");
-            }
+            await this._userSynchronizationService.SyncUserAsync(userEntity.Id);
         }
     }
 }
