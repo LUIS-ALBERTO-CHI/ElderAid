@@ -9,111 +9,124 @@ using FwaEu.Modules.GenericImporter;
 using FwaEu.Modules.GenericImporter.DataAccess;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Users.Import
 {
-	public class ApplicationUserImporter : ModelImporter<ApplicationUserImportModel, IEntityImporterEventListener>
-	{
-		public ApplicationUserImporter(IServiceProvider serviceProvider,
-			IModelBinder<ApplicationUserImportModel> modelBinder,
-			UserSessionContext userSessionContext,
-			CurrentUserPermissionService currentUserPermissionService)
-			: base(serviceProvider, modelBinder)
-		{
-			this._userSessionContext = userSessionContext
-				?? throw new ArgumentNullException(nameof(userSessionContext));
+    public class ApplicationUserImporter : ModelImporter<ApplicationUserImportModel, IEntityImporterEventListener>
+    {
+        public ApplicationUserImporter(IServiceProvider serviceProvider,
+            IModelBinder<ApplicationUserImportModel> modelBinder,
+            UserSessionContext userSessionContext,
+            IUserSynchronizationService userSynchronizationService,
+            CurrentUserPermissionService currentUserPermissionService,
+            ILoggerFactory loggerFactory)
+            : base(serviceProvider, modelBinder)
+        {
+            this._userSessionContext = userSessionContext
+                ?? throw new ArgumentNullException(nameof(userSessionContext));
 
-			this._currentUserPermissionService = currentUserPermissionService
-				?? throw new ArgumentNullException(nameof(currentUserPermissionService));
-		}
+            this._currentUserPermissionService = currentUserPermissionService
+                ?? throw new ArgumentNullException(nameof(currentUserPermissionService));
 
-		private readonly UserSessionContext _userSessionContext;
-		private readonly CurrentUserPermissionService _currentUserPermissionService;
+            this._userSynchronizationService = userSynchronizationService
+                ?? throw new ArgumentNullException(nameof(userSynchronizationService));
 
-		private async Task<bool> IsImportAuthorizedAsync()
-		{
-			var user = this._currentUserPermissionService.CurrentUserService.User?.Entity;
+            this._logger = loggerFactory.CreateLogger<HttpContextIdentityCurrentUserService>();
+        }
 
-			if (user == null) // NOTE: Case of import in SetupTask
-			{
-				return true;
-			}
+        private readonly UserSessionContext _userSessionContext;
+        private readonly CurrentUserPermissionService _currentUserPermissionService;
+        private readonly IUserSynchronizationService _userSynchronizationService;
+        private readonly ILogger _logger;
 
-			return await this._currentUserPermissionService.HasPermissionAsync<UsersPermissionProvider>(
-				provider => provider.CanAdministrateUsers);
-		}
+        private async Task<bool> IsImportAuthorizedAsync()
+        {
+            var user = this._currentUserPermissionService.CurrentUserService.User?.Entity;
+
+            if (user == null) // NOTE: Case of import in SetupTask
+            {
+                return true;
+            }
+
+            return await this._currentUserPermissionService.HasPermissionAsync<UsersPermissionProvider>(
+                provider => provider.CanAdministrateUsers);
+        }
 
 
-		protected override async Task ImportAsync(DataReader reader, ModelImporterContext context, ProcessResultContext processResultContext)
-		{
-			var isImportAuthorized = await this.IsImportAuthorizedAsync();
+        protected override async Task ImportAsync(DataReader reader, ModelImporterContext context, ProcessResultContext processResultContext)
+        {
+            var isImportAuthorized = await this.IsImportAuthorizedAsync();
 
-			if (isImportAuthorized)
-			{
-				// HACK: Used by TransactionEntityImporterEventListener
-				context.ServiceStore.Add<IStatefulSessionAdapter>(this._userSessionContext.SessionContext.RepositorySession.Session);
-				await base.ImportAsync(reader, context, processResultContext);
-			}
-			else
-			{
-				processResultContext.Add(new ErrorProcessResultEntry("Not authorized."));
-			}
-		}
+            if (isImportAuthorized)
+            {
+                // HACK: Used by TransactionEntityImporterEventListener
+                context.ServiceStore.Add<IStatefulSessionAdapter>(this._userSessionContext.SessionContext.RepositorySession.Session);
+                await base.ImportAsync(reader, context, processResultContext);
+            }
+            else
+            {
+                processResultContext.Add(new ErrorProcessResultEntry("Not authorized."));
+            }
+        }
 
-		protected override async Task<ModelLoadResult<ApplicationUserImportModel>> LoadModelAsync(
-			ModelPropertyDescriptor[] keys, DataRow row, ModelImporterContext context)
-		{
-			var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
+        protected override async Task<ModelLoadResult<ApplicationUserImportModel>> LoadModelAsync(
+            ModelPropertyDescriptor[] keys, DataRow row, ModelImporterContext context)
+        {
+            var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
 
-			var entity = await repositorySession
-				.Create<ApplicationUserEntityRepository>()
-				.FindByIdentityAsync((string)row.ValuesByPropertyName[nameof(ApplicationUserEntity.Email)]);
+            var entity = await repositorySession
+                .Create<ApplicationUserEntityRepository>()
+                .FindByIdentityAsync((string)row.ValuesByPropertyName[nameof(ApplicationUserEntity.Email)]);
 
-			var model = new ApplicationUserImportModel((ApplicationUserEntity)entity, row);
-			return new ModelLoadResult<ApplicationUserImportModel>(model, entity == null);
-		}
+            var model = new ApplicationUserImportModel((ApplicationUserEntity)entity, row);
+            return new ModelLoadResult<ApplicationUserImportModel>(model, entity == null);
+        }
 
-		protected override async Task SaveModelAsync(ApplicationUserImportModel model, ModelImporterContext context)
-		{
-			var userEntity = model.Entity ?? new ApplicationUserEntity() { Email = model.Email };
-			this._userSessionContext.SaveUserEntity = userEntity;
+        protected override async Task SaveModelAsync(ApplicationUserImportModel model, ModelImporterContext context)
+        {
+            var userEntity = model.Entity ?? new ApplicationUserEntity() { Email = model.Email };
+            this._userSessionContext.SaveUserEntity = userEntity;
 
-			// NOTE: model.DataRow.MetadataProperties contains columns which are in the XLS file.
-			//       if the column is not declared, we don't need to update it in the entities
+            // NOTE: model.DataRow.MetadataProperties contains columns which are in the XLS file.
+            //       if the column is not declared, we don't need to update it in the entities
 
-			void IfExists(string propertyName, Action action)
-			{
-				if (model.DataRow.MetadataProperties.Any(mpd => mpd.Name == propertyName))
-				{
-					action();
-				}
-			}
+            void IfExists(string propertyName, Action action)
+            {
+                if (model.DataRow.MetadataProperties.Any(mpd => mpd.Name == propertyName))
+                {
+                    action();
+                }
+            }
 
-			IfExists(nameof(model.FirstName), () => userEntity.FirstName = model.FirstName);
-			IfExists(nameof(model.LastName), () => userEntity.LastName = model.LastName);
-			IfExists(nameof(model.State), () => userEntity.State = model.State.Value);
-			IfExists(nameof(model.IsAdmin), () => userEntity.IsAdmin = model.IsAdmin);
+            IfExists(nameof(model.FirstName), () => userEntity.FirstName = model.FirstName);
+            IfExists(nameof(model.LastName), () => userEntity.LastName = model.LastName);
+            IfExists(nameof(model.State), () => userEntity.State = model.State.Value);
+            IfExists(nameof(model.IsAdmin), () => userEntity.IsAdmin = model.IsAdmin);
             IfExists(nameof(model.Login), () => userEntity.Login = model.Login);
 
             var repositorySession = this._userSessionContext.SessionContext.RepositorySession;
 
-			await repositorySession
-				.Create<ApplicationUserEntityRepository>()
-				.SaveOrUpdateAsync(userEntity);
+            await repositorySession
+                .Create<ApplicationUserEntityRepository>()
+                .SaveOrUpdateAsync(userEntity);
 
-			if (!String.IsNullOrEmpty(model.Password))
-			{
-				var changePasswordService = this.ServiceProvider.GetRequiredService<IChangePasswordCredentialsService>();
-				await changePasswordService.ChangePasswordAsync(model.Email, model.Password);
-			}
-			await repositorySession.Session.FlushAsync();
-            await ((NHibernate.ISession)repositorySession.Session.InnerSession)
-			.CreateSQLQuery("EXEC SP_MDC_SyncUser :UserID")
-			.SetInt32("UserID", userEntity.Id)
-			.ExecuteUpdateAsync();
+            if (!String.IsNullOrEmpty(model.Password))
+            {
+                var changePasswordService = this.ServiceProvider.GetRequiredService<IChangePasswordCredentialsService>();
+                await changePasswordService.ChangePasswordAsync(model.Email, model.Password);
+            }
+            await repositorySession.Session.FlushAsync();
+            try
+            {
+                await this._userSynchronizationService.SyncUserAsync(userEntity.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error trying this operation");
+            }
         }
-	}
+    }
 }
