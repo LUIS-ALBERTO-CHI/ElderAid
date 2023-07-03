@@ -1,10 +1,10 @@
 <template>
     <div class="page-home">
         <div class="flex-section justify-content-center" v-if="isSingleOrganization">
-            <span class="organization-text">Organisation 1</span>
+            <span class="organization-text">{{this.organizations[0].name}}</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
-            @change="refreshMasterDataByDatabaseInvariantId" />
+            @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name"/>
         <div class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -93,7 +93,8 @@ export default {
                 $this.currentDatabase = viewContext.id;
             }),
             isUserAdmin: false,
-            organizations: []
+            organizations: [],
+            organizationsLink: [],
         };
     },
     async created() {
@@ -105,27 +106,19 @@ export default {
         // userOrganizations contient la liste de toutes les organizations qu'il ont �t� affect� a l'utilisateur courant
         // Si l'utilisateur est admin on lui affiche la liste de toutes les organizations sinon on va lui afficher que ceux qu'il les appartient
 
-
-        if (this.isUserAdmin) {
-            console.log("isAdmin")
-            this.organizations = await OrganizationsMasterDataService.getAllAsync();
+        
+        this.organizations = await OrganizationsMasterDataService.getAllAsync();
             console.log(this.organizations)
 
-
-        } else {
-            console.log("isNotAdmin")
-            this.organizations = await UserOrganizationsMasterDataService.getAllAsync();
-            console.log(this.organizations)
-        }
         
         if (this.organizations.length == 1) {
             this.isSingleOrganization = true;
         } else {
-            this.organizationsOptions = this.organizations.map(x => x.name)
+            this.organizationsOptions = this.organizations
             this.selectedOrganization = this.organizationsOptions[0];
             ViewContextService.set(new ViewContextModel(this.organizations[0]));
         }
-
+        
         //NOTE: Loading data only when the currentdatabase invariantId is avlaible
         if (this.currentDatabase != null) {
             const patients = await PatientsMasterDataService.getAllAsync();
@@ -164,6 +157,9 @@ export default {
 
             // NOTE : refraichir toutes les masterdata
             await MasterDataManagerService.clearCacheAsync();
+
+            const patients = await PatientsMasterDataService.getAllAsync();
+            this.patientsActive = patients.filter(x => x.isActive);
         }
     }
 }

@@ -4,6 +4,7 @@ using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
 using System;
+using System.Collections.Generic;
 
 namespace FwaEu.MediCare.Organizations
 {
@@ -70,6 +71,12 @@ namespace FwaEu.MediCare.Organizations
         public System.Linq.IQueryable<OrganizationEntity> QueryByIds(int[] ids)
         {
             throw new NotImplementedException();
+        }
+
+        protected override IEnumerable<IRepositoryDataFilter<OrganizationEntity, int>> CreateDataFilters(
+            RepositoryDataFilterContext<OrganizationEntity, int> context)
+        {
+            yield return new OrganizationEntityDataFilter();
         }
     }
 }

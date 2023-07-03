@@ -45,11 +45,5 @@ namespace FwaEu.MediCare.Organizations
         {
             return this.Query().Where(ur => ur.User.Id == userId);
         }
-
-        protected override IEnumerable<IRepositoryDataFilter<OrganizationUserLinkEntity, int>> CreateDataFilters(
-            RepositoryDataFilterContext<OrganizationUserLinkEntity, int> context)
-        {
-            yield return new OrganizationUserLinkEntityDataFilter();
-        }
     }
 }
