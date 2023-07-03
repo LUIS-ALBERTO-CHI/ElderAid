@@ -19,7 +19,7 @@
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
-            <div class="vignette-item">
+            <div @click="goToCabinetsPage" class="vignette-item">
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-inbox vignette-icon fa-fw" style="color: #d9c4b3;" />
                     <span class="vignette-text">Stock pharmacie</span>
@@ -132,6 +132,9 @@
             },
             goToOrdersPage() {
                 this.$router.push("/Orders")
+            },
+            goToCabinetsPage() {
+                this.$router.push("/stockPharmacy")
             },
             async refreshMasterDataByDatabaseInvariantId(e) {
                 // NOTE : Update the ViewContext to save the selected database
