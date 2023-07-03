@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.MediCare.Initialization;
 using System;
 using System.Linq;
 
@@ -23,7 +24,7 @@ namespace FwaEu.MediCare.Patients
         public bool IsNew() => Id == 0;
     }
 
-
+    [ConnectionString("Generic")]
     public class PatientEntityClassMap : ClassMap<PatientEntity>
     {
         public PatientEntityClassMap()

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.MediCare.Initialization;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -18,6 +19,7 @@ namespace FwaEu.MediCare.Referencials
         public bool IsNew() => Id == 0;
     }
 
+    [ConnectionString("Generic")]
     public class CabinetEntityClassMap : ClassMap<CabinetEntity>
     {
         public CabinetEntityClassMap()
