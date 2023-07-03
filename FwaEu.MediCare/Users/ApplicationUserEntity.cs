@@ -78,7 +78,8 @@ namespace FwaEu.MediCare.Users
 
 			Map(entity => entity.LastName)
 			   .Not.Nullable();
-			Map(entity => entity.Login);
+
+            Map(entity => entity.Login);
 
             this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
 		}
