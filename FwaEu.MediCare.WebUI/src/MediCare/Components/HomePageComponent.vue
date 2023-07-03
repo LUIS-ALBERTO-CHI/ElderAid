@@ -100,16 +100,9 @@ export default {
     async created() {
         this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
         const currentUser = await CurrentUserService.getAsync();
-
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
-        // NOTE : organizations contient la liste de toutes les organisations existantes dans l'entit� OrganizationEntity
-        // userOrganizations contient la liste de toutes les organizations qu'il ont �t� affect� a l'utilisateur courant
-        // Si l'utilisateur est admin on lui affiche la liste de toutes les organizations sinon on va lui afficher que ceux qu'il les appartient
 
-        
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
-            console.log(this.organizations)
-
         
         if (this.organizations.length == 1) {
             this.isSingleOrganization = true;
@@ -122,9 +115,7 @@ export default {
         //NOTE: Loading data only when the currentdatabase invariantId is avlaible
         if (this.currentDatabase != null) {
             const patients = await PatientsMasterDataService.getAllAsync();
-            // console.log(patients[0]);
             const articles = await ArticlesMasterDataService.getAllAsync();
-            // console.log(articles);
             this.patientsActive = patients.filter(x => x.isActive);
         }
 
@@ -150,7 +141,6 @@ export default {
         },
         async refreshMasterDataByDatabaseInvariantId(e) {
 
-            console.log(e)
             // NOTE : Update the ViewContext to save the selected database
             // const organizations = await OrganizationsMasterDataService.getAllAsync();
             ViewContextService.set(new ViewContextModel(e.value));
