@@ -48,12 +48,6 @@ import AdminRoutes from "./admin-routes";
 
 import { ReferencialsModule } from "./MediCare/Referencials/referencials-module";
 
-BreadcrumbsService.onNodeResolved(async (e) => {
-	if (e.resolvingRoute?.name === 'default') {
-		e.node.to = Configuration.application.publicUrl;
-	}
-})
-
 const application = new Application(App)
 	.useModule(new CoreModule({
 		//NOTE: We currently use the same version as server because managing the version for both server and client will require unnecessary efforts
