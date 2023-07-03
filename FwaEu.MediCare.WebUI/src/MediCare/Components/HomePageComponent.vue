@@ -19,7 +19,7 @@
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
-            <div class="vignette-item">
+            <div @click="goToCabinetsPage" class="vignette-item">
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-inbox vignette-icon fa-fw" style="color: #d9c4b3;" />
                     <span class="vignette-text">Stock pharmacie</span>
@@ -94,8 +94,8 @@
         async created() {
             this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
 
-            // NOTE : organizations contient la liste de toutes les organisations existantes dans l'entité OrganizationEntity
-            // userOrganizations contient la liste de toutes les organizations qu'il ont été affecté a l'utilisateur courant
+            // NOTE : organizations contient la liste de toutes les organisations existantes dans l'entitï¿½ OrganizationEntity
+            // userOrganizations contient la liste de toutes les organizations qu'il ont ï¿½tï¿½ affectï¿½ a l'utilisateur courant
             // Si l'utilisateur est admin on lui affiche la liste de toutes les organizations sinon on va lui afficher que ceux qu'il les appartient
             const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
             const organizations = await OrganizationsMasterDataService.getAllAsync();
@@ -128,6 +128,9 @@
             goToOrdersPage() {
                 this.$router.push("/Orders")
             },
+            goToCabinetsPage() {
+                this.$router.push("/stockPharmacy")
+            },
             async refreshMasterDataByDatabaseInvariantId(e) {
                 // NOTE : Update the ViewContext to save the selected database
                 const organizations = await OrganizationsMasterDataService.getAllAsync();
@@ -136,7 +139,7 @@
                 // NOTE : refraichir toutes les masterdata
                 await MasterDataManagerService.clearCacheAsync();
 
-                // NOTE: Rafraîchir les
+                // NOTE: Rafraï¿½chir les
                 const patients = await PatientsMasterDataService.getAllAsync();
             }
         }
