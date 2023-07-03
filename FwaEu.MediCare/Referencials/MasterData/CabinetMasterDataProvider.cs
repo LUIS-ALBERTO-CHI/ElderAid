@@ -4,13 +4,12 @@ using System.Linq.Expressions;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Fwamework.Globalization;
 using FwaEu.Modules.MasterData;
-using FwaEu.Fwamework.Data.Database.Sessions;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
     public class CabinetMasterDataProvider : EntityMasterDataProvider<CabinetEntity, int, CabinetEntityMasterDataModel, CabinetEntityRepository>
     {
-        public CabinetMasterDataProvider(MainSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
+        public CabinetMasterDataProvider(GenericSessionContext sessionContext, ICulturesService culturesService) : base(sessionContext, culturesService)
         {
         }
 

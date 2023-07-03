@@ -28,4 +28,3 @@ export default {
   },
 };
 </script>
-<style type="text/css" scoped src="../Content/cabinets-page.css"></style>
