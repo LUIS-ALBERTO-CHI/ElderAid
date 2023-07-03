@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.MediCare.Initialization;
 using System;
 using System.Linq;
 
@@ -28,6 +29,7 @@ namespace FwaEu.MediCare.Orders
         public bool IsNew() => Id == 0;
     }
 
+    [ConnectionString("Generic")]
     public class OrderEntityClassMap : ClassMap<OrderEntity>
     {
         public OrderEntityClassMap()

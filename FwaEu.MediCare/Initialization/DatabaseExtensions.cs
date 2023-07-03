@@ -21,9 +21,9 @@ namespace FwaEu.MediCare.Initialization
         private static IEnumerable<Type> GetTypesInWhichSearchForMappings(IAuthenticationFeatures authenticationFeatures)
         {
             return authenticationFeatures.CustomizeTypesInWhichSearchForMappings(
-                typeof(FwameworkDataBaseExtensions).Assembly.GetExportedTypes()
-                .Concat(typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures).Assembly.GetExportedTypes()
-                .Concat(typeof(DatabaseExtensions).Assembly.GetExportedTypes())));
+                                            typeof(FwameworkDataBaseExtensions).Assembly.GetExportedTypes()
+                                                .Concat(typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures).Assembly.GetExportedTypes()
+                                                    .Concat(typeof(DatabaseExtensions).Assembly.GetExportedTypes())));
         }
 
         private static IEnumerable<INhibernateConfigurationLoader> GetLoaders(
@@ -33,13 +33,24 @@ namespace FwaEu.MediCare.Initialization
         {
             var sectionConnectionStrings = serviceProvider.GetService<IConfiguration>().GetSection("ConnectionStrings");
             var settingsConnectionStrings = sectionConnectionStrings.Get<Dictionary<string, string>>();
+
+            //NOTE: Get all types from all projects (Fwamwork + Modules + Current assembly)
+            var typesFromAllAssemblies = GetTypesInWhichSearchForMappings(authenticationFeatures);
+
             foreach (var connectionString in settingsConnectionStrings)
             {
+                var keyofConnectionString = connectionString.Key;
+                var specificTypesForMappings = typesFromAllAssemblies
+                                                .Where(x => (!x.IsDefined(typeof(ConnectionStringAttribute))
+                                                                && keyofConnectionString == "Default")
+                                                            || (x.IsDefined(typeof(ConnectionStringAttribute))
+                                                                && ((ConnectionStringAttribute)Attribute.GetCustomAttribute(x,
+                                                                    typeof(ConnectionStringAttribute)))?.Name == keyofConnectionString));
                 yield return new CodeBasedNhibernateConfigurationLoader(
                     serviceProvider: serviceProvider,
-                    connectionStringName: connectionString.Key,
+                    connectionStringName: keyofConnectionString,
                     databaseFeaturesType: typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures),
-                    typesInWhichSearchForMappings: GetTypesInWhichSearchForMappings(authenticationFeatures),
+                    typesInWhichSearchForMappings: specificTypesForMappings,
                     configureDatabaseProperties: (properties) =>
                     {
                         properties.Dialect<MsSql2012Dialect>();
