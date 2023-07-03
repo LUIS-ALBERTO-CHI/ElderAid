@@ -4,6 +4,7 @@ using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
 using FwaEu.Modules.Permissions.ByRole;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FwaEu.MediCare.Organizations
@@ -43,6 +44,12 @@ namespace FwaEu.MediCare.Organizations
         public IQueryable<OrganizationUserLinkEntity> QueryByUserId(int userId)
         {
             return this.Query().Where(ur => ur.User.Id == userId);
+        }
+
+        protected override IEnumerable<IRepositoryDataFilter<OrganizationUserLinkEntity, int>> CreateDataFilters(
+            RepositoryDataFilterContext<OrganizationUserLinkEntity, int> context)
+        {
+            yield return new OrganizationUserLinkEntityDataFilter();
         }
     }
 }
