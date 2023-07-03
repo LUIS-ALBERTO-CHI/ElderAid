@@ -29,7 +29,7 @@ namespace FwaEu.MediCare.Referencials.WebApi
                 return Ok(models.Select(x => new GetTreatmentsByPatientResponseApi()
                 {
                     Id = x.Id,
-                    State= x.State,
+                    TreatmentType= x.TreatmentType,
                     AppliedArticleId= x.AppliedArticleId,
                     ArticleType= x.ArticleType,
                     DateEnd= x.DateEnd,

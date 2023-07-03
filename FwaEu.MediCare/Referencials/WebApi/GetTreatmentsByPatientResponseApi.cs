@@ -6,7 +6,7 @@ namespace FwaEu.MediCare.Referencials.WebApi
     {
         public int Id { get; set; }
         public int? PatientId { get; set; }
-        public int? State { get; set; }
+        public int? TreatmentType { get; set; }
 
         public int? ArticleType { get; set; }
 
