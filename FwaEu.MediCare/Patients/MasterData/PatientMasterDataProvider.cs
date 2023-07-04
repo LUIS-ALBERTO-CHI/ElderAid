@@ -16,7 +16,7 @@ namespace FwaEu.MediCare.Patients.MasterData
         protected override Expression<Func<PatientEntity, PatientEntityMasterDataModel>>
             CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => new PatientEntityMasterDataModel(entity.Id, entity.BuildingId, entity.FullName, entity.RoomName, entity.IsActive, entity.UpdatedOn);
+            return entity => new PatientEntityMasterDataModel(entity.Id, (int)entity.IncontinenceLevel, entity.BuildingId, entity.FullName, entity.RoomName, entity.IsActive, entity.IncontinenceStartDate, entity.UpdatedOn);
         }
 
         protected override Expression<Func<PatientEntity, bool>> CreateSearchExpression(string search,
@@ -28,13 +28,15 @@ namespace FwaEu.MediCare.Patients.MasterData
 
     public class PatientEntityMasterDataModel
     {
-        public PatientEntityMasterDataModel(int id, int? buildingId, string fullName, string roomName, bool? isActive, DateTime? updatedOn)
+        public PatientEntityMasterDataModel(int id, int incontinenceLevel, int? buildingId, string fullName, string roomName, bool? isActive, DateTime? incontinenceStartDate, DateTime? updatedOn)
         {
             Id = id;
+            IncontinenceLevel = incontinenceLevel;
             BuildingId = buildingId;
             FullName = fullName;
             RoomName = roomName;
             IsActive = isActive;
+            IncontinenceStartDate = incontinenceStartDate;
             UpdatedOn = updatedOn;
         }
 
@@ -43,6 +45,8 @@ namespace FwaEu.MediCare.Patients.MasterData
         public string FullName { get; }
         public string RoomName { get; }
         public bool? IsActive { get; }
+        public int IncontinenceLevel { get; set; }
+        public DateTime? IncontinenceStartDate { get; set; }
         public DateTime? UpdatedOn { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.MediCare.GenericSession;
 using FwaEu.MediCare.ViewContext;
 using Microsoft.Extensions.DependencyInjection;
 using NHibernate;
@@ -15,9 +16,9 @@ namespace FwaEu.MediCare.GenericRepositorySession
             IServiceProvider serviceProvider)
             : base(repositorySessionFactory, serviceProvider)
         {
-            var contextService = serviceProvider.GetRequiredService<IViewContextService>();
-            var databaseName = contextService.Current?.DatabaseName;
-            if(databaseName != null)
+            var manageGenericDbService = serviceProvider.GetRequiredService<IManageGenericDbService>();
+            var databaseName = manageGenericDbService.GetGenericDb();
+            if (databaseName != null)
                 NhibernateSession.Connection.ChangeDatabase(databaseName);
         }
 

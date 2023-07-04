@@ -25,11 +25,11 @@ namespace FwaEu.MediCare.Referencials.Services
 
         public async Task<List<GetTreatmentsByPatientResponse>> GetAllTreatmentsByPatientAsync(GetTreatmentsByPatientPost model)
         {
-            var query = "exec SP_MDC_TreatmentsPatient :PatientId, :State, :ArticleFamily, :Page, :PageSize";
+            var query = "exec SP_MDC_TreatmentsPatient :PatientId, :TreatmentType, :ArticleFamily, :Page, :PageSize";
 
             var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
             storedProcedure.SetParameter("PatientId", model.PatientId);
-            storedProcedure.SetParameter("State", model.State);
+            storedProcedure.SetParameter("TreatmentType", model.TreatmentType);
             storedProcedure.SetParameter("ArticleFamily", model.ArticleFamily);
             storedProcedure.SetParameter("Page", model.Page);
             storedProcedure.SetParameter("PageSize", model.PageSize);
