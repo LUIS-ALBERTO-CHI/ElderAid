@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FwaEu.Modules.MasterData.WebApi
 {
-	[Authorize]
+	//[Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	public class MasterDataController : ControllerBase

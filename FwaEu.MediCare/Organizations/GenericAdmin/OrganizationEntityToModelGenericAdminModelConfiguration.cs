@@ -33,7 +33,7 @@ namespace FwaEu.MediCare.Organizations.GenericAdmin
 
         public int? OrderPeriodicityDays { get; set; }
         public int? OrderPeriodicityDayOfWeek { get; set; }
-        public DateTime? LastPeriodicityOrder { get; set; }
+        public DateTime LastPeriodicityOrder { get; set; }
         public int? PeriodicityOrderActivationDaysNumber { get; set; }
         public bool? IsStockPharmacyPerBox { get; set; }
     }

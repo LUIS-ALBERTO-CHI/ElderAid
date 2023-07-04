@@ -3,6 +3,9 @@ using FwaEu.Modules.MasterData;
 using Microsoft.Extensions.DependencyInjection;
 using FwaEu.Fwamework;
 using FwaEu.MediCare.Stock.Services;
+using FwaEu.MediCare.Referencials.MasterData;
+using FwaEu.MediCare.Referencials;
+using FwaEu.MediCare.Stock.MasterData;
 
 namespace FwaEu.MediCare.Stock
 {
@@ -13,7 +16,9 @@ namespace FwaEu.MediCare.Stock
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
 
             services.AddTransient<IStockService, StockService>();
+            repositoryRegister.Add<StockConsumptionEntityRepository>();
 
+            services.AddMasterDataProvider<StockConsumptionMasterDataProvider>("StockConsumptions");
             return services;
         }
     }
