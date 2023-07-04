@@ -4,6 +4,7 @@ using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.Referencials;
 using System;
 using System.Linq;
 
@@ -54,7 +55,11 @@ namespace FwaEu.MediCare.Orders
         }
     }
 
-    public class PeriodicOrderValidationEntityRepository : DefaultRepository<PeriodicOrderValidationEntity, int>
+    public class PeriodicOrderValidationEntityRepository : DefaultRepository<PeriodicOrderValidationEntity, int>, IQueryByIds<PeriodicOrderValidationEntity, int>
     {
+        public System.Linq.IQueryable<PeriodicOrderValidationEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

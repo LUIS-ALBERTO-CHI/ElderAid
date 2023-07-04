@@ -3,60 +3,47 @@ using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.MediCare.Initialization;
 using System;
-using System.Linq;
 
-namespace FwaEu.MediCare.Orders
+namespace FwaEu.MediCare.Stock
 {
-    public enum OrderState
-    {
-        Pending = 0,
-        Cancelled = 1,
-        Delivred = 2
-    }
-
-
-    public class OrderEntity : IUpdatedOnTracked
+    public class StockConsumptionEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
-
+        public int PatientId { get; set; }
         public int ArticleId { get; set; }
         public double Quantity { get; set; }
-        public int? PatientId { get; set; }
-        public OrderState State { get; set; }
 
-        public int? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
         public bool IsNew() => Id == 0;
     }
 
     [ConnectionString("Generic")]
-    public class OrderEntityClassMap : ClassMap<OrderEntity>
+    public class StockConsumptionEntityClassMap : ClassMap<StockConsumptionEntity>
     {
-        public OrderEntityClassMap()
+        public StockConsumptionEntityClassMap()
         {
-            Table("MDC_Orders");
+            Table("MDC_StockConsumption");
 
             ReadOnly();
             Not.LazyLoad();
             SchemaAction.None();
 
             Id(entity => entity.Id).Column("Id");
+            Map(entity => entity.PatientId).Column("PatientId");
             Map(entity => entity.ArticleId).Column("ArticleId");
             Map(entity => entity.Quantity).Column("Quantity");
-            Map(entity => entity.PatientId).Column("PatientId");
-            Map(entity => entity.State).Column("State");
             Map(entity => entity.UpdatedBy).Column("UpdatedBy");
-            Map(entity => entity.UpdatedOn).Column("UpdatedOn");
+            Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
 
-    public class OrderEntityRepository : DefaultRepository<OrderEntity, int>, IQueryByIds<OrderEntity, int>
+
+    public class StockConsumptionEntityRepository : DefaultRepository<StockConsumptionEntity, int>, IQueryByIds<StockConsumptionEntity, int>
     {
-        public IQueryable<OrderEntity> QueryByIds(int[] ids)
+        public System.Linq.IQueryable<StockConsumptionEntity> QueryByIds(int[] ids)
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

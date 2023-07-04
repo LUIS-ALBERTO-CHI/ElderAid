@@ -27,15 +27,15 @@ namespace FwaEu.MediCare.Referencials
     {
         public ProtectionEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Protections");
+            Table("MDC_Protections");
 
             ReadOnly();
             Not.LazyLoad();
             SchemaAction.None();
 
             Id(entity => entity.Id).Column("Id");
-            Map(entity => entity.DateStart).Column("startDate");
-            Map(entity => entity.DateEnd).Column("endDate");
+            Map(entity => entity.DateStart).Column("DateStart");
+            Map(entity => entity.DateEnd).Column("DateEnd");
             Map(entity => entity.ArticleId).Column("ArticleId");
             Map(entity => entity.DosageDescription).Column("DosageDescription");
             Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();

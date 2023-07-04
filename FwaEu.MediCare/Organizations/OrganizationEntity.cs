@@ -22,7 +22,7 @@ namespace FwaEu.MediCare.Organizations
         public string PharmacyEmail { get; set; }
         public int? OrderPeriodicityDays { get; set; }
         public int? OrderPeriodicityDayOfWeek { get; set; }
-        public DateTime? LastPeriodicityOrder { get; set; }
+        public DateTime LastPeriodicityOrder { get; set; }
         public int? PeriodicityOrderActivationDaysNumber { get; set; }
         public bool? IsStockPharmacyPerBox { get; set; }
         public UserEntity CreatedBy { get; set; }
@@ -59,7 +59,7 @@ namespace FwaEu.MediCare.Organizations
             Map(entity => entity.PharmacyEmail);
             Map(entity => entity.OrderPeriodicityDays);
             Map(entity => entity.OrderPeriodicityDayOfWeek);
-            Map(entity => entity.LastPeriodicityOrder);
+            Map(entity => entity.LastPeriodicityOrder).Not.Nullable();
             Map(entity => entity.PeriodicityOrderActivationDaysNumber);
             Map(entity => entity.IsStockPharmacyPerBox);
             this.AddCreationAndUpdateTrackedPropertiesIntoMapping();

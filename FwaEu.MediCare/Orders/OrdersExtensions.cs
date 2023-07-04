@@ -13,9 +13,12 @@ namespace FwaEu.MediCare.Orders
         {
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<OrderEntityRepository>();
+            repositoryRegister.Add<PeriodicOrderValidationEntityRepository>();
+
             services.AddTransient<IOrderService, OrderService>();
 
             services.AddMasterDataProvider<OrderMasterDataProvider>("Orders");
+            services.AddMasterDataProvider<PeriodicOrderValidationMasterDataProvider>("PeriodicOrderValidations");
 
             return services;
         }
