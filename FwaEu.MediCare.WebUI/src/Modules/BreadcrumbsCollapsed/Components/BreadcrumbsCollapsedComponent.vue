@@ -3,58 +3,23 @@
         <router-link v-show="parentName !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
             <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
         </router-link>
-        <div class="breadcrumbs">
-            <div class="breadcrimbs">
-                <div :style="{ visibility: isCollapsed ? 'hidden' : 'unset' }"
-                     class="crumbContainer"
-                     ref="crumbsRef">
-                    <span v-for="(link, index) in breadcrumbs" :key="getNodeKey(link)" class="breadcrumb-node">
-                        <router-link v-if="notLastElement(index) && !isPathAbsolute(link.to)" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                        <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
-                        <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
-                        <span v-if="notLastElement(index)" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
-                    </span>
-                </div>
-                <div :style="{ visibility: isCollapsed ? 'unset' : 'hidden' }"
-                     class="crumbContainerCollapsed">
-                    <div class="dropdown">
-                        <button class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
-                        <div class="dropdownContent">
-                            <span v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" class="breadcrumb-node">
-                                <router-link :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                            </span>
-                        </div>
-                    </div>
-                    <span v-for="(link, index) in crumbsVisible" :key="getNodeKey(link)" class="breadcrumb-node">
-                        <router-link v-if="crumbsVisible.length -1 != index" :to="link.to" class="breadcrumb-node-link" @click="nodeClicked(link)">{{link.text}}</router-link>
-                        <a v-else-if="notLastElement(index) && isPathAbsolute(link.to)" :href="link.to" @click="nodeClicked(link)">{{link.text}}</a>
-                        <span v-else :key="link.text" class="breadcrumb-node-text breadcrumb-last-node" @click="nodeClicked(link)">{{link.text}}</span>
-                        <span v-if="crumbsVisible.length -1 != index" :key="index" class="breadcrumb-node-separator">&nbsp;{{ nodeSeparator }}&nbsp;</span>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <breadcrumbs-collapsed-reduce v-if="crumbs?.length > 0" :crumbs="crumbs"></breadcrumbs-collapsed-reduce>
     </div>
 </template>
 <script>
     import BreadcrumbService from '../Services/breadcrumbs-service'
-    import { useBreacrumbsCollapsed } from '../Services/breadcrumbs-collapsed-service'
     import ResolveContext from '../Services/resolve-context'
+    import BreadcrumbsCollapsedReduce from '@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedReduceComponent.vue';
 
     export default {
+        components: {
+            BreadcrumbsCollapsedReduce
+        },
         props: {
             nodeSeparator: {
                 type: String,
                 default: '>'
             }
-        },
-        setup() {
-            const { crumbsRef, isCollapsed } = useBreacrumbsCollapsed();
-
-            return {
-                crumbsRef,
-                isCollapsed
-            };
         },
         data() {
             return {
@@ -62,7 +27,8 @@
                 crumbsCollapsed: [],
                 crumbsVisible: [],
                 resolvedNodes: [],
-                onRouteProcessedListener: BreadcrumbService.onRouteProcessed(this.onRouteProcessed)
+                onRouteProcessedListener: BreadcrumbService.onRouteProcessed(this.onRouteProcessed),
+                crumbs: []
             }
         },
         watch: {
@@ -116,6 +82,8 @@
         },
         computed: {
             breadcrumbs() {
+                if (this.resolvedNodes.length > 0)
+                    this.crumbs = this.resolvedNodes.slice(0).reverse();
                 // .slice makes a copy of the array, instead of mutating the orginal
                 return this.resolvedNodes.slice(0).reverse();
             },

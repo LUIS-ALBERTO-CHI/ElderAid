@@ -22,5 +22,6 @@ namespace FwaEu.MediCare.Referencials
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
         public int? LikesCount { get; set; }
+        public bool IsGalenicDosageForm { get; set; }
     }
 }
