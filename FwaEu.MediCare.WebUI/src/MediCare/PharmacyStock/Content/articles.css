@@ -77,3 +77,85 @@
     font-size: 48px;
     color: #484349
 }
+
+.article-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.article-name {
+    margin-right: 10px;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.custom-button {
+    margin-left: 10px;
+}
+
+.switch-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.boite-default {
+    display: flex;
+    align-items: center;
+}
+
+.switch-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.select-option {
+    display: flex;
+    align-items: center;
+}
+
+.switch {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.select-sector {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.custom-switch .p-inputswitch-slider {
+    background-color: #FFFFFF;
+}
+
+.custom-switch .p-inputswitch-slider:before {
+    background-color: #7092be;
+}
+
+.number-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}

@@ -1,5 +1,6 @@
 const CabinetsListPageComponent = () => import('@/MediCare/PharmacyStock/Components/CabinetsListPageComponent.vue');
 const ArticlesInStockPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticlesInStockPageComponent.vue');
+const ArticlesDetailsPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticlesDetailsPageComponent.vue');
 
 export default [
 	{
@@ -24,4 +25,16 @@ export default [
 			},
 		}
 	},
+	{
+		path: '/Articles',
+		name: 'Articles',
+		component: ArticlesDetailsPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Articles',
+				parentName: 'Cabinet'
+			},
+		}
+	},
+
 ];

@@ -5,15 +5,16 @@
             <div class="input-container">
                 <InputText ref="searchInput" v-model="searchArticle" class="search-input"
                     placeholder="Rechercher un article"></InputText>
-                <i @click="removeSearch" class="fa fa-solid fa-close remove-icon" :style="searchArticle.length == 0 ? 'opacity: 0.5;' : ''" />
+                <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
+                    :style="searchArticle.length === 0 ? 'opacity: 0.5;' : ''" />
             </div>
             <i @click="codeqr" class="fa-sharp fa-regular fa-qrcode qr-code-icon" />
         </div>
         <div class="articles-list">
-            <div v-for="articles in filteredArticles" :key="articles.name">
-                <div @click="info" class="article-item">
-                    <span>{{ articles.name }}, {{ articles.unit }}</span>
-                    <span>{{ articles.countInbox }}</span>
+            <div v-for="article in filteredArticles" :key="article.name">
+                <div @click="goToArticleDetails(article)" class="article-item">
+                    <span>{{ article.name }}, {{ article.unit }}</span>
+                    <span>{{ article.countInbox }}</span>
                 </div>
             </div>
         </div>
@@ -23,17 +24,19 @@
         </div>
     </div>
 </template>
+
 <script>
 import InputText from 'primevue/inputtext';
 import articles from './articles.json';
+
 export default {
     components: {
         InputText
     },
     data() {
         return {
-            articles: [],
-            searchArticle: ""
+            articles: articles,
+            searchArticle: "",
         };
     },
     async created() {
@@ -49,17 +52,22 @@ export default {
                 this.$refs.searchInput.$el.focus();
             });
         },
+        goToArticleDetails(article) {
+            localStorage.setItem("selectedArticle", JSON.stringify(article));
+            this.$router.push({ name: "Articles" });
+        },
     },
     computed: {
         filteredArticles() {
-            const articles = this.searchArticle.toLowerCase();
-            if (!articles) {
-                return this.articless;
+            const searchArticle = this.searchArticle.toLowerCase().trim();
+            if (!searchArticle) {
+                return this.articles;
             } else {
-                return this.articless.filter(articles => articles.name.toLowerCase().includes(articles));
+                return this.articles.filter(article =>
+                    article.name.toLowerCase().includes(searchArticle)
+                );
             }
         }
-    },
-}
+    }
+};
 </script>
-
