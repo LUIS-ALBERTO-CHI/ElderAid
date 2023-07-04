@@ -36,7 +36,7 @@ namespace FwaEu.MediCare.Referencials
     {
         public TreatmentEntityClassMap()
         {
-            Table("dbo.MDC_Traitments");
+            Table("MDC_Traitments");
 
             ReadOnly();
             Not.LazyLoad();

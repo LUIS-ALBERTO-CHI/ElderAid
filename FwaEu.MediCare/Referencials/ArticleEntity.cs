@@ -33,6 +33,8 @@ namespace FwaEu.MediCare.Referencials
 
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
+
+        public bool IsGalenicDosageForm { get; set; }
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
         private static DateTime _dateTime = DateTime.Now;
         public bool IsNew() => Id == 0;
@@ -66,6 +68,7 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.GroupName).Column("GroupName");
             Map(entity => entity.Unit).Column("Unit");
             Map(entity => entity.InvoicingUnit).Column("InvoicingUnit");
+            Map(entity => entity.IsGalenicDosageForm).Column("IsGalenicDosageForm");
         }
     }
 
