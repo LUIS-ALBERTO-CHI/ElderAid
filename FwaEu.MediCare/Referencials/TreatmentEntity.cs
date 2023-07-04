@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.MediCare.Initialization;
 using System;
 
 namespace FwaEu.MediCare.Referencials
@@ -32,11 +33,12 @@ namespace FwaEu.MediCare.Referencials
         public bool IsNew() => Id == 0;
     }
 
+    [ConnectionString("Generic")]
     public class TreatmentEntityClassMap : ClassMap<TreatmentEntity>
     {
         public TreatmentEntityClassMap()
         {
-            Table("MDC_Traitments");
+            Table("MDC_Treatments");
 
             ReadOnly();
             Not.LazyLoad();

@@ -7,7 +7,6 @@ using System;
 namespace FwaEu.MediCare.Referencials
 {
 
-    [ConnectionString("Generic")]
     public class ProtectionEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
@@ -23,6 +22,7 @@ namespace FwaEu.MediCare.Referencials
         public bool IsNew() => Id == 0;
     }
 
+    [ConnectionString("Generic")]
     public class ProtectionEntityClassMap : ClassMap<ProtectionEntity>
     {
         public ProtectionEntityClassMap()
