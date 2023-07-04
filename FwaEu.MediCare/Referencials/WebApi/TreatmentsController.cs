@@ -21,7 +21,7 @@ namespace FwaEu.MediCare.Referencials.WebApi
                 var models = await treatmentService.GetAllTreatmentsByPatientAsync(new GetTreatmentsByPatientPost
                 {
                     PatientId = modelApi.PatientId,
-                    State = modelApi.State,
+                    TreatmentType = modelApi.TreatmentType,
                     ArticleFamily = modelApi.ArticleFamily,
                     Page = modelApi.Page,
                     PageSize = modelApi.PageSize,
