@@ -4,6 +4,7 @@ using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
 using FwaEu.Modules.Permissions.ByRole;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FwaEu.MediCare.Organizations
