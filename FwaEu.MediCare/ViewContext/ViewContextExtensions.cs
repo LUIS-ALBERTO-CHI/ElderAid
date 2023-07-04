@@ -7,7 +7,7 @@ namespace FwaEu.MediCare.ViewContext
 		public static IServiceCollection AddApplicationViewContext(this IServiceCollection services)
 		{
 			services.AddScoped<IViewContextService, HttpHeaderViewContextService>();
-			return services;
+            return services;
 		}
 	}
 }

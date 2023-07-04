@@ -1,7 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
-using FwaEu.MediCare.Initialization;
 using System;
 
 namespace FwaEu.MediCare.Referencials
@@ -13,11 +12,11 @@ namespace FwaEu.MediCare.Referencials
         Erased = 2
     }
 
-    [ConnectionString("Generic")]
     public class TreatmentEntity : IUpdatedOnTracked
     {
         public int Id { get; set; }
-        public TreatmentType Type { get; set; }
+        public int PatientId { get; set; }
+        public TreatmentType TreatmentType { get; set; }
 
         public ArticleType ArticleType { get; set; }
 
@@ -37,16 +36,21 @@ namespace FwaEu.MediCare.Referencials
     {
         public TreatmentEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Articles");
+            Table("dbo.MDC_Traitments");
 
             ReadOnly();
             Not.LazyLoad();
             SchemaAction.None();
 
             Id(entity => entity.Id).Column("Id");
-            Id(entity => entity.DateStart).Column("startDate");
-            Id(entity => entity.DateEnd).Column("endDate");
-            Id(entity => entity.Type).Column("state");
+            Map(entity => entity.PatientId).Column("PatientId");
+            Map(entity => entity.PrescribedArticleId).Column("PrescribedArticleId");
+            Map(entity => entity.AppliedArticleId).Column("AppliedArticleId");
+            Map(entity => entity.DosageDescription).Column("DosageDescription");
+            Map(entity => entity.DateStart).Column("DateStart");
+            Map(entity => entity.DateEnd).Column("DateEnd");
+            Map(entity => entity.TreatmentType).Column("TreatmentType");
+            Map(entity => entity.ArticleType).Column("ArticleType");
             Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
