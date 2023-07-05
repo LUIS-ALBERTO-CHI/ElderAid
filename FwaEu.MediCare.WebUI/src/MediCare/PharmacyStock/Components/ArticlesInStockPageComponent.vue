@@ -59,7 +59,6 @@ export default {
             localStorage.setItem("selectedArticle", JSON.stringify(article));
             this.$router.push({ name: "Articles" });
         },
-
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
             const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
@@ -81,3 +80,5 @@ export default {
     }
 };
 </script>
+<style type="text/css" scoped src="./Content/articles.css">
+</style>
