@@ -1,20 +1,27 @@
 <template>
     <div class="treatment-page-container">
         <patient-info-component />
-        <Accordion>
-            <template v-for="(treatment, index) in treatments" :key="index">
+        <Accordion v-if="patientTreatments.some(treatment => 'article' in treatment)">
+            <template v-for="(treatment, index) in patientTreatments" :key="index">
                 <AccordionTab>
                     <template #header>
                         <div class="accordion-header">
                             <div class="accordion-top-area">
                                 <span class="header-title">
-                                    {{ treatment.medicationOrdered }}
+                                    {{ treatment.article.title }}
                                 </span>
                                 <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
                             </div>
-                            <span class="header-subtitle">{{treatment.initialMedication}}</span>
-                            <span class="header-subtitle">{{treatment.frequency}}</span>
-                            <span class="header-subtitle">{{treatment.date}}</span>
+                            <span class="header-subtitle">{{treatment.article.groupName}}</span>
+                            <span class="header-subtitle">{{treatment.dosageDescription}}</span>
+                            <div>
+                                <span class="header-subtitle">De {{ $d(treatment.dateStart, 'short')}} à</span>
+                                <!-- <date-literal class="header-subtitle" :date="treatment.dateStart" display-format="short" /> -->
+
+                            </div>
+                            
+                            <!-- 
+                            <span class="header-subtitle">{{treatment.date}}</span> -->
                         </div>
                     </template>
                         <OrderComponent @submitOrder="orderSubmit"/>
@@ -34,6 +41,10 @@
     import InputNumber from 'primevue/inputnumber';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import OrderComponent from './OrderComponent.vue';
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
+	import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+
 
     export default {
         components: {
@@ -43,7 +54,8 @@
             SelectButton,
             InputNumber,
             PatientInfoComponent,
-            OrderComponent
+            OrderComponent,
+            DateLiteral
         },
         data() {
             return {
@@ -68,10 +80,20 @@
                     date: "De 23/02/2023 à 30/05/2023",
                     isBag: false
                 }],
-                showConfirmationIndex: -1
+                showConfirmationIndex: -1,
+                patient: {},
+                patientTreatments: []
             };
         },
         async created() {
+            this.patient = JSON.parse(localStorage.getItem("patient"));
+            var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+
+            this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
+
+            this.fillPatientTreatments()
+
+            // console.log(patientTreatments)
         },
         methods: {
             goToTreatmentPage() {
@@ -98,6 +120,15 @@
             },
             orderSubmit() {
                 console.log('order submit')
+            },
+            async fillPatientTreatments() {
+                const treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
+                const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
+                this.patientTreatments.forEach(treatment => {
+                    const article = articles.find(article => article.id === treatment.appliedArticleId)
+                    treatment.article = article
+                })
+                console.log(this.patientTreatments)
             }
         },
         computed: {

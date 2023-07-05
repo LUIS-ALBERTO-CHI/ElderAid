@@ -1,4 +1,6 @@
 import HttpService from "@/Fwamework/Core/Services/http-service";
+import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchronization/Services/indexed-db-service";
+import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
 
 export default {
 	async getAllAsync() {
@@ -6,10 +8,14 @@ export default {
 		return result.data;
 	},
 
-
 	async saveAsync(data) {
-		console.log("Calling api save orders")
-		const result = await HttpService.post(`Orders`, data);
-		return result.data;
+		if (OnlineService.isOnline()) {
+			const result = await HttpService.post(`Orders`, data);
+			return result.data;
+		} else {
+			const indixedDbService = new OfflineDataSynchronizationService('orders');
+			const result = indixedDbService.addToObjectStore(data);
+			return result.data;
+		}
 	}
 }
