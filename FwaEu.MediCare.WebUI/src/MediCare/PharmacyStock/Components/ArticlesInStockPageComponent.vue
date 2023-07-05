@@ -10,9 +10,9 @@
             </div>
             <i @click="codeqr" class="fa-sharp fa-regular fa-qrcode qr-code-icon" />
         </div>
-        <div class="articles-list">
+        <div class="vignette-list">
             <div v-for="article in filteredArticles" :key="article.name">
-                <div @click="goToArticleDetails(article)" class="article-item">
+                <div @click="goToArticleDetails(article)" class="vignette-item">
                     <span>{{ article.name }}, {{ article.unit }}</span>
                     <span>{{ article.countInbox }}</span>
                 </div>
