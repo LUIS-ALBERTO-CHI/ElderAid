@@ -6,7 +6,7 @@
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToTreatmentPage" class="patient-info-item">
-            <span>4 matériels de soin</span>
+            <span>{{ patientTreatments.length }} matériels de soin</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToProtectionPage" class="patient-info-item">
@@ -14,7 +14,7 @@
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToPatientOrdersPage" class="patient-info-item">
-            <span>8 commandes, dont 4 en cours</span>
+            <span>{{ patientsOrders.length }} commandes, dont {{ patientsOrders.filter(x => x.state == "Pending").length }} en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToStockConsumptionPage" class="patient-info-item">
@@ -36,7 +36,10 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
+    import TreatmentsMasterDataService from "@/MediCare/Referencials/Services/treatments-master-data-service";
+    import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
 
+    // import TreatmentsMasterDataService from '@/MediCare/Referencials/Services/TreatmentsMasterDataService.js'
 
     export default {
         components: {
@@ -46,11 +49,18 @@
         data() {
             return {
                 patient: {},
+                patientTreatments: [],
+                patientsOrders: []
             };
         },
         async created() {
             var patient = localStorage.getItem("patient");
             this.patient = JSON.parse(patient);
+            const treatments = await TreatmentsMasterDataService.getAllAsync();
+            const orders = await OrdersMasterDataService.getAllAsync();
+
+            this.patientTreatments = treatments.filter(t => t.patientId == this.patient.id);
+            this.patientsOrders = orders.filter(o => o.patientId == this.patient.id);
         },
         methods: {
             goToTreatmentPage() {

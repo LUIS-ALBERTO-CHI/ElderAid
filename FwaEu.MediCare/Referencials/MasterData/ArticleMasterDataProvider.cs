@@ -1,31 +1,36 @@
 ﻿using FwaEu.Fwamework.Temporal;
-using FwaEu.MediCare.Referencials.Services;
 using FwaEu.Modules.MasterData;
 using System.Threading.Tasks;
 using System;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
+using FwaEu.MediCare.GenericRepositorySession;
+using FwaEu.Fwamework.Data.Database.Sessions;
+using NHibernate.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FwaEu.MediCare.Referencials.MasterData
 {
     public class ArticleMasterDataProvider : IMasterDataProvider
     {
-        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, IArticleService articleService)
+        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, GenericSessionContext sessionContext)
         {
-            _articleService = articleService ?? throw new ArgumentNullException(nameof(articleService));
+            _sessionContext = sessionContext ?? throw new ArgumentNullException(nameof(sessionContext));
             if (!_dateTimeNow.HasValue)
             {
                 _dateTimeNow = currentDateTime.Now;
             }
         }
 
-        private readonly IArticleService _articleService;
+        private readonly GenericSessionContext _sessionContext;
         public Type IdType => typeof(string);
 
         private static DateTime? _dateTimeNow = null;
 
         public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
         {
-            var count = (await _articleService.GetAllAsync()).Count;
+            var count = (await GetAllAsync()).Count();
 
             return await Task.FromResult(new MasterDataChangesInfo(_dateTimeNow, count));
         }
@@ -46,12 +51,20 @@ namespace FwaEu.MediCare.Referencials.MasterData
             {
                 throw new NotSupportedException("OrderBy is not supported by building master-data.");
             }
-            return await _articleService.GetAllAsync();
+            return await GetAllAsync();
         }
 
-        public Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
+        public async Task<IEnumerable> GetModelsByIdsAsync(MasterDataProviderGetModelsByIdsParameters parameters)
         {
-            throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
+            int[] articleIds = parameters.Ids.Select(Convert.ToInt32).ToArray();
+            var models = await GetAllAsync();
+            return models.Where(x => articleIds.Contains(x.Id));
+        }
+
+
+        protected async Task<IEnumerable<ArticleEntity>> GetAllAsync()
+        {
+            return await _sessionContext.RepositorySession.Create<ArticleEntityRepository>().Query().ToListAsync();
         }
     }
 }
