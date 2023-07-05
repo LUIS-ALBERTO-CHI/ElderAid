@@ -46,8 +46,6 @@
 		methods: {
 			initializeOrganizationPart() {
 				let $this = this;
-				console.log(this.model)
-				console.log(this.fetchedData)
 				this.masterDataModel = this.fetchedData.map(r => {
 					return { name: r.name, id: r.id, selected: $this.model.data.selectedIds.indexOf(r.id) !== -1 };
 				});

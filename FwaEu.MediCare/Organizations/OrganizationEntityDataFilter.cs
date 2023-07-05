@@ -12,6 +12,12 @@ namespace FwaEu.MediCare.Organizations
 {
     public class OrganizationEntityDataFilter : IRepositoryDataFilter<OrganizationEntity, int>
     {
+        protected readonly bool _isAdmin;
+        public OrganizationEntityDataFilter(bool isAdmin)
+        {
+            _isAdmin = isAdmin;
+        }
+
         public Expression<Func<OrganizationEntity, bool>> Accept(RepositoryDataFilterContext<OrganizationEntity, int> context)
         {
             var organizationUserLinkRepository = context.ServiceProvider
@@ -22,7 +28,8 @@ namespace FwaEu.MediCare.Organizations
             if (currentUserService != null)
             {
                 var organizationsUserIds = organizationUserLinkRepository.Query().Where(entity => entity.User == currentUserService.User.Entity).Select(x => x.Organization.Id).ToList();
-                return entity => currentUserService.User.Entity.IsAdmin || organizationsUserIds.Contains(entity.Id);
+                return entity => _isAdmin ? currentUserService.User.Entity.IsAdmin 
+                                          : (bool)entity.IsActive && (currentUserService.User.Entity.IsAdmin || organizationsUserIds.Contains(entity.Id));
             }
             return null;
         }

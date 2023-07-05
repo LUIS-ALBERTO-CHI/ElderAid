@@ -18,9 +18,11 @@ namespace FwaEu.MediCare.Organizations
         {
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<OrganizationEntityRepository>();
+            repositoryRegister.Add<AdminOrganizationEntityRepository>();
             repositoryRegister.Add<OrganizationUserLinkEntityRepository>();
 
             services.AddMasterDataProvider<OrganizationEntityMasterDataProvider>("Organizations");
+            services.AddMasterDataProvider<AdminOrganizationEntityMasterDataProvider>("AdminOrganizations");
 
             services.AddMasterDataProvider<UserOrganizationsMasterDataProvider>("UserOrganizations");
 
