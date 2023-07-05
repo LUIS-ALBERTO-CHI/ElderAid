@@ -80,3 +80,5 @@ export default {
     }
 };
 </script>
+<style type="text/css" scoped src="./Content/articles.css">
+</style>
