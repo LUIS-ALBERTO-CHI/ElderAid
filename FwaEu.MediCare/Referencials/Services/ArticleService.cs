@@ -16,11 +16,6 @@ namespace FwaEu.MediCare.Referencials.Services
         {
             _sessionContext = sessionContext;
         }
-        public async Task<List<ArticleEntity>> GetAllAsync()
-        {
-            var repository = _sessionContext.RepositorySession;
-            return await repository.Create<ArticleEntityRepository>().Query().ToListAsync();
-        }
 
         public async Task<List<GetArticlesBySearchResponse>> GetAllBySearchAsync(GetArticlesBySearchPost model)
         {
