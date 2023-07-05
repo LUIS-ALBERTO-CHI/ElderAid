@@ -15,18 +15,35 @@ export default [
 		}
 	},
 	{
-		path: '/Cabinet',
+		path: '/Cabinet/:id',
 		name: 'Cabinet',
 		component: ArticlesInStockPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Cabinet',
-				parentName: 'stockPharmacy'
+				parentName: "stockPharmacy",
+				async onNodeResolve(node, context) {
+					if (
+						typeof context.currentComponent.getCurrentCabinetAsync !==
+						"function"
+					) {
+						throw new Error(
+							"Children pages of cabinet details must implement a getCurrentCabinetAsync method"
+						);
+					}
+					const cabinet =
+						await context.currentComponent.getCurrentCabinetAsync();
+					node.text = cabinet.name;
+					node.to = {
+						name: "Cabinet",
+						params: { id: cabinet.id },
+					};
+					return node;
+				},
 			},
 		}
 	},
 	{
-		path: '/Articles',
+		path: '/Cabinet/:id/Articles',
 		name: 'Articles',
 		component: ArticlesDetailsPageComponent,
 		meta: {
@@ -36,5 +53,4 @@ export default [
 			},
 		}
 	},
-
 ];

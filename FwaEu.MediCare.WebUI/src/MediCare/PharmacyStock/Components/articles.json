@@ -13,35 +13,5 @@
         "name": "Advil",
         "unit": "200mg",
         "countInbox": 40
-    },
-    {
-        "name": "Band-Aid",
-        "unit": "Pack",
-        "countInbox": 25
-    },
-    {
-        "name": "Imodium",
-        "unit": "2mg",
-        "countInbox": 15
-    },
-    {
-        "name": "Nurofen",
-        "unit": "400mg",
-        "countInbox": 35
-    },
-    {
-        "name": "Efferalgan",
-        "unit": "1g",
-        "countInbox": 50
-    },
-    {
-        "name": "Compeed",
-        "unit": "Patches",
-        "countInbox": 20
-    },
-    {
-        "name": "Rennie",
-        "unit": "Tablets",
-        "countInbox": 30
     }
 ]

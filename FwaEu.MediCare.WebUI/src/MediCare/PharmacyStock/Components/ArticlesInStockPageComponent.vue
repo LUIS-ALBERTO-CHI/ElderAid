@@ -3,16 +3,16 @@
         <span>Articles en stock</span>
         <div class="search-container">
             <div class="input-container">
-                <InputText ref="searchInput" v-model="searchArticle" class="search-input"
+                <InputText ref="searchInput" v-model="searchValue" class="search-input"
                     placeholder="Rechercher un article"></InputText>
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
-                    :style="searchArticle.length === 0 ? 'opacity: 0.5;' : ''" />
+                    :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
             </div>
             <i @click="codeqr" class="fa-sharp fa-regular fa-qrcode qr-code-icon" />
         </div>
-        <div class="articles-list">
+        <div class="vignette-list">
             <div v-for="article in filteredArticles" :key="article.name">
-                <div @click="goToArticleDetails(article)" class="article-item">
+                <div @click="goToArticleDetails(article)" class="vignette-item">
                     <span>{{ article.name }}, {{ article.unit }}</span>
                     <span>{{ article.countInbox }}</span>
                 </div>
@@ -28,6 +28,7 @@
 <script>
 import InputText from 'primevue/inputtext';
 import articles from './articles.json';
+import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
 export default {
     components: {
@@ -36,15 +37,17 @@ export default {
     data() {
         return {
             articles: articles,
-            searchArticle: "",
+            searchValue: "",
+            cabinetName: '',
         };
     },
     async created() {
         this.focusSearchBar();
+        await this.getCurrentCabinetAsync();
     },
     methods: {
         removeSearch() {
-            this.searchArticle = "";
+            this.searchValue = "";
             this.focusSearchBar();
         },
         focusSearchBar() {
@@ -56,18 +59,24 @@ export default {
             localStorage.setItem("selectedArticle", JSON.stringify(article));
             this.$router.push({ name: "Articles" });
         },
+        async getCurrentCabinetAsync() {
+            const cabinetId = this.$route.params.id;
+            const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
+            this.cabinetName = cabinet.name;
+            return cabinet;
+        },
     },
     computed: {
         filteredArticles() {
-            const searchArticle = this.searchArticle.toLowerCase().trim();
-            if (!searchArticle) {
+            const searchValue = this.searchValue.toLowerCase().trim();
+            if (!searchValue) {
                 return this.articles;
             } else {
                 return this.articles.filter(article =>
-                    article.name.toLowerCase().includes(searchArticle)
+                    article.name.toLowerCase().includes(searchValue)
                 );
             }
-        }
+        },
     }
 };
 </script>

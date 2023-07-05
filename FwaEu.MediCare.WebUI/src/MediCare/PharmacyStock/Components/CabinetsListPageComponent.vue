@@ -1,7 +1,7 @@
 <template>
   <div class="page-cabinet">
     <div class="vignette-list">
-      <div @click="goToArticlesInStock" class="vignette-item" v-for="cabinet in cabinets" :key="cabinet.id">
+      <div @click="goToArticlesInStock(cabinet.id)" class="vignette-item" v-for="cabinet in cabinets" :key="cabinet.id">
         <div>
           <i class="fa-regular fa-inbox vignette-icon fa-fw" style="color: #d9c4b3" />
           <span class="vignette-text">{{ cabinet.name }}</span>
@@ -24,8 +24,8 @@ export default {
     this.cabinets = await CabinetsMasterDataService.getAllAsync();
   },
   methods: {
-    goToArticlesInStock() {
-      this.$router.push({ name: "Cabinet" });
+    goToArticlesInStock(cabinetId) {
+      this.$router.push({ name: "Cabinet", params: { id: cabinetId } });
     },
   },
 };
