@@ -43,7 +43,7 @@ export default [
 		}
 	},
 	{
-		path: '/Articles',
+		path: '/Cabinet/:id/Articles',
 		name: 'Articles',
 		component: ArticlesDetailsPageComponent,
 		meta: {
@@ -53,5 +53,4 @@ export default [
 			},
 		}
 	},
-
 ];
