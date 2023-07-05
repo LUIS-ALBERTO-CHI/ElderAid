@@ -39,9 +39,7 @@ namespace FwaEu.MediCare.Organizations
         {
             return Name;
         }
-
     }
-
 
     public class OrganizationEntityClassMap : ClassMap<OrganizationEntity>
     {
@@ -76,7 +74,21 @@ namespace FwaEu.MediCare.Organizations
         protected override IEnumerable<IRepositoryDataFilter<OrganizationEntity, int>> CreateDataFilters(
             RepositoryDataFilterContext<OrganizationEntity, int> context)
         {
-            yield return new OrganizationEntityDataFilter();
+            yield return new OrganizationEntityDataFilter(false);
+        }
+    }
+
+    public class AdminOrganizationEntityRepository : DefaultRepository<OrganizationEntity, int>, IQueryByIds<OrganizationEntity, int>
+    {
+        public System.Linq.IQueryable<OrganizationEntity> QueryByIds(int[] ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override IEnumerable<IRepositoryDataFilter<OrganizationEntity, int>> CreateDataFilters(
+            RepositoryDataFilterContext<OrganizationEntity, int> context)
+        {
+            yield return new OrganizationEntityDataFilter(true);
         }
     }
 }

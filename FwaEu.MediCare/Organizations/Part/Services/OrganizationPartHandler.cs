@@ -13,7 +13,7 @@ namespace FwaEu.MediCare.Organizations.Part.Services
 {
 	public class OrganizationPartHandler : EditablePartHandler<OrganizationPartModel, OrganizationPartModel>
 	{
-		public const string PartName = "Organizations";
+		public const string PartName = "AdminOrganizations";
 		public override string Name => PartName;
 
 		public OrganizationPartHandler(
@@ -56,7 +56,7 @@ namespace FwaEu.MediCare.Organizations.Part.Services
 				var user = this._userSessionContext.SaveUserEntity;
 
 				var userOrganizationRepository = repositorySession.Create<OrganizationUserLinkEntityRepository>();
-				var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
+				var organizationRepository = repositorySession.Create<AdminOrganizationEntityRepository>();
 
 				var currentSelectedIds = await userOrganizationRepository.QueryByUserId(user.Id)
 					.Select(up => up.Organization.Id).ToListAsync();

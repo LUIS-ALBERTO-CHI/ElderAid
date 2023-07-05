@@ -1,9 +1,9 @@
-import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
+import AdminOrganizationsMasterDataService from "@/MediCare/Organizations/Services/admin-organizations-master-data-service";
 import { I18n } from "@/Fwamework/Culture/Services/localization-service";
 import { defineAsyncComponent } from "vue";
 
 export default {
-	partName: "organizations",
+	partName: "adminOrganizations",
 	component: defineAsyncComponent(() => import("./OrganizationUserPartComponent.vue")),
 
 	initializeAsync: function (user, context) {
@@ -16,7 +16,7 @@ export default {
 			readOnly: context.currentUser.id === user.id,
 			data: userPart,
 			title: I18n.t('organizationTitle'),
-			fetchDataAsync: async () => await OrganizationsMasterDataService.getAllAsync()
+			fetchDataAsync: async () => await AdminOrganizationsMasterDataService.getAllAsync()
 		}];
 	},
 

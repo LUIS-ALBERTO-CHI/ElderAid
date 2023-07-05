@@ -8,18 +8,18 @@ using System.Linq.Expressions;
 
 namespace FwaEu.MediCare.Organizations.MasterData
 {
-	public class OrganizationEntityMasterDataProvider : EntityMasterDataProvider<OrganizationEntity, int, OrganizationMasterDataModel, OrganizationEntityRepository>
+	public class AdminOrganizationEntityMasterDataProvider : EntityMasterDataProvider<OrganizationEntity, int, AdminOrganizationMasterDataModel, AdminOrganizationEntityRepository>
 	{
 
-        public OrganizationEntityMasterDataProvider(
+        public AdminOrganizationEntityMasterDataProvider(
             MainSessionContext sessionContext,
             ICulturesService culturesService)
             : base(sessionContext, culturesService)
         {
         }
-        protected override Expression<Func<OrganizationEntity, OrganizationMasterDataModel>> CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
+        protected override Expression<Func<OrganizationEntity, AdminOrganizationMasterDataModel>> CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => new OrganizationMasterDataModel(entity.Id, entity.InvariantId, entity.Name, entity.DatabaseName, entity.PublicWebURL, entity.PublicMobileURL, entity.PharmacyEmail, entity.OrderPeriodicityDays, entity.OrderPeriodicityDayOfWeek, entity.LastPeriodicityOrder, entity.PeriodicityOrderActivationDaysNumber, entity.IsStockPharmacyPerBox, entity.CreatedBy.Id, entity.CreatedOn, entity.UpdatedBy.Id, entity.UpdatedOn);
+            return entity => new AdminOrganizationMasterDataModel(entity.Id, entity.InvariantId, entity.Name, entity.DatabaseName, entity.PublicWebURL, entity.PublicMobileURL, entity.PharmacyEmail, entity.IsActive, entity.OrderPeriodicityDays, entity.OrderPeriodicityDayOfWeek, entity.LastPeriodicityOrder, entity.PeriodicityOrderActivationDaysNumber, entity.IsStockPharmacyPerBox, entity.CreatedBy.Id, entity.CreatedOn, entity.UpdatedBy.Id, entity.UpdatedOn);
         }
         protected override Expression<Func<OrganizationEntity, bool>> CreateSearchExpression(string search,
             CultureInfo userCulture, CultureInfo defaultCulture)
@@ -28,16 +28,15 @@ namespace FwaEu.MediCare.Organizations.MasterData
         }
     }
 
-	public class OrganizationMasterDataModel
+	public class AdminOrganizationMasterDataModel
     {
-        public OrganizationMasterDataModel(int id, string invariantId, string name, string databaseName, string publicWebURL, string publicMobileURL, string pharmacyEmail, 
-                                        int? orderPeriodicityDays, int? orderPeriodicityDayOfWeek, DateTime? lastPeriodicityOrder, int? periodicityOrderActivationDaysNumber, 
-                                            bool? isStockPharmacyPerBox, int? createdById, DateTime? createdOn, int? updatedById, DateTime? updatedOn)
+        public AdminOrganizationMasterDataModel(int id, string invariantId, string name, string databaseName, string publicWebURL, string publicMobileURL, string pharmacyEmail, bool? isActive, int? orderPeriodicityDays, int? orderPeriodicityDayOfWeek, DateTime? lastPeriodicityOrder, int? periodicityOrderActivationDaysNumber, bool? isStockPharmacyPerBox, int? createdById, DateTime? createdOn, int? updatedById, DateTime? updatedOn)
         {
             Id = id;
             InvariantId = invariantId;
             Name = name;
             DatabaseName = databaseName;
+            IsActive = isActive;
             PublicWebURL = publicWebURL;
             PublicMobileURL = publicMobileURL;
             PharmacyEmail = pharmacyEmail;
@@ -56,6 +55,7 @@ namespace FwaEu.MediCare.Organizations.MasterData
 		public string InvariantId { get; }
         public string Name { get; }
         public string DatabaseName { get; set; }
+        public bool? IsActive { get; set; }
         public string PublicWebURL { get; set; }
         public string PublicMobileURL { get; set; }
         public string PharmacyEmail { get; set; }

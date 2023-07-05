@@ -35,6 +35,7 @@ namespace FwaEu.MediCare.Referencials
         public int? SubstitutionsCount { get; set; }
 
         public bool IsGalenicDosageForm { get; set; }
+        public int PharmaCode { get; set; }
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
         private static DateTime _dateTime = DateTime.Now;
         public bool IsNew() => Id == 0;
@@ -57,8 +58,7 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.Price).Column("Price");
             Map(entity => entity.ArticleType).Column("ArticleType");
             Map(entity => entity.AmountRemains).Column("LeftAtCharge");
-            Map(entity => entity.CountInBox).Column("CountInBox");
-          
+            Map(entity => entity.CountInBox).Column("CountInBox");          
 
             Map(entity => entity.ThumbnailURL).Column("ThumbnailURL");
             Map(entity => entity.ImageURLs).Column("ImageURLs");
@@ -69,6 +69,8 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.Unit).Column("Unit");
             Map(entity => entity.InvoicingUnit).Column("InvoicingUnit");
             Map(entity => entity.IsGalenicDosageForm).Column("IsGalenicDosageForm");
+
+            Map(entity => entity.PharmaCode).Column("PharmaCode");
         }
     }
 
