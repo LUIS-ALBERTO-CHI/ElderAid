@@ -48,31 +48,3 @@ namespace FwaEu.MediCare.Articles.Services
         }
     }
 }
-
-
-
-
-
-
-//IDbCommand command = new SqlCommand("SP_MDC_GetArticles");
-//command.Connection = _sessionContext.NhibernateSession.Connection;
-//command.CommandType = CommandType.StoredProcedure;
-//var parameter = new SqlParameter();
-//parameter.ParameterName = "ArticlesList";
-//parameter.SqlDbType = SqlDbType.Structured;
-//parameter.Value = new { ArticlesList = ids.AsTableValuedParameter };
-//command.Parameters.Add(parameter);
-//var result = command.ExecuteNonQuery();
-
-
-// storedProcedure.SetParameter("ArticlesList", ids, NHibernateUtil.Structured("dbo.TableType"));
-
-//await dbConnection.ExecuteAsync("[dbo].[majEventsAggPositions]"
-//    , commandType: CommandType.StoredProcedure
-//    , param: new
-//    {
-//        Positions = ids.AsTableValuedParameter("[dbo].[IDs]")
-//    }
-//    , commandTimeout: 60);
-
-//await dbConnection.CloseAsync();

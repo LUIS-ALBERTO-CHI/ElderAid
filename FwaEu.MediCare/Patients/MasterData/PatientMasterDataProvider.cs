@@ -30,6 +30,8 @@ namespace FwaEu.MediCare.Patients.MasterData
     {
         public PatientEntityMasterDataModel(int id, int incontinenceLevel, int? buildingId, string fullName, string roomName, bool? isActive, DateTime? incontinenceStartDate, DateTime? updatedOn)
         {
+            var rand = new Random();
+            var value = rand.Next(0, 1);
             Id = id;
             IncontinenceLevel = incontinenceLevel;
             BuildingId = buildingId;
@@ -38,6 +40,8 @@ namespace FwaEu.MediCare.Patients.MasterData
             IsActive = isActive;
             IncontinenceStartDate = incontinenceStartDate;
             UpdatedOn = updatedOn;
+            IsIncontinenceLevelOverPassed = Convert.ToBoolean(value);
+
         }
 
         public int Id { get; }
@@ -46,6 +50,7 @@ namespace FwaEu.MediCare.Patients.MasterData
         public string RoomName { get; }
         public bool? IsActive { get; }
         public int IncontinenceLevel { get; set; }
+        public bool IsIncontinenceLevelOverPassed { get; set; }
         public DateTime? IncontinenceStartDate { get; set; }
         public DateTime? UpdatedOn { get; }
     }

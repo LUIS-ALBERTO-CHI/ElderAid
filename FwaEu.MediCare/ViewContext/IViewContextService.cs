@@ -7,6 +7,7 @@ using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.Users;
 using FwaEu.MediCare.ViewContext.WebApi;
 using Microsoft.AspNetCore.Http;
+using NHibernate.Engine;
 using NHibernate.Linq;
 using Remotion.Linq.Utilities;
 using System;
@@ -83,7 +84,7 @@ namespace FwaEu.MediCare.ViewContext
                             
                             if (!entity.DatabaseName.Equals(_manageGenericDbService.GetGenericDb(), StringComparison.InvariantCultureIgnoreCase))
                             {
-                                _manageGenericDbService.OnChangeGenericDb(entity.DatabaseName);
+                                _manageGenericDbService.OnChangeGenericDb(entity.Id, entity.DatabaseName);
                                 await AddLogUserAsync((IApplicationPartEntityPropertiesAccessor)currentUser);
                             }
                         }

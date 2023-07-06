@@ -12,9 +12,9 @@ namespace FwaEu.MediCare.Orders.WebApi
     [Route("[controller]")]
     public class OrdersController : Controller
     {
-        // GET /Orders
+        // GET /Orders/GetAll
         [HttpPost("GetAll")]
-        public async Task<IActionResult> GetAll(GetAllOrdersPostApi modelApi, IOrderService orderService)
+        public async Task<IActionResult> GetAllAsync(GetAllOrdersPostApi modelApi, IOrderService orderService)
         {
             try
             {
@@ -42,9 +42,9 @@ namespace FwaEu.MediCare.Orders.WebApi
         }
 
 
-        // POST /Orders
+        // POST /Orders/Create
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(CreateOrdersPostApi[] orders, IOrderService orderService)
+        public async Task<IActionResult> CreateAsync(CreateOrdersPostApi[] orders, IOrderService orderService)
         {
             try
             {
@@ -55,6 +55,30 @@ namespace FwaEu.MediCare.Orders.WebApi
                     CreatedOn = x.CreatedOn,
                     PatientId = x.PatientId
                 }).ToArray());
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // POST /Orders/ValidatePeriodicOrder
+        [HttpPost("ValidatePeriodicOrder")]
+        public async Task<IActionResult> ValidatePeriodicOrderAsync([FromBody] ValidatePeriodicOrderPostApi validatePeriodicOrder, IOrderService orderService)
+        {
+            try
+            {
+                var model = new ValidatePeriodicOrderPost(){
+                     PatientId= validatePeriodicOrder.PatientId,
+                     Articles = validatePeriodicOrder.Articles.Select(x => new ArticleValidatePeriodicOrderPost()
+                     {
+                         ArticleId= x.ArticleId,
+                         DefaultQuantity= x.DefaultQuantity,
+                         Quantity= x.Quantity
+                     }).ToArray()
+                };
+                await orderService.ValidatePeriodicOrderAsync(model);
                 return Ok();
             }
             catch (NotFoundException)

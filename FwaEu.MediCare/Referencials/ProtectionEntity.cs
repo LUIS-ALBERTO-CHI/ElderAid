@@ -11,12 +11,14 @@ namespace FwaEu.MediCare.Referencials
     {
         public int Id { get; set; }
 
+        public int PatientId { get; set; }
         public int ArticleId { get; set; }
 
         public string DosageDescription { get; set; }
 
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
         private static DateTime _dateTime = DateTime.Now;
         public bool IsNew() => Id == 0;
@@ -37,6 +39,7 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.DateStart).Column("DateStart");
             Map(entity => entity.DateEnd).Column("DateEnd");
             Map(entity => entity.ArticleId).Column("ArticleId");
+            Map(entity => entity.PatientId).Column("PatientId");
             Map(entity => entity.DosageDescription).Column("DosageDescription");
             Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }

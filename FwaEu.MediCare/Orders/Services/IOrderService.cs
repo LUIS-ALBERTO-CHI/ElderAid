@@ -8,5 +8,7 @@ namespace FwaEu.MediCare.Orders.Services
         Task<List<GetAllOrdersResponse>> GetAllAsync(GetAllOrdersPost model);
 
         Task CreateOrdersAsync(CreateOrdersPost[] orders);
+
+        Task ValidatePeriodicOrderAsync(ValidatePeriodicOrderPost validatePeriodicOrder);
     }
 }

@@ -16,6 +16,8 @@ namespace FwaEu.MediCare.Referencials
         public int Quantity { get; set; }
 
         public DateTime Hour { get; set; }
+
+
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
         private static DateTime _dateTime = DateTime.Now;
         public bool IsNew() => Id == 0;

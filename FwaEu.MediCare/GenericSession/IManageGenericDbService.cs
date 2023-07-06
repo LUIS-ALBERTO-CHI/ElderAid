@@ -3,6 +3,7 @@
     public interface IManageGenericDbService
     {
         public string GetGenericDb();
-        public void OnChangeGenericDb(string selectedDbName);
+        public int GetGenericDbId();
+        public void OnChangeGenericDb(int selectedDbId, string selectedDbName);
     }
 }

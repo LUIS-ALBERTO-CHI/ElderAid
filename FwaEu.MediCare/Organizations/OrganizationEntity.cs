@@ -48,9 +48,9 @@ namespace FwaEu.MediCare.Organizations
             Not.LazyLoad();
 
             Id(entity => entity.Id).GeneratedBy.Identity();
-            Map(entity => entity.InvariantId).Not.Nullable(); ;
-            Map(entity => entity.Name).Not.Nullable(); ;
-            Map(entity => entity.DatabaseName).Not.Nullable(); ;
+            Map(entity => entity.InvariantId).Not.Nullable().Unique();
+            Map(entity => entity.Name).Not.Nullable().Unique();
+            Map(entity => entity.DatabaseName).Not.Nullable().Unique();
             Map(entity => entity.IsActive).Default("1");
             Map(entity => entity.PublicWebURL);
             Map(entity => entity.PublicMobileURL);
