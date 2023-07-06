@@ -52,7 +52,6 @@ namespace FwaEu.MediCare.Orders.WebApi
                 {
                     Quantity = x.Quantity,
                     ArticleId = x.ArticleId,
-                    CreatedOn = x.CreatedOn,
                     PatientId = x.PatientId
                 }).ToArray());
                 return Ok();

@@ -1,49 +1,64 @@
 <template>
     <div class="order-container">
-        <div v-show="orderAlreadyInProgress" class="alert-container">
+        <div v-show="isOrderAlreadyInProgress" class="alert-container">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span> Commande déjà en cours de cet article pour ce patient</span>
         </div>
         <span>Commander une quantité :</span>
         <div v-show="!moreQuantityDisplayed" class="quantity-container">
             <div style="width: 75%;">
-                <SelectButton  class="quantity-select-button" v-model="selectedQuantity" :options="quantityOptions"/>
+                <SelectButton class="quantity-select-button" v-model="selectedQuantity" :options="quantityOptions" />
             </div>
             <i @click="displayMoreQuantity()" class="fa fa-solid fa-plus add-icon" style="font-size: 20px;"></i>
         </div>
         <div v-show="moreQuantityDisplayed">
-            <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal" style="width: 75%;"
-                         decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
-                         incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
+            <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal"
+                         style="width: 75%;" decrementButtonClassName="p-button-secondary"
+                         incrementButtonClassName="p-button-secondary" incrementButtonIcon="fa fa-solid fa-plus"
+                         decrementButtonIcon="fa fa-solid fa-minus" />
 
         </div>
         <div class="confirmation-container" v-if="showConfirmationDisplayed">
             <span>Etes vous sûr de commander ?</span>
             <div class="confirmaton-button-container">
-                <Button @click="submitOrder()" label="OUI" outlined style="border: none !important; height: 30px !important;" />
-                <Button @click="showConfirmation()" label="NON" outlined style="border: none !important; height: 30px !important;" />
+                <Button @click="submitOrder()" label="OUI" outlined
+                        style="border: none !important; height: 30px !important;" />
+                <Button @click="showConfirmation()" label="NON" outlined
+                        style="border: none !important; height: 30px !important;" />
             </div>
         </div>
         <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
-            <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="4 autres formats" icon="fa fa-solid fa-angle-right" iconPos="right"/>
-            <Button  style="height: 40px !important; width: 50%; font-size: 14px;" label="8 substitutions"  icon="fa fa-solid fa-angle-right" iconPos="right"/>
+            <Button style="height: 40px !important; width: 50%; font-size: 14px;" label="4 autres formats"
+                    icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button style="height: 40px !important; width: 50%; font-size: 14px;" label="8 substitutions"
+                    icon="fa fa-solid fa-angle-right" iconPos="right" />
         </div>
     </div>
-
 </template>
 <!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
 <script>
 
-import Button from 'primevue/button';
-import SelectButton from 'primevue/selectbutton';
-import InputNumber from 'primevue/inputnumber';
+    import Button from 'primevue/button';
+    import SelectButton from 'primevue/selectbutton';
+    import InputNumber from 'primevue/inputnumber';
+    import OrdersService from '@/MediCare/Orders/Services/orders-service';
 
     export default {
         components: {
             Button,
             SelectButton,
             InputNumber
+        },
+        props: {
+            article: {
+                type: Object,
+                required: true
+            },
+            patientOrders: {
+                type: Array,
+                required: true
+            }
         },
         data() {
             return {
@@ -56,6 +71,7 @@ import InputNumber from 'primevue/inputnumber';
             };
         },
         async created() {
+            this.patient = JSON.parse(localStorage.getItem('patient'));
         },
         methods: {
             displayMoreQuantity() {
@@ -65,7 +81,14 @@ import InputNumber from 'primevue/inputnumber';
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
             submitOrder() {
-                this.$emit('submitOrder', this.selectedQuantity);
+                const modelOrder = [{
+                    patientId: this.patient.id,
+                    articleId: this.article.id,
+                    quantity: this.selectedQuantity
+                }];
+
+                OrdersService.saveAsync(modelOrder);
+
                 this.showConfirmationDisplayed = false;
             },
             getQuantitySentance() {
@@ -82,42 +105,47 @@ import InputNumber from 'primevue/inputnumber';
             }
         },
         computed: {
-
+            isOrderAlreadyInProgress() {
+                // return true if there is an article id in the patient orders
+                return this.patientOrders.some(order => order.articleId === this.article.id);
+            }
         },
 
     }
 </script>
 <style scoped type="text/css">
-.order-container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 20px;
-}
-.quantity-container { 
-    width: 100%;
-    display: flex;
-    align-items: center;
-    column-gap: 15px
-}
+    .order-container {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+    }
 
-.confirmation-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
-}
+    .quantity-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        column-gap: 15px
+    }
 
-.confirmation-button-container {
-    display: flex;
-    column-gap: 10px;
-}
+    .confirmation-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+    }
 
-.footer-button-container {
-    display: flex;
-    flex-direction: row;
-    column-gap: 5px;
-}
-.alert-container {
-    color: #f44538;
-}
+    .confirmation-button-container {
+        display: flex;
+        column-gap: 10px;
+    }
+
+    .footer-button-container {
+        display: flex;
+        flex-direction: row;
+        column-gap: 5px;
+    }
+
+    .alert-container {
+        color: #f44538;
+    }
 </style>
