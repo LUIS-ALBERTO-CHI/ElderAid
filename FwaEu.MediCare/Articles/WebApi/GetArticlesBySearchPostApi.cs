@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FwaEu.MediCare.Referencials.WebApi
+namespace FwaEu.MediCare.Articles.WebApi
 {
     public class GetArticlesBySearchPostApi
     {

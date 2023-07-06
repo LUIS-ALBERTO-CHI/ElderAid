@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FwaEu.MediCare.Referencials
+namespace FwaEu.MediCare.Articles
 {
     public class GetArticlesBySearchPost
     {

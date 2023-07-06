@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FwaEu.MediCare.Referencials.WebApi
+namespace FwaEu.MediCare.Articles.WebApi
 {
     public class GetArticlesBySearchResponseApi
     {
@@ -23,5 +23,6 @@ namespace FwaEu.MediCare.Referencials.WebApi
         public int? SubstitutionsCount { get; set; }
         public int? LikesCount { get; set; }
         public bool IsGalenicDosageForm { get; set; }
+        public int PharmaCode { get; set; }
     }
 }

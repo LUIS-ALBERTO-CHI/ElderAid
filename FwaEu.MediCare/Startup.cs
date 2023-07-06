@@ -63,6 +63,7 @@ using FwaEu.MediCare.GenericSession;
 using FwaEu.Modules.Permissions.ByRole;
 using FwaEu.MediCare.Authentication;
 using FwaEu.MediCare.Stock;
+using FwaEu.MediCare.Articles;
 
 namespace FwaEu.MediCare
 {
@@ -177,6 +178,7 @@ namespace FwaEu.MediCare
 
                 services.AddApplicationOrganizations(context);
                 services.AddApplicationGenericSession();
+                services.AddApplicationArticles(context);
                 services.AddApplicationReferencials(context);
                 services.AddApplicationPatients(context);
                 services.AddApplicationOrders(context);

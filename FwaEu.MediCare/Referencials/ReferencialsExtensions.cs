@@ -16,9 +16,6 @@ namespace FwaEu.MediCare.Referencials
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<BuildingEntityRepository>();
 
-            repositoryRegister.Add<ArticleEntityRepository>();
-            services.AddTransient<IArticleService, ArticleService>();
-
             repositoryRegister.Add<TreatmentEntityRepository>();
             services.AddTransient<ITreatmentService, TreatmentService>();
 
@@ -29,7 +26,6 @@ namespace FwaEu.MediCare.Referencials
             repositoryRegister.Add<ProtectionEntityRepository>();
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
-            services.AddMasterDataProvider<ArticleMasterDataProvider>("Articles");
             services.AddMasterDataProvider<TreatmentMasterDataProvider>("Treatments");
             services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
             services.AddMasterDataProvider<CabinetMasterDataProvider>("Cabinets");
