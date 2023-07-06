@@ -43,6 +43,9 @@
     import SelectButton from 'primevue/selectbutton';
     import InputNumber from 'primevue/inputnumber';
     import OrdersService from '@/MediCare/Orders/Services/orders-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+
 
     export default {
         components: {
@@ -80,15 +83,20 @@
             showConfirmation() {
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
-            submitOrder() {
+            async submitOrder() {
                 const modelOrder = [{
                     patientId: this.patient.id,
                     articleId: this.article.id,
                     quantity: this.selectedQuantity
                 }];
+                try {
+                    await OrdersService.saveAsync(modelOrder)
+                    await MasterDataManagerService.clearCacheAsync();
+                    NotificationService.showConfirmation('Vous avez commander à nouveau la commande')
 
-                OrdersService.saveAsync(modelOrder);
-
+                } catch (error) {
+                    NotificationService.showError('Une erreur est survenue lors de la commande')
+                }
                 this.showConfirmationDisplayed = false;
             },
             getQuantitySentance() {

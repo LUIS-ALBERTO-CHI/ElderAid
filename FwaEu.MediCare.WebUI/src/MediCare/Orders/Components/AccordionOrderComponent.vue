@@ -19,7 +19,7 @@
                             <span>{{order.room}}</span>
                         </div>
                     </div> -->
-                    <span style="width: 90%;" >{{article.title}}</span>
+                    <span style="width: 90%;">{{article.title}}</span>
                     <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
                     <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn))}}</span>
                     <div class="accordion-footer-area">
@@ -77,11 +77,7 @@
         async created() {
             this.patient = JSON.parse(localStorage.getItem('patient'));
             const articles = await ArticlesMasterDataService.getAllAsync();
-            
-            
             this.article = articles.find(x => x.id == this.order.articleId);
-            console.log(this.article)
-            console.warn(this.order)
         },
         methods: {
         },
@@ -92,44 +88,44 @@
     }
 </script>
 <style type="text/css">
-.accordion-header {
-    display: flex;
-    flex-direction: column;
-    color: var(--alt-secondary-text-color);
-    text-decoration: none;
-    width: 100%;
-    row-gap: 5px;
-    height: auto;
-}
+    .accordion-header {
+        display: flex;
+        flex-direction: column;
+        color: var(--alt-secondary-text-color);
+        text-decoration: none;
+        width: 100%;
+        row-gap: 5px;
+        height: auto;
+    }
 
-.accordion-header:focus {
-    text-decoration: none !important;
-  }
+        .accordion-header:focus {
+            text-decoration: none !important;
+        }
 
-.accordion-top-area { 
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
+    .accordion-top-area {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.accordion-header-title-area {
-    display: flex;
-    column-gap: 5px;
-    font-size: 16px;
-    align-items: center;
-    width: auto;
-}
+    .accordion-header-title-area {
+        display: flex;
+        column-gap: 5px;
+        font-size: 16px;
+        align-items: center;
+        width: auto;
+    }
 
-.header-subtitle {
-    font-size: 14px;
-    font-weight: 500;
-    width: 90%;
-}
+    .header-subtitle {
+        font-size: 14px;
+        font-weight: 500;
+        width: 90%;
+    }
 
-.accordion-footer-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
+    .accordion-footer-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
 </style>

@@ -6,8 +6,8 @@
                 <AccordionOrderComponent :order="order" :isPatientUnique="true">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
-                            label="Annuler la commande" />
-                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="orderAgainAsync()" />
+                                label="Annuler la commande" />
+                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="orderAgainAsync(order)" />
                     </div>
                 </AccordionOrderComponent>
             </div>
@@ -17,62 +17,54 @@
 </template>
 <script>
 
-import Button from 'primevue/button';
-import PatientInfoComponent from './PatientInfoComponent.vue';
-import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
-import PatientService from "@/MediCare/Patients/Services/patients-service";
-import OrdersService from '@/MediCare/Orders/Services/orders-service';
+    import Button from 'primevue/button';
+    import PatientInfoComponent from './PatientInfoComponent.vue';
+    import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import OrdersService from '@/MediCare/Orders/Services/orders-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
 
-export default {
-    components: {
-        PatientInfoComponent,
-        Button,
-        AccordionOrderComponent
-    },
-    data() {
-        return {
-            orders: [
-                {
-                    patientName: "Jean Dupont",
-                    nurseName: "Claire Dupont",
-                    medicationName: "ADAPATRIC 10 mg, comprimé pelliculé sécable",
-                    date: "12/12/2020",
-                    box: "4 boîtes",
-                    isDelivered: true,
-                    room: "A506",
-                },
-                {
-                    patientName: "",
-                    nurseName: "Claire Dupont",
-                    medicationName: "ANTIDRY lotion huilde amande 500ml",
-                    date: "12/12/2020",
-                    box: "4 boîtes",
-                    isDelivered: false,
-                    room: "A809",
-                }
-            ],
-            patientOrders: [],
-            patient: {}
-        };
-    },
-    async created() {
-        this.patient = JSON.parse(localStorage.getItem('patient'));
-        this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-
-    },
-    methods: {
-        isOrderDelivered(patientOrder) {
-            return patientOrder.isDelivered;
+    export default {
+        components: {
+            PatientInfoComponent,
+            Button,
+            AccordionOrderComponent
         },
-        async orderAgainAsync() {
-            const model = { patientId: 2, articleId: 2, quantity: 1, createdOn: new Date() };
+        data() {
+            return {
+                patientOrders: [],
+                patient: {}
+            };
+        },
+        async created() {
+            this.patient = JSON.parse(localStorage.getItem('patient'));
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
 
-            OrdersService.saveAsync(model);
-        }
-    },
-    computed: {
-    },
+        },
+        methods: {
+            isOrderDelivered(patientOrder) {
+                return patientOrder.isDelivered;
+            },
+            async orderAgainAsync(order) {
+                const modelOrder = [{
+                    patientId: order.patientId,
+                    articleId: order.articleId,
+                    quantity: order.quantity
+                }];
 
-}
+                try {
+                    await OrdersService.saveAsync(modelOrder)
+                    await MasterDataManagerService.clearCacheAsync();
+                    NotificationService.showConfirmation('Vous avez commander à nouveau la commande')
+                } catch (error) {
+                    NotificationService.showError('Une erreur est survenue lors de la commande')
+                }
+            }
+        },
+        computed: {
+        },
+
+    }
 </script>
 <style type="text/css" scoped src="./Content/patient-orders-page.css"></style>
