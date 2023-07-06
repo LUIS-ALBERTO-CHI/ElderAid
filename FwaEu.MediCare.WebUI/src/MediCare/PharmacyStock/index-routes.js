@@ -1,6 +1,7 @@
 const CabinetsListPageComponent = () => import('@/MediCare/PharmacyStock/Components/CabinetsListPageComponent.vue');
 const ArticlesInStockPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticlesInStockPageComponent.vue');
-const ArticlesDetailsPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticlesDetailsPageComponent.vue');
+const ArticleOutboundPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticleOutboundPageComponent.vue');
+const ScanCodeComponent = () => import('@/MediCare/PharmacyStock/Components/ScanCodeComponent.vue');
 
 export default [
 	{
@@ -45,11 +46,22 @@ export default [
 	{
 		path: '/Cabinet/:id/Articles',
 		name: 'Articles',
-		component: ArticlesDetailsPageComponent,
+		component: ArticleOutboundPageComponent,
 		meta: {
 			breadcrumb: {
 				titleKey: 'Articles',
 				parentName: 'Cabinet'
+			},
+		}
+	},
+	{
+		path: '/Cabinet/:id/scanCode',
+		name: 'scanCode',
+		component: ScanCodeComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'scanCode',
+				parentName: '/Cabinet/:id'
 			},
 		}
 	},
