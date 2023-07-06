@@ -80,7 +80,7 @@ namespace FwaEu.MediCare.Orders.Services
 
                 var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
                 var currentDbId = _manageGenericDbService.GetGenericDbId();
-                var organization = await organizationRepository.GetAsync(1);
+                var organization = await organizationRepository.GetAsync(currentDbId);
 
                 var currentUser = this._currentUserService.User.Entity;
                 var dateNow = _currentDateTime.Now;
