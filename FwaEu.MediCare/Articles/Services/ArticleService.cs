@@ -1,12 +1,16 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.MediCare.GenericRepositorySession;
+using MySqlX.XDevAPI;
+using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Referencials.Services
+namespace FwaEu.MediCare.Articles.Services
 {
     public class ArticleService : IArticleService
     {
@@ -28,6 +32,18 @@ namespace FwaEu.MediCare.Referencials.Services
             storedProcedure.SetParameter("PageSize", model.PageSize);
 
             var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetArticlesBySearchResponse>()).ListAsync<GetArticlesBySearchResponse>();
+            return models.ToList();
+        }
+
+        
+        public async Task<List<GetArticlesByIdsReponse>> GetAllByIdsAsync(int[] ids)
+        {
+            var query = "exec SP_MDC_GetArticles :ArticlesList";
+            string arrayList = string.Join(",", ids);
+            var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
+            storedProcedure.SetParameter("ArticlesList", arrayList);
+            
+            var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetArticlesByIdsReponse>()).ListAsync<GetArticlesByIdsReponse>();
             return models.ToList();
         }
     }

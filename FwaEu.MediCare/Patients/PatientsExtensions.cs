@@ -3,6 +3,7 @@ using FwaEu.Modules.MasterData;
 using Microsoft.Extensions.DependencyInjection;
 using FwaEu.MediCare.Patients.MasterData;
 using FwaEu.Fwamework;
+using FwaEu.MediCare.Patients.Services;
 
 namespace FwaEu.MediCare.Patients
 {
@@ -12,6 +13,8 @@ namespace FwaEu.MediCare.Patients
         {
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<PatientEntityRepository>();
+
+            services.AddTransient<IPatientService, PatientService>();
 
             services.AddMasterDataProvider<PatientMasterDataProvider>("Patients");
             return services;

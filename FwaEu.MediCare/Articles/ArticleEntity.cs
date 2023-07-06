@@ -4,7 +4,7 @@ using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.MediCare.Initialization;
 using System;
 
-namespace FwaEu.MediCare.Referencials
+namespace FwaEu.MediCare.Articles
 {
     public enum ArticleType
     {

@@ -1,13 +1,13 @@
 ﻿using FwaEu.Fwamework.Data;
-using FwaEu.MediCare.Referencials.Services;
+using FwaEu.MediCare.Articles.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Referencials.WebApi
+namespace FwaEu.MediCare.Articles.WebApi
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ArticlesController : Controller
@@ -42,7 +42,9 @@ namespace FwaEu.MediCare.Referencials.WebApi
                     ThumbnailURL= x.ThumbnailURL,
                     Title= x.Title,
                     ArticleType = x.ArticleType,
-                    Unit = x.Unit
+                    Unit = x.Unit,
+                    IsGalenicDosageForm = x.IsGalenicDosageForm,
+                    PharmaCode= x.PharmaCode
                 }));
             }
             catch (NotFoundException)
@@ -52,5 +54,39 @@ namespace FwaEu.MediCare.Referencials.WebApi
         }
 
 
+        [HttpPost("GetAllByIdsAsync")]
+        public async Task<IActionResult> GetAllByIdsAsync(int[] ids, IArticleService articleService)
+        {
+            try
+            {
+                var models = await articleService.GetAllByIdsAsync(ids);
+                return Ok(models.Select(x => new GetArticlesByIdsResponseApi()
+                {
+                    Id = x.Id,
+                    AlternativePackagingCount = x.AlternativePackagingCount,
+                    GroupName = x.GroupName,
+                    ImageURLs = x.ImageURLs,
+                    InvoicingUnit = x.InvoicingUnit,
+                    IsFavorite = x.IsFavorite,
+                    LikesCount = x.LikesCount,
+                    Packaging = x.Packaging,
+                    Price = (double)x.Price,
+                    AmountRemains = (double)x.AmountRemains,
+                    CountInBox = x.CountInBox,
+                    SubstitutionsCount = x.SubstitutionsCount,
+                    ThumbnailURL = x.ThumbnailURL,
+                    Title = x.Title,
+                    ArticleType = x.ArticleType,
+                    Unit = x.Unit,
+
+                    IsGalenicDosageForm = x.IsGalenicDosageForm,
+                    PharmaCode = x.PharmaCode
+                }));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }

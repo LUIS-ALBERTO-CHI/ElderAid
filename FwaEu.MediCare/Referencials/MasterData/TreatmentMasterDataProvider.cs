@@ -53,5 +53,7 @@ namespace FwaEu.MediCare.Referencials.MasterData
         {
             throw new NotSupportedException(); // NOTE: It's a small master-data, pagination is not useful
         }
+
     }
+
 }

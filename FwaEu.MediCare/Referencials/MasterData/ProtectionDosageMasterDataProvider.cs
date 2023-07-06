@@ -22,7 +22,7 @@ namespace FwaEu.MediCare.Referencials.MasterData
         protected override Expression<Func<ProtectionDosageEntity, bool>> CreateSearchExpression(string search,
             CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => entity.Quantity.ToString().Contains(search);
+            return entity => entity.ProtectionId.ToString().Contains(search);
         }
     }
 

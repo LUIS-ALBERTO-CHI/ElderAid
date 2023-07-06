@@ -10,7 +10,7 @@ using FwaEu.Fwamework.Data.Database.Sessions;
 using NHibernate.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace FwaEu.MediCare.Referencials.MasterData
+namespace FwaEu.MediCare.Articles.MasterData
 {
     public class ArticleMasterDataProvider : IMasterDataProvider
     {

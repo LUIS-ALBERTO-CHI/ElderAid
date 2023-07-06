@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.MediCare.Articles;
 using FwaEu.MediCare.Initialization;
 using System;
 
