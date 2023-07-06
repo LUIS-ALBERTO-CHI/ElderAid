@@ -62,20 +62,6 @@
                 selectedQuantity: 1,
                 selectOptions: ["à l'unité", "boîtes complètes"],
                 selectedOption: "à l'unité",
-                treatments: [{
-                    medicationOrdered: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    initialMedication: "Jelonet gaze coton paraffinée 10x10cm bte 10pce",
-                    frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023",
-                    isBag: true
-                },
-                {
-                    medicationOrdered: "ANTIDRY lotion huilde amande 500ml",
-                    initialMedication: "ANTIDRY calm lotion 500ml",
-                    frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023",
-                    isBag: false
-                }],
                 showConfirmationIndex: -1,
                 patient: {},
                 patientTreatments: [],

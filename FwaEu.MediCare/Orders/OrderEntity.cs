@@ -24,7 +24,7 @@ namespace FwaEu.MediCare.Orders
         public int? PatientId { get; set; }
         public OrderState State { get; set; }
 
-        public int? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public DateTime UpdatedOn { get; set; }
         public bool IsNew() => Id == 0;
     }
@@ -34,7 +34,7 @@ namespace FwaEu.MediCare.Orders
     {
         public OrderEntityClassMap()
         {
-            Table("MEDICARE_EMS.dbo.MDC_Orders");
+            Table("MDC_Orders");
 
             ReadOnly();
             Not.LazyLoad();

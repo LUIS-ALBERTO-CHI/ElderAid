@@ -2,7 +2,7 @@
     <div class="patient-orders-page-container">
         <patient-info-component />
         <div style="display: flex; flex-direction: column;">
-            <div v-for="(order, index) in orders" :key="index">
+            <div v-for="(order, index) in patientOrders" :key="index">
                 <AccordionOrderComponent :order="order" :isPatientUnique="true">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
@@ -20,7 +20,7 @@
 import Button from 'primevue/button';
 import PatientInfoComponent from './PatientInfoComponent.vue';
 import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
-
+import PatientService from "@/MediCare/Patients/Services/patients-service";
 import OrdersService from '@/MediCare/Orders/Services/orders-service';
 
 export default {
@@ -50,10 +50,15 @@ export default {
                     isDelivered: false,
                     room: "A809",
                 }
-            ]
+            ],
+            patientOrders: [],
+            patient: {}
         };
     },
     async created() {
+        this.patient = JSON.parse(localStorage.getItem('patient'));
+        this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+
     },
     methods: {
         isOrderDelivered(patientOrder) {

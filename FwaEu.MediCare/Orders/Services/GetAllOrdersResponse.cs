@@ -9,7 +9,7 @@ namespace FwaEu.MediCare.Orders.Services
         public int ArticleId { get; set; }
         public double Quantity { get; set; }
         public DateTime? UpdatedOn { get; set; }
-        public int? UpdatedBy { get; set; }
+        public string UpdatedBy { get; set; }
         public int? State { get; set; }
     }
 }

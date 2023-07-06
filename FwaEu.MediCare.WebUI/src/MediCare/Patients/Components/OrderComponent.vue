@@ -106,8 +106,7 @@
         },
         computed: {
             isOrderAlreadyInProgress() {
-                // return true if there is an article id in the patient orders
-                return this.patientOrders.some(order => order.articleId === this.article.id);
+                return this.patientOrders.some(order => order.articleId === this.article.id && order.state === 'Pending');
             }
         },
 

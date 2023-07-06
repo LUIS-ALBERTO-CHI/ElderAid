@@ -3,7 +3,7 @@
         <AccordionTab>
             <template #header>
                 <div class="accordion-header">
-                    <div v-show="!isPatientUnique" class="accordion-top-area">
+                    <!-- <div v-show="!isPatientUnique" class="accordion-top-area">
                         <div>
                             <div class="accordion-header-title-area" v-if="order.patientName.length > 0">
                                 <i class="fa-solid fa-user" />
@@ -18,19 +18,23 @@
                             <i class="fa-solid fa-bed" />
                             <span>{{order.room}}</span>
                         </div>
-                    </div>
-                    <span style="width: 90%;" >{{order.medicationName}}</span>
-                    <span class="header-subtitle">{{order.box}}</span>
-                    <span class="header-subtitle">{{order.date}} à 9:32</span>
+                    </div> -->
+                    <span style="width: 90%;" >{{article.title}}</span>
+                    <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
+                    <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn))}}</span>
                     <div class="accordion-footer-area">
-                        <span>par {{order.nurseName}}</span>
-                        <div v-if="order.isDelivered" style="color: #2ba859" class="accordion-header-title-area">
+                        <span>{{ order.updatedBy }}</span>
+                        <div v-if="order.state == 'Delivred'" style="color: #2ba859" class="accordion-header-title-area">
                             <i class="fa-solid fa-truck" />
                             <span>Livrée</span>
                         </div>
-                        <div v-else style="opacity: 0.8;" class="accordion-header-title-area">
+                        <div v-else-if="order.state == 'Pending'" style="opacity: 0.8;" class="accordion-header-title-area">
                             <i class="fa-solid fa-hourglass"></i>
                             <span>En attente</span>
+                        </div>
+                        <div v-else style="color: red;" class="accordion-header-title-area">
+                            <i class="fa-solid fa-xmark"></i>
+                            <span>Annulé</span>
                         </div>
                     </div>
                 </div>
@@ -44,6 +48,9 @@
 
     import Accordion from 'primevue/accordion';
     import AccordionTab from 'primevue/accordiontab';
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+
 
     export default {
         components: {
@@ -53,6 +60,7 @@
         data() {
             return {
                 patient: {},
+                article: {},
             };
         },
         props: {
@@ -64,9 +72,16 @@
                 type: Boolean,
                 required: false,
                 default: false
-            }
+            },
         },
         async created() {
+            this.patient = JSON.parse(localStorage.getItem('patient'));
+            const articles = await ArticlesMasterDataService.getAllAsync();
+            
+            
+            this.article = articles.find(x => x.id == this.order.articleId);
+            console.log(this.article)
+            console.warn(this.order)
         },
         methods: {
         },
