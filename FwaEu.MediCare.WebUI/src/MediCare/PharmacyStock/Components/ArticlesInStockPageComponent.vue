@@ -1,29 +1,29 @@
 <template>
-    <div class="page-articles">
-        <span>Articles en stock</span>
-        <div class="search-container">
-            <InputText ref="searchInput" v-model="searchValue" class="search-input" placeholder="Rechercher un article">
-            </InputText>
-            <div>
+    <div>
+        <div v-show="showPage" class="page-articles">
+            <span>Articles en stock</span>
+            <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
-            </div>
-            <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
-        </div>
-        <div class="vignette-list">
-            <div v-for="article in filteredArticles" :key="article.name">
-                <div @click="goToArticleDetails(article)" class="vignette-item">
-                    <span>{{ article.name }}, {{ article.unit }}</span>
-                    <span>{{ article.countInbox }}</span>
+                <InputText ref="searchInput" v-model="searchValue" class="search-input" placeholder="Rechercher un article">
+                </InputText>
+                <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
+            </span>
+            <div class="vignette-list">
+                <div v-for="article in filteredArticles" :key="article.name">
+                    <div @click="goToArticleDetails(article)" class="vignette-item">
+                        <span>{{ article.name }}, {{ article.unit }}</span>
+                        <span>{{ article.countInbox }}</span>
+                    </div>
                 </div>
             </div>
+            <div v-show="filteredArticles.length === 0" class="article-not-found">
+                <i class="fa-solid fa-box-open icon-not-found"></i>
+                <span>Aucun article trouvé</span>
+            </div>
         </div>
-        <div v-show="filteredArticles.length === 0" class="article-not-found">
-            <i class="fa-solid fa-box-open icon-not-found"></i>
-            <span>Aucun article trouvé</span>
-        </div>
-        <div v-if="showScanner">
-            <ScannerComponent @codeScanned="handleCodeScanned"></ScannerComponent>
+        <div v-show="showScanner">
+            <ScannerComponent @codeScanned="handleCodeScanned" @cancelScan="handleCancelScan"></ScannerComponent>
         </div>
     </div>
 </template>
@@ -43,7 +43,9 @@ export default {
             articles: articles,
             searchValue: "",
             cabinetName: '',
-            showScanner: false
+            showScanner: false,
+            showPage: true,
+
         };
     },
     async created() {
@@ -66,6 +68,7 @@ export default {
         },
         goToScanCode() {
             this.showScanner = true;
+            this.showPage = false;
         },
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
@@ -75,6 +78,11 @@ export default {
         },
         handleCodeScanned(data) {
             this.searchValue = data.qrCodeText;
+            this.showPage = true;
+        },
+        handleCancelScan() {
+            this.showPage = true;
+            this.showScanner = false;
         },
     },
     computed: {

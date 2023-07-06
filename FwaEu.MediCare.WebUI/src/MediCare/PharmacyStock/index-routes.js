@@ -54,15 +54,4 @@ export default [
 			},
 		}
 	},
-	{
-		path: '/Cabinet/:id/scanCode',
-		name: 'scanCode',
-		component: ScanCodeComponent,
-		meta: {
-			breadcrumb: {
-				titleKey: 'scanCode',
-				parentName: '/Cabinet/:id'
-			},
-		}
-	},
 ];

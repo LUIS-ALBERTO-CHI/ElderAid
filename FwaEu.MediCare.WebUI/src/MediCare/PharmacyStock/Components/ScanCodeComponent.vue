@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showScanner">
+  <div v-show="showScanner">
     <div class="title" style="text-align: center;">
       Mettez le code QR à l'intérieur de la boîte.
     </div>
@@ -7,6 +7,7 @@
       <qr-stream @decode="onDecode" class="mb">
         <div style="color: red;" class="frame"></div>
       </qr-stream>
+      Résultat du scan: {{ scannedCode }}
     </div>
     <div class="buttons">
       <Button @click="confirm" label="Confirmer"></Button>
@@ -18,7 +19,6 @@
 <script>
 import { QrStream } from 'vue3-qr-reader';
 import Button from 'primevue/button';
-import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
 export default {
   components: {
@@ -28,9 +28,8 @@ export default {
   data() {
     return {
       data: null,
-      cabinetName: '',
       scannedCode: null,
-      showScanner: true
+      showScanner: true,
     };
   },
   props: {
@@ -47,13 +46,7 @@ export default {
       this.scannedCode = data;
     },
     goBack() {
-      this.showScanner = false;
-    },
-    async getCurrentCabinetAsync() {
-      const cabinetId = this.$route.params.id;
-      const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
-      this.cabinetName = cabinet.name;
-      return cabinet;
+      this.$emit('cancelScan');
     },
     confirm() {
       this.$emit('codeScanned', { qrCodeText: this.scannedCode });

@@ -26,7 +26,7 @@
             <div class="text-left">
                 <span>Boîte de</span>
             </div>
-            <div class="icon-right-containerr">
+            <div class="icon-right-container">
                 <Dropdown v-model="selectedBoite" :options="boiteOptions" />
             </div>
         </div>
@@ -58,20 +58,26 @@ export default {
         InputNumber,
     },
     data() {
-        const checked = ref(true);
+        const checked = ref(false);
         return {
             selectedArticle: null,
-            checked: checked.value,
+            checked: checked,
             boiteOptions: ["10 comprimes", "20 comprime", "30 comprime"],
             selectedBoite: "30 comprime",
+            quantity: 1
         };
     },
-    async created() {
+    created() {
         const storedArticle = localStorage.getItem("selectedArticle");
         if (storedArticle) {
             this.selectedArticle = JSON.parse(storedArticle);
+            if (this.selectedArticle.isStockPharmacyPerBox === "true") {
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
         }
-        await this.getCurrentCabinetAsync();
+        this.getCurrentCabinetAsync();
     },
     methods: {
         async getCurrentCabinetAsync() {
@@ -83,5 +89,4 @@ export default {
     }
 };
 </script>
-<style type="text/css" scoped src="./Content/articles.css">
-</style>
+<style type="text/css" scoped src="./Content/articles.css"></style>

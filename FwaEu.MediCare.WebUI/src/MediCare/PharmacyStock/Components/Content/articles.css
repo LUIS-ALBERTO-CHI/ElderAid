@@ -5,33 +5,21 @@
     column-gap: 10px;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-}
-
 .search-input {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    margin-right: 30px;
-}
-
-.fa.fa-solid.fa-close {
-    margin-left: 10px;
-}
-
-.qr-code-icon {
-    margin-left: auto;
-    cursor: pointer;
-    width: 25px;
+    width: calc(100% - 40px); 
+    padding-right: 40px; 
 }
 
 .remove-icon {
     position: absolute;
-    right: 10px;
+    top: 50%;
+    right: 60px;
     cursor: pointer;
-    padding-right: 90px;
+}
+
+.qr-code-icon {
+    margin-left: 10px; /* Espacio entre el input y el icono de código QR */
+    cursor: pointer;
 }
 
 .article-not-found {
