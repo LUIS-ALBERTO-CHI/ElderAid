@@ -15,16 +15,11 @@
                             <span class="header-subtitle">{{treatment.article.groupName}}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>
                             <div>
-                                <span class="header-subtitle">De {{ $d(treatment.dateStart, 'short')}} à</span>
-                                <!-- <date-literal class="header-subtitle" :date="treatment.dateStart" display-format="short" /> -->
-
+                                <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
                             </div>
-                            
-                            <!-- 
-                            <span class="header-subtitle">{{treatment.date}}</span> -->
                         </div>
                     </template>
-                        <OrderComponent @submitOrder="orderSubmit"/>
+                    <OrderComponent :article="treatment.article" :patientOrders="patientOrders"/>
                 </AccordionTab>
             </template>
         </Accordion>
@@ -43,7 +38,8 @@
     import OrderComponent from './OrderComponent.vue';
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import PatientService from "@/MediCare/Patients/Services/patients-service";
-	import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+    import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+    import OrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service'
 
 
     export default {
@@ -82,18 +78,18 @@
                 }],
                 showConfirmationIndex: -1,
                 patient: {},
-                patientTreatments: []
+                patientTreatments: [],
+                patientOrders: []
             };
         },
         async created() {
             this.patient = JSON.parse(localStorage.getItem("patient"));
             var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
-
             this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
-
             this.fillPatientTreatments()
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
 
-            // console.log(patientTreatments)
+
         },
         methods: {
             goToTreatmentPage() {
@@ -118,9 +114,6 @@
             hideConfirmation() {
                 this.showConfirmationIndex = -1;
             },
-            orderSubmit() {
-                console.log('order submit')
-            },
             async fillPatientTreatments() {
                 const treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
                 const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
@@ -128,7 +121,6 @@
                     const article = articles.find(article => article.id === treatment.appliedArticleId)
                     treatment.article = article
                 })
-                console.log(this.patientTreatments)
             }
         },
         computed: {

@@ -10,7 +10,7 @@ export default {
 
 	async saveAsync(data) {
 		if (OnlineService.isOnline()) {
-			const result = await HttpService.post(`Orders`, data);
+			const result = await HttpService.post(`Orders/Create`, data);
 			return result.data;
 		} else {
 			const indixedDbService = new OfflineDataSynchronizationService('orders');
