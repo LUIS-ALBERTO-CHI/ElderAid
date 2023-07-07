@@ -1,5 +1,5 @@
 <template>
-  <div v-show="showScanner">
+  <div>
     <div class="title" style="text-align: center;">
       Mettez le code QR à l'intérieur de la boîte.
     </div>
@@ -38,9 +38,6 @@ export default {
       default: ""
     }
   },
-  created() {
-    this.getCurrentCabinetAsync();
-  },
   methods: {
     onDecode(data) {
       this.scannedCode = data;
@@ -50,9 +47,40 @@ export default {
     },
     confirm() {
       this.$emit('codeScanned', { qrCodeText: this.scannedCode });
-      this.showScanner = false;
     },
   },
 };
 </script>
-<style type="text/css" scoped src="./Content/articles.css"></style>
+<style scoped>
+.stream {
+  max-height: 500px;
+  max-width: 500px;
+  margin: auto;
+}
+.frame {
+  border-style: solid;
+  border-width: 2px;
+  border-color: red;
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  margin: auto;
+}
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+.confirm-button {
+    width: 150px;
+}
+
+.cancel-button {
+    width: 150px;
+}
+</style>

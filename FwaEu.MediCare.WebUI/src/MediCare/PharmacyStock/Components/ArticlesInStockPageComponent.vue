@@ -32,7 +32,7 @@
 import InputText from 'primevue/inputtext';
 import articles from './articles.json';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
-import ScannerComponent from './ScanCodeComponent.vue';
+import ScannerComponent from '../../Components/ScanCodeComponent.vue';
 export default {
     components: {
         InputText,
@@ -45,7 +45,6 @@ export default {
             cabinetName: '',
             showScanner: false,
             showPage: true,
-
         };
     },
     async created() {
@@ -78,10 +77,9 @@ export default {
         },
         handleCodeScanned(data) {
             this.searchValue = data.qrCodeText;
-            this.showPage = true;
+            this.showScanner = false;
         },
         handleCancelScan() {
-            this.showPage = true;
             this.showScanner = false;
         },
     },
@@ -96,6 +94,9 @@ export default {
                 );
             }
         },
+        showPage() {
+            return !this.showScanner
+        }
     }
 };
 </script>

@@ -95,18 +95,3 @@
     left: 0px;
     margin: auto;
 }
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 50px;
-}
-
-.confirm-button {
-    width: 150px;
-}
-
-.cancel-button {
-    width: 150px;
-}
