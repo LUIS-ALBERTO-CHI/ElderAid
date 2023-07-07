@@ -41,8 +41,10 @@
                     <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
                 </div>
             </div>
-            <Button @click="confirmOrder" class="confirmer" style="width: 300px; margin-top: 50px; align-self: center;"
-                label="Confirmer" />
+            <div class="button-confirmer">
+                <Button @click="confirmOrder" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
+                    label="Confirmer" />
+            </div>
         </div>
     </div>
 </template>
