@@ -1,9 +1,9 @@
 <template>
     <div class="protection-page-container">
         <PatientInfoComponent />
-        <div class="protection-info-item">
+        <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
-                <span @click="goToIncontinenceLevelPage">Niveau d'incontience: légère</span>
+                <span >Niveau d'incontience: légère</span>
                 <div v-if="isAlert" :style="{ color: '#f44538'}" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
                     <span>Le forfait d'incontinence est dépassé</span>

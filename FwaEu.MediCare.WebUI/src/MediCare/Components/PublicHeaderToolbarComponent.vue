@@ -1,6 +1,6 @@
 <template>
-	<vue-use-online>
-	</vue-use-online>
+	<!-- <vue-use-online>
+	</vue-use-online> -->
 	<breadcrumbs v-show="isBreadcrumbsEnabled" />
 </template>
 
