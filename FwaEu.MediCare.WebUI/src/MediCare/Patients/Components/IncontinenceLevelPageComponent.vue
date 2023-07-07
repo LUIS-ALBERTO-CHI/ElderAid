@@ -17,8 +17,8 @@
         <div v-else class="incontinence-change-container">
             <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
             <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" />
-            <Button v-if="!isIncontinenceLevelChange" @click="changeIncontinenceLevel"
-                    label="Confirmer" />
+            <Button 
+                label="Confirmer" />
         </div>
     </div>
 </template>
