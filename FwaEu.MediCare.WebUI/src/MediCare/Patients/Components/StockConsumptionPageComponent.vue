@@ -1,11 +1,12 @@
 <template>
     <div class="stock-consumption-page-container">
         <patient-info-component />
-        <div v-for="(consumption, index) in consumptionStock" :key="index">
+        <div v-if="stockConsumptions.some(stockConsumption => 'article' in stockConsumption)"
+             v-for="(stock, index) in stockConsumptions" :key="index">
             <div class="stock-consumption-item">
-                <span class="stock-consumption-item-title">{{consumption.name}}</span>
-                <span>{{consumption.quantity}}</span>
-                <span>{{consumption.date}} par {{consumption.orderedBy}}</span>
+                <span class="stock-consumption-item-title">{{stock.article.title}}</span>
+                <span>{{stock.quantity}} {{ stock.article.invoicingUnit }}</span>
+                <span>{{$d(new Date(stock.updatedOn))}}  à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(stock.updatedOn))}} par {{stock.updatedBy}}</span>
             </div>
         </div>
     </div>
@@ -14,8 +15,8 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
-
-
+    import StockConsumptionMasterDataService from '@/MediCare/StockConsumption/Services/stock-consumption-master-data-service'
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
 
     export default {
         components: {
@@ -36,11 +37,23 @@
                     date: "23/03/2023 à 9:23:33",
                     orderedBy: "Claire CHAGAL",
                 }],
+                stockConsumptions: [],
             };
         },
         async created() {
+            this.stockConsumptions = await StockConsumptionMasterDataService.getAllAsync();
+            this.fillStockConsumption();
         },
         methods: {
+            async fillStockConsumption() {
+                const stockConsumptionsArticleIds = this.stockConsumptions.map(x => x.articleId);
+                const articles = await ArticlesMasterDataService.getByIdsAsync(stockConsumptionsArticleIds);
+                console.log(articles)
+                this.stockConsumptions.forEach(stockConsumption => {
+                    const article = articles.find(article => article.id === stockConsumption.articleId)
+                    stockConsumption.article = article
+                })
+            }
         },
         computed: {
         },
