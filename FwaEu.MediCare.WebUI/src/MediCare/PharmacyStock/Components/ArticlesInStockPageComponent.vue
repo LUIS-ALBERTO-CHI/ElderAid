@@ -44,7 +44,6 @@ export default {
             searchValue: "",
             cabinetName: '',
             showScanner: false,
-            showPage: true,
         };
     },
     async created() {
@@ -67,7 +66,6 @@ export default {
         },
         goToScanCode() {
             this.showScanner = true;
-            this.showPage = false;
         },
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
