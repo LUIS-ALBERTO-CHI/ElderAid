@@ -19,18 +19,18 @@
                 <span>Boîte entière</span>
             </div>
             <div class="icon-right-container">
-                <InputSwitch v-model="checked" class="custom-switch" />
+                <InputSwitch v-model="fullBox" class="custom-switch" />
             </div>
         </div>
-        <div class="info-container" v-if="checked">
+        <div class="info-container" v-if="fullBox">
             <div class="text-left">
                 <span>Boîte de</span>
             </div>
-            <div class="icon-right-containerr">
+            <div class="icon-right-container">
                 <Dropdown v-model="selectedBoite" :options="boiteOptions" />
             </div>
         </div>
-        <div class="info-container" v-if="!checked">
+        <div class="info-container" v-if="!fullBox">
             <div class="text-left">
                 <span>Quantité sortie (comprimés)</span>
             </div>
@@ -49,6 +49,7 @@ import { ref } from 'vue';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
+import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
 
 export default {
     components: {
@@ -58,12 +59,12 @@ export default {
         InputNumber,
     },
     data() {
-        const checked = ref(true);
         return {
             selectedArticle: null,
-            checked: checked.value,
+            fullBox: ViewContextService.get().isStockPharmacyPerBox,
             boiteOptions: ["10 comprimes", "20 comprime", "30 comprime"],
             selectedBoite: "30 comprime",
+            quantity: 1
         };
     },
     async created() {
@@ -83,5 +84,4 @@ export default {
     }
 };
 </script>
-<style type="text/css" scoped src="./Content/articles.css">
-</style>
+<style type="text/css" scoped src="./Content/articles.css"></style>

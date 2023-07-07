@@ -5,35 +5,21 @@
     column-gap: 10px;
 }
 
-.search-container {
-    display: flex;
-    align-items: center;
-}
-
-.input-container {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    margin-right: 10px;
-}
-
 .search-input {
-    flex-grow: 1;
-}
-
-.fa.fa-solid.fa-close {
-    margin-left: 10px;
-}
-
-.qr-code-icon {
-    margin-left: auto;
+    width: calc(100% - 40px); 
+    padding-right: 40px; 
 }
 
 .remove-icon {
     position: absolute;
-    right: 10px;
+    top: 50%;
+    right: 60px;
     cursor: pointer;
-    padding-right: 50px;
+}
+
+.qr-code-icon {
+    margin-left: 10px; /* Espacio entre el input y el icono de código QR */
+    cursor: pointer;
 }
 
 .article-not-found {
@@ -88,4 +74,24 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+}
+
+.stream {
+    max-height: 500px;
+    max-width: 500px;
+    margin: auto;
+}
+
+.frame {
+    border-style: solid;
+    border-width: 2px;
+    border-color: red;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    margin: auto;
 }
