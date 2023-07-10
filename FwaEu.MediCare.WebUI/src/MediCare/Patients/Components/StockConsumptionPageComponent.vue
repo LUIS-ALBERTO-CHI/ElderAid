@@ -25,18 +25,6 @@
         },
         data() {
             return {
-                consumptionStock: [{
-                    name: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    quantity: "4 boîtes",
-                    date: "23/03/2023 à 9:23:33",
-                    orderedBy: "Julien SABLET",
-                },
-                {
-                    name: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    quantity: "3 boîtes",
-                    date: "23/03/2023 à 9:23:33",
-                    orderedBy: "Claire CHAGAL",
-                }],
                 stockConsumptions: [],
             };
         },
@@ -48,7 +36,6 @@
             async fillStockConsumption() {
                 const stockConsumptionsArticleIds = this.stockConsumptions.map(x => x.articleId);
                 const articles = await ArticlesMasterDataService.getByIdsAsync(stockConsumptionsArticleIds);
-                console.log(articles)
                 this.stockConsumptions.forEach(stockConsumption => {
                     const article = articles.find(article => article.id === stockConsumption.articleId)
                     stockConsumption.article = article
