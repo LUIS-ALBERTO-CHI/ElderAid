@@ -10,7 +10,7 @@
             </div>
             <div class="info-container">
                 <div class="text-left">
-                    <span>Pour {{ selectedPatientName }}</span>
+                    <span>Pour {{ PatientName }}</span>
                 </div>
                 <div class="icon-right-container">
                     <Button @click="openSearchPatientComponent" class="custom-button" style="width: 100px;"
@@ -41,8 +41,10 @@
                     <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
                 </div>
             </div>
-            <Button @click="confirmOrder" class="confirmer" style="width: 300px; margin-top: 50px; align-self: center;"
-                label="Confirmer" />
+            <div class="button-confirmer">
+                <Button @click="confirmOrder" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
+                    label="Confirmer" />
+            </div>
         </div>
     </div>
 </template>
@@ -71,8 +73,7 @@ export default {
             boiteOptions: ["10 comprimes", "20 comprime", "30 comprime"],
             selectedBoite: "30 comprime",
             quantity: 1,
-            patientSelected: false,
-            selectedPatientName: "",
+            selectedPatient: null,
         };
     },
     async created() {
@@ -90,21 +91,22 @@ export default {
             return cabinet;
         },
         handleSelectedPatient(args) {
-            if (!args.cancelNavigation) {
-                this.patientSelected = true;
-                this.selectedPatient = args.selectedPatient;
-                this.selectedPatientName = `${args.selectedPatient.fullName}`;
+            args.cancelNavigation = true
+            this.patientSelected = true;
+            this.selectedPatient = args.selectedPatient;
 
-                if (this.selectedPatientName) {
-                    args.cancelNavigation = true;
-                }
-            }
         },
         openSearchPatientComponent() {
             this.patientSelected = false;
+            this.selectedPatient = null;
         },
         confirmOrder() {
             this.$router.push({ name: "Cabinet" });
+        },
+    },
+    computed: {
+        PatientName() {
+            return this.selectedPatient ? this.selectedPatient.fullName : "";
         },
     },
 }; 
