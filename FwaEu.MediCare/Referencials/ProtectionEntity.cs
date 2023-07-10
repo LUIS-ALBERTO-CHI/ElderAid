@@ -15,7 +15,7 @@ namespace FwaEu.MediCare.Referencials
         public int ArticleId { get; set; }
 
         public string DosageDescription { get; set; }
-
+        public int QuantityPerDay { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
 
@@ -41,6 +41,8 @@ namespace FwaEu.MediCare.Referencials
             Map(entity => entity.ArticleId).Column("ArticleId");
             Map(entity => entity.PatientId).Column("PatientId");
             Map(entity => entity.DosageDescription).Column("DosageDescription");
+            Map(entity => entity.QuantityPerDay).Column("QuantityPerDay");
+
             Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }

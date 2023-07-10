@@ -16,7 +16,7 @@ namespace FwaEu.MediCare.Referencials.MasterData
         protected override Expression<Func<ProtectionEntity, ProtectionEntityMasterDataModel>>
             CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
-            return entity => new ProtectionEntityMasterDataModel(entity.Id, entity.ArticleId, entity.PatientId, entity.DosageDescription, entity.DateStart, entity.DateEnd);
+            return entity => new ProtectionEntityMasterDataModel(entity.Id, entity.ArticleId, entity.PatientId, entity.DosageDescription, entity.QuantityPerDay,entity.DateStart, entity.DateEnd);
         }
 
         protected override Expression<Func<ProtectionEntity, bool>> CreateSearchExpression(string search,
@@ -28,7 +28,7 @@ namespace FwaEu.MediCare.Referencials.MasterData
 
     public class ProtectionEntityMasterDataModel
     {
-        public ProtectionEntityMasterDataModel(int id, int articleId, int patientId, string dosageDescription, DateTime? dateStart, DateTime? dateEnd)
+        public ProtectionEntityMasterDataModel(int id, int articleId, int patientId, string dosageDescription, int quantityPerDay, DateTime? dateStart, DateTime? dateEnd)
         {
             Id = id;
             ArticleId = articleId;
@@ -36,12 +36,14 @@ namespace FwaEu.MediCare.Referencials.MasterData
             DosageDescription = dosageDescription;
             DateStart = dateStart;
             DateEnd = dateEnd;
+            QuantityPerDay = quantityPerDay;
         }
 
         public int Id { get; set; }
         public int ArticleId { get; set; }
         public int PatientId { get; set; }
         public string DosageDescription { get; set; }
+        public int QuantityPerDay { get; set; }
 
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }

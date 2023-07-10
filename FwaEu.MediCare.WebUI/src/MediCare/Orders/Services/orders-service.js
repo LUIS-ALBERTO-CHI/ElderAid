@@ -17,5 +17,10 @@ export default {
 			const result = indixedDbService.addToObjectStore(data);
 			return result.data;
 		}
+	},
+
+	async validatePeriodicOrderAsync(data) {
+		const result = await HttpService.post(`Orders/ValidatePeriodicOrder`, data);
+		return result.data;
 	}
 }
