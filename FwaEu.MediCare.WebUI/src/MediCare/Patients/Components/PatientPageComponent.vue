@@ -24,7 +24,7 @@
         <div @click="goToPeriodicOrdersPage"  class="patient-info-item">
             <div class="periodic-container">
                 <i class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
-                <span>2 commandes périodiques à valider</span>
+                <span>{{ periodicOrders.length }} commandes périodiques à valider</span>
             </div>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -36,8 +36,7 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
-    import TreatmentsMasterDataService from "@/MediCare/Referencials/Services/treatments-master-data-service";
-    import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
 
     // import TreatmentsMasterDataService from '@/MediCare/Referencials/Services/TreatmentsMasterDataService.js'
 
@@ -50,17 +49,18 @@
             return {
                 patient: {},
                 patientTreatments: [],
-                patientsOrders: []
+                patientsOrders: [],
+                periodicOrders: []
             };
         },
         async created() {
             var patient = localStorage.getItem("patient");
             this.patient = JSON.parse(patient);
-            const treatments = await TreatmentsMasterDataService.getAllAsync();
-            const orders = await OrdersMasterDataService.getAllAsync();
-
-            this.patientTreatments = treatments.filter(t => t.patientId == this.patient.id);
-            this.patientsOrders = orders.filter(o => o.patientId == this.patient.id);
+            
+            
+            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+            this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+            this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
         },
         methods: {
             goToTreatmentPage() {

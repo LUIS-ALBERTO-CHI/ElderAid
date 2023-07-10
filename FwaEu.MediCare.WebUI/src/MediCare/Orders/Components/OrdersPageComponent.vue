@@ -8,16 +8,16 @@
             <Dropdown v-model="selectedOrdersType" :options="ordersTypeOptions" class="select-sector" />
             <Button style="width: 100%;" @click="displayNewOrder" label="Nouvelle commande" />
             <div style="display: flex; flex-direction: column;">
-                <div v-for="(order, index) in filteredOrders" :key="index">
-                    <AccordionOrderComponent :order="order">
-                        <div v-if="!order.isDelivered" class="accordion-content">
-                            <Button label="Annuler la commande" style="height: 45px !important;"></Button>
-                            <Button label="Commander à nouveau pour Dimitri" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                <div v-for="(order, index) in orders" :key="index">
+                    <AccordionOrderComponent :order="order" :isPatientUnique="true">
+                        <div v-if="order.state === 'Delivred'" class="accordion-content">
                             <Button label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                         </div>
                         <div v-else class="accordion-content">
+                            <Button label="Annuler la commande" style="height: 45px !important;"></Button>
+                            <Button label="Commander à nouveau pour Dimitri" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
@@ -41,6 +41,7 @@
     import Button from 'primevue/button';
     import Dropdown from 'primevue/dropdown';
     import AccordionOrderComponent from './AccordionOrderComponent.vue';
+    import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
 
 
 
@@ -57,30 +58,14 @@
                 ordersTypeOptions: ["Toutes", "Patients", "EMS"],
                 selectedOrdersType: "Toutes",
                 isNewOrder: false,
-                orders: [
-                    {
-                        patientName: "Jean Dupont",
-                        nurseName: "Claire Dupont",
-                        medicationName: "ADAPATRIC 10 mg, comprimé pelliculé sécable",
-                        date: "12/12/2020",
-                        box: "4 boîtes",
-                        isDelivered: true,
-                        room: "A506",
-                    },
-                    {
-                        patientName: "",
-                        nurseName: "Carolie Data",
-                        medicationName: "ANTIDRY lotion huilde amande 500ml",
-                        date: "12/12/2028",
-                        box: "8 boites",
-                        isDelivered: false,
-                        room: "A809",
-                    }
-                ]
+                orders: []
             };
         },
         async created() {
             this.focusSearchBar();
+
+            this.orders = await OrderMasterDataService.getAllAsync();
+            console.log(this.orders);
 
         },
         methods: {
