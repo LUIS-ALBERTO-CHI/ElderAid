@@ -3,7 +3,7 @@
         <patient-info-component />
         <div style="display: flex; flex-direction: column;">
             <div v-for="(order, index) in patientOrders" :key="index">
-                <AccordionOrderComponent :order="order" :isPatientUnique="true">
+                <AccordionOrderComponent :order="order">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
                                 label="Annuler la commande" />

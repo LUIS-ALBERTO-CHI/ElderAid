@@ -8,8 +8,8 @@
             <Dropdown v-model="selectedOrdersType" :options="ordersTypeOptions" class="select-sector" />
             <Button style="width: 100%;" @click="displayNewOrder" label="Nouvelle commande" />
             <div style="display: flex; flex-direction: column;">
-                <div v-for="(order, index) in orders" :key="index">
-                    <AccordionOrderComponent :order="order" :isPatientUnique="true">
+                <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
+                    <AccordionOrderComponent :order="order">
                         <div v-if="order.state === 'Delivred'" class="accordion-content">
                             <Button label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
@@ -42,6 +42,8 @@
     import Dropdown from 'primevue/dropdown';
     import AccordionOrderComponent from './AccordionOrderComponent.vue';
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
 
 
 
@@ -58,15 +60,16 @@
                 ordersTypeOptions: ["Toutes", "Patients", "EMS"],
                 selectedOrdersType: "Toutes",
                 isNewOrder: false,
-                orders: []
+                orders: [],
+                patients: [],
             };
         },
         async created() {
             this.focusSearchBar();
-
             this.orders = await OrderMasterDataService.getAllAsync();
-            console.log(this.orders);
-
+            this.patients = await PatientsMasterDataService.getAllAsync();
+            this.orders[0].patientId = null;
+            this.fillOrders();
         },
         methods: {
             removeSearch() {
@@ -83,22 +86,33 @@
             },
             goToSearchPatient() {
                 this.$router.push({ name: "SearchPatient" });
+            },
+            async fillOrders() {
+                const ordersArticleIds = this.orders.map(x => x.articleId);
+                const ordersPatientIds = this.orders.map(x => x.patientId);
+                const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
+
+                this.orders.forEach(order => {
+                    const article = articles.find(x => x.id == order.articleId);
+                    order.article = article;
+                    if (order.patientId != null || order.patientId > 0)
+                        order.patient = this.patients.find(x => x.id == order.patientId);
+                });
             }
         },
         computed: {
             filteredOrders() {
                 return this.orders.filter(order => {
                     return (
-                        (order.medicationName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.room.toLowerCase().includes(this.searchOrders.toLowerCase())) ||
-                        (order.patientName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.nurseName.toLowerCase().includes(this.searchOrders.toLowerCase())) ||
-                        (order.date.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.box.toLowerCase().includes(this.searchOrders.toLowerCase()))
-                             &&
+                        (order?.article.title.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order.updatedBy.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order?.patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
                         (this.selectedOrdersType == "Toutes" ||
-                            (this.selectedOrdersType == "Patients" && order.patientName != "") ||
-                            (this.selectedOrdersType == "EMS" && order.patientName == ""))
+                        (this.selectedOrdersType == "Patients" && order.patientId != null) ||
+                        (this.selectedOrdersType == "EMS" && order.patientId == null))
                     );
                 });
             },

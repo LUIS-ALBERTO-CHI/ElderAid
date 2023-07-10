@@ -52,8 +52,7 @@
         methods: {
             async fillPeriodicOrders() {
                 const periodicOrdersArticleIds = this.periodicOrders.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getAllAsync();
-                console.log(this.periodicOrders)
+                const articles = await ArticlesMasterDataService.getByIdsAsync(periodicOrdersArticleIds);
                 this.periodicOrders.forEach(periodicOrder => {
                     const article = articles.find(article => article.id === periodicOrder.articleId)
                     periodicOrder.article = article

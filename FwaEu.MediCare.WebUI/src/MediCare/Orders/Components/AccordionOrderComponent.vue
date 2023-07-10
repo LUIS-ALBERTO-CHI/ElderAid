@@ -3,22 +3,22 @@
         <AccordionTab>
             <template #header>
                 <div class="accordion-header">
-                    <!-- <div v-show="!isPatientUnique" class="accordion-top-area">
+                    <div class="accordion-top-area">
                         <div>
-                            <div class="accordion-header-title-area" v-if="order.patientName.length > 0">
+                            <div v-if="order.patientId != null || order.patientId > 0" class="accordion-header-title-area">
                                 <i class="fa-solid fa-user" />
-                                <span>{{order.patientName}}</span>
+                                <span>{{patient.fullName}}</span>
                             </div>
-                            <div class="accordion-header-title-area" v-else>
+                            <div v-else class="accordion-header-title-area" >
                                 <i class="fa-regular fa-hospital"></i>
-                                <span>EMS Potterie</span>
+                                <span>{{ organization.name }}</span>
                             </div>
                         </div>
                         <div class="accordion-header-title-area">
                             <i class="fa-solid fa-bed" />
-                            <span>{{order.room}}</span>
+                            <span>{{ patient.roomName }}</span>
                         </div>
-                    </div> -->
+                    </div>
                     <span style="width: 90%;">{{article.title}}</span>
                     <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
                     <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn))}}</span>
@@ -48,8 +48,8 @@
 
     import Accordion from 'primevue/accordion';
     import AccordionTab from 'primevue/accordiontab';
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
 
 
     export default {
@@ -61,6 +61,7 @@
             return {
                 patient: {},
                 article: {},
+                organization: {},
             };
         },
         props: {
@@ -68,16 +69,12 @@
                 type: Object,
                 required: true
             },
-            isPatientUnique: {
-                type: Boolean,
-                required: false,
-                default: false
-            },
         },
         async created() {
             this.patient = JSON.parse(localStorage.getItem('patient'));
             const articles = await ArticlesMasterDataService.getAllAsync();
             this.article = articles.find(x => x.id == this.order.articleId);
+            this.organization = ViewContextService.get();
         },
         methods: {
         },
