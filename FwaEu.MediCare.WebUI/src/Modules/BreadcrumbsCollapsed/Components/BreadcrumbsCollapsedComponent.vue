@@ -99,75 +99,10 @@
 
 
 <style scoped>
-    .breadcrimbs {
-        position: relative;
-    }
-
-    .crumbContainer {
-        display: flex;
-        flex: 1;
-        width: 100%;
-        font-size: 14px;
-        white-space: nowrap;
-        width: min-content;
-    }
-
-    .crumbContainerCollapsed {
-        display: flex;
-        flex: 1;
-        width: 100%;
-        font-size: 16px;
-        white-space: nowrap;
-        position: absolute;
-        top: 0;
-        align-items: center;
-    }
-
-    .dropdown {
-        height: 100%;
-        scrollbar-width: none;
-    }
-
-    .dropdown-button {
-        background-color: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        padding-bottom: 5px;
-    }
-
-    .dropdown-button-icon {
-        color: white;
-        font-size: 18px;
-    }
-
-    .dropdownContent {
-        background-color: var(--primary-bg-color);
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        display: none;
-        position: absolute;
-        flex-direction: column;
-        width: auto;
-        overflow: auto;
-        box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.4);
-        height: auto;
-    }
-
-    .dropdown:hover .dropdownContent {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .dropdownContent .breadcrumb-node .breadcrumb-node-link {
-        margin: 9px;
-        color: white;
-    }
     .main-container {
         display: flex;
         align-items: center;
+        column-gap: 10px;
       }
 </style>
 <style src="./Content/breadcrumbs.css" />

@@ -1,14 +1,14 @@
 <template>
     <div class="breadcrimbs">
         <div class="crumbContainerCollapsed crumbContainerHidden">
-            <a v-for="(link, index) in props.crumbs" :key="getNodeKey(link)" :href="link.to"
-               class="crumb" @click="nodeClicked(link)" :ref="setCrumbRef">{{link.text}}</a>
+            <div v-for="(link, index) in props.crumbs" :key="getNodeKey(link)" :href="link.to"
+               class="crumb" @click="nodeClicked(link)" :ref="setCrumbRef">{{link.text}}</div>
         </div>
         <div class="crumbContainerCollapsed">
             <div class="dropdown"
                  :style="{ display: hiddenCount > 0 ? 'flex' : 'none' }">
-                <button><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
-                <div class="dropdownContent">
+                <button @click="toggleDropDown" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
+                <div class="dropdownContent" v-show="isDropDownDisplayed">
                     <router-link v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" :to="link.to"
                                  class="crumb" @click="nodeClicked(link)">{{link.text}}</router-link>
                 </div>
@@ -23,8 +23,6 @@
         </div>
     </div>
 </template>
-
-
 <script setup>
     import { ref, defineProps, onMounted, computed, watch } from "vue";
     import { onIntersect } from "./onIntersect";
@@ -43,6 +41,8 @@
             crumbsRefs.push(el);
         }
     };
+
+    const isDropDownDisplayed = ref(false);
 
     onMounted(() => {
         crumbsRefs.forEach((el, index) => {
@@ -68,6 +68,10 @@
     const crumbsVisible = computed(() =>
         props.crumbs.slice(hiddenCount.value, props.crumbs.length)
     );
+
+    const toggleDropDown = () => {
+    isDropDownDisplayed.value = !isDropDownDisplayed.value;
+}
 
     const getNodeKey = function (node) {
         return JSON.stringify(node.to);
@@ -125,14 +129,28 @@
     .dropdown {
         display: none;
     }
+    .dropdown-button {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .dropdown-button-icon {
+        color: white;
+        font-size: 18px;
+    }
 
     .dropdownContent {
-        margin-top: 35px;
-        background: var(--primary-bg-color);
+        margin-top: 30px;
+        background-color: var(--primary-bg-color);
+        border: 1px solid #dee2e6;
         display: none;
         position: absolute;
-        display: none;
         flex-direction: column;
+        row-gap: 10px;
         width: auto;
         height: auto;
         overflow: auto;
