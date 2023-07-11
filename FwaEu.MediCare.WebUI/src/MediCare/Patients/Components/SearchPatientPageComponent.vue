@@ -67,8 +67,8 @@
                 this.displayInactivePatients = !this.displayInactivePatients;
             },
             goToPatientPage(patient) {
-                localStorage.setItem("patient", JSON.stringify(patient));
-                this.$router.push({ name: "Patient" });
+                // localStorage.setItem("patient", JSON.stringify(patient));
+                this.$router.push({ name: "Patient", params: { id: patient.id }});
             },
             removeSearch() {
                 this.searchPatient = "";

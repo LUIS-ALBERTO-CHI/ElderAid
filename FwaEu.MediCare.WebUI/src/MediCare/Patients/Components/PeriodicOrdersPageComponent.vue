@@ -1,6 +1,6 @@
 <template>
     <div class="periodic-orders-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <div v-if="periodicOrders.some(periodicOrders => 'article' in periodicOrders)"
              v-for="(periodicOrder, index) in periodicOrders" :key="index">
             <div class="periodic-order-item">
@@ -28,6 +28,7 @@
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
 
 
     export default {
@@ -39,13 +40,15 @@
         data() {
             return {
                 periodicOrders: [],
-                patient: {},
+                patient: new AsyncLazy(async () => {
+                    return await PatientService.getPatientById(this.$route.params.id);
+                }),
                 organization: {},
             };
         },
         async created() {
+            this.patient = await this.patient.getValueAsync();
             this.organization = ViewContextService.get();
-            this.patient = JSON.parse(localStorage.getItem('patient'));
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.fillPeriodicOrders();
         },
@@ -85,7 +88,10 @@
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
 
-            }
+            },
+            async getCurrentPatientAsync() {
+                return await this.patient.getValueAsync();
+            },
         },
         computed: {
 

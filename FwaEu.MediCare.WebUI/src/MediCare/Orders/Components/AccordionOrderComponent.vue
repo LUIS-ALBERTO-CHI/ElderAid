@@ -69,6 +69,10 @@
                 type: Object,
                 required: true
             },
+            patient: {
+                type: Object,
+                required: true
+            },
         },
         async created() {
             this.patient = JSON.parse(localStorage.getItem('patient'));

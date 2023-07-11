@@ -4,7 +4,10 @@ import MasterDataService from "@/Fwamework/MasterData/Services/master-data-servi
 
 export default {
 
-	async getAllAsync() {
+	async getPatientById(id) {
+		const masterDataService = new MasterDataService('Patients', ['id'], false);
+		const models = await masterDataService.getAllAsync();
+		return(models.find(t => t.id == id))
 	},
 
 	async getMasterDataByPatientId(patientId, masterDataKey) {

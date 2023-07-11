@@ -1,6 +1,6 @@
 <template>
     <div class="order-article-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce</span>
             <i class="fa-solid fa-heart"></i>

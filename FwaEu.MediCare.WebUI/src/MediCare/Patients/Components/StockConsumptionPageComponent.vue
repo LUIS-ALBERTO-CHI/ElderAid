@@ -1,6 +1,6 @@
 <template>
     <div class="stock-consumption-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <div v-if="stockConsumptions.some(stockConsumption => 'article' in stockConsumption)"
              v-for="(stock, index) in stockConsumptions" :key="index">
             <div class="stock-consumption-item">
@@ -17,6 +17,8 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import StockConsumptionMasterDataService from '@/MediCare/StockConsumption/Services/stock-consumption-master-data-service'
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
 
     export default {
         components: {
@@ -25,10 +27,14 @@
         },
         data() {
             return {
+                patient: new AsyncLazy(async () => {
+                    return await PatientService.getPatientById(this.$route.params.id);
+                }),
                 stockConsumptions: [],
             };
         },
         async created() {
+            this.patient = await this.patient.getValueAsync();
             this.stockConsumptions = await StockConsumptionMasterDataService.getAllAsync();
             this.fillStockConsumption();
         },
@@ -40,7 +46,10 @@
                     const article = articles.find(article => article.id === stockConsumption.articleId)
                     stockConsumption.article = article
                 })
-            }
+            },
+            async getCurrentPatientAsync() {
+                return await this.patient.getValueAsync();
+            },
         },
         computed: {
         },
