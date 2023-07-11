@@ -1,55 +1,62 @@
 <template>
     <div class="page-articles">
-        <div v-if="selectedArticle">
-            <div class="text-left">
-                <span class="article-name">{{ selectedArticle.name }}, {{ selectedArticle.unit }}, {{
-                    selectedArticle.countInbox }}</span>
+        <SearchPatientComponent v-show="!isPatientSelected" @selectedPatient="handleSelectedPatient" />
+        <div v-show="isPatientSelected">
+            <div v-if="selectedArticle">
+                <div class="text-left">
+                    <span class="article-name">{{ selectedArticle.name }}, {{ selectedArticle.unit }}, {{
+                        selectedArticle.countInbox }}</span>
+                </div>
+            </div>
+            <div class="info-container">
+                <div class="text-left">
+                    <span>Pour {{ patientName }}</span>
+                </div>
+                <div class="icon-right-container">
+                    <Button @click="openSearchPatientComponent" class="custom-button" style="width: 100px;"
+                        label="Modifier" />
+                </div>
+            </div>
+            <div class="info-container">
+                <div class="text-left">
+                    <span>Boîte entière</span>
+                </div>
+                <div class="icon-right-container">
+                    <InputSwitch v-model="fullBox" class="custom-switch" />
+                </div>
+            </div>
+            <div class="info-container" v-if="fullBox">
+                <div class="text-left">
+                    <span>Boîte de</span>
+                </div>
+                <div class="icon-right-container">
+                    <Dropdown v-model="selectedBoite" :options="boiteOptions" />
+                </div>
+            </div>
+            <div class="info-container" v-if="!fullBox">
+                <div class="text-left">
+                    <span>Quantité sortie (comprimés)</span>
+                </div>
+                <div class="icon-right-container">
+                    <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
+                </div>
+            </div>
+            <div class="button-confirmer">
+                <Button @click="confirmOrder" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
+                    label="Confirmer" />
             </div>
         </div>
-        <div class="info-container">
-            <div class="text-left">
-                <span>Pour Dimitri ASHIKHMIN</span>
-            </div>
-            <div class="icon-right-container">
-                <Button class="custom-button" style="width: 100px;" label="Modifier"></Button>
-            </div>
-        </div>
-        <div class="info-container">
-            <div class="text-left">
-                <span>Boîte entière</span>
-            </div>
-            <div class="icon-right-container">
-                <InputSwitch v-model="fullBox" class="custom-switch" />
-            </div>
-        </div>
-        <div class="info-container" v-if="fullBox">
-            <div class="text-left">
-                <span>Boîte de</span>
-            </div>
-            <div class="icon-right-container">
-                <Dropdown v-model="selectedBoite" :options="boiteOptions" />
-            </div>
-        </div>
-        <div class="info-container" v-if="!fullBox">
-            <div class="text-left">
-                <span>Quantité sortie (comprimés)</span>
-            </div>
-            <div class="icon-right-container">
-                <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
-            </div>
-        </div>
-        <Button class="confirmer" style="width: 350px; margin-top: 50px; align-self: center;" label="Confirmer"></Button>
     </div>
 </template>
 
 <script>
 import InputSwitch from 'primevue/inputswitch';
 import Button from 'primevue/button';
-import { ref } from 'vue';
 import Dropdown from 'primevue/dropdown';
 import InputNumber from 'primevue/inputnumber';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
+import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
 
 export default {
     components: {
@@ -57,6 +64,7 @@ export default {
         Button,
         Dropdown,
         InputNumber,
+        SearchPatientComponent,
     },
     data() {
         return {
@@ -64,7 +72,8 @@ export default {
             fullBox: ViewContextService.get().isStockPharmacyPerBox,
             boiteOptions: ["10 comprimes", "20 comprime", "30 comprime"],
             selectedBoite: "30 comprime",
-            quantity: 1
+            quantity: 1,
+            selectedPatient: null,
         };
     },
     async created() {
@@ -81,7 +90,26 @@ export default {
             this.cabinetName = cabinet.name;
             return cabinet;
         },
-    }
-};
+        handleSelectedPatient(args) {
+            args.cancelNavigation = true
+            this.selectedPatient = args.selectedPatient;
+        },
+        openSearchPatientComponent() {
+            this.selectedPatient = null;
+        },
+        confirmOrder() {
+            this.$router.push({ name: "Cabinet" });
+        },
+    },
+    computed: {
+        patientName() {
+            return this.selectedPatient ? this.selectedPatient.fullName : "";
+        },
+        isPatientSelected() {
+            return !!this.selectedPatient;
+        },
+    },
+}; 
 </script>
+
 <style type="text/css" scoped src="./Content/articles.css"></style>

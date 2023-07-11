@@ -34,10 +34,6 @@
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
 
-
-
-
-
     export default {
         inject: ["deviceInfo"],
         components: {
@@ -50,7 +46,7 @@
                 searchPatient: "",
                 buildingOptions: ["Tous les secteurs"],
                 selectedBuilding: "Tous les secteurs",
-                displayInactivePatients: false
+                displayInactivePatients: false,
             };
         },
         async created() {
@@ -67,8 +63,12 @@
                 this.displayInactivePatients = !this.displayInactivePatients;
             },
             goToPatientPage(patient) {
+            const args = { cancelNavigation: false, selectedPatient: patient };
+            this.$emit("selectedPatient", args);
+            if (!args.cancelNavigation) {
                 localStorage.setItem("patient", JSON.stringify(patient));
                 this.$router.push({ name: "Patient" });
+            }
             },
             removeSearch() {
                 this.searchPatient = "";
@@ -82,7 +82,7 @@
             },
             cuttedName(patient) {
                 return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
-            }
+            },
         },
         computed: {
             filteredPatients() {
