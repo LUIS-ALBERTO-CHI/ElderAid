@@ -1,9 +1,9 @@
 <template>
     <div class="patient-orders-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient"/>
         <div style="display: flex; flex-direction: column;">
             <div v-for="(order, index) in patientOrders" :key="index">
-                <AccordionOrderComponent :order="order">
+                <AccordionOrderComponent :order="order" :patient="patient">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
                                 label="Annuler la commande" />
@@ -24,6 +24,8 @@
     import OrdersService from '@/MediCare/Orders/Services/orders-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+
 
     export default {
         components: {
@@ -33,12 +35,14 @@
         },
         data() {
             return {
+                patient: new AsyncLazy(async () => {
+                    return await PatientService.getPatientById(this.$route.params.id);
+                }),
                 patientOrders: [],
-                patient: {}
             };
         },
         async created() {
-            this.patient = JSON.parse(localStorage.getItem('patient'));
+            this.patient = await this.patient.getValueAsync();
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
 
         },
@@ -60,7 +64,10 @@
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la commande')
                 }
-            }
+            },
+            async getCurrentPatientAsync() {
+                return await this.patient.getValueAsync();
+            },
         },
         computed: {
         },

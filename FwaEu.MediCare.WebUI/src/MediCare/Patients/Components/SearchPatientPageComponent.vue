@@ -63,12 +63,17 @@
                 this.displayInactivePatients = !this.displayInactivePatients;
             },
             goToPatientPage(patient) {
+<<<<<<< HEAD
             const args = { cancelNavigation: false, selectedPatient: patient };
             this.$emit("selectedPatient", args);
             if (!args.cancelNavigation) {
                 localStorage.setItem("patient", JSON.stringify(patient));
                 this.$router.push({ name: "Patient" });
             }
+=======
+                // localStorage.setItem("patient", JSON.stringify(patient));
+                this.$router.push({ name: "Patient", params: { id: patient.id }});
+>>>>>>> 47fa8ee (Remove patient local storage (begining))
             },
             removeSearch() {
                 this.searchPatient = "";

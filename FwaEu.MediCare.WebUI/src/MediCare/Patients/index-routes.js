@@ -24,18 +24,40 @@ export default [
 		}
 	},
 	{
-		path: '/Patient',
+		path: '/Patient/:id',
 		name: 'Patient',
 		component: PatientPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Patient',
-				parentName: 'SearchPatient'
+				parentName: 'SearchPatient',
+				async onNodeResolve(node, context) {
+                    if (typeof context.currentComponent.getCurrentPatientAsync !== "function") {
+						throw new Error("Children pages of search patient page must implement a getCurrentPatientAsync method");
+					}
+                    const currentPatient = await context.currentComponent.getCurrentPatientAsync();
+					node.text = currentPatient.fullName;
+					node.to = {
+						name: 'Patient',
+						params: { id: currentPatient.id }
+					};
+					return node;
+                }
 			},
 		}
 	},
 	{
-		path: '/Treatment',
+		path: '/Patient/:id/Medications',
+		name: 'PatientMedications',
+		component: PatientMedicationsPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Médicaments',
+				parentName: 'Patient'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment',
 		name: 'Treatment',
 		component: TreatmentPageComponent,
 		meta: {
@@ -46,7 +68,7 @@ export default [
 		}
 	},
 	{
-		path: '/PatientOrders',
+		path: '/Patient/:id/PatientOrders',
 		name: 'PatientOrders',
 		component: PatientOrdersPageComponent,
 		meta: {
@@ -57,7 +79,7 @@ export default [
 		}
 	},
 	{
-		path: '/StockConsumption',
+		path: '/Patient/:id/StockConsumption',
 		name: 'StockConsumption',
 		component: StockConsumptionPageComponent,
 		meta: {
@@ -90,17 +112,6 @@ export default [
 		}
 	},
 	{
-		path: '/Medications',
-		name: 'PatientMedications',
-		component: PatientMedicationsPageComponent,
-		meta: {
-			breadcrumb: {
-				titleKey: 'Médicaments',
-				parentName: 'Patient'
-			},
-		}
-	},
-	{
 		path: '/Protection',
 		name: 'Protection',
 		component: ProtectionPageComponent,
@@ -123,7 +134,7 @@ export default [
 		}
 	},
 	{
-		path: '/PeriodicOrders',
+		path: '/Patient/:id/PeriodicOrders',
 		name: 'PeriodicOrders',
 		component: PeriodicOrdersPageComponent,
 		meta: {

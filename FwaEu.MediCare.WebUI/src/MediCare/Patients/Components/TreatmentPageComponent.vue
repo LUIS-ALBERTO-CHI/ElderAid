@@ -1,6 +1,6 @@
 <template>
     <div class="treatment-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <Accordion v-if="patientTreatments.some(treatment => 'article' in treatment)">
             <template v-for="(treatment, index) in patientTreatments" :key="index">
                 <AccordionTab>
@@ -39,7 +39,8 @@
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import PatientService from "@/MediCare/Patients/Services/patients-service";
     import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
-    import OrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service'
+    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+
 
 
     export default {
@@ -55,7 +56,11 @@
         },
         data() {
             return {
-                patient: {},
+                patient: new AsyncLazy(async () => {
+                    var test = await PatientService.getPatientById(this.$route.params.id);
+                    console.log(test)
+                    return await PatientService.getPatientById(this.$route.params.id);
+                }),
                 isMoreQuandityDisplayed: false,
                 moreQuantityDisplayedIndex: -1,
                 quantityOptions: [1, 2, 3],
@@ -63,19 +68,16 @@
                 selectOptions: ["à l'unité", "boîtes complètes"],
                 selectedOption: "à l'unité",
                 showConfirmationIndex: -1,
-                patient: {},
                 patientTreatments: [],
                 patientOrders: []
             };
         },
         async created() {
-            this.patient = JSON.parse(localStorage.getItem("patient"));
+            this.patient = await this.patient.getValueAsync();
             var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
             this.fillPatientTreatments()
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-
-
         },
         methods: {
             goToTreatmentPage() {
@@ -107,7 +109,10 @@
                     const article = articles.find(article => article.id === treatment.appliedArticleId)
                     treatment.article = article
                 })
-            }
+            },
+            async getCurrentPatientAsync() {
+                return await this.patient.getValueAsync();
+            },
         },
         computed: {
 

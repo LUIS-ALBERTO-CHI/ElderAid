@@ -1,6 +1,6 @@
 <template>
     <div class="patient-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <div @click="goToTreatmentPage" class="patient-info-item">
             <span>{{ patientTreatments.filter(x => x.treatmentType == "Fixe").length }} traitements fixes en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
@@ -22,6 +22,7 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
 
 
     export default {
@@ -31,20 +32,22 @@
         },
         data() {
             return {
-                patient: {},
+                patient: new AsyncLazy(async () => {
+                    return await PatientService.getPatientById(this.$route.params.id);
+                }),
                 patientTreatments: [],
             };
         },
         async created() {
-            var patient = localStorage.getItem("patient");
-            this.patient = JSON.parse(patient);
-
+            this.patient = await this.patient.getValueAsync();
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
-
         },
         methods: {
             goToTreatmentPage() {
-                this.$router.push({ name: "Treatment" });
+                this.$router.push({ name: "Treatment", params: { id: this.patient.id } });
+            },
+            async getCurrentPatientAsync() {
+                return await this.patient.getValueAsync();
             },
         },
         computed: {
