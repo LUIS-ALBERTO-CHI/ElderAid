@@ -83,8 +83,6 @@
             cuttedName(patient) {
                 return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
             },
-            selectedPatient() {
-            }
         },
         computed: {
             filteredPatients() {

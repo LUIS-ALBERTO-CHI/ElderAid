@@ -1,7 +1,7 @@
 <template>
     <div class="page-articles">
-        <SearchPatientComponent v-show="!patientSelected" @selectedPatient="handleSelectedPatient" />
-        <div v-show="patientSelected">
+        <SearchPatientComponent v-show="!isPatientSelected" @selectedPatient="handleSelectedPatient" />
+        <div v-show="isPatientSelected">
             <div v-if="selectedArticle">
                 <div class="text-left">
                     <span class="article-name">{{ selectedArticle.name }}, {{ selectedArticle.unit }}, {{
@@ -10,7 +10,7 @@
             </div>
             <div class="info-container">
                 <div class="text-left">
-                    <span>Pour {{ PatientName }}</span>
+                    <span>Pour {{ patientName }}</span>
                 </div>
                 <div class="icon-right-container">
                     <Button @click="openSearchPatientComponent" class="custom-button" style="width: 100px;"
@@ -92,12 +92,9 @@ export default {
         },
         handleSelectedPatient(args) {
             args.cancelNavigation = true
-            this.patientSelected = true;
             this.selectedPatient = args.selectedPatient;
-
         },
         openSearchPatientComponent() {
-            this.patientSelected = false;
             this.selectedPatient = null;
         },
         confirmOrder() {
@@ -105,8 +102,11 @@ export default {
         },
     },
     computed: {
-        PatientName() {
+        patientName() {
             return this.selectedPatient ? this.selectedPatient.fullName : "";
+        },
+        isPatientSelected() {
+            return !!this.selectedPatient;
         },
     },
 }; 
