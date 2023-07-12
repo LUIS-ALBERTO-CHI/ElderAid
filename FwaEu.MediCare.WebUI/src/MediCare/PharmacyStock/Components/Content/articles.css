@@ -18,7 +18,7 @@
 }
 
 .qr-code-icon {
-    margin-left: 10px; /* Espacio entre el input y el icono de código QR */
+    margin-left: 10px;
     cursor: pointer;
 }
 

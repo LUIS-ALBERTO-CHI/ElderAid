@@ -28,7 +28,7 @@
             </div>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button @click="goToOrderOtherProductPage" style="margin-top: 20px; width: 100%;" label="Commander un autre produit" />
+        <Button @click="goToSearchArticlePage" style="margin-top: 20px; width: 100%;" label="Commander un autre produit" />
     </div>
 </template>
 <!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
@@ -75,8 +75,8 @@
             goToStockConsumptionPage() {
                 this.$router.push({ name: "StockConsumption" });
             },
-            goToOrderOtherProductPage() {
-                this.$router.push({ name: "OrderOtherProduct" });
+            goToSearchArticlePage() {
+                this.$router.push({ name: "SearchArticle" });
             },
             goToProtectionPage() {
                 this.$router.push({ name: "Protection" });

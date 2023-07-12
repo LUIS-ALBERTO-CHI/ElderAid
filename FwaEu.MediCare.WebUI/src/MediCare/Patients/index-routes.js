@@ -3,7 +3,6 @@ const PatientPageComponent = () => import('@/MediCare/Patients/Components/Patien
 const TreatmentPageComponent = () => import('@/MediCare/Patients/Components/TreatmentPageComponent.vue');
 const PatientOrdersPageComponent = () => import('@/MediCare/Patients/Components/PatientOrdersPageComponent.vue');
 const StockConsumptionPageComponent = () => import('@/MediCare/Patients/Components/StockConsumptionPageComponent.vue');
-const OrderOtherProductPageComponent = () => import('@/MediCare/Patients/Components/OrderOtherProductPageComponent.vue');
 const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
 const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
@@ -63,17 +62,6 @@ export default [
 		meta: {
 			breadcrumb: {
 				titleKey: 'Stock de consommation',
-				parentName: 'Patient'
-			},
-		}
-	},
-	{
-		path: '/OrderOtherProduct',
-		name: 'OrderOtherProduct',
-		component: OrderOtherProductPageComponent,
-		meta: {
-			breadcrumb: {
-				titleKey: 'Commander un autre produit',
 				parentName: 'Patient'
 			},
 		}
