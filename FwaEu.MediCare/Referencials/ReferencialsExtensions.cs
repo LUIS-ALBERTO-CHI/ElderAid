@@ -3,9 +3,11 @@ using FwaEu.Modules.MasterData;
 using FwaEu.MediCare.Referencials.MasterData;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework;
-using FwaEu.MediCare.Referencials.Services;
 using FwaEu.Modules.GenericAdmin;
 using FwaEu.MediCare.Referencials.GenericAdmin;
+using FwaEu.MediCare.Treatments;
+using FwaEu.MediCare.Treatments.Services;
+using FwaEu.MediCare.Treatments.MasterData;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -16,8 +18,7 @@ namespace FwaEu.MediCare.Referencials
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<BuildingEntityRepository>();
 
-            repositoryRegister.Add<TreatmentEntityRepository>();
-            services.AddTransient<ITreatmentService, TreatmentService>();
+            
 
             repositoryRegister.Add<DosageFormEntityRepository>();
 
@@ -26,7 +27,6 @@ namespace FwaEu.MediCare.Referencials
             repositoryRegister.Add<ProtectionEntityRepository>();
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
-            services.AddMasterDataProvider<TreatmentMasterDataProvider>("Treatments");
             services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
             services.AddMasterDataProvider<CabinetMasterDataProvider>("Cabinets");
             services.AddMasterDataProvider<ProtectionDosageMasterDataProvider>("ProtectionDosages");
