@@ -1,15 +1,15 @@
 <template>
     <div class="patient-page-container">
-        <patient-info-component :patient="patient" />
-        <div @click="goToTreatmentPage" class="patient-info-item">
+        <patient-info-component v-if="patient" :patient="patient" />
+        <div @click="goToTreatmentPage('Fixe')" class="patient-info-item">
             <span>{{ patientTreatments.filter(x => x.treatmentType == "Fixe").length }} traitements fixes en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div @click="goToTreatmentPage" class="patient-info-item">
+        <div @click="goToTreatmentPage('Reserve')" class="patient-info-item">
             <span>{{ patientTreatments.filter(x => x.treatmentType == "Reserve").length }} traitements de réserve en cours</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div @click="goToTreatmentPage" class="patient-info-item">
+        <div @click="goToTreatmentPage('Erased')" class="patient-info-item">
             <span>{{ patientTreatments.filter(x => x.treatmentType == "Erased").length }} traitements effacés</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -21,8 +21,7 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
-    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
 
 
     export default {
@@ -30,24 +29,32 @@
             Button,
             PatientInfoComponent
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
-                patient: new AsyncLazy(async () => {
-                    return await PatientService.getPatientById(this.$route.params.id);
-                }),
+                patient: null,
                 patientTreatments: [],
             };
         },
         async created() {
-            this.patient = await this.patient.getValueAsync();
-            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+            this.patient = await this.patientLazy.getValueAsync();
+            var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+            this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
         },
         methods: {
-            goToTreatmentPage() {
-                this.$router.push({ name: "Treatment", params: { id: this.patient.id } });
-            },
-            async getCurrentPatientAsync() {
-                return await this.patient.getValueAsync();
+            goToTreatmentPage(treatmentType) {
+            if (treatmentType == "Fixe")
+                this.$router.push({ name: "TreatmentsFixe", params: { id: this.patient.id, treatmentType: treatmentType } });
+            else if (treatmentType == "Erased")
+                this.$router.push({ name: "TreatmentsErased", params: { id: this.patient.id, treatmentType: treatmentType } });
+            else
+                this.$router.push({ name: "TreatmentsReserve", params: { id: this.patient.id, treatmentType: treatmentType } });
             },
         },
         computed: {

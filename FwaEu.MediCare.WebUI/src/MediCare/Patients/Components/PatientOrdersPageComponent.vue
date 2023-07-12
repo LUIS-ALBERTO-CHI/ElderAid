@@ -2,8 +2,8 @@
     <div class="patient-orders-page-container">
         <patient-info-component :patient="patient"/>
         <div style="display: flex; flex-direction: column;">
-            <div v-for="(order, index) in patientOrders" :key="index">
-                <AccordionOrderComponent :order="order" :patient="patient">
+            <div v-if="patient" v-for="(order, index) in patientOrders" :key="index">
+                <AccordionOrderComponent :order="order">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
                                 label="Annuler la commande" />
@@ -20,11 +20,11 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import OrdersService from '@/MediCare/Orders/Services/orders-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
-    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+
 
 
     export default {
@@ -33,16 +33,21 @@
             Button,
             AccordionOrderComponent
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
-                patient: new AsyncLazy(async () => {
-                    return await PatientService.getPatientById(this.$route.params.id);
-                }),
+                patient: null,
                 patientOrders: [],
             };
         },
         async created() {
-            this.patient = await this.patient.getValueAsync();
+            this.patient = await this.patientLazy.getValueAsync();
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
 
         },
@@ -64,9 +69,6 @@
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la commande')
                 }
-            },
-            async getCurrentPatientAsync() {
-                return await this.patient.getValueAsync();
             },
         },
         computed: {

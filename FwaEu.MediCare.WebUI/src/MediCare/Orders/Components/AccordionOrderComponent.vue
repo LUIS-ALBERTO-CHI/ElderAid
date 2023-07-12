@@ -50,6 +50,7 @@
     import AccordionTab from 'primevue/accordiontab';
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
+    import PatientService from "@/MediCare/Patients/Services/patients-service";
 
 
     export default {
@@ -59,9 +60,9 @@
         },
         data() {
             return {
-                patient: {},
                 article: {},
                 organization: {},
+                patient: {}
             };
         },
         props: {
@@ -69,13 +70,10 @@
                 type: Object,
                 required: true
             },
-            patient: {
-                type: Object,
-                required: true
-            },
         },
         async created() {
-            this.patient = JSON.parse(localStorage.getItem('patient'));
+            if (this.order.patientId != null && this.order.patientId > 0)
+                this.patient  = await PatientService.getPatientById(this.order.patientId);
             const articles = await ArticlesMasterDataService.getAllAsync();
             this.article = articles.find(x => x.id == this.order.articleId);
             this.organization = ViewContextService.get();

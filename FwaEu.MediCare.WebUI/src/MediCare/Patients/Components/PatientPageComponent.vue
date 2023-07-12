@@ -1,6 +1,6 @@
 <template>
     <div class="patient-page-container">
-        <patient-info-component :patient="patient" />
+        <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToMedicationsPage" class="patient-info-item">
             <span>Médicaments</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
@@ -36,9 +36,7 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
-    import PatientMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service'
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
-    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
 
 
     export default {
@@ -46,25 +44,30 @@
             Button,
             PatientInfoComponent
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
-                patient: new AsyncLazy(async () => {
-                    return await PatientService.getPatientById(this.$route.params.id);
-                }),
+                patient: null,
                 patientTreatments: [],
                 patientsOrders: [],
                 periodicOrders: []
             };
         },
         async created() {
-            this.patient = await this.patient.getValueAsync();
+            this.patient = await this.patientLazy.getValueAsync();
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
         },
         methods: {
             goToTreatmentPage() {
-                this.$router.push({ name: "Treatment", params: { id: this.patient.id } });
+                this.$router.push({ name: "Treatments", params: { id: this.patient.id } });
             },
             goToMedicationsPage() {
                 this.$router.push({ name: "PatientMedications", params: { id: this.patient.id } });
@@ -83,9 +86,6 @@
             },
             goToPeriodicOrdersPage() {
                 this.$router.push({ name: "PeriodicOrders", params: { id: this.patient.id } });
-            },
-            async getCurrentPatientAsync() {
-                return await this.patient.getValueAsync();
             },
         },
         computed: {

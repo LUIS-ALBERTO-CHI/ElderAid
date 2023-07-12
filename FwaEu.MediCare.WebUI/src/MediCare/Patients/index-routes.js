@@ -56,13 +56,48 @@ export default [
 			},
 		}
 	},
+
+	//NOTE: Move all treatment route to a seperate file when module treatment is created
 	{
-		path: '/Patient/:id/Medications/Treatment',
-		name: 'Treatment',
+		path: '/Patient/:id/Medications/Treatment/',
+		name: 'Treatments',
 		component: TreatmentPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Traitement',
+				titleKey: 'Traitements',
+				parentName: 'Patient'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsReserve',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitement de réserve',
+				parentName: 'PatientMedications'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsFixe',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitements fixes',
+				parentName: 'PatientMedications'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsErased',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitements effacés',
 				parentName: 'PatientMedications'
 			},
 		}

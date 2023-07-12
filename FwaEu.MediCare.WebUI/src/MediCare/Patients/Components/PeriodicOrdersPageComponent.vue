@@ -23,12 +23,12 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import InputNumber from 'primevue/inputnumber';
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
+
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
 
 
     export default {
@@ -37,17 +37,22 @@
             Button,
             InputNumber
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
                 periodicOrders: [],
-                patient: new AsyncLazy(async () => {
-                    return await PatientService.getPatientById(this.$route.params.id);
-                }),
+                patient: null,
                 organization: {},
             };
         },
         async created() {
-            this.patient = await this.patient.getValueAsync();
+            this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.fillPeriodicOrders();
@@ -88,9 +93,6 @@
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
 
-            },
-            async getCurrentPatientAsync() {
-                return await this.patient.getValueAsync();
             },
         },
         computed: {

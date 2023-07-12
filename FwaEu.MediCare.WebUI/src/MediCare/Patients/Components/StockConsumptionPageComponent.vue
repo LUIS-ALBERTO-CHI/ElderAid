@@ -17,24 +17,29 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import StockConsumptionMasterDataService from '@/MediCare/StockConsumption/Services/stock-consumption-master-data-service'
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
-    import { AsyncLazy } from '@/Fwamework/Core/Services/lazy-load';
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+
 
     export default {
         components: {
             PatientInfoComponent,
             Button
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
-                patient: new AsyncLazy(async () => {
-                    return await PatientService.getPatientById(this.$route.params.id);
-                }),
+                patient: null,
                 stockConsumptions: [],
             };
         },
         async created() {
-            this.patient = await this.patient.getValueAsync();
+            this.patient = await this.patientLazy.getValueAsync();
             this.stockConsumptions = await StockConsumptionMasterDataService.getAllAsync();
             this.fillStockConsumption();
         },
@@ -46,9 +51,6 @@
                     const article = articles.find(article => article.id === stockConsumption.articleId)
                     stockConsumption.article = article
                 })
-            },
-            async getCurrentPatientAsync() {
-                return await this.patient.getValueAsync();
             },
         },
         computed: {
