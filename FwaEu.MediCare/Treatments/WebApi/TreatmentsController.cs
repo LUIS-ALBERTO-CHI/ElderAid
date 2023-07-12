@@ -1,11 +1,12 @@
 ﻿using FwaEu.Fwamework.Data;
-using FwaEu.MediCare.Referencials.Services;
+using FwaEu.MediCare.Referencials.WebApi;
+using FwaEu.MediCare.Treatments.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Referencials.WebApi
+namespace FwaEu.MediCare.Treatments.WebApi
 {
     [Authorize]
     [ApiController]
@@ -29,14 +30,14 @@ namespace FwaEu.MediCare.Referencials.WebApi
                 return Ok(models.Select(x => new GetTreatmentsByPatientResponseApi()
                 {
                     Id = x.Id,
-                    TreatmentType= x.TreatmentType,
-                    AppliedArticleId= x.AppliedArticleId,
-                    ArticleType= x.ArticleType,
-                    DateEnd= x.DateEnd,
-                    DateStart= x.DateStart,
-                    DosageDescription= x.DosageDescription,
-                    PatientId= x.PatientId,
-                    PrescribedArticleId = x.PrescribedArticleId 
+                    TreatmentType = x.TreatmentType,
+                    AppliedArticleId = x.AppliedArticleId,
+                    ArticleType = x.ArticleType,
+                    DateEnd = x.DateEnd,
+                    DateStart = x.DateStart,
+                    DosageDescription = x.DosageDescription,
+                    PatientId = x.PatientId,
+                    PrescribedArticleId = x.PrescribedArticleId
                 }));
             }
             catch (NotFoundException)

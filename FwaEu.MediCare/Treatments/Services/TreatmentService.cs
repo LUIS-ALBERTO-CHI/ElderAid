@@ -1,12 +1,13 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.MediCare.GenericRepositorySession;
+using FwaEu.MediCare.Treatments;
 using NHibernate.Linq;
 using NHibernate.Transform;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Referencials.Services
+namespace FwaEu.MediCare.Treatments.Services
 {
     public class TreatmentService : ITreatmentService
     {
@@ -15,12 +16,6 @@ namespace FwaEu.MediCare.Referencials.Services
         public TreatmentService(GenericSessionContext sessionContext)
         {
             _sessionContext = sessionContext;
-        }
-
-        public async Task<List<TreatmentEntity>> GetAllAsync()
-        {
-            var repository = _sessionContext.RepositorySession;
-            return await repository.Create<TreatmentEntityRepository>().Query().ToListAsync();
         }
 
         public async Task<List<GetTreatmentsByPatientResponse>> GetAllTreatmentsByPatientAsync(GetTreatmentsByPatientPost model)

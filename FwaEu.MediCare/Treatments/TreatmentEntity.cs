@@ -5,7 +5,7 @@ using FwaEu.MediCare.Articles;
 using FwaEu.MediCare.Initialization;
 using System;
 
-namespace FwaEu.MediCare.Referencials
+namespace FwaEu.MediCare.Treatments
 {
     public enum TreatmentType
     {
