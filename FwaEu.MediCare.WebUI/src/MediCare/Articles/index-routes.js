@@ -7,8 +7,8 @@ export default [
         component: ArticlesSearchPageComponent,
         meta: {
             breadcrumb: {
-                titleKey: 'Articles',
-                parentName: 'default'
+                titleKey: 'Commander un autre produit',
+                parentName: 'Patient'
             },
         }
     },

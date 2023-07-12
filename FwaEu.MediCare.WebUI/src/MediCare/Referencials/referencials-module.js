@@ -7,7 +7,7 @@ import DosageFormMasterDataService from './Services/dosage-form-master-data-serv
 import CabinetsMasterDataService from './Services/cabinets-master-data-service'
 import TreatmentsMasterDataService from './Services/treatments-master-data-service';
 import ProtectionMasterDataService from './Services/protections-master-data-service'
-import articlesTypeDataSourceOptions from './Services/articles-type-master-data-service';
+import ArticlesTypeMasterDataService from './Services/articles-type-master-data-service';
 
 export class ReferencialsModule extends AbstractModule {
 
@@ -18,7 +18,7 @@ export class ReferencialsModule extends AbstractModule {
 		await CabinetsMasterDataService.configureAsync();
 		await TreatmentsMasterDataService.configureAsync();
 		await ProtectionMasterDataService.configureAsync();
-		await articlesTypeDataSourceOptions.configureAsync();
+		await ArticlesTypeMasterDataService.configureAsync();
 
 		GenericAdminConfigurationService.register(DosageFormConfiguration);
 	}
