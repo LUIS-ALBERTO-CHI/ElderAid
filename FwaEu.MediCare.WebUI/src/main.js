@@ -55,6 +55,7 @@ import { PatientsModule } from "@/MediCare/Patients/patients-module";
 import { OrdersModule } from "@/MediCare/Orders/orders-module";
 import { CabinetsModule } from "@/MediCare/PharmacyStock/cabinets-module";
 import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consumption-module";
+import { ArticlesModule } from "./MediCare/Articles/articles-module";
 
 import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
 
@@ -107,6 +108,7 @@ const application = new Application(IndexApp)
 	.useModule(new OrdersModule())
 	.useModule(new CabinetsModule())
 	.useModule(new StockConsumptionModule())
+	.useModule(new ArticlesModule())
 	
 	.useModule(new PermissionsByRoleModule())
 	.useModule(new RoutingModule({
