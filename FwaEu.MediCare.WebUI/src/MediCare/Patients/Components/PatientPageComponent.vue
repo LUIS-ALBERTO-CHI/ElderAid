@@ -1,6 +1,6 @@
 <template>
     <div class="patient-page-container">
-        <patient-info-component />
+        <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToMedicationsPage" class="patient-info-item">
             <span>Médicaments</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
@@ -36,44 +36,47 @@
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
 
-    // import TreatmentsMasterDataService from '@/MediCare/Referencials/Services/TreatmentsMasterDataService.js'
 
     export default {
         components: {
             Button,
             PatientInfoComponent
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
-                patient: {},
+                patient: null,
                 patientTreatments: [],
                 patientsOrders: [],
                 periodicOrders: []
             };
         },
         async created() {
-            var patient = localStorage.getItem("patient");
-            this.patient = JSON.parse(patient);
-            
-            
+            this.patient = await this.patientLazy.getValueAsync();
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
         },
         methods: {
             goToTreatmentPage() {
-                this.$router.push({ name: "Treatment" });
+                this.$router.push({ name: "Treatments", params: { id: this.patient.id } });
             },
             goToMedicationsPage() {
-                this.$router.push({ name: "PatientMedications" });
+                this.$router.push({ name: "PatientMedications", params: { id: this.patient.id } });
             },
             goToPatientOrdersPage() {
-                this.$router.push({ name: "PatientOrders" });
+                this.$router.push({ name: "PatientOrders", params: { id: this.patient.id } });
             },
             goToStockConsumptionPage() {
-                this.$router.push({ name: "StockConsumption" });
+                this.$router.push({ name: "StockConsumption", params: { id: this.patient.id }});
             },
             goToOrderOtherProductPage() {
                 this.$router.push({ name: "OrderOtherProduct" });
@@ -82,8 +85,8 @@
                 this.$router.push({ name: "Protection" });
             },
             goToPeriodicOrdersPage() {
-                this.$router.push({ name: "PeriodicOrders" });
-            }
+                this.$router.push({ name: "PeriodicOrders", params: { id: this.patient.id } });
+            },
         },
         computed: {
 

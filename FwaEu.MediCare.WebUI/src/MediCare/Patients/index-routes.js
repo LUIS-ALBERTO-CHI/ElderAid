@@ -24,29 +24,86 @@ export default [
 		}
 	},
 	{
-		path: '/Patient',
+		path: '/Patient/:id',
 		name: 'Patient',
 		component: PatientPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Patient',
-				parentName: 'SearchPatient'
+				parentName: 'SearchPatient',
+				async onNodeResolve(node, context) {
+                    if (typeof context.currentComponent.getCurrentPatientAsync !== "function") {
+						throw new Error("Children pages of search patient page must implement a getCurrentPatientAsync method");
+					}
+                    const currentPatient = await context.currentComponent.getCurrentPatientAsync();
+					node.text = currentPatient.fullName;
+					node.to = {
+						name: 'Patient',
+						params: { id: currentPatient.id }
+					};
+					return node;
+                }
 			},
 		}
 	},
 	{
-		path: '/Treatment',
-		name: 'Treatment',
+		path: '/Patient/:id/Medications',
+		name: 'PatientMedications',
+		component: PatientMedicationsPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Médicaments',
+				parentName: 'Patient'
+			},
+		}
+	},
+
+	//NOTE: Move all treatment route to a seperate file when module treatment is created
+	{
+		path: '/Patient/:id/Medications/Treatment/',
+		name: 'Treatments',
 		component: TreatmentPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Traitement',
+				titleKey: 'Traitements',
+				parentName: 'Patient'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsReserve',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitement de réserve',
 				parentName: 'PatientMedications'
 			},
 		}
 	},
 	{
-		path: '/PatientOrders',
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsFixe',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitements fixes',
+				parentName: 'PatientMedications'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
+		name: 'TreatmentsErased',
+		component: TreatmentPageComponent,
+		meta: {
+			breadcrumb: {
+				titleKey: 'Traitements effacés',
+				parentName: 'PatientMedications'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/PatientOrders',
 		name: 'PatientOrders',
 		component: PatientOrdersPageComponent,
 		meta: {
@@ -57,7 +114,7 @@ export default [
 		}
 	},
 	{
-		path: '/StockConsumption',
+		path: '/Patient/:id/StockConsumption',
 		name: 'StockConsumption',
 		component: StockConsumptionPageComponent,
 		meta: {
@@ -90,17 +147,6 @@ export default [
 		}
 	},
 	{
-		path: '/Medications',
-		name: 'PatientMedications',
-		component: PatientMedicationsPageComponent,
-		meta: {
-			breadcrumb: {
-				titleKey: 'Médicaments',
-				parentName: 'Patient'
-			},
-		}
-	},
-	{
 		path: '/Protection',
 		name: 'Protection',
 		component: ProtectionPageComponent,
@@ -123,7 +169,7 @@ export default [
 		}
 	},
 	{
-		path: '/PeriodicOrders',
+		path: '/Patient/:id/PeriodicOrders',
 		name: 'PeriodicOrders',
 		component: PeriodicOrdersPageComponent,
 		meta: {

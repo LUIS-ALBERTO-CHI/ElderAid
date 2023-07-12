@@ -1,6 +1,6 @@
 <template>
     <div class="periodic-orders-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <div v-if="periodicOrders.some(periodicOrders => 'article' in periodicOrders)"
              v-for="(periodicOrder, index) in periodicOrders" :key="index">
             <div class="periodic-order-item">
@@ -23,7 +23,8 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import InputNumber from 'primevue/inputnumber';
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
+
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
@@ -36,16 +37,23 @@
             Button,
             InputNumber
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
                 periodicOrders: [],
-                patient: {},
+                patient: null,
                 organization: {},
             };
         },
         async created() {
+            this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
-            this.patient = JSON.parse(localStorage.getItem('patient'));
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.fillPeriodicOrders();
         },
@@ -85,7 +93,7 @@
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
 
-            }
+            },
         },
         computed: {
 

@@ -1,6 +1,6 @@
 <template>
     <div class="order-other-product-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient" />
         <span class="command-title">Commander un article:</span>
         <span class="p-input-icon-right">
             <i @click="removeSearch" class="fa fa-solid fa-close"  />

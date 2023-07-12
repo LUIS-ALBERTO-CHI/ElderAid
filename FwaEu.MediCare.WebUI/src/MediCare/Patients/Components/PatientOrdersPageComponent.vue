@@ -1,8 +1,8 @@
 <template>
     <div class="patient-orders-page-container">
-        <patient-info-component />
+        <patient-info-component :patient="patient"/>
         <div style="display: flex; flex-direction: column;">
-            <div v-for="(order, index) in patientOrders" :key="index">
+            <div v-if="patient" v-for="(order, index) in patientOrders" :key="index">
                 <AccordionOrderComponent :order="order">
                     <div class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
@@ -20,10 +20,12 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
-    import PatientService from "@/MediCare/Patients/Services/patients-service";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import OrdersService from '@/MediCare/Orders/Services/orders-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+
+
 
     export default {
         components: {
@@ -31,14 +33,21 @@
             Button,
             AccordionOrderComponent
         },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
+        },
         data() {
             return {
+                patient: null,
                 patientOrders: [],
-                patient: {}
             };
         },
         async created() {
-            this.patient = JSON.parse(localStorage.getItem('patient'));
+            this.patient = await this.patientLazy.getValueAsync();
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
 
         },
@@ -60,7 +69,7 @@
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la commande')
                 }
-            }
+            },
         },
         computed: {
         },

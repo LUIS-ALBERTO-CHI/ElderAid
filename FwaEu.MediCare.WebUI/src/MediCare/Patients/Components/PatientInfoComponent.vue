@@ -1,5 +1,5 @@
 <template>
-    <div class="patient-container">
+    <div v-if="patient" class="patient-container">
         <div class="patient-main-info-container">
             <div class="patient-area">
                 <span style="font-weight: bold;">{{cuttedName(patient)}}</span>
@@ -19,16 +19,21 @@
     export default {
         data() {
             return {
-                patient: {},
             };
         },
+        props: {
+            patient: {
+                type: Object,
+                required: true
+            }
+        },
         async created() {
-            var patient = localStorage.getItem("patient");
-            this.patient = JSON.parse(patient);
         },
         methods: {
             cuttedName(patient) {
-                return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
+                if (patient.fullName == null)
+                    return "";
+                return patient?.fullName.length > 20 ? patient?.fullName.substring(0, 20) + "..." : patient?.fullName;
 
             }
         },

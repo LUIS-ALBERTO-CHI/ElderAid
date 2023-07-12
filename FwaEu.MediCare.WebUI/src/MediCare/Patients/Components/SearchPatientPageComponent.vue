@@ -34,6 +34,10 @@
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
 
+
+
+
+
     export default {
         inject: ["deviceInfo"],
         components: {
@@ -66,14 +70,12 @@
             const args = { cancelNavigation: false, selectedPatient: patient };
             this.$emit("selectedPatient", args);
             if (!args.cancelNavigation) {
-                localStorage.setItem("patient", JSON.stringify(patient));
-                this.$router.push({ name: "Patient" });
+                this.$router.push({ name: "Patient", params: { id: patient.id }});
             }
             },
             removeSearch() {
                 this.searchPatient = "";
                 this.focusSearchBar();
-                console.log(this.buildingOptions)
             },
             focusSearchBar() {
                 this.$nextTick(() => {
