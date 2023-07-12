@@ -1,5 +1,5 @@
 <template>
-    <div v-if="patient != null" class="patient-container">
+    <div v-if="patient" class="patient-container">
         <div class="patient-main-info-container">
             <div class="patient-area">
                 <span style="font-weight: bold;">{{cuttedName(patient)}}</span>
