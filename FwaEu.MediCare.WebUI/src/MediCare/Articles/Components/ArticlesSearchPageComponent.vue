@@ -24,7 +24,8 @@
                     </div>
                 </div>
             </div>
-            <span @click="loadMoreArticlesAsync" class="more-articles-text" style="align-self: center;">Plus d'articles</span>
+            <span @click="loadMoreArticlesAsync" class="more-articles-text" style="align-self: center;">Plus
+                d'articles</span>
         </div>
         <div v-show="showScanner">
             <ScannerComponent @codeScanned="handleCodeScanned" @cancelScan="handleCancelScan"></ScannerComponent>
@@ -62,7 +63,7 @@ export default {
             articles: [],
             searchValue: "",
             showScanner: false,
-            selectedArticleType,
+            selectedArticleType: 3,
             articlesType: [],
             currentPage: 0,
         };
@@ -71,15 +72,18 @@ export default {
         this.patient = await this.patientLazy.getValueAsync();
         this.focusSearchBar();
         this.articles = await ArticlesMasterDataService.getAllAsync();
-        this.articlesType = await ArticlesTypeMasterDataService.getAllAsync();
+        this.articlesType = [
+            { id: 3, text: "Tous" },
+            ...await ArticlesTypeMasterDataService.getAllAsync()
+        ];
     },
     methods: {
         async loadMoreArticlesAsync() {
-                const nextPage = this.currentPage + 1;
-                const pageSize = 30;
-                const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType,  nextPage, pageSize);
-                this.articles = [...this.articles, ...response.articles];
-                this.currentPage = nextPage;
+            const nextPage = this.currentPage + 1;
+            const pageSize = 3;
+            const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType, nextPage, pageSize);
+            this.articles = [...this.articles, ...response.articles];
+            this.currentPage = nextPage;
         },
         removeSearch() {
             this.searchValue = "";
@@ -107,14 +111,29 @@ export default {
     computed: {
         filteredArticles() {
             const searchValue = this.searchValue.toLowerCase().trim();
-            if (!searchValue) {
-                return this.articles;
-            } else if (searchValue.length < 3) {
-                return [];
+            if (this.selectedArticleType === 3) {
+                if (!searchValue) {
+                    return this.articles;
+                } else if (searchValue.length < 3) {
+                    return [];
+                } else {
+                    return this.articles.filter(article =>
+                        article.title.toLowerCase().includes(searchValue)
+                    );
+                }
             } else {
-                return this.articles.filter(articles =>
-                    articles.title.toLowerCase().includes(searchValue)
-                );
+                if (!searchValue) {
+                    return this.articles.filter(article =>
+                        article.articleType === this.selectedArticleType
+                    );
+                } else if (searchValue.length < 3) {
+                    return [];
+                } else {
+                    return this.articles.filter(article =>
+                        article.title.toLowerCase().includes(searchValue) &&
+                        article.articleType === this.selectedArticleType
+                    );
+                }
             }
         },
         showPage() {
