@@ -32,10 +32,10 @@
     </div>
 </template>
 <script>
-import PatientInfoComponent from '../../Patients/Components/PatientInfoComponent.vue';
-import ScannerComponent from '../../Components/ScanCodeComponent.vue';
+import PatientInfoComponent from '@/MediCare/Patients/Components/PatientInfoComponent.vue';
+import ScannerComponent from '@/MediCare/Components/ScanCodeComponent.vue';
 import InputText from 'primevue/inputtext';
-import ArticlesMasterDataService from '../../Referencials/Services/articles-master-data-service';
+import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
 import Dropdown from 'primevue/dropdown';
 import { ref } from "vue";
 

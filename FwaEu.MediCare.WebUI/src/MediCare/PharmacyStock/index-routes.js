@@ -1,7 +1,6 @@
 const CabinetsListPageComponent = () => import('@/MediCare/PharmacyStock/Components/CabinetsListPageComponent.vue');
 const ArticlesInStockPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticlesInStockPageComponent.vue');
 const ArticleOutboundPageComponent = () => import('@/MediCare/PharmacyStock/Components/ArticleOutboundPageComponent.vue');
-const ScanCodeComponent = () => import('@/MediCare/PharmacyStock/Components/ScanCodeComponent.vue');
 
 export default [
 	{
