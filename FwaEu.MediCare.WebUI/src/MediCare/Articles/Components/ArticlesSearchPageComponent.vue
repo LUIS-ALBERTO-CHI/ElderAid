@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <span class="more-articles-text">Plus d'articles</span>
+            <span @click="moreArticles" class="more-articles-text" style="align-self: center;">Plus d'articles</span>
         </div>
         <div v-show="showScanner">
             <ScannerComponent @codeScanned="handleCodeScanned" @cancelScan="handleCancelScan"></ScannerComponent>
@@ -38,6 +38,8 @@ import InputText from 'primevue/inputtext';
 import ArticlesMasterDataService from '../../Referencials/Services/articles-master-data-service';
 import Dropdown from 'primevue/dropdown';
 import { ref } from "vue";
+import PatientService, { usePatient } from '@/MediCare/Patients/Services/patients-service';
+import ArticlesService from '../../Referencials/Services/articles-service';
 
 export default {
     components: {
@@ -46,27 +48,45 @@ export default {
         PatientInfoComponent,
         ScannerComponent
     },
+    setup() {
+        const { patientLazy, getCurrentPatientAsync } = usePatient();
+        return {
+            patientLazy,
+            getCurrentPatientAsync
+        }
+    },
     data() {
-        const selectedArticleType = ref();
+        const selectedArticleType = ref(3);
         const articlesType = ref([
-            { id: '1', text: 'Tous' },
-            { id: '2', text: 'Médicaments' },
-            { id: '3', text: 'Matériel de soins' },
-            { id: '4', text: 'Protections' },
+            { id: 0, text: 'Médicaments' },
+            { id: 1, text: 'Matériel de soins' },
+            { id: 2, text: 'Protections' },
+            { id: 3, text: 'Tous' },
+
         ]);
         return {
+            patient: null,
             articles: [],
             searchValue: "",
             showScanner: false,
             selectedArticleType,
-            articlesType
+            articlesType,
+            currentPage: 0,
         };
     },
     async created() {
+        this.patient = await this.patientLazy.getValueAsync();
         this.focusSearchBar();
         this.articles = await ArticlesMasterDataService.getAllAsync();
     },
     methods: {
+        async moreArticles() {
+                const nextPage = this.currentPage + 1;
+                const pageSize = 30;
+                const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType,  nextPage, pageSize);
+                this.articles = [...this.articles, ...response.articles];
+                this.currentPage = nextPage;
+        },
         removeSearch() {
             this.searchValue = "";
             this.focusSearchBar();
