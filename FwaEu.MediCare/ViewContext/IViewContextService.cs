@@ -63,7 +63,7 @@ namespace FwaEu.MediCare.ViewContext
         public async Task<ViewContextLoadResult> LoadAsync()
         {
             var headerValue = this._httpContextAccessor.HttpContext.Request.Headers["View-Context"].FirstOrDefault();
-            if (!String.IsNullOrEmpty(headerValue))
+            if (!String.IsNullOrEmpty(headerValue) && this._currentUserService.User?.Entity != null)
             {
                 var apiModel = Deserialize(headerValue);
 
