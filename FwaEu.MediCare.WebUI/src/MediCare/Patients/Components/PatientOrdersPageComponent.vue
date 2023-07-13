@@ -16,7 +16,8 @@
                 </AccordionOrderComponent>
             </div>
         </div>
-        <span class="display-more-order-text">Plus de commandes</span>
+        <empty-list-component v-show="patientOrders != null && patientOrders.length < 1" />
+        <span class="display-more-order-text">Charger d'autres commandes</span>
     </div>
 </template>
 <script>
@@ -27,6 +28,7 @@
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import OrderComponent from './OrderComponent.vue';
+    import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
 
 
 
@@ -35,7 +37,8 @@
             PatientInfoComponent,
             Button,
             AccordionOrderComponent,
-            OrderComponent
+            OrderComponent,
+            EmptyListComponent
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -47,7 +50,7 @@
         data() {
             return {
                 patient: null,
-                patientOrders: [],
+                patientOrders: null,
                 isOrderingIndex: null,
                 articles: [],
             };
