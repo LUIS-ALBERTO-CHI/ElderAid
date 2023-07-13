@@ -17,7 +17,7 @@ export default [
 		component: SearchPatientPageComponent,
 		meta: {
 			breadcrumb: {
-				titleKey: 'Recherche de patient',
+				titleKey: 'Patients',
 				parentName: 'default'
 			},
 		}

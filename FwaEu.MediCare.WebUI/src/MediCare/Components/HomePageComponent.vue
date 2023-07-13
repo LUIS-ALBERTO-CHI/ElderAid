@@ -5,7 +5,7 @@
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
             @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name"/>
-        <div class="vignette-list">
+        <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
                     <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
