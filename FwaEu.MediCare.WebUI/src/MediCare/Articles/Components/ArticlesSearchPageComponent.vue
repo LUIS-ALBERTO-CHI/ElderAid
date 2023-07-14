@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { watchDebounced } from '@vueuse/core';
+import { ref, watch } from "vue";
+import { debounce } from "lodash";
 import PatientInfoComponent from "../../Patients/Components/PatientInfoComponent.vue";
 import ScannerComponent from "../../Components/ScanCodeComponent.vue";
 import InputText from "primevue/inputtext";
@@ -55,43 +55,39 @@ export default {
         const loadFromServer = ref(false);
         const searchValue = ref("");
         const filteredArticles = ref([]);
-        const selectedArticleType = ref(null);
+        const selectedArticleType = ref("null");
         const articles = ref([]);
 
         const performSearch = async () => {
-            const searchValue = searchValue.toLowerCase().trim();
-            if (!selectedArticleType.value) {
-                if (!searchValue) {
-                    filteredArticles.value = loadFromServer.value
-                        ? await ArticlesMasterDataService.searchAsync()
-                        : articles.value;
-                } else if (searchValue.length < 3) {
-                    filteredArticles.value = loadFromServer.value ? await ArticlesMasterDataService.searchAsync(searchValue) : articles.value.filter((articles) =>
-                            articles.title.toLowerCase().includes(searchValue)
-                        );
+            const value = searchValue.value.toLowerCase().trim();
+            if (selectedArticleType.value !== "null") {
+                if (!value) {
+                    filteredArticles.value = loadFromServer.value ? await ArticlesMasterDataService.getAllAsync() : this.articles;
+                } else if (value.length >= 3) {
+                    filteredArticles.value = articles.value.filter(
+                        (article) =>
+                            article.title.toLowerCase().includes(value) &&
+                            article.articleType === selectedArticleType.value
+                    );
                 } else {
                     filteredArticles.value = [];
                 }
             } else {
                 if (!value) {
-                    filteredArticles.value = articles.value.filter(
-                        (articles) => articles.articleType === selectedArticleType.value
-                    );
-                } else if (searchValue.length < 3) {
-                    filteredArticles.value = articles.value.filter(
-                        (articles) =>
-                            articles.title.toLowerCase().includes(value) &&
-                            articles.articleType === selectedArticleType.value
+                    filteredArticles.value = [...articles.value];
+                } else if (value.length >= 3) {
+                    filteredArticles.value = articles.value.filter((article) =>
+                        article.title.toLowerCase().includes(value)
                     );
                 } else {
                     filteredArticles.value = [];
                 }
             }
         };
+
         const { patientLazy, getCurrentPatientAsync } = usePatient();
-        const watchSearchValue = watchDebounced(searchValue, performSearch, {
-            debounce: 200,
-        });
+        const debouncedSearch = debounce(performSearch, 1000);
+        const watchSearchValue = watch(searchValue, debouncedSearch);
 
         return {
             patientLazy,
@@ -101,6 +97,7 @@ export default {
             filteredArticles,
             selectedArticleType,
             watchSearchValue,
+            articles,
             performSearch,
         };
     },
@@ -110,6 +107,7 @@ export default {
             showScanner: false,
             articlesType: [],
             currentPage: 0,
+            articles: [],
         };
     },
     async created() {
@@ -117,9 +115,10 @@ export default {
         this.focusSearchBar();
         this.articles = await ArticlesMasterDataService.getAllAsync();
         this.articlesType = [
-            { id: null, text: "Tous" },
+            { id: "null", text: "Tous" },
             ...(await ArticlesTypeMasterDataService.getAllAsync()),
         ];
+        this.loadInitialArticles();
     },
     methods: {
         async loadMoreArticlesAsync() {
@@ -159,6 +158,11 @@ export default {
         },
         goToArticlePage() {
             this.$router.push({ name: "OrderArticle" });
+        },
+        loadInitialArticles() {
+            if (this.selectedArticleType === "null") {
+                this.filteredArticles = [...this.articles];
+            }
         },
     },
     computed: {
