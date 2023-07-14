@@ -24,7 +24,7 @@
                         </div>
                     </AccordionOrderComponent>
                 </div>
-                <span class="more-command-text">Plus de commande</span>
+                <span class="load-more-text">Plus de commande</span>
             </div>
         </div>
         <div v-else class="new-order-container">

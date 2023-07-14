@@ -21,7 +21,7 @@ namespace FwaEu.MediCare.Articles.WebApi
                 var models = await articleService.GetAllBySearchAsync(new GetArticlesBySearchPost
                 {
                     SearchExpression = modelApi.SearchExpression,
-                    ArticleFamily = (int)modelApi.ArticleFamily,
+                    ArticleFamily = (int?)modelApi.ArticleFamily,
                     Page = modelApi.Page,
                     PageSize = modelApi.PageSize,
                 });
