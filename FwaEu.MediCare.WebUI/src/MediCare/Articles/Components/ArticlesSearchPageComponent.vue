@@ -17,8 +17,8 @@
                     <div class="article-item" @click="goToArticlePage">
                         <span style="width: 80%;">{{ article.title }}</span>
                         <div class="icons-container">
-                            <i v-show="isProductFavorite(article)" class="fa-solid fa-heart favorite-icon"></i>
-                            <i v-show="isProductInHistory(article)" class="fa-solid fa-clock-rotate-left history-icon"></i>
+                            <i v-show="article.isFavorite" class="fa-solid fa-heart favorite-icon"></i>
+                            <i v-show="article.isHistory" class="fa-solid fa-clock-rotate-left history-icon"></i>
                         </div>
                     </div>
                 </div>
@@ -99,8 +99,6 @@ export default {
             patient: null,
             showScanner: false,
             articlesType: [],
-            isFavorite: "",
-            isInHistory: ""
         };
     },
     async created() {
@@ -146,12 +144,6 @@ export default {
         },
         loadInitialArticles() {
             this.performSearch();
-        },
-        isProductFavorite(article) {
-            return article.isFavorite;
-        },
-        isProductInHistory(article) {
-            return article.isInHistory;
         },
     },
     computed: {
