@@ -41,7 +41,7 @@ import PatientService, { usePatient } from "@/MediCare/Patients/Services/patient
 import ArticlesService from "@/MediCare/Referencials/Services/articles-service";
 import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
 import { useRoute } from 'vue-router';
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { watchDebounced } from '@vueuse/core'
 
 export default {
