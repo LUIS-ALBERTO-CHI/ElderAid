@@ -79,7 +79,7 @@ export default {
 
         const { patientLazy, getCurrentPatientAsync } = usePatient();
         const watchSearchValue = watchDebounced([searchValue, selectedArticleType], performSearch, { debounce: 500 });
-        const watchResetPage = watchDebounced([searchValue, selectedArticleType], () => currentPage.value == 0);
+        const watchResetPage = watch([searchValue, selectedArticleType], () => currentPage.value == 0);
 
         return {
             patientLazy,
