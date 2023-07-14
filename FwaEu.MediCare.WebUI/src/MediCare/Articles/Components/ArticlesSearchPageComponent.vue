@@ -41,8 +41,8 @@ import PatientService, { usePatient } from "@/MediCare/Patients/Services/patient
 import ArticlesService from "@/MediCare/Referencials/Services/articles-service";
 import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
 import { useRoute } from 'vue-router';
-import { ref, watch } from "vue";
-import { debounce } from "lodash";
+import { ref } from "vue";
+import { watchDebounced } from '@vueuse/core'
 
 export default {
     components: {
@@ -78,9 +78,8 @@ export default {
         };
 
         const { patientLazy, getCurrentPatientAsync } = usePatient();
-        const debouncedSearch = debounce(performSearch, 500);
-        const watchSearchValue = watch([searchValue, selectedArticleType], debouncedSearch);
-        const watchResetPage = watch([searchValue, selectedArticleType], () => currentPage.value == 0);
+        const watchSearchValue = watchDebounced([searchValue, selectedArticleType], performSearch, { debounce: 500 });
+        const watchResetPage = watchDebounced([searchValue, selectedArticleType], () => currentPage.value == 0);
 
         return {
             patientLazy,
