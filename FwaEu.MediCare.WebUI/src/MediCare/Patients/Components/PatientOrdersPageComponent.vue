@@ -1,14 +1,18 @@
 <template>
     <div class="patient-orders-page-container">
-        <patient-info-component :patient="patient"/>
+        <patient-info-component v-if="patient" :patient="patient"/>
         <div style="display: flex; flex-direction: column;">
             <div v-if="patient" v-for="(order, index) in patientOrders" :key="index">
                 <AccordionOrderComponent :order="order">
-                    <div class="button-order-item-container">
+                    <div v-if="isOrderingIndex != index" class="button-order-item-container">
                         <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
                                 label="Annuler la commande" />
-                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="orderAgainAsync(order)" />
+                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="showOrderComponent(index)" />
                     </div>
+                    <div v-else>
+                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders"/>
+                    </div>
+
                 </AccordionOrderComponent>
             </div>
         </div>
@@ -21,9 +25,8 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-    import OrdersService from '@/MediCare/Orders/Services/orders-service';
-    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-    import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import OrderComponent from './OrderComponent.vue';
 
 
 
@@ -31,7 +34,8 @@
         components: {
             PatientInfoComponent,
             Button,
-            AccordionOrderComponent
+            AccordionOrderComponent,
+            OrderComponent
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -44,32 +48,25 @@
             return {
                 patient: null,
                 patientOrders: [],
+                isOrderingIndex: null,
+                articles: [],
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-
+            this.articles = await ArticlesMasterDataService.getAllAsync()
         },
         methods: {
             isOrderDelivered(patientOrder) {
                 return patientOrder.isDelivered;
             },
-            async orderAgainAsync(order) {
-                const modelOrder = [{
-                    patientId: order.patientId,
-                    articleId: order.articleId,
-                    quantity: order.quantity
-                }];
-
-                try {
-                    await OrdersService.saveAsync(modelOrder)
-                    await MasterDataManagerService.clearCacheAsync();
-                    NotificationService.showConfirmation('Vous avez commander à nouveau la commande')
-                } catch (error) {
-                    NotificationService.showError('Une erreur est survenue lors de la commande')
-                }
+            getArticleInfo(articleId) {
+                return this.articles.find(x => x.id == articleId)
             },
+            showOrderComponent(index) {
+                this.isOrderingIndex = index;
+            }
         },
         computed: {
         },

@@ -32,7 +32,8 @@
 import InputText from 'primevue/inputtext';
 import articles from './articles.json';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
-import ScannerComponent from '../../Components/ScanCodeComponent.vue';
+import ScannerComponent from '@/MediCare/Components/ScanCodeComponent.vue';
+
 export default {
     components: {
         InputText,

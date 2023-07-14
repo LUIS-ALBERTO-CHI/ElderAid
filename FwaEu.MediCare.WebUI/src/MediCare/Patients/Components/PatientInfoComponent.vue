@@ -7,7 +7,7 @@
             </div>
             <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomName}}</span>
         </div>
-        <span>Mise à jour: 29/10/22 à 9:12</span>
+        <span>Mise à jour : 29/10/22 à 9:12</span>
     </div>
 
 </template>

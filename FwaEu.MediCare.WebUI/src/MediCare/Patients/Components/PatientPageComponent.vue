@@ -1,5 +1,5 @@
 <template>
-    <div class="patient-page-container">
+    <div v-if="contentLoaded" class="patient-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToMedicationsPage" class="patient-info-item">
             <span>Médicaments</span>
@@ -54,9 +54,10 @@
         data() {
             return {
                 patient: null,
-                patientTreatments: [],
-                patientsOrders: [],
-                periodicOrders: []
+                patientTreatments: null,
+                patientsOrders: null,
+                periodicOrders: null,
+                contentLoaded: false
             };
         },
         async created() {
@@ -64,6 +65,10 @@
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+
+            if (this.patientTreatments != null && this.patientsOrders != null && this.periodicOrders != null) {
+                this.contentLoaded = true;
+            }
         },
         methods: {
             goToTreatmentPage() {

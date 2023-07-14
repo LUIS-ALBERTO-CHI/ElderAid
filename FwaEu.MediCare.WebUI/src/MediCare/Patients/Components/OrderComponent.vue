@@ -13,7 +13,7 @@
         </div>
         <div v-show="moreQuantityDisplayed">
             <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal"
-                         style="width: 75%;" decrementButtonClassName="p-button-secondary"
+                         style="width: 100%;" decrementButtonClassName="p-button-secondary"
                          incrementButtonClassName="p-button-secondary" incrementButtonIcon="fa fa-solid fa-plus"
                          decrementButtonIcon="fa fa-solid fa-minus" />
 
@@ -29,9 +29,11 @@
         </div>
         <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
-            <Button style="height: 40px !important; width: 50%; font-size: 14px;" label="4 autres formats"
+            <Button style="height: 40px !important; width: 50%; font-size: 14px;"
+                    :label="article.alternativePackagingCount + ' ' + alternativePackagingLabel"
                     icon="fa fa-solid fa-angle-right" iconPos="right" />
-            <Button style="height: 40px !important; width: 50%; font-size: 14px;" label="8 substitutions"
+            <Button style="height: 40px !important; width: 50%; font-size: 14px;"
+                    :label="article.substitutionsCount + ' ' + substitutionLabel"
                     icon="fa fa-solid fa-angle-right" iconPos="right" />
         </div>
     </div>
@@ -65,7 +67,6 @@
         },
         data() {
             return {
-                patient: {},
                 moreQuantityDisplayed: false,
                 quantityOptions: [1, 2, 3],
                 selectedQuantity: 1,
@@ -74,7 +75,6 @@
             };
         },
         async created() {
-            this.patient = JSON.parse(localStorage.getItem('patient'));
         },
         methods: {
             displayMoreQuantity() {
@@ -85,7 +85,7 @@
             },
             async submitOrder() {
                 const modelOrder = [{
-                    patientId: this.patient.id,
+                    patientId: this.patientOrders[0].patientId,
                     articleId: this.article.id,
                     quantity: this.selectedQuantity
                 }];
@@ -100,10 +100,11 @@
                 this.showConfirmationDisplayed = false;
             },
             getQuantitySentance() {
+                const quantityType = this.article.countInBox > 1 ? 'boite' : this.article.invoicingUnit;
                 if (this.selectedQuantity <= 1)
-                    return `Commander ${this.selectedQuantity} comprimé`
+                    return `Commander ${this.selectedQuantity} ${quantityType}`
                 else
-                    return `Commander ${this.selectedQuantity} comprimés`
+                    return `Commander ${this.selectedQuantity} ${quantityType}s`
             }
         },
         watch: {
@@ -115,6 +116,12 @@
         computed: {
             isOrderAlreadyInProgress() {
                 return this.patientOrders.some(order => order.articleId === this.article.id && order.state === 'Pending');
+            },
+            substitutionLabel() {
+                return this.article.substitutionsCount > 1 ? ' substitutions' : ' substitution';
+            },
+            alternativePackagingLabel() {
+                return this.article.alternativePackagingCount > 1 ? ' autres formats' : ' autre format';
             }
         },
 
