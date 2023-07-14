@@ -16,7 +16,7 @@
                 </AccordionOrderComponent>
             </div>
         </div>
-        <span class="display-more-order-text">Plus de commandes</span>
+        <span class="load-more-text">Plus de commandes</span>
     </div>
 </template>
 <script>

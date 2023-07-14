@@ -7,66 +7,119 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                    placeholder="Rechercher un articles">
-                </InputText>
+                    placeholder="Rechercher un articles" />
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
-                placeholder="Select an article type" />
+                placeholder="Tous" />
             <div class="article-list">
-                <div v-for="articles in filteredArticles" :key="articles.id">
+                <div v-for="article in filteredArticles" :key="article.id">
                     <div class="article-item" @click="goToArticlePage">
-                        <span style="width: 80%;">{{ articles.title }}</span>
+                        <span style="width: 80%;">{{ article.title }}</span>
                         <div class="icons-container">
-                            <i class="fa-solid fa-heart favorite-icon"></i>
-                            <i class="fa-solid fa-clock-rotate-left history-icon"></i>
+                            <i v-show="article.isFavorite" class="fa-solid fa-heart favorite-icon"></i>
+                            <i v-show="article.isHistory" class="fa-solid fa-clock-rotate-left history-icon"></i>
                         </div>
                     </div>
                 </div>
+                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus
+                    d'articles</span>
             </div>
-            <span class="more-articles-text">Plus d'articles</span>
         </div>
-        <div v-show="showScanner">
+        <div v-if="showScanner">
             <ScannerComponent @codeScanned="handleCodeScanned" @cancelScan="handleCancelScan"></ScannerComponent>
         </div>
     </div>
 </template>
 <script>
-import PatientInfoComponent from '@/MediCare/Patients/Components/PatientInfoComponent.vue';
-import ScannerComponent from '@/MediCare/Components/ScanCodeComponent.vue';
-import InputText from 'primevue/inputtext';
-import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
-import Dropdown from 'primevue/dropdown';
-import { ref } from "vue";
+import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
+import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
+import InputText from "primevue/inputtext";
+import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+import Dropdown from "primevue/dropdown";
+import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+import ArticlesService from "@/MediCare/Referencials/Services/articles-service";
+import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
+import { useRoute } from 'vue-router';
+import { ref, watch } from "vue";
+import { watchDebounced } from '@vueuse/core'
 
 export default {
     components: {
         InputText,
         Dropdown,
         PatientInfoComponent,
-        ScannerComponent
+        ScannerComponent,
+    },
+
+    setup() {
+        const route = useRoute();
+        const searchValue = ref(route.query.searchMode ?? "");
+        const filteredArticles = ref([]);
+        const selectedArticleType = ref(null);
+        const articles = ref([]);
+        const currentPage = ref(0);
+        const performSearch = async () => {
+            const value = searchValue.value.toLowerCase().trim();
+            if (!value) {
+                filteredArticles.value = articles.value;
+            } else if (value.length >= 3) {
+                filteredArticles.value = articles.value.filter((article) =>
+                    article.title.toLowerCase().includes(value)
+                );
+            } else {
+                filteredArticles.value = [];
+            }
+            if (selectedArticleType.value) {
+                filteredArticles.value = filteredArticles.value.filter(
+                    (article) => article.articleType == selectedArticleType.value
+                );
+            }
+        };
+
+        const { patientLazy, getCurrentPatientAsync } = usePatient();
+        const watchSearchValue = watchDebounced([searchValue, selectedArticleType], performSearch, { debounce: 500 });
+        const watchResetPage = watch([searchValue, selectedArticleType], () => currentPage.value == 0);
+
+        return {
+            patientLazy,
+            getCurrentPatientAsync,
+            searchValue,
+            filteredArticles,
+            selectedArticleType,
+            watchSearchValue,
+            articles,
+            performSearch,
+            currentPage,
+            watchResetPage,
+        };
     },
     data() {
-        const selectedArticleType = ref();
-        const articlesType = ref([
-            { id: '1', text: 'Tous' },
-            { id: '2', text: 'Médicaments' },
-            { id: '3', text: 'Matériel de soins' },
-            { id: '4', text: 'Protections' },
-        ]);
         return {
-            articles: [],
-            searchValue: "",
+            patient: null,
             showScanner: false,
-            selectedArticleType,
-            articlesType
+            articlesType: [],
         };
     },
     async created() {
+        this.patient = await this.patientLazy.getValueAsync();
         this.focusSearchBar();
         this.articles = await ArticlesMasterDataService.getAllAsync();
+        this.articlesType = [ { id: null, text: "Tous" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
+        this.loadInitialArticles();
     },
     methods: {
+        async loadMoreArticlesAsync() {
+            const nextPage = this.currentPage + 1;
+            const pageSize = 30;
+            const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType, nextPage, pageSize);
+            if (Array.isArray(response.articles)) {
+                this.articles = [...this.articles, ...response.articles];
+            }
+            this.currentPage = nextPage;
+            this.loadFromServer = true;
+            this.performSearch();
+        },
         removeSearch() {
             this.searchValue = "";
             this.focusSearchBar();
@@ -87,26 +140,18 @@ export default {
             this.showScanner = false;
         },
         goToArticlePage() {
-            this.$router.push({ name: 'OrderArticle' });
+            this.$router.push({ name: "OrderArticle" });
+        },
+        loadInitialArticles() {
+            this.performSearch();
         },
     },
     computed: {
-        filteredArticles() {
-            const searchValue = this.searchValue.toLowerCase().trim();
-            if (!searchValue) {
-                return this.articles;
-            } else if (searchValue.length < 3) {
-                return [];
-            } else {
-                return this.articles.filter(articles =>
-                    articles.title.toLowerCase().includes(searchValue)
-                );
-            }
-        },
         showPage() {
-            return !this.showScanner
-        }
-    }
-}
+            return !this.showScanner;
+        },
+    },
+};
 </script>
+
 <style type="text/css" scoped src="./Content//articles-search.css"></style>

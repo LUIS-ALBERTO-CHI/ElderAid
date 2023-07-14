@@ -2,7 +2,7 @@ const ArticlesSearchPageComponent = () => import('@/MediCare/Articles/Components
 
 export default [
     {
-        path: '/SearchArticle',
+        path: '/Patient/:id/SearchArticle/',
         name: 'SearchArticle',
         component: ArticlesSearchPageComponent,
         meta: {

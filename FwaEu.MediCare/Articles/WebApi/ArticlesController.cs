@@ -21,7 +21,7 @@ namespace FwaEu.MediCare.Articles.WebApi
                 var models = await articleService.GetAllBySearchAsync(new GetArticlesBySearchPost
                 {
                     SearchExpression = modelApi.SearchExpression,
-                    ArticleFamily = modelApi.ArticleFamily,
+                    ArticleFamily = (int?)modelApi.ArticleFamily,
                     Page = modelApi.Page,
                     PageSize = modelApi.PageSize,
                 });
@@ -41,7 +41,7 @@ namespace FwaEu.MediCare.Articles.WebApi
                     SubstitutionsCount = x.SubstitutionsCount,
                     ThumbnailURL= x.ThumbnailURL,
                     Title= x.Title,
-                    ArticleType = x.ArticleType,
+                    ArticleType = (ArticleType?)x.ArticleType,
                     Unit = x.Unit,
                     IsGalenicDosageForm = x.IsGalenicDosageForm,
                     PharmaCode= x.PharmaCode
