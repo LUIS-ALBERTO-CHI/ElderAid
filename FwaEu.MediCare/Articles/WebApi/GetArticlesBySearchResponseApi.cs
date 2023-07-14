@@ -5,7 +5,7 @@ namespace FwaEu.MediCare.Articles.WebApi
     public class GetArticlesBySearchResponseApi
     {
         public int Id { get; set; }
-        public int ArticleType { get; set; }
+        public ArticleType? ArticleType { get; set; }
         public string Title { get; set; }
         public string GroupName { get; set; }
         public double Price { get; set; }

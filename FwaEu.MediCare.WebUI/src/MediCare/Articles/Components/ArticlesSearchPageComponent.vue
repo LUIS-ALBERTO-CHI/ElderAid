@@ -7,16 +7,15 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                    placeholder="Rechercher un articles">
-                </InputText>
+                    placeholder="Rechercher un articles" />
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
                 placeholder="Select an article type" />
             <div class="article-list">
-                <div v-for="articles in filteredArticles" :key="articles.id">
+                <div v-for="article in filteredArticles" :key="article.id">
                     <div class="article-item" @click="goToArticlePage">
-                        <span style="width: 80%;">{{ articles.title }}</span>
+                        <span style="width: 80%;">{{ article.title }}</span>
                         <div class="icons-container">
                             <i class="fa-solid fa-heart favorite-icon"></i>
                             <i class="fa-solid fa-clock-rotate-left history-icon"></i>
@@ -32,38 +31,83 @@
         </div>
     </div>
 </template>
+
 <script>
-import PatientInfoComponent from '../../Patients/Components/PatientInfoComponent.vue';
-import ScannerComponent from '../../Components/ScanCodeComponent.vue';
-import InputText from 'primevue/inputtext';
-import ArticlesMasterDataService from '../../Referencials/Services/articles-master-data-service';
-import Dropdown from 'primevue/dropdown';
 import { ref } from "vue";
-import PatientService, { usePatient } from '@/MediCare/Patients/Services/patients-service';
-import ArticlesService from '../../Referencials/Services/articles-service';
-import ArticlesTypeMasterDataService, { articlesTypeDataSourceOptions } from '../../Referencials/Services/articles-type-master-data-service';
+import { watchDebounced } from '@vueuse/core';
+import PatientInfoComponent from "../../Patients/Components/PatientInfoComponent.vue";
+import ScannerComponent from "../../Components/ScanCodeComponent.vue";
+import InputText from "primevue/inputtext";
+import ArticlesMasterDataService from "../../Referencials/Services/articles-master-data-service";
+import Dropdown from "primevue/dropdown";
+import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+import ArticlesService from "../../Referencials/Services/articles-service";
+import ArticlesTypeMasterDataService, { articlesTypeDataSourceOptions } from "../../Referencials/Services/articles-type-master-data-service";
 
 export default {
     components: {
         InputText,
         Dropdown,
         PatientInfoComponent,
-        ScannerComponent
+        ScannerComponent,
     },
     setup() {
+        const loadFromServer = ref(false);
+        const searchValue = ref("");
+        const filteredArticles = ref([]);
+        const selectedArticleType = ref(null);
+        const articles = ref([]);
+
+        const performSearch = async () => {
+            const searchValue = searchValue.toLowerCase().trim();
+            if (!selectedArticleType.value) {
+                if (!searchValue) {
+                    filteredArticles.value = loadFromServer.value
+                        ? await ArticlesMasterDataService.searchAsync()
+                        : articles.value;
+                } else if (searchValue.length < 3) {
+                    filteredArticles.value = loadFromServer.value ? await ArticlesMasterDataService.searchAsync(searchValue) : articles.value.filter((articles) =>
+                            articles.title.toLowerCase().includes(searchValue)
+                        );
+                } else {
+                    filteredArticles.value = [];
+                }
+            } else {
+                if (!value) {
+                    filteredArticles.value = articles.value.filter(
+                        (articles) => articles.articleType === selectedArticleType.value
+                    );
+                } else if (searchValue.length < 3) {
+                    filteredArticles.value = articles.value.filter(
+                        (articles) =>
+                            articles.title.toLowerCase().includes(value) &&
+                            articles.articleType === selectedArticleType.value
+                    );
+                } else {
+                    filteredArticles.value = [];
+                }
+            }
+        };
         const { patientLazy, getCurrentPatientAsync } = usePatient();
+        const watchSearchValue = watchDebounced(searchValue, performSearch, {
+            debounce: 200,
+        });
+
         return {
             patientLazy,
-            getCurrentPatientAsync
-        }
+            getCurrentPatientAsync,
+            loadFromServer,
+            searchValue,
+            filteredArticles,
+            selectedArticleType,
+            watchSearchValue,
+            performSearch,
+        };
     },
     data() {
         return {
             patient: null,
-            articles: [],
-            searchValue: "",
             showScanner: false,
-            selectedArticleType: 3,
             articlesType: [],
             currentPage: 0,
         };
@@ -73,17 +117,26 @@ export default {
         this.focusSearchBar();
         this.articles = await ArticlesMasterDataService.getAllAsync();
         this.articlesType = [
-            { id: 3, text: "Tous" },
-            ...await ArticlesTypeMasterDataService.getAllAsync()
+            { id: null, text: "Tous" },
+            ...(await ArticlesTypeMasterDataService.getAllAsync()),
         ];
     },
     methods: {
         async loadMoreArticlesAsync() {
             const nextPage = this.currentPage + 1;
-            const pageSize = 3;
-            const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType, nextPage, pageSize);
-            this.articles = [...this.articles, ...response.articles];
+            const pageSize = 30;
+            const response = await ArticlesService.getAllBySearchAsync(
+                this.searchValue,
+                this.selectedArticleType,
+                nextPage,
+                pageSize
+            );
+            if (Array.isArray(response.articles)) {
+                this.articles = [...this.articles, ...response.articles];
+            }
             this.currentPage = nextPage;
+            this.loadFromServer = true;
+            this.performSearch();
         },
         removeSearch() {
             this.searchValue = "";
@@ -105,41 +158,15 @@ export default {
             this.showScanner = false;
         },
         goToArticlePage() {
-            this.$router.push({ name: 'OrderArticle' });
+            this.$router.push({ name: "OrderArticle" });
         },
     },
     computed: {
-        filteredArticles() {
-            const searchValue = this.searchValue.toLowerCase().trim();
-            if (this.selectedArticleType === 3) {
-                if (!searchValue) {
-                    return this.articles;
-                } else if (searchValue.length < 3) {
-                    return [];
-                } else {
-                    return this.articles.filter(article =>
-                        article.title.toLowerCase().includes(searchValue)
-                    );
-                }
-            } else {
-                if (!searchValue) {
-                    return this.articles.filter(article =>
-                        article.articleType === this.selectedArticleType
-                    );
-                } else if (searchValue.length < 3) {
-                    return [];
-                } else {
-                    return this.articles.filter(article =>
-                        article.title.toLowerCase().includes(searchValue) &&
-                        article.articleType === this.selectedArticleType
-                    );
-                }
-            }
-        },
         showPage() {
-            return !this.showScanner
-        }
-    }
-}
+            return !this.showScanner;
+        },
+    },
+};
 </script>
+
 <style type="text/css" scoped src="./Content//articles-search.css"></style>
