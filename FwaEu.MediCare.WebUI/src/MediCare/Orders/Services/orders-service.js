@@ -3,8 +3,9 @@ import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchroniza
 import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
 
 export default {
-	async getAllAsync() {
-		const result = await HttpService.get('Orders');
+	async getAllAsync(data) {
+		const result = await HttpService.post('/Orders/GetAll', data
+		);
 		return result.data;
 	},
 
