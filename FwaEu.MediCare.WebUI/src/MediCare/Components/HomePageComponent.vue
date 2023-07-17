@@ -128,7 +128,7 @@ export default {
 
             //NOTE: Loading data only when the currentdatabase invariantId is avlaible
             if (this.currentDatabase != null) {
-                const patients = PatientsMasterDataService.getAllAsync();
+                const patients = await PatientsMasterDataService.getAllAsync();
                 const articles = ArticlesMasterDataService.getAllAsync();
                 const orders = OrdersMasterDataService.getAllAsync();
                 const buildings = BuildingsMasterDataService.getAllAsync();
