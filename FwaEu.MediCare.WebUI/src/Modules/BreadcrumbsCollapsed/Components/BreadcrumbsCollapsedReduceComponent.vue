@@ -2,11 +2,10 @@
     <div class="breadcrimbs">
         <div class="crumbContainerCollapsed crumbContainerHidden">
             <div v-for="(link, index) in props.crumbs" :key="getNodeKey(link)" :href="link.to"
-               class="crumb" @click="nodeClicked(link)" :ref="setCrumbRef">{{link.text}}</div>
+               class="crumb" @click="nodeClicked(link)" :ref="(el) => crumbRefFn(el, index)">{{link.text}}</div>
         </div>
         <div class="crumbContainerCollapsed">
-            <div class="dropdown"
-                 :style="{ display: hiddenCount > 0 ? 'flex' : 'none' }">
+            <div class="dropdown" :style="{ display: hiddenCount > 0 ? 'flex' : 'none' }">
                 <button @click="toggleDropDown" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
                 <div class="dropdownContent" v-show="isDropDownDisplayed">
                     <router-link v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" :to="link.to"
@@ -18,48 +17,20 @@
                 <span v-else class="crumb-no-link">{{link.text}}</span>
                 <span v-if="crumbsVisible.length -1 != index" :key="index" class="crumb-separator">&nbsp;></span>
             </span>
-            <!--<router-link v-for="(link, index) in crumbsVisible" :key="getNodeKey(link)" :to="link.to"
-                          @click="nodeClicked(link)">{{link.text}}</router-link>-->
         </div>
     </div>
 </template>
 <script setup>
-    import { ref, defineProps, onMounted, computed, watch } from "vue";
-    import { onIntersect } from "./onIntersect";
+    import { ref, defineProps, computed } from "vue";
+    import { useIntersectionList } from "../Services/useIntersectionList";
     import BreadcrumbService from '../Services/breadcrumbs-service'
 
-    const hiddenCount = ref(0);
+    const props = defineProps({ crumbs: { type: Array, required: true } });
+    const rootRef = ref();
 
-    const props = defineProps({
-        crumbs: { type: Array, required: true },
-    });
-
-    let crumbsRefs = [];
-
-    const setCrumbRef = (el) => {
-        if (el) {
-            crumbsRefs.push(el);
-        }
-    };
-
-    const isDropDownDisplayed = ref(false);
-
-    onMounted(() => {
-        crumbsRefs.forEach((el, index) => {
-            onIntersect(
-                el,
-                () => {
-                    if (index < hiddenCount.value) {
-                        hiddenCount.value = index;
-                    }
-                },
-                () => {
-                    if (index + 1 > hiddenCount.value) {
-                        hiddenCount.value = index + 1;
-                    }
-                }
-            );
-        });
+    const { hiddenCount, crumbRefFn } = useIntersectionList({
+        list: props.crumbs,
+        root: rootRef,
     });
 
     const crumbsCollapsed = computed(() =>
@@ -69,9 +40,12 @@
         props.crumbs.slice(hiddenCount.value, props.crumbs.length)
     );
 
+    const isDropDownDisplayed = ref(false);
+
     const toggleDropDown = () => {
-    isDropDownDisplayed.value = !isDropDownDisplayed.value;
-}
+        console.log(isDropDownDisplayed.value)
+        isDropDownDisplayed.value = !isDropDownDisplayed.value;
+    }
 
     const getNodeKey = function (node) {
         return JSON.stringify(node.to);

@@ -24,8 +24,6 @@
         data() {
             return {
                 parentNode: { text: '', to: '/', parentNode: '' },
-                crumbsCollapsed: [],
-                crumbsVisible: [],
                 resolvedNodes: [],
                 onRouteProcessedListener: BreadcrumbService.onRouteProcessed(this.onRouteProcessed),
                 crumbs: []
@@ -34,11 +32,6 @@
         watch: {
             async $route(to) {
                 await this.resolveBreadcrumb(to);
-            },
-            'breadcrumbs'() {
-                const crumbs = this.breadcrumbs;
-                this.crumbsCollapsed = crumbs.slice(0, crumbs.length - 2);
-                this.crumbsVisible = crumbs.slice(crumbs.length - 2, crumbs.length);
             }
         },
         async mounted() {
