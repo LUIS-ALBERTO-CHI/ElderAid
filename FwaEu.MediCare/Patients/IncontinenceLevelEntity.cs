@@ -2,7 +2,6 @@
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
-using FwaEu.MediCare.Organizations;
 using System;
 using System.Linq;
 
@@ -20,12 +19,10 @@ namespace FwaEu.MediCare.Patients
     public class IncontinenceLevelEntity : ICreationAndUpdateTracked
     {
         public int Id { get; set; }
-        public int PatientId { get; set; }
-        public OrganizationEntity Organization { get; set; }
 
         public IncontinenceLevel Level { get; set; }
         public int Year { get; set; }
-        public double Sum { get; set; }
+        public double Amount { get; set; }
 
         public UserEntity CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
@@ -42,11 +39,9 @@ namespace FwaEu.MediCare.Patients
             Not.LazyLoad();
 
             Id(entity => entity.Id).GeneratedBy.Identity();
-            References(entity => entity.Organization).Not.Nullable();
-            Map(entity => entity.PatientId);
             Map(entity => entity.Level);
             Map(entity => entity.Year);
-            Map(entity => entity.Sum);
+            Map(entity => entity.Amount);
 
             this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
         }
