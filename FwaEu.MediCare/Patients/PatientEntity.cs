@@ -7,15 +7,6 @@ using System.Linq;
 
 namespace FwaEu.MediCare.Patients
 {
-    public enum IncontinenceLevel
-    {
-        Light = 0,
-        Medium = 1,
-        Severe = 2,
-        Total = 3,
-        Double = 4
-    }
-
     public class PatientEntity : IUpdatedOnTracked
     {
         // NOTE: PAT KID PAtient
