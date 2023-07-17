@@ -1,32 +1,33 @@
 <template>
     <div class="treatment-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
-        <Accordion v-if="patientTreatments.some(treatment => 'article' in treatment)">
-            <template v-for="(treatment, index) in patientTreatments" :key="index">
-                <AccordionTab>
-                    <template #header>
-                        <div class="accordion-header">
-                            <div class="accordion-top-area">
-                                <span class="header-title">
-                                    {{ treatment.article.title }}
-                                </span>
-                                <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
+            <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)">
+                <template v-for="(treatment, index) in patientTreatments" :key="index">
+                    <AccordionTab>
+                        <template #header>
+                            <div class="accordion-header">
+                                <div class="accordion-top-area">
+                                    <span class="header-title">
+                                        {{ treatment.article.title }}
+                                    </span>
+                                    <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
+                                </div>
+                                <span class="header-subtitle">{{treatment.article.groupName}}</span>
+                                <span class="header-subtitle">{{treatment.dosageDescription}}</span>
+                                <div>
+                                    <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
+                                </div>
                             </div>
-                            <span class="header-subtitle">{{treatment.article.groupName}}</span>
-                            <span class="header-subtitle">{{treatment.dosageDescription}}</span>
-                            <div>
-                                <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
-                            </div>
-                        </div>
-                    </template>
-                    <OrderComponent :article="treatment.article" :patientOrders="patientOrders"/>
-                </AccordionTab>
-            </template>
-        </Accordion>
+                        </template>
+                        <OrderComponent :article="treatment.article" :patientOrders="patientOrders"/>
+                    </AccordionTab>
+                </template>
+            </Accordion>
+        <EmptyListComponent v-show="patientTreatments != null && patientTreatments.length < 1" />
     </div>
 
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
     import Button from 'primevue/button';
@@ -39,6 +40,7 @@
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     
 
 
@@ -52,7 +54,8 @@
             InputNumber,
             PatientInfoComponent,
             OrderComponent,
-            DateLiteral
+            DateLiteral,
+            EmptyListComponent
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -64,7 +67,7 @@
         data() {
             return {
                 patient: null,
-                patientTreatments: [],
+                patientTreatments: null,
                 patientOrders: []
             };
         },

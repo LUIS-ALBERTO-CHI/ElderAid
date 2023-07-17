@@ -11,7 +11,7 @@
     </div>
 
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
 
