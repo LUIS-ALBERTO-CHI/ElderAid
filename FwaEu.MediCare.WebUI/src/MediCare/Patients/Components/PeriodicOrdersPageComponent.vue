@@ -1,7 +1,7 @@
 <template>
     <div class="periodic-orders-page-container">
-        <patient-info-component :patient="patient" />
-        <div v-if="periodicOrders.some(periodicOrders => 'article' in periodicOrders)"
+        <patient-info-component v-if="patient" :patient="patient" />
+        <div v-if="periodicOrders && periodicOrders.some(periodicOrders => 'article' in periodicOrders)"
              v-for="(periodicOrder, index) in periodicOrders" :key="index">
             <div class="periodic-order-item">
                 <span class="periodic-order-item-title">{{periodicOrder.article.title}}</span>
@@ -12,10 +12,11 @@
                              incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
             </div>
         </div>
-        <div class="periodic-orders-validation-container">
+        <div v-if="periodicOrders && periodicOrders.some(periodicOrders => 'article' in periodicOrders)" class="periodic-orders-validation-container">
             <span>Dernière validation par Alexandre DUPONT le 16/06/23 à 14:23</span>
             <Button @click="onSubmit" label="Valider" style="height: 40px !important;"></Button>
         </div>
+        <empty-list-component v-show="periodicOrders != null && periodicOrders.length < 1" />
     </div>
 </template>
 <script>
@@ -29,13 +30,16 @@
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
+
 
 
     export default {
         components: {
             PatientInfoComponent,
             Button,
-            InputNumber
+            InputNumber,
+            EmptyListComponent
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -46,7 +50,7 @@
         },
         data() {
             return {
-                periodicOrders: [],
+                periodicOrders: null,
                 patient: null,
                 organization: {},
             };

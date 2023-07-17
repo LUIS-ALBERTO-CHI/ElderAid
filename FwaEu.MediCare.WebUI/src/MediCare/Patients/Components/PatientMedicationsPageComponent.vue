@@ -16,7 +16,7 @@
         <Button style="margin-top: 20px;" label="Commander un autre produit" />
     </div>
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
     import Button from 'primevue/button';

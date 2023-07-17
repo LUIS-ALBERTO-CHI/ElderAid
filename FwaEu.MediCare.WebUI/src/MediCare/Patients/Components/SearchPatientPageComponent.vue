@@ -24,7 +24,7 @@
         <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
     </div>
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 
 <script>
     import patientsData from './patients.json';
