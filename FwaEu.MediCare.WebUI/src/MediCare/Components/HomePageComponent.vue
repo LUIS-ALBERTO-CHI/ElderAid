@@ -72,6 +72,7 @@ import StockConsumptionMasterDataService from "@/MediCare/StockConsumption/Servi
 import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
 
 import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+import notificationService from '../../Fwamework/Notifications/Services/notification-service';
 
 export default {
     inject: ["deviceInfo"],
@@ -105,7 +106,7 @@ export default {
 
         };
     },
-    async created() {
+    created: showLoadingPanel(async function () {
         this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
         const currentUser = await CurrentUserService.getAsync();
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
@@ -120,36 +121,48 @@ export default {
             ViewContextService.set(new ViewContextModel(this.organizations[0]));
         }
         await this.loadAllMasterDataAsync(false);
-    },
+    }),
     methods: {
-        loadAllMasterDataAsync: showLoadingPanel(async function (onlyEms) {
+        async loadAllMasterDataAsync(onlyEms) {
 
             this.startLoadTime = new Date().getTime();
+            const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
+                {
+                    progressBar: true,
+                    layout: 'center',
+                    killer: true,
+                    timeout: false,
+                    closeWith: [],
+                    modal: true
+                });
+            try {
+                //NOTE: Loading data only when the currentdatabase invariantId is avlaible
+                if (this.currentDatabase != null) {
+                    const patients = await PatientsMasterDataService.getAllAsync();
+                    const articles = await ArticlesMasterDataService.getAllAsync();
+                    const orders = await OrdersMasterDataService.getAllAsync();
+                    const buildings = await BuildingsMasterDataService.getAllAsync();
+                    const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
+                    const cabinets = await CabinetsMasterDataService.getAllAsync();
+                    const protections = await ProtectionsMasterDataService.getAllAsync();
+                    const treatments = await TreatmentsMasterDataService.getAllAsync();
+                    const stockConsuptions = await StockConsumptionMasterDataService.getAllAsync();
+                    this.patientsActive = patients.filter(x => x.isActive);
+                }
 
-            //NOTE: Loading data only when the currentdatabase invariantId is avlaible
-            if (this.currentDatabase != null) {
-                const patients = await PatientsMasterDataService.getAllAsync();
-                const articles = await ArticlesMasterDataService.getAllAsync();
-                const orders = await OrdersMasterDataService.getAllAsync();
-                const buildings = await BuildingsMasterDataService.getAllAsync();
-                const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
-                const cabinets = await CabinetsMasterDataService.getAllAsync();
-                const protections = await ProtectionsMasterDataService.getAllAsync();
-                const treatments = await TreatmentsMasterDataService.getAllAsync();
-                const stockConsuptions = await StockConsumptionMasterDataService.getAllAsync();
-                this.patientsActive = patients.filter(x => x.isActive);
-            }
+                if (!onlyEms) {
+                    const dosageForms = await DosageFormMasterDataService.getAllAsync();
+                    const articlesType = await ArticlesTypeMasterDataService.getAllAsync();
+                }
 
-            if (!onlyEms) {
-                const dosageForms = await DosageFormMasterDataService.getAllAsync();
-                const articlesType = await ArticlesTypeMasterDataService.getAllAsync();
+                const loadingTime = new Date().getTime() - this.startLoadTime;
+                if (loadingTime < 5000) {
+                    await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
+                }
+            } finally {
+                notification.close();
             }
-
-            const loadingTime = new Date().getTime() - this.startLoadTime;
-            if (loadingTime < 5000) {
-                await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
-            }
-        }),
+        },
         goToLoginFront() {
             this.$router.push("/Login")
         },
@@ -171,7 +184,7 @@ export default {
         goToCabinetsPage() {
             this.$router.push("/stockPharmacy")
         },
-        async refreshMasterDataByDatabaseInvariantId(e) {
+        refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
 
             // NOTE : Update the ViewContext to save the selected database
             // const organizations = await OrganizationsMasterDataService.getAllAsync();
@@ -181,7 +194,7 @@ export default {
             await MasterDataManagerService.clearCacheAsync();
 
             await this.loadAllMasterDataAsync(true);
-        }
+        })
     }
 }
 </script>
