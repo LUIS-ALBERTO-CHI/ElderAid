@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using FwaEu.Fwamework.Data.Database.Sessions;
 
-namespace FwaEu.MediCare.Patients.MasterData
+namespace FwaEu.MediCare.Referencials.MasterData
 {
     public class IncontinenceLevelMasterDataProvider : EntityMasterDataProvider<IncontinenceLevelEntity, int, IncontinenceLevelEntityMasterDataModel, IncontinenceLevelEntityRepository>
     {

@@ -8,6 +8,9 @@ import CabinetsMasterDataService from './Services/cabinets-master-data-service'
 import TreatmentsMasterDataService from './Services/treatments-master-data-service';
 import ProtectionMasterDataService from './Services/protections-master-data-service'
 import ArticlesTypeMasterDataService from './Services/articles-type-master-data-service';
+import IncontinenceLevelMasterDataService from './Services/incontinence-level-master-data-service';
+import IncontinenceLevelConfiguration from './Services/incontinence-level-configuration';
+
 
 export class ReferencialsModule extends AbstractModule {
 
@@ -19,7 +22,10 @@ export class ReferencialsModule extends AbstractModule {
 		await TreatmentsMasterDataService.configureAsync();
 		await ProtectionMasterDataService.configureAsync();
 		await ArticlesTypeMasterDataService.configureAsync();
+		await IncontinenceLevelMasterDataService.configureAsync();
 
+
+		GenericAdminConfigurationService.register(IncontinenceLevelConfiguration);
 		GenericAdminConfigurationService.register(DosageFormConfiguration);
 	}
 
