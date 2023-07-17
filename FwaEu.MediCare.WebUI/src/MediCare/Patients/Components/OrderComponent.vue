@@ -38,7 +38,7 @@
         </div>
     </div>
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
     import Button from 'primevue/button';

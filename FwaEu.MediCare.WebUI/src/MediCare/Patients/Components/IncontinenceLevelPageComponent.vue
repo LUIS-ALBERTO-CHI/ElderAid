@@ -22,7 +22,7 @@
         </div>
     </div>
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 import PatientInfoComponent from './PatientInfoComponent.vue';
 import Dropdown from 'primevue/dropdown';

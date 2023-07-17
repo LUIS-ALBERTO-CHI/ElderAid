@@ -52,7 +52,7 @@
         </AccordionTab>
     </Accordion>
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
     import Accordion from 'primevue/accordion';
