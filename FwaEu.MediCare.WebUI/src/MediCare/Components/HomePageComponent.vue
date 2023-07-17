@@ -139,20 +139,24 @@ export default {
                 //NOTE: Loading data only when the currentdatabase invariantId is avlaible
                 if (this.currentDatabase != null) {
                     const patients = await PatientsMasterDataService.getAllAsync();
-                    const articles = await ArticlesMasterDataService.getAllAsync();
-                    const orders = await OrdersMasterDataService.getAllAsync();
-                    const buildings = await BuildingsMasterDataService.getAllAsync();
-                    const userOrganizations = await UserOrganizationsMasterDataService.getAllAsync();
-                    const cabinets = await CabinetsMasterDataService.getAllAsync();
-                    const protections = await ProtectionsMasterDataService.getAllAsync();
-                    const treatments = await TreatmentsMasterDataService.getAllAsync();
-                    const stockConsuptions = await StockConsumptionMasterDataService.getAllAsync();
+                    await Promise.all([
+                        ArticlesMasterDataService.getAllAsync(),
+                        OrdersMasterDataService.getAllAsync(),
+                        BuildingsMasterDataService.getAllAsync(),
+                        UserOrganizationsMasterDataService.getAllAsync(),
+                        CabinetsMasterDataService.getAllAsync(),
+                        ProtectionsMasterDataService.getAllAsync(),
+                        TreatmentsMasterDataService.getAllAsync(),
+                        StockConsumptionMasterDataService.getAllAsync()
+                    ]);
                     this.patientsActive = patients.filter(x => x.isActive);
                 }
 
                 if (!onlyEms) {
-                    const dosageForms = await DosageFormMasterDataService.getAllAsync();
-                    const articlesType = await ArticlesTypeMasterDataService.getAllAsync();
+                    await Promise.all([
+                        DosageFormMasterDataService.getAllAsync(),
+                        ArticlesTypeMasterDataService.getAllAsync()
+                    ]);
                 }
 
                 const loadingTime = new Date().getTime() - this.startLoadTime;
