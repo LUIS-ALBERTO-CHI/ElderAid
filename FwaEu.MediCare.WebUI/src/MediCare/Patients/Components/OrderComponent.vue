@@ -31,10 +31,12 @@
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     :label="article.alternativePackagingCount + ' ' + alternativePackagingLabel"
-                    icon="fa fa-solid fa-angle-right" iconPos="right" />
+                    icon="fa fa-solid fa-angle-right" iconPos="right" 
+                    @click="goToSearchFormats(article.title)"/>
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     :label="article.substitutionsCount + ' ' + substitutionLabel"
-                    icon="fa fa-solid fa-angle-right" iconPos="right" />
+                    icon="fa fa-solid fa-angle-right" iconPos="right" 
+                    @click="goToSearchSubstituts(article.title)"/>
         </div>
     </div>
 </template>
@@ -72,6 +74,7 @@
                 selectedQuantity: 1,
                 showConfirmationDisplayed: false,
                 orderAlreadyInProgress: true,
+                currentArticle: ""
             };
         },
         async created() {
@@ -105,7 +108,15 @@
                     return `Commander ${this.selectedQuantity} ${quantityType}`
                 else
                     return `Commander ${this.selectedQuantity} ${quantityType}s`
-            }
+            },
+            goToSearchSubstituts(articleTitle) {
+                this.currentArticle = articleTitle;
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: "Substituts: " + articleTitle }})
+            },
+            goToSearchFormats(articleTitle) {
+                this.currentArticle = articleTitle;
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: "Formats: " + articleTitle } })
+        }
         },
         watch: {
             selectedQuantity: function (newValue, oldValue) {

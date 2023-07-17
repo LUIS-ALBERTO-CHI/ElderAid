@@ -7,7 +7,7 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                    placeholder="Rechercher un articles" />
+                    placeholder="Rechercher un articles" :searchMode="groupName"/>
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
@@ -99,6 +99,8 @@ export default {
             patient: null,
             showScanner: false,
             articlesType: [],
+            currentArticle: "",
+            groupName: "",
         };
     },
     async created() {
@@ -139,7 +141,8 @@ export default {
         handleCancelScan() {
             this.showScanner = false;
         },
-        goToArticlePage() {
+        goToArticlePage(article) {
+            this.currentArticle = article.title;
             this.$router.push({ name: "OrderArticle" });
         },
         loadInitialArticles() {
