@@ -30,7 +30,7 @@
     import OrderComponent from './OrderComponent.vue';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import OrderService from '@/MediCare/Orders/Services/orders-service'
-	import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 
 
 
@@ -76,9 +76,9 @@
             },
             async getMoreOrders() {
                 var model = {
-                patientId: this.patient.id,
-                page: this.actualPage++,
-                pageSize: Configuration.paginationSize.orders,
+                    patientId: this.patient.id,
+                    page: this.actualPage++,
+                    pageSize: Configuration.paginationSize.orders,
                 }
 
                 var orders = await OrderService.getAllAsync(model)
@@ -87,6 +87,7 @@
                     this.isEndOfPagination = true;
 
                 this.patientOrders = this.patientOrders.concat(orders)
+                console.log(this.patientOrders)
             }
         },
         computed: {

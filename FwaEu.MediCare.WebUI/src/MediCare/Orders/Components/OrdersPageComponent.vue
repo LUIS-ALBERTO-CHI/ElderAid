@@ -24,13 +24,13 @@
                         </div>
                     </AccordionOrderComponent>
                 </div>
-                <span class="load-more-text">Plus de commande</span>
+                <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commande</span>
             </div>
         </div>
         <div v-else class="new-order-container">
             <span style="font-weight: bold; font-size: 18px;">Nouvelle commande :</span>
-            <Button @click="goToSearchPatient" label="Pour un patient" icon="fa fa-solid fa-angle-right" iconPos="right"/>
-            <Button @click="goToSearchPatient" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right"/>
+            <Button @click="goToSearchPatient" label="Pour un patient" icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button @click="goToSearchPatient" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
             <Button @click="displayNewOrder" label="Retour" />
         </div>
     </div>
@@ -44,6 +44,8 @@
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
     import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
+    import OrderService from '@/MediCare/Orders/Services/orders-service'
+    import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 
 
 
@@ -62,6 +64,8 @@
                 isNewOrder: false,
                 orders: [],
                 patients: [],
+                actualPage: 0,
+                isEndOfPagination: false
             };
         },
         async created() {
@@ -89,7 +93,6 @@
             },
             async fillOrders() {
                 const ordersArticleIds = this.orders.map(x => x.articleId);
-                const ordersPatientIds = this.orders.map(x => x.patientId);
                 const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
 
                 this.orders.forEach(order => {
@@ -98,21 +101,35 @@
                     if (order.patientId != null || order.patientId > 0)
                         order.patient = this.patients.find(x => x.id == order.patientId);
                 });
+            },
+            async getMoreOrders() {
+                var model = {
+                    patientId: null,
+                    page: this.actualPage++,
+                    pageSize: Configuration.paginationSize.orders,
+                }
+
+                var orders = await OrderService.getAllAsync(model)
+
+                if (orders.length < Configuration.paginationSize.orders)
+                    this.isEndOfPagination = true;
+                this.orders = this.orders.concat(orders)
+                this.fillOrders();
             }
         },
         computed: {
             filteredOrders() {
                 return this.orders.filter(order => {
                     return (
-                        (order?.article.title.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                        order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                        order.updatedBy.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                        order?.patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                        order.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                        order.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
+                        (order?.article?.title.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                            order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                            order.updatedBy.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                            order?.patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                            order.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                            order.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
                         (this.selectedOrdersType == "Toutes" ||
-                        (this.selectedOrdersType == "Patients" && order.patientId != null) ||
-                        (this.selectedOrdersType == "EMS" && order.patientId == null))
+                            (this.selectedOrdersType == "Patients" && order.patientId != null) ||
+                            (this.selectedOrdersType == "EMS" && order.patientId == null))
                     );
                 });
             },
