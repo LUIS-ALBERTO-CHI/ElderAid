@@ -1,5 +1,6 @@
 using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.Fwamework.Permissions;
+using FwaEu.MediCare.Patients;
 using FwaEu.Modules.GenericAdmin;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace FwaEu.MediCare.Patients.GenericAdmin
+namespace FwaEu.MediCare.Referencials.GenericAdmin
 {
     public class IncontinenceLevelModel
     {
@@ -46,7 +47,7 @@ namespace FwaEu.MediCare.Patients.GenericAdmin
 
         public override async Task<bool> IsAccessibleAsync()
         {
-            var currentUser = this._currentUserPermissionService.CurrentUserService.User;
+            var currentUser = _currentUserPermissionService.CurrentUserService.User;
             return currentUser.Entity.IsAdmin;
         }
 
@@ -60,7 +61,7 @@ namespace FwaEu.MediCare.Patients.GenericAdmin
 
         protected override async Task<IncontinenceLevelEntity> GetEntityAsync(IncontinenceLevelModel model)
         {
-            return await this.GetRepository().GetAsync(model.Id.Value);
+            return await GetRepository().GetAsync(model.Id.Value);
         }
 
         protected override Expression<Func<IncontinenceLevelEntity, IncontinenceLevelModel>> GetSelectExpression()

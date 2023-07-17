@@ -5,9 +5,6 @@ using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework;
 using FwaEu.Modules.GenericAdmin;
 using FwaEu.MediCare.Referencials.GenericAdmin;
-using FwaEu.MediCare.Treatments;
-using FwaEu.MediCare.Treatments.Services;
-using FwaEu.MediCare.Treatments.MasterData;
 
 namespace FwaEu.MediCare.Referencials
 {
@@ -25,14 +22,20 @@ namespace FwaEu.MediCare.Referencials
             repositoryRegister.Add<CabinetEntityRepository>();
             repositoryRegister.Add<ProtectionDosageEntityRepository>();
             repositoryRegister.Add<ProtectionEntityRepository>();
+            repositoryRegister.Add<IncontinenceLevelEntityRepository>();
+
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
             services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
             services.AddMasterDataProvider<CabinetMasterDataProvider>("Cabinets");
             services.AddMasterDataProvider<ProtectionDosageMasterDataProvider>("ProtectionDosages");
             services.AddMasterDataProvider<ProtectionMasterDataProvider>("Protections");
+            services.AddMasterDataProvider<IncontinenceLevelMasterDataProvider>("IncontinenceLevels");
+
 
             services.AddTransient<IGenericAdminModelConfiguration, DosageFormEntityToModelGenericAdminModelConfiguration>();
+            services.AddTransient<IGenericAdminModelConfiguration, IncontinenceLevelEntityToModelGenericAdminModelConfiguration>();
+
 
             return services;
         }

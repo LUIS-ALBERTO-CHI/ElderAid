@@ -2,19 +2,13 @@
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
+using FwaEu.MediCare.Patients;
 using System;
 using System.Linq;
 
-namespace FwaEu.MediCare.Patients
+namespace FwaEu.MediCare.Referencials
 {
-    public enum IncontinenceLevel
-    {
-        Light = 0,
-        Medium = 1,
-        Severe = 2,
-        Total = 3,
-        Double = 4
-    }
+
 
     public class IncontinenceLevelEntity : ICreationAndUpdateTracked
     {
