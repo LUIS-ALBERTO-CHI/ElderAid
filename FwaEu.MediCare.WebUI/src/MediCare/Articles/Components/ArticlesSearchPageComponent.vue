@@ -7,7 +7,7 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                    placeholder="Rechercher un articles" :searchMode="articleTitle"/>
+                    placeholder="Rechercher un articles"/>
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
@@ -103,7 +103,6 @@ export default {
             showScanner: false,
             articlesType: [],
             currentArticle: "",
-            groupName: "",
         };
     },
     async created() {
