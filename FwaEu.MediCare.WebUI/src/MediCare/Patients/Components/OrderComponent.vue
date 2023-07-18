@@ -74,7 +74,6 @@
                 selectedQuantity: 1,
                 showConfirmationDisplayed: false,
                 orderAlreadyInProgress: true,
-                currentArticle: ""
             };
         },
         async created() {
@@ -111,11 +110,11 @@
             },
             goToSearchSubstituts(articleTitle) {
                 this.currentArticle = articleTitle;
-                this.$router.push({ name: 'SearchArticle', query: { searchMode: "Substituts: " + articleTitle }})
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: "substituts: " + articleTitle }})
             },
             goToSearchFormats(articleTitle) {
                 this.currentArticle = articleTitle;
-                this.$router.push({ name: 'SearchArticle', query: { searchMode: "Formats: " + articleTitle } })
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: "formats: " + articleTitle } })
         }
         },
         watch: {
