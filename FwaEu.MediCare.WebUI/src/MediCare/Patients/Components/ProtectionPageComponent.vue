@@ -1,14 +1,14 @@
 <template>
     <div class="protection-page-container">
-        <PatientInfoComponent />
+        <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
-                <span >Niveau d'incontience: légère</span>
-                <div v-if="isAlert" :style="{ color: '#f44538'}" class="alert-container">
+                <span>Niveau d'incontience: légère</span>
+                <div v-if="isAlert" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
                     <span>Le forfait d'incontinence est dépassé</span>
                 </div>
-                <div v-else :style="{ color: '#00b300'}" class="alert-container">
+                <div v-else :style="{ color: '#00b300' }" class="alert-container">
                     <i class="fa-solid fa-circle-check alert-icon"></i>
                     <span>Le forfait d'incontinence est respecté</span>
                 </div>
@@ -16,60 +16,97 @@
             <i style="font-size: 30px;" class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div style="display: flex; flex-direction: column; margin-top: 20px;">
-            <div v-for="(protection, index) in protections" :key="index">
+            <div v-if="filteredProtections && filteredProtections.some(protection => 'article' in protection)"
+                v-for="(protection, index) in filteredProtections" :key="index">
                 <ProtectionAccordionTabComponent :protection="protection" />
             </div>
+            <span v-show="!isEndOfPagination" @click="getMoreProtections()" class="load-more-text">Charger plus</span>
         </div>
         <Button label="Imprimer le protocole"></Button>
         <Button label="Ajouter une protection"></Button>
 
     </div>
-
 </template>
 
 <script>
 
-    import Accordion from 'primevue/accordion';
-    import PatientInfoComponent from './PatientInfoComponent.vue';
-    import Button from 'primevue/button';
-    import ProtectionAccordionTabComponent from './ProtectionAccordionTabComponent.vue';
+import Accordion from 'primevue/accordion';
+import PatientInfoComponent from './PatientInfoComponent.vue';
+import Button from 'primevue/button';
+import ProtectionAccordionTabComponent from './ProtectionAccordionTabComponent.vue';
+import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+import ProtectionsMasterDataService from '@/MediCare/Referencials/Services/protections-master-data-service';
+import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
+import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 
 
-    export default {
-        components: {
-            Accordion,
-            PatientInfoComponent,
-            Button,
-            ProtectionAccordionTabComponent,
-        },
-        data() {
-            return {
-                isAlert: true,
-                protections: [{
-                    name: "Tena Pants Maxi",
-                    amount: "1 pèce: 8h, 1 pièce 16h",
-                    date: "De 23/02/2023 à 30/05/2023"
-                },
-                {
-                    name: "Tena Pants Maxi",
-                    amount: "1 pèce: 8h, 1 pièce 16h",
-                    date: "De 23/02/2023 à 30/05/2023"
-                },
-                ],
+export default {
+    components: {
+        Accordion,
+        PatientInfoComponent,
+        Button,
+        ProtectionAccordionTabComponent,
+    },
+    setup() {
+        const { patientLazy, getCurrentPatientAsync } = usePatient();
+        return {
+            patientLazy,
+            getCurrentPatientAsync
+        }
+    },
+    data() {
+        return {
+            isAlert: true,
+            patient: null,
+            protections: [],
+            actualPage: 0,
+            isEndOfPagination: false,
+            filteredProtections: [],
+        };
+    },
+    async created() {
+        this.patient = await this.patientLazy.getValueAsync();
+        this.protections = await ProtectionsMasterDataService.getAllAsync();
+        this.fillProtections();
+    },
+    methods: {
+        async fillProtections() {
+            const model = {
+                patientId: this.patient.id,
             };
-        },
-        async created() {
-        },
-        methods: {
-            goToIncontinenceLevelPage() {
-                this.$router.push({ name: 'IncontinenceLevel' });
-            },
-        },
-        computed: {
+            const protections = await ProtectionsMasterDataService.getAllAsync(model);
 
-        },
+            const protectionsArticleIds = protections.map(x => x.articleId);
+            const articles = await ArticlesMasterDataService.getByIdsAsync(protectionsArticleIds);
+            protections.forEach(protection => {
+                const article = articles.find(article => article.id === protection.articleId);
+                protection.article = article;
+            });
 
-    }
+            this.protections = protections;
+            this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id);
+        },
+        goToIncontinenceLevelPage() {
+            this.$router.push({ name: 'IncontinenceLevel' });
+        },
+        async getMoreProtections() {
+            var model = {
+                patientId: this.patient.id,
+                page: this.actualPage++,
+                pageSize: Configuration.paginationSize.protections,
+            }
+
+            var protections = await ProtectionsMasterDataService.getAllAsync(model)
+            if (protections.length < Configuration.paginationSize.protections)
+                this.isEndOfPagination = true;
+
+            this.protections = this.protections.concat(protections)
+        }
+    },
+    computed: {
+
+    },
+
+}
 </script>
-<style type="text/css" scoped src="./Content/protection-page.css">
-</style>
+<style type="text/css" scoped src="./Content/protection-page.css"></style>

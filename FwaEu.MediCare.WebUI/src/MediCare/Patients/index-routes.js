@@ -135,7 +135,7 @@ export default [
 		}
 	},
 	{
-		path: '/Protection',
+		path: '/Patient/:id/Protection',
 		name: 'Protection',
 		component: ProtectionPageComponent,
 		meta: {
