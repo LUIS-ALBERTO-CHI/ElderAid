@@ -4,13 +4,15 @@
             <span class="organization-text">{{this.organizations[0].name}}</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
-            @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name"/>
-        <div v-if="this.patientsActive.length > 0" class="vignette-list">
+                  @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
+        <div v-if="this.patientsActive.length > 0 && this.distinctPeriodicOrders.length > 0 " class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
                     <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
-                    <span v-show="patientsActive.length > 0" class="vignette-text">{{ patientsActive.length }}
-                        patients</span>
+                    <span v-show="patientsActive.length > 0" class="vignette-text">
+                        {{ patientsActive.length }}
+                        patients
+                    </span>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
@@ -18,6 +20,16 @@
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;" />
                     <span class="vignette-text">Commandes</span>
+                </div>
+                <i class="fa-regular fa-angle-right chevron-icon" />
+            </div>
+            <div @click="goToPeriodicPage" class="vignette-item">
+                <div class="vignette-main-info">
+                    <i class="fa-regular fa-repeat vignette-icon fa-fw" style="color: #d8b291;" />
+                    <div style="display: flex; flex-direction: column;">
+                        <span class="vignette-text">Commandes périodiques</span>
+                        <span class="vignette-text-subtitle">{{ getNumberOfPatientToValidate() }}</span>
+                    </div>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
@@ -63,6 +75,7 @@ import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Ser
 import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
 import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
 import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
+import PeriodicOrdersMasterDataService from "@/MediCare/Orders/Services/periodic-orders-master-data-service";
 
 
 import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
@@ -95,6 +108,7 @@ export default {
             isUserAdmin: false,
             organizations: [],
             organizationsLink: [],
+            distinctPeriodicOrders: [],
         };
     },
     async created() {
@@ -103,7 +117,7 @@ export default {
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
-        
+
         if (this.organizations.length == 1) {
             this.isSingleOrganization = true;
         } else {
@@ -111,12 +125,13 @@ export default {
             this.selectedOrganization = this.organizationsOptions[0];
             ViewContextService.set(new ViewContextModel(this.organizations[0]));
         }
-        
+
         //NOTE: Loading data only when the currentdatabase invariantId is avlaible
         if (this.currentDatabase != null) {
             const patients = await PatientsMasterDataService.getAllAsync();
-            const articles = await ArticlesMasterDataService.getAllAsync();
             this.patientsActive = patients.filter(x => x.isActive);
+            const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+            this.distinctPeriodicOrders = periodicOrders.filter((v,i,a)=>a.findIndex(t=>(t.patientId === v.patientId))===i);
         }
 
     },
@@ -142,6 +157,9 @@ export default {
         goToCabinetsPage() {
                 this.$router.push("/stockPharmacy")
         },
+        goToPeriodicPage() {
+            // this.$router.push("/PeriodicOrders")
+        },
         async refreshMasterDataByDatabaseInvariantId(e) {
 
             // NOTE : Update the ViewContext to save the selected database
@@ -153,6 +171,12 @@ export default {
 
             const patients = await PatientsMasterDataService.getAllAsync();
             this.patientsActive = patients.filter(x => x.isActive);
+            const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+            this.distinctPeriodicOrders = periodicOrders.filter((v,i,a)=>a.findIndex(t=>(t.patientId === v.patientId))===i);
+        },
+        getNumberOfPatientToValidate() {
+            const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length
+            return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
         }
     }
 }
