@@ -7,6 +7,6 @@ namespace FwaEu.MediCare.Patients.Services
     {
         Task<GetIncontinenceLevel> GetIncontinenceLevelAsync(int id);
 
-        Task SaveIncontinenceLevelAsync(int id, IncontinenceLevel incontinenceLevel);
+        Task SaveIncontinenceLevelAsync(SaveIncontinenceLevel model);
     }
 }

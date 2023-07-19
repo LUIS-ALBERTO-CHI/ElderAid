@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Articles.WebApi
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ArticlesController : Controller
