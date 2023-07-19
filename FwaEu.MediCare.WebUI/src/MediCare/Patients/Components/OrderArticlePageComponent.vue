@@ -31,11 +31,11 @@
         <div v-else class="order-submitted-container">
             <span>Commande réalisée avec succès !</span>
             <span>Votre prochaine action :</span>
-            <Button label="Voir les commandes en cours pour Dimitri ASHIKHMIN" style="height: 45px !important;"
+            <Button label="Voir les commandes en cours pour " {{ patient.fullName }} style="height: 45px !important;"
                 icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Commander un autre article pour Dimitri ASHIKHMIN" style="height: 45px !important;"
+            <Button label="Commander un autre article pour " {{ patient.fullName }} style="height: 45px !important;"
                 icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Consulter la fiche du patient Dimitri ASHIKHMIN" style="height: 45px !important;"
+            <Button label="Consulter la fiche du patient " {{ patient.fullName }} style="height: 45px !important;"
                 icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
             <Button label="Revenir à l'accueil" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                 iconPos="right"></Button>
