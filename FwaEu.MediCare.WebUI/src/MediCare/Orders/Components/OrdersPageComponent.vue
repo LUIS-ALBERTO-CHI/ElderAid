@@ -46,6 +46,8 @@
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 
 
@@ -103,18 +105,22 @@
                 });
             },
             async getMoreOrders() {
-                var model = {
-                    patientId: null,
-                    page: this.actualPage++,
-                    pageSize: Configuration.paginationSize.orders,
+                if (OnlineService.isOnline()) {
+                    var model = {
+                        patientId: null,
+                        page: this.actualPage++,
+                        pageSize: Configuration.paginationSize.orders,
+                    }
+
+                    var orders = await OrderService.getAllAsync(model)
+
+                    if (orders.length < Configuration.paginationSize.orders)
+                        this.isEndOfPagination = true;
+                    this.orders = this.orders.concat(orders)
+                    this.fillOrders();
+                } else {
+                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
-
-                var orders = await OrderService.getAllAsync(model)
-
-                if (orders.length < Configuration.paginationSize.orders)
-                    this.isEndOfPagination = true;
-                this.orders = this.orders.concat(orders)
-                this.fillOrders();
             }
         },
         computed: {

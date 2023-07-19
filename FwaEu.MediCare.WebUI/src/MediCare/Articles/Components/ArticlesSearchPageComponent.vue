@@ -43,6 +43,8 @@ import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/arti
 import { useRoute } from 'vue-router';
 import { ref, watch } from "vue";
 import { watchDebounced } from '@vueuse/core'
+import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 export default {
     components: {
@@ -114,9 +116,13 @@ export default {
     },
     methods: {
         async loadMoreArticlesAsync() {
-            const nextPage = this.currentPage + 1;            
-            this.currentPage = nextPage;
-            this.performSearch();
+            if (OnlineService.isOnline()) {
+                const nextPage = this.currentPage + 1;            
+                this.currentPage = nextPage;
+                this.performSearch();
+            } else {
+                NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
+            }
         },
         removeSearch() {
             this.searchValue = "";
