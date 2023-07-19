@@ -26,7 +26,7 @@ namespace FwaEu.MediCare.Articles
         public string Unit { get; set; }
         public string InvoicingUnit { get; set; }
         public bool? IsFavorite { get; set; }
-        public string Packaging { get; set; }
+        public string LeftAtChargeExplanation { get; set; }
         public string ThumbnailURL { get; set; }
 
         public string ImageURLs { get; set; }
@@ -54,7 +54,7 @@ namespace FwaEu.MediCare.Articles
 
             Id(entity => entity.Id).Column("Id");
             Map(entity => entity.Title).Column("Title");
-            Map(entity => entity.Packaging).Column("Packaging");
+            Map(entity => entity.LeftAtChargeExplanation).Column("LeftAtChargeExplanation");
             Map(entity => entity.Price).Column("Price");
             Map(entity => entity.ArticleType).Column("ArticleType");
             Map(entity => entity.AmountRemains).Column("LeftAtCharge");

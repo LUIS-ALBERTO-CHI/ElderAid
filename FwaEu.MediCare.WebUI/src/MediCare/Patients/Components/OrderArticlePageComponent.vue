@@ -24,28 +24,40 @@
                     <span>{{ article.unit }} de {{ article.countInBox }} {{ article.invoicingUnit }}</span>
                 </div>
             </div>
-            <img class="article-image" :src="article.imageURLs"/>
+            <img class="article-image" :src="article.imageURLs" />
         </div>
 
-        <OrderComponent v-if="!isOrderSubmitted" @submitOrder="orderSubmit" :article="article" :patientOrders="patientOrders"/>
+        <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" />
         <div v-else class="order-submitted-container">
             <span>Commande réalisée avec succès !</span>
-            <span>Votre prochaine action :</span>
-            <Button label="Voir les commandes en cours pour " {{ patient.fullName }} style="height: 45px !important;"
-                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Commander un autre article pour " {{ patient.fullName }} style="height: 45px !important;"
-                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Consulter la fiche du patient " {{ patient.fullName }} style="height: 45px !important;"
-                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Revenir à l'accueil" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
-                iconPos="right"></Button>
+            <span>Votre prochaine action : </span>
+            <Button
+                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="text-align: center;">Voir les commandes en cours pour {{ patient.fullName }}</span>
+                <i class="fa fa-solid fa-angle-right"></i>
+            </Button>
+            <Button
+                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="text-align: center;">Commander un autre article pour {{ patient.fullName }}</span>
+                <i class="fa fa-solid fa-angle-right"></i>
+            </Button>
+            <Button
+                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="text-align: center;">Consulter la fiche du patient {{ patient.fullName }}</span>
+                <i class="fa fa-solid fa-angle-right"></i>
+            </Button>
+            <Button
+                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                <span style="text-align: center;">Revenir à l'accueil {{ patient.fullName }}</span>
+                <i class="fa fa-solid fa-angle-right"></i>
+            </Button>
         </div>
     </div>
 </template>
 <script>
 
 import PatientInfoComponent from './PatientInfoComponent.vue';
-    import OrderComponent from './OrderComponent.vue';
+import OrderComponent from './OrderComponent.vue';
 import Button from 'primevue/button';
 import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
@@ -70,7 +82,7 @@ export default {
             patient: null,
             article: {},
             isOrderSubmitted: false,
-            patientOrders: []
+            patientOrders: [],
         };
     },
     async created() {
@@ -83,11 +95,10 @@ export default {
         this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
     },
     methods: {
-        orderSubmit(quantity) {
-            this.isOrderSubmitted = true;
-        }
+
     },
     computed: {
+
     },
 
 }
