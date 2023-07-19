@@ -1,4 +1,4 @@
-import { ref, defineProps, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 
 type UseIntersectionParams<T> = {
     list: T;
