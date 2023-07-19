@@ -3,10 +3,10 @@
         <AccordionTab>
             <template #header>
                 <div class="accordion-header">
-                    <span class="header-title">{{protection.name}}</span>
-                    <span class="header-subtitle">{{protection.amount}}</span>
-                    <span class="header-subtitle">{{protection.date}}</span>
-                </div>
+                    <span class="header-title">{{protection.article.title}}</span>
+                    <span class="header-subtitle">{{protection.dosageDescription }}</span>
+                    <span class="header-subtitle">{{ $d(new Date(protection.dateStart)) }}  à {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(protection.dateStart)) }}</span>
+                    </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
                 <Button label="Commander" style="height: 40px !important;"></Button>
