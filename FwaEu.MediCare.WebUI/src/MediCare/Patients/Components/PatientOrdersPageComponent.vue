@@ -31,6 +31,8 @@
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 
 
@@ -56,7 +58,7 @@
                 isOrderingIndex: null,
                 articles: [],
                 actualPage: 0,
-                isEndOfPagination: false
+                isEndOfPagination: false,
             };
         },
         async created() {
@@ -75,19 +77,24 @@
                 this.isOrderingIndex = index;
             },
             async getMoreOrders() {
-                var model = {
-                    patientId: this.patient.id,
-                    page: this.actualPage++,
-                    pageSize: Configuration.paginationSize.orders,
+                if (OnlineService.isOnline()) {
+                    var model = {
+                        patientId: this.patient.id,
+                        page: this.actualPage++,
+                        pageSize: Configuration.paginationSize.orders,
+                    }
+
+                    var orders = await OrderService.getAllAsync(model)
+
+                    if (orders.length < Configuration.paginationSize.orders)
+                        this.isEndOfPagination = true;
+
+                    this.patientOrders = this.patientOrders.concat(orders)
+
+                } else {
+                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
 
-                var orders = await OrderService.getAllAsync(model)
-
-                if (orders.length < Configuration.paginationSize.orders)
-                    this.isEndOfPagination = true;
-
-                this.patientOrders = this.patientOrders.concat(orders)
-                console.log(this.patientOrders)
             }
         },
         computed: {
