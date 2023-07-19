@@ -1,16 +1,10 @@
-﻿using FwaEu.Fwamework.Data.Database.Sessions;
-using FwaEu.Fwamework.Users;
-using FwaEu.MediCare.Articles;
+﻿using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Users;
 using Microsoft.AspNetCore.Http;
-using MySqlX.XDevAPI;
-using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,16 +34,20 @@ namespace FwaEu.MediCare.Patients.Services
             return model.FirstOrDefault();
         }
 
-        public async Task SaveIncontinenceLevelAsync(int id, IncontinenceLevel incontinenceLevel)
+        public async Task SaveIncontinenceLevelAsync(SaveIncontinenceLevel model)
         {
-            var query = "exec SP_MDC_SaveIncontinenceLevel :PatientId, :IncontinenceLevel, :UserLogin, :UserIp";
+            if(model.DateStart < model.DateEnd)
+                throw new NotImplementedException();
+            var query = "exec SP_MDC_SaveIncontinenceLevel :PatientId, :IncontinenceLevel, :StartDateSubscription, :StopDateSubscription, :UserLogin, :UserIp";
 
             var stockedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
             var currentUser = (IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity;
             var currentUserIp = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
 
-            stockedProcedure.SetParameter("PatientId", id);
-            stockedProcedure.SetParameter("IncontinenceLevel", incontinenceLevel);
+            stockedProcedure.SetParameter("PatientId", model.Id);
+            stockedProcedure.SetParameter("IncontinenceLevel", model.Level);
+            stockedProcedure.SetParameter("StartDateSubscription", model.DateStart);
+            stockedProcedure.SetParameter("StopDateSubscription", model.DateEnd);
             stockedProcedure.SetParameter("UserLogin", currentUser.Login);
             stockedProcedure.SetParameter("UserIp", currentUserIp);
 

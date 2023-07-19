@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Patients.WebApi
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class PatientsController : Controller
@@ -42,11 +42,17 @@ namespace FwaEu.MediCare.Patients.WebApi
         }
 
         [HttpPost("SaveIncontinenceLevel")]
-        public async Task<IActionResult> SaveIncontinenceLevelAsync(int id, IncontinenceLevel incontinenceLevel, IPatientService patientService)
+        public async Task<IActionResult> SaveIncontinenceLevelAsync(SaveIncontinenceLevelApi model, IPatientService patientService)
         {
             try
             {
-                await patientService.SaveIncontinenceLevelAsync(id, incontinenceLevel);
+                await patientService.SaveIncontinenceLevelAsync(new SaveIncontinenceLevel()
+                {
+                    Id = model.Id,
+                    Level= model.Level,
+                    DateStart = model.DateStart,
+                    DateEnd = model.DateEnd
+                });
                 return Ok();
             }
             catch (NotFoundException)
