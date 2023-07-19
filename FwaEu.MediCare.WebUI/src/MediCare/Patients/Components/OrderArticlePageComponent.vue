@@ -2,7 +2,7 @@
     <div class="order-article-page-container">
         <patient-info-component :patient="patient" />
         <div class="article-title-container">
-            <span style="width: 90%;" class="command-title">ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce</span>
+            <span style="width: 90%;" class="command-title">{{ article.title }}</span>
             <i class="fa-solid fa-heart"></i>
         </div>
         <div class="article-label-container">
@@ -12,74 +12,84 @@
         <div class="article-container">
             <div class="article-info-container">
                 <div class="article-label-container">
-                    <span style="font-weight: bold;">CHF</span>
-                    <span>{{`${article.price}`}}</span>
+                    <span style="font-weight: bold;">{{ article.unit }}</span>
+                    <span>{{ article.price }}</span>
                 </div>
                 <div class="article-label-container">
                     <i class="fa-solid fa-money-bill-1"></i>
-                    <span>{{`${article.pricePaid} reste à charge`}}</span>
+                    <span>{{ article.leftAtChargeExplanation }}, reste à charge</span>
                 </div>
                 <div class="article-label-container">
                     <i class="fa-regular fa-box"></i>
-                    <span>{{`boîte de 10 pièces`}}</span>
+                    <span>{{ article.unit }} de {{ article.countInBox }} {{ article.invoicingUnit }}</span>
                 </div>
             </div>
-            <img class="article-image" src="https://i.webareacontrol.com/fullimage/1000-X-1000/2/g/24520175419systagenix-adaptic-touch-non-adhering-silicone-dressing-L.png" />
+            <img class="article-image" :src="article.imageURLs"/>
         </div>
-        
-        <OrderComponent v-if="!isOrderSubmitted" @submitOrder="orderSubmit"/>
+
+        <OrderComponent v-if="!isOrderSubmitted" @submitOrder="orderSubmit" :article="article" :patientOrders="patientOrders"/>
         <div v-else class="order-submitted-container">
             <span>Commande réalisée avec succès !</span>
             <span>Votre prochaine action :</span>
-            <Button label="Voir les commandes en cours pour Dimitri ASHIKHMIN" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Commander un autre article pour Dimitri ASHIKHMIN" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Consulter la fiche du patient Dimitri ASHIKHMIN" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-            <Button label="Revenir à l'accueil" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+            <Button label="Voir les commandes en cours pour Dimitri ASHIKHMIN" style="height: 45px !important;"
+                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+            <Button label="Commander un autre article pour Dimitri ASHIKHMIN" style="height: 45px !important;"
+                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+            <Button label="Consulter la fiche du patient Dimitri ASHIKHMIN" style="height: 45px !important;"
+                icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+            <Button label="Revenir à l'accueil" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
+                iconPos="right"></Button>
         </div>
     </div>
 </template>
 <script>
 
-    import PatientInfoComponent from './PatientInfoComponent.vue';
+import PatientInfoComponent from './PatientInfoComponent.vue';
     import OrderComponent from './OrderComponent.vue';
-    import Button from 'primevue/button';
+import Button from 'primevue/button';
+import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
+import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
 
 
 
+export default {
+    components: {
+        PatientInfoComponent,
+        OrderComponent,
+        Button
+    },
+    setup() {
+        const { patientLazy, getCurrentPatientAsync } = usePatient();
+        return {
+            patientLazy,
+            getCurrentPatientAsync
+        }
+    },
+    data() {
+        return {
+            patient: null,
+            article: {},
+            isOrderSubmitted: false,
+            patientOrders: []
+        };
+    },
+    async created() {
+        this.patient = await this.patientLazy.getValueAsync();
+        const articleId = this.$route.params.articleId;
+        if (articleId) {
+            const [article] = await ArticlesMasterDataService.getByIdsAsync([articleId]);
+            this.article = article;
+        }
+        this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+    },
+    methods: {
+        orderSubmit(quantity) {
+            this.isOrderSubmitted = true;
+        }
+    },
+    computed: {
+    },
 
-    export default {
-        components: {
-            PatientInfoComponent,
-            OrderComponent,
-            Button
-        },
-        data() {
-            return {
-                article: {
-                    name: "Lingettes nettoyantes 10x15cm sach 100 pce",
-                    isFavorite: true,
-                    isInHistory: true,
-                    date: "12/12/2020",
-                    price: "12.00",
-                    pricePaid: "2.12",
-                    stock: "12",
-                },
-                isOrderSubmitted: false,
-            };
-        },
-        async created() {
-        },
-        methods: {
-            orderSubmit(quantity) {
-                this.isOrderSubmitted = true;
-            }
-        },
-        computed: {
-        },
-
-    }
+}
 </script>
-<style type="text/css" scoped src="./Content/order-article-page.css">
-
-
-</style>
+<style type="text/css" scoped src="./Content/order-article-page.css"></style>

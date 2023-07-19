@@ -102,7 +102,7 @@ export default [
 		}
 	},
 	{
-		path: '/Patient/:id/PatientOrders',
+		path: '/Patient/:id/PatientOrders/',
 		name: 'PatientOrders',
 		component: PatientOrdersPageComponent,
 		meta: {
@@ -124,13 +124,13 @@ export default [
 		}
 	},
 	{
-		path: '/OrderArticle',
+		path: '/Patient/:id/OrderArticle/:articleId',
 		name: 'OrderArticle',
 		component: OrderArticlePageComponent,
 		meta: {
 			breadcrumb: {
 				titleKey: 'Commander un article',
-				parentName: 'OrderOtherProduct'
+				parentName: 'SearchArticle'
 			},
 		}
 	},
