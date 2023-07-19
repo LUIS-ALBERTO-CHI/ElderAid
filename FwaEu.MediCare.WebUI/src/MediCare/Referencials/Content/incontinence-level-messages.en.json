@@ -2,5 +2,8 @@
     "name": "Incontinence level",
     "incontinenceLevelTitle": "Incontinence levels",
     "incontinenceLevelDescription": "Manage incontinence levels",
-    "incontinenceLevelGroupTitle": "Referencials"
+    "incontinenceLevelGroupTitle": "Referencials",
+    "amount": "Amount",
+    "year": "Year",
+    "level": "Level of incontinence"
 }
