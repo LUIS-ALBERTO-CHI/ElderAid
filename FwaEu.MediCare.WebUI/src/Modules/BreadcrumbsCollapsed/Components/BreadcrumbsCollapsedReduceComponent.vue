@@ -6,8 +6,8 @@
         </div>
         <div class="crumbContainerCollapsed">
             <div class="dropdown" :style="{ display: hiddenCount > 0 ? 'flex' : 'none' }">
-                <button @click="toggleDropDown" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
-                <div class="dropdownContent" v-show="isDropDownDisplayed">
+                <button @click="toggleCollapsed" @mouseover="showCollapsed = true" @mouseleave="showCollapsed = false" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
+                <div class="dropdownContent" v-show="showCollapsed" @click.stop>
                     <router-link v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" :to="link.to"
                                  class="crumb" @click="nodeClicked(link)">{{link.text}}</router-link>
                 </div>
@@ -40,11 +40,10 @@
         props.crumbs.slice(hiddenCount.value, props.crumbs.length)
     );
 
-    const isDropDownDisplayed = ref(false);
+    const showCollapsed = ref(false);
 
     const toggleDropDown = () => {
-        console.log(isDropDownDisplayed.value)
-        isDropDownDisplayed.value = !isDropDownDisplayed.value;
+        showCollapsed.value = !showCollapsed.value;
     }
 
     const getNodeKey = function (node) {
