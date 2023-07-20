@@ -81,7 +81,6 @@
             }
             this.fillPatientTreatments()
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-            console.log(this.patientTreatments)
         },
         methods: {
             goToTreatmentPage() {

@@ -81,8 +81,8 @@
                 pour ${this.organization.periodicityOrderActivationDaysNumber} prochains jours`
             },
             getPeriodicQuantity(periodicOrder, article) {
-                var filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
-                var periodicQuantity = null;
+                const filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
+                let periodicQuantity = null;
                 for (var i = 0; i < filteredPeriodicOrderValidations.length; i++) {
                     if (filteredPeriodicOrderValidations[i].orderedOn == null) {
                         periodicQuantity = filteredPeriodicOrderValidations[i].quantity;
