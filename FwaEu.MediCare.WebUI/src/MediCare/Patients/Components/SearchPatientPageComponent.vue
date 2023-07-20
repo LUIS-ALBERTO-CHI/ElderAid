@@ -5,6 +5,7 @@
             <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Rechercher un patient" />
         </span>
         <Dropdown v-show="buildings.length > 1" v-model="selectedBuilding" :options="buildingOptions" />
+        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
@@ -21,7 +22,6 @@
             <span>Aucun patient trouvé</span>
             <span>{{ selectedBuilding == "Tous les secteurs" ? 'Contactez la pharmacie': 'Vérifiez votre filtre de secteur ou contactez la pharmacie'}}</span>
         </div>
-        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
     </div>
 </template>
 
