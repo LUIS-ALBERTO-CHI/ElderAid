@@ -102,7 +102,7 @@
                 this.showConfirmationDisplayed = false;
             },
             getQuantitySentance() {
-                const quantityType = this.article.countInBox > 1 ? 'boite' : this.article.invoicingUnit;
+                const quantityType = this.article.countInBox > 1 ? 'boîte' : this.article.invoicingUnit;
                 if (this.selectedQuantity <= 1)
                     return `Commander ${this.selectedQuantity} ${quantityType}`
                 else
