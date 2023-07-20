@@ -86,16 +86,25 @@ namespace FwaEu.MediCare.Orders.Services
                 var dateNow = _currentDateTime.Now;
                 foreach (var article in validatePeriodicOrder.Articles)
                 {
-                    entity = new()
+                    entity = repository.Query().First(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.UpdatedBy.Id == currentUser.Id);
+                    if (entity != null)
                     {
-                        Organization = organization,
-                        PatientId = validatePeriodicOrder.PatientId,
-                        ArticleId = article.ArticleId,
-                        Quantity = article.Quantity,
-                        DefaultQuantity = article.DefaultQuantity,
-                        ValidatedBy = currentUser,
-                        ValidatedOn = dateNow
-                    };
+                        entity.Quantity = article.Quantity;
+                    }
+                    else
+                    {
+                        entity = new()
+                        {
+                            Organization = organization,
+                            PatientId = validatePeriodicOrder.PatientId,
+                            ArticleId = article.ArticleId,
+                            Quantity = article.Quantity,
+                            DefaultQuantity = article.DefaultQuantity,
+                            ValidatedBy = currentUser,
+                            ValidatedOn = dateNow
+                        };
+
+                    }
                     await repository.SaveOrUpdateAsync(entity);
                     await repositorySession.Session.FlushAsync();
                 }

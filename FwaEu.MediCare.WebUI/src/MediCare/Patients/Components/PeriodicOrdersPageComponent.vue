@@ -31,6 +31,7 @@
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
+    import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/periodic-orders-master-data-service';
 
 
 
@@ -53,12 +54,14 @@
                 periodicOrders: null,
                 patient: null,
                 organization: {},
+                periodicOrderValidations: null,
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+            this.periodicOrderValidations = await PatientService.getMasterDataByPatientId(this.patient.id, 'PeriodicOrderValidations')
             this.fillPeriodicOrders();
         },
         methods: {
@@ -68,13 +71,27 @@
                 this.periodicOrders.forEach(periodicOrder => {
                     const article = articles.find(article => article.id === periodicOrder.articleId)
                     periodicOrder.article = article
-                    periodicOrder.periodicQuantity = Math.ceil((this.organization.orderPeriodicityDays * periodicOrder.quantityPerDay) / article.countInBox);
-                    periodicOrder.defaultPeriodicQuantity = Math.ceil((this.organization.orderPeriodicityDays * periodicOrder.quantityPerDay) / article.countInBox);
+                    periodicOrder.periodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
+                    periodicOrder.defaultPeriodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
+                    this.getPeriodicQuantity(periodicOrder, article)
                 })
             },
             quantityNeeded(periodicOrder) {
                 return `Besoin de ${periodicOrder.quantityPerDay * this.organization.periodicityOrderActivationDaysNumber} ${periodicOrder.article.invoicingUnit}
                 pour ${this.organization.periodicityOrderActivationDaysNumber} prochains jours`
+            },
+            getPeriodicQuantity(periodicOrder, article) {
+                const filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
+                let periodicQuantity = null;
+                for (var i = 0; i < filteredPeriodicOrderValidations.length; i++) {
+                    if (filteredPeriodicOrderValidations[i].orderedOn == null) {
+                        periodicQuantity = filteredPeriodicOrderValidations[i].quantity;
+                        return periodicQuantity;
+                    }
+                }
+                if (periodicQuantity == null) {
+                    return Math.ceil((this.organization.orderPeriodicityDays * periodicOrder.quantityPerDay) / article.countInBox);
+                } 
             },
             async onSubmit() {
                 var periodicOrders = this.periodicOrders.map(x => {
