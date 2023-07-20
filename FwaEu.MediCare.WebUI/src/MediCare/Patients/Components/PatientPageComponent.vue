@@ -10,7 +10,7 @@
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToProtectionPage" class="patient-info-item">
-            <span>2 protections</span>
+            <span>{{ protections.length }} protections</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToPatientOrdersPage" class="patient-info-item">
@@ -57,7 +57,8 @@
                 patientTreatments: null,
                 patientsOrders: null,
                 periodicOrders: null,
-                contentLoaded: false
+                contentLoaded: false,
+                protections: null
             };
         },
         async created() {
@@ -65,8 +66,9 @@
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+            this.protections = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
 
-            if (this.patientTreatments != null && this.patientsOrders != null && this.periodicOrders != null) {
+            if (this.patientTreatments != null && this.patientsOrders != null && this.periodicOrders != null && this.protections != null) {
                 this.contentLoaded = true;
             }
         },

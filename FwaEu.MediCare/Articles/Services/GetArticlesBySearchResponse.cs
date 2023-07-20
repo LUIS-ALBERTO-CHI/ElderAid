@@ -13,7 +13,7 @@ namespace FwaEu.MediCare.Articles
         public double? CountInBox { get; set; }
         public string Unit { get; set; }
         public string InvoicingUnit { get; set; }
-        public string Packaging { get; set; }
+        public string LeftAtChargeExplanation { get; set; }
         public string ThumbnailURL { get; set; }
 
         public string ImageURLs { get; set; }

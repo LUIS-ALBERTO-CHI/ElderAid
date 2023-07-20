@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="showPage" class="articles-search-page">
-            <patient-info-component />
+            <patient-info-component :patient="patient" />
             <span class="command-title">Commander un article:</span>
             <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
@@ -14,7 +14,7 @@
                 placeholder="Tous" />
             <div class="article-list">
                 <div v-for="article in filteredArticles" :key="article.id">
-                    <div class="article-item" @click="goToArticlePage">
+                    <div class="article-item" @click="goToArticlePage(article)">
                         <span style="width: 80%;">{{ article.title }}</span>
                         <div class="icons-container">
                             <i v-show="article.isFavorite" class="fa-solid fa-heart favorite-icon"></i>
@@ -104,7 +104,7 @@ export default {
             patient: null,
             showScanner: false,
             articlesType: [],
-            currentArticle: "",
+            selectedArticle: null,
         };
     },
     async created() {
@@ -144,8 +144,11 @@ export default {
             this.showScanner = false;
         },
         goToArticlePage(article) {
-            this.currentArticle = article.title;
-            this.$router.push({ name: "OrderArticle" });
+            this.selectedArticle = article;
+            this.$router.push({
+                name: "OrderArticle",
+                params: { articleId: article.id }
+            });
         },
         loadInitialArticles() {
             this.performSearch();

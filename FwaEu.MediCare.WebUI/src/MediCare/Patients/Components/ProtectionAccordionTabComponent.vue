@@ -5,7 +5,7 @@
                 <div class="accordion-header">
                     <span class="header-title">{{protection.article.title}}</span>
                     <span class="header-subtitle">{{protection.dosageDescription }}</span>
-                    <span class="header-subtitle">{{ $d(new Date(protection.dateStart)) }}  à {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(protection.dateStart)) }}</span>
+                    <span class="header-subtitle">De {{ $d(new Date(protection.dateStart)) }} à {{ $d(new Date(protection.dateEnd)) }}</span>
                     </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
