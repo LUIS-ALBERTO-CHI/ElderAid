@@ -31,10 +31,14 @@ namespace FwaEu.MediCare.Organizations.GenericAdmin
         public string PublicWebURL { get; set; }
         public string PublicMobileURL { get; set; }
 
-        public int? OrderPeriodicityDays { get; set; }
-        public int? OrderPeriodicityDayOfWeek { get; set; }
+        [Required]
+        public int OrderPeriodicityDays { get; set; }
+        [Required]
+        public int OrderPeriodicityDayOfWeek { get; set; }
+        [Required]
         public DateTime LastPeriodicityOrder { get; set; }
-        public int? PeriodicityOrderActivationDaysNumber { get; set; }
+        [Required]
+        public int PeriodicityOrderActivationDaysNumber { get; set; }
         public bool? IsStockPharmacyPerBox { get; set; }
     }
 
