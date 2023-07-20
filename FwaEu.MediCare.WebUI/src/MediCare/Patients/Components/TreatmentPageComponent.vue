@@ -10,7 +10,7 @@
                                     <span class="header-title">
                                         {{ treatment.article.title }}
                                     </span>
-                                    <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
+                                    <i v-show="treatment.article.isGalenicDosageForm" class="fa-solid fa-briefcase-medical bag-icon"></i>
                                 </div>
                                 <span class="header-subtitle">{{treatment.article.groupName}}</span>
                                 <span class="header-subtitle">{{treatment.dosageDescription}}</span>
