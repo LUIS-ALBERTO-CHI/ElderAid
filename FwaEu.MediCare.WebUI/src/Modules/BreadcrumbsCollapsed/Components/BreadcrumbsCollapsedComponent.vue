@@ -1,6 +1,6 @@
 <template>
     <div class="main-container">
-        <router-link v-show="parentName !== undefined" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
+        <router-link v-if="parentNode !== null" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
             <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
         </router-link>
         <breadcrumbs-collapsed-reduce v-if="crumbs?.length > 0" :crumbs="crumbs"></breadcrumbs-collapsed-reduce>
@@ -23,7 +23,7 @@
         },
         data() {
             return {
-                parentNode: { text: '', to: '/', parentNode: '' },
+                parentNode: null,
                 resolvedNodes: [],
                 onRouteProcessedListener: BreadcrumbService.onRouteProcessed(this.onRouteProcessed),
                 crumbs: []
@@ -66,22 +66,20 @@
             },
             nodeClicked(node) {
                 BreadcrumbService.nodeClicked.emitAsync({ component: this, node });
-
-                
-                const parentName = this.parentName;
-                this.parentNode.text = parentName;
-                this.parentNode.to = '/' + parentName;
             }
         },
         computed: {
             breadcrumbs() {
-                if (this.resolvedNodes.length > 0)
-                    this.crumbs = this.resolvedNodes.slice(0).reverse();
-                // .slice makes a copy of the array, instead of mutating the orginal
-                return this.resolvedNodes.slice(0).reverse();
-            },
-            parentName() {
-                return this.$route.meta.breadcrumb?.parentName;
+                const crumbs = this.resolvedNodes.slice(0).reverse();
+                if (crumbs.length > 0) {
+                    this.crumbs = crumbs;
+                    // .slice makes a copy of the array, instead of mutating the orginal
+                    if (crumbs.length > 1)
+                        this.parentNode = crumbs[crumbs.length - 2];
+                    else
+                        this.parentNode = null;
+                }
+                return crumbs;
             }
         },
         beforeUnmount() {
@@ -96,6 +94,6 @@
         display: flex;
         align-items: center;
         column-gap: 10px;
-      }
+    }
 </style>
 <style src="./Content/breadcrumbs.css" />

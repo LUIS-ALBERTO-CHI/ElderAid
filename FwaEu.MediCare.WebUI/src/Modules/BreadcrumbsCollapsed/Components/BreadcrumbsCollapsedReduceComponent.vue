@@ -2,12 +2,12 @@
     <div class="breadcrimbs">
         <div class="crumbContainerCollapsed crumbContainerHidden">
             <div v-for="(link, index) in props.crumbs" :key="getNodeKey(link)" :href="link.to"
-               class="crumb" @click="nodeClicked(link)" :ref="(el) => crumbRefFn(el, index)">{{link.text}}</div>
+                 class="crumb" @click="nodeClicked(link)" :ref="(el) => crumbRefFn(el, index)">{{link.text}}</div>
         </div>
         <div class="crumbContainerCollapsed">
             <div class="dropdown" :style="{ display: hiddenCount > 0 ? 'flex' : 'none' }">
-                <button @click="toggleDropDown" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
-                <div class="dropdownContent" v-show="isDropDownDisplayed">
+                <button @click="toggleCollapsed" class="dropdown-button"><i class="fa-solid fa-ellipsis dropdown-button-icon"></i></button>
+                <div class="dropdownContent" v-if="showCollapsed">
                     <router-link v-for="(link, index) in crumbsCollapsed" :key="getNodeKey(link)" :to="link.to"
                                  class="crumb" @click="nodeClicked(link)">{{link.text}}</router-link>
                 </div>
@@ -21,7 +21,7 @@
     </div>
 </template>
 <script setup>
-    import { ref, defineProps, computed } from "vue";
+    import { ref, defineProps, computed, onMounted, onBeforeUnmount } from "vue";
     import { useIntersectionList } from "../Services/useIntersectionList";
     import BreadcrumbService from '../Services/breadcrumbs-service'
 
@@ -40,12 +40,27 @@
         props.crumbs.slice(hiddenCount.value, props.crumbs.length)
     );
 
-    const isDropDownDisplayed = ref(false);
+    const showCollapsed = ref(false);
 
-    const toggleDropDown = () => {
-        console.log(isDropDownDisplayed.value)
-        isDropDownDisplayed.value = !isDropDownDisplayed.value;
+    const toggleCollapsed = () => {
+        showCollapsed.value = !showCollapsed.value;
     }
+
+    // Close the dropdown when clicking outside the button or the dropdown
+    const closeDropdown = (event) => {
+        if (!event.target.closest(".dropdown")) {
+            showCollapsed.value = false;
+        }
+    };
+
+    // Watch for clicks outside the dropdown and close it
+    onMounted(() => {
+        document.addEventListener("click", closeDropdown);
+    });
+
+    onBeforeUnmount(() => {
+        document.removeEventListener("click", closeDropdown);
+    });
 
     const getNodeKey = function (node) {
         return JSON.stringify(node.to);
@@ -79,7 +94,7 @@
         color: #e5e5e5;
     }
 
-    .crumb-separator{
+    .crumb-separator {
         padding-left: 5px;
     }
 
@@ -103,6 +118,7 @@
     .dropdown {
         display: none;
     }
+
     .dropdown-button {
         background-color: transparent;
         border: none;

@@ -7,16 +7,16 @@ const currentNotifier = notifierServices.find(ns => ns.key === Configuration.fwa
 export default {
 
 	showError(message, options = null) {
-        currentNotifier.showError(message, options);
+		return currentNotifier.showError(message, options);
     },
 	showConfirmation(message, options = null) {
-		currentNotifier.showConfirmation(message, options);
+		return currentNotifier.showConfirmation(message, options);
     },
 	showWarning(message, options = null) {
-		currentNotifier.showWarning(message, options);
+		return currentNotifier.showWarning(message, options);
     },
 
 	showInformation(message, options = null) {
-		currentNotifier.showInformation(message, options);
+		return currentNotifier.showInformation(message, options);
     }
 };

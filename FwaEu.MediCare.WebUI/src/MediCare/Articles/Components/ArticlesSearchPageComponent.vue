@@ -7,7 +7,7 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                     :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                    placeholder="Rechercher un articles" />
+                    placeholder="Rechercher un articles"/>
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
@@ -59,14 +59,15 @@ export default {
         const selectedArticleType = ref(null);
         const articles = ref([]);
         const currentPage = ref(0);
+        const nextPage = ref(0);
+        const pageSize = ref(30);
         const performSearch = async () => {
             const value = searchValue.value.toLowerCase().trim();
             if (!value) {
                 filteredArticles.value = articles.value;
             } else if (value.length >= 3) {
-                filteredArticles.value = articles.value.filter((article) =>
-                    article.title.toLowerCase().includes(value)
-                );
+                const response = await ArticlesService.getAllBySearchAsync(searchValue.value, selectedArticleType.value, nextPage.value, pageSize.value);
+                filteredArticles.value = response.articles;
             } else {
                 filteredArticles.value = [];
             }
@@ -92,6 +93,8 @@ export default {
             performSearch,
             currentPage,
             watchResetPage,
+            nextPage,
+            pageSize
         };
     },
     data() {
@@ -111,14 +114,8 @@ export default {
     },
     methods: {
         async loadMoreArticlesAsync() {
-            const nextPage = this.currentPage + 1;
-            const pageSize = 30;
-            const response = await ArticlesService.getAllBySearchAsync(this.searchValue, this.selectedArticleType, nextPage, pageSize);
-            if (Array.isArray(response.articles)) {
-                this.articles = [...this.articles, ...response.articles];
-            }
+            const nextPage = this.currentPage + 1;            
             this.currentPage = nextPage;
-            this.loadFromServer = true;
             this.performSearch();
         },
         removeSearch() {
