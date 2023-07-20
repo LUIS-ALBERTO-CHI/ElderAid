@@ -22,7 +22,9 @@
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import StockConsumptionService from '@/MediCare/StockConsumption/Services/stock-consumption-service'
-	import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 
 
@@ -62,17 +64,21 @@
                 })
             },
             async getMoreStocks() {
-                var model = {
-                patientId: this.patient.id,
-                page: this.actualPage++,
-                pageSize: Configuration.paginationSize.stockConsumptions,
+                if (OnlineService.isOnline()) {
+                    var model = {
+                        patientId: this.patient.id,
+                        page: this.actualPage++,
+                        pageSize: Configuration.paginationSize.stockConsumptions,
+                    }
+
+                    var stockConsumptions = await StockConsumptionService.getAllAsync(model)
+                    if (stockConsumptions.length < Configuration.paginationSize.stockConsumptions)
+                        this.isEndOfPagination = true;
+
+                    this.stockConsumptions = this.stockConsumptions.concat(stockConsumptions)
+                } else {
+                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
-
-                var stockConsumptions = await StockConsumptionService.getAllAsync(model)
-                if (stockConsumptions.length < Configuration.paginationSize.stockConsumptions)
-                    this.isEndOfPagination = true;
-
-                this.stockConsumptions = this.stockConsumptions.concat(stockConsumptions)
             }
         },
         computed: {
