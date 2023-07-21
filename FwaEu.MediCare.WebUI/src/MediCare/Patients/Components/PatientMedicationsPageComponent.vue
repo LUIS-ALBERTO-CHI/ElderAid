@@ -13,7 +13,7 @@
             <span>{{ patientTreatments.filter(x => x.treatmentType == "Erased").length }} traitements effacés</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button style="margin-top: 20px;" label="Commander un autre produit" />
+        <Button @click="goToSearchArticlePage()" style="margin-top: 20px;" label="Commander un autre produit" />
     </div>
 </template>
 
@@ -49,12 +49,15 @@
         },
         methods: {
             goToTreatmentPage(treatmentType) {
-            if (treatmentType == "Fixe")
-                this.$router.push({ name: "TreatmentsFixe", params: { id: this.patient.id, treatmentType: treatmentType } });
-            else if (treatmentType == "Erased")
-                this.$router.push({ name: "TreatmentsErased", params: { id: this.patient.id, treatmentType: treatmentType } });
-            else
-                this.$router.push({ name: "TreatmentsReserve", params: { id: this.patient.id, treatmentType: treatmentType } });
+                if (treatmentType == "Fixe")
+                    this.$router.push({ name: "TreatmentsFixe", params: { id: this.patient.id, treatmentType: treatmentType } });
+                else if (treatmentType == "Erased")
+                    this.$router.push({ name: "TreatmentsErased", params: { id: this.patient.id, treatmentType: treatmentType } });
+                else
+                    this.$router.push({ name: "TreatmentsReserve", params: { id: this.patient.id, treatmentType: treatmentType } });
+            },
+            goToSearchArticlePage() {
+                this.$router.push({ name: "SearchArticle" });
             },
         },
         computed: {
