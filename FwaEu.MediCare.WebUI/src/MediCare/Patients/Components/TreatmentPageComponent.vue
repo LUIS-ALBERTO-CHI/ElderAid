@@ -1,35 +1,35 @@
 <template>
     <div class="treatment-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
-            <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)" >
-                <template v-for="(treatment, index) in patientTreatments" :key="index">
-                    <AccordionTab :disabled="isArticleNotFound(treatment)">
-                        <template #header>
-                            <div v-if="treatment.article != null" class="accordion-header">
-                                <div class="accordion-top-area">
-                                    <span class="header-title">
-                                        {{ treatment.article.title }}
-                                    </span>
-                                    <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
-                                </div>
-                                <span class="header-subtitle">{{treatment.article.groupName}}</span>
-                                <span class="header-subtitle">{{treatment.dosageDescription}}</span>
-                                <div>
-                                    <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
-                                </div>
+        <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)">
+            <template v-for="(treatment, index) in patientTreatments" :key="index">
+                <AccordionTab :disabled="isArticleNotFound(treatment)">
+                    <template #header>
+                        <div v-if="treatment.article != null" class="accordion-header">
+                            <div class="accordion-top-area">
+                                <span class="header-title">
+                                    {{ treatment.article.title }}
+                                </span>
+                                <i v-show="treatment.isBag" class="fa-solid fa-briefcase-medical bag-icon"></i>
                             </div>
-                            <div v-else class="accordion-header">
-                                <div  class="accordion-top-area">
-                                    <span class="header-title">
-                                            {{ treatment.alternativeArticleDescription }}
-                                    </span>
-                                </div>
+                            <span class="header-subtitle">{{treatment.article.groupName}}</span>
+                            <span class="header-subtitle">{{treatment.dosageDescription}}</span>
+                            <div>
+                                <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
                             </div>
-                        </template>
-                        <OrderComponent v-if="treatment.article" :article="treatment.article" :patientOrders="patientOrders"/>
-                    </AccordionTab>
-                </template>
-            </Accordion>
+                        </div>
+                        <div v-else class="accordion-header">
+                            <div class="accordion-top-area">
+                                <span class="header-title">
+                                    {{ treatment.alternativeArticleDescription }}
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+                    <OrderComponent v-if="treatment.article" :article="treatment.article" :patientOrders="patientOrders" />
+                </AccordionTab>
+            </template>
+        </Accordion>
         <EmptyListComponent v-show="patientTreatments != null && patientTreatments.length < 1" />
     </div>
 
@@ -48,9 +48,6 @@
     import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
-    
-
-
 
     export default {
         components: {
@@ -117,16 +114,13 @@
             },
             isArticleNotFound(treatment) {
                 if (treatment.appliedArticleId === 0 || treatment.appliedArticleId === null &&
-                treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
+                    treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
                     return true
                 } else {
                     return false
                 }
             }
         },
-        computed: {
-        },
-
     }
 </script>
 <style type="text/css" scoped src="./Content/treatment-page.css">
