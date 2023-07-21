@@ -24,6 +24,7 @@ namespace FwaEu.MediCare.Treatments
 
         public int PrescribedArticleId { get; set; }
         public int AppliedArticleId { get; set; }
+        public string AlternativeArticleDescription { get; set; }
 
         public string DosageDescription { get; set; }
 
@@ -49,6 +50,8 @@ namespace FwaEu.MediCare.Treatments
             Map(entity => entity.PatientId).Column("PatientId");
             Map(entity => entity.PrescribedArticleId).Column("PrescribedArticleId");
             Map(entity => entity.AppliedArticleId).Column("AppliedArticleId");
+            Map(entity => entity.AlternativeArticleDescription).Column("AlternativeArticleDescription");
+
             Map(entity => entity.DosageDescription).Column("DosageDescription");
             Map(entity => entity.DateStart).Column("DateStart");
             Map(entity => entity.DateEnd).Column("DateEnd");

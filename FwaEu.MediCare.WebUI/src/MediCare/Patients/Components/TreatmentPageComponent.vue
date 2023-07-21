@@ -1,11 +1,11 @@
 <template>
     <div class="treatment-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
-            <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)">
+            <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)" >
                 <template v-for="(treatment, index) in patientTreatments" :key="index">
-                    <AccordionTab>
+                    <AccordionTab :disabled="isArticleNotFound(treatment)">
                         <template #header>
-                            <div class="accordion-header">
+                            <div v-if="treatment.article != null" class="accordion-header">
                                 <div class="accordion-top-area">
                                     <span class="header-title">
                                         {{ treatment.article.title }}
@@ -18,8 +18,15 @@
                                     <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
                                 </div>
                             </div>
+                            <div v-else class="accordion-header">
+                                <div  class="accordion-top-area">
+                                    <span class="header-title">
+                                            {{ treatment.alternativeArticleDescription }}
+                                    </span>
+                                </div>
+                            </div>
                         </template>
-                        <OrderComponent :article="treatment.article" :patientOrders="patientOrders"/>
+                        <OrderComponent v-if="treatment.article" :article="treatment.article" :patientOrders="patientOrders"/>
                     </AccordionTab>
                 </template>
             </Accordion>
@@ -73,9 +80,7 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
-            this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
-
+            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             if (this.$route.params.treatmentType) {
                 this.patientTreatments = this.patientTreatments.filter(treatment => treatment.treatmentType === this.$route.params.treatmentType)
             }
@@ -95,16 +100,32 @@
                 });
             },
             async fillPatientTreatments() {
-                const treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
+                let treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
+                treatmentArticleIds = treatmentArticleIds.concat(this.patientTreatments.map(treatment => treatment.prescribedArticleId))
                 const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
+                console.warn(this.patientTreatments)
                 this.patientTreatments.forEach(treatment => {
-                    const article = articles.find(article => article.id === treatment.appliedArticleId)
-                    treatment.article = article
+                    if (treatment.appliedArticleId !== 0 || treatment.appliedArticleId !== null) {
+                        const article = articles.find(article => article.id === treatment.appliedArticleId)
+                        treatment.article = article
+                    } else if (treatment.prescribedArticleId !== 0 || treatment.prescribedArticleId !== null) {
+                        const article = articles.find(article => article.id === treatment.prescribedArticleId)
+                        treatment.article = article
+                    } else {
+                        treatment.article = null
+                    }
                 })
             },
+            isArticleNotFound(treatment) {
+                if (treatment.appliedArticleId === 0 || treatment.appliedArticleId === null &&
+                treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
+                    return true
+                } else {
+                    return false
+                }
+            }
         },
         computed: {
-
         },
 
     }
