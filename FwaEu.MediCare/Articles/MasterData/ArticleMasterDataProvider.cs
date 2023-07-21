@@ -8,18 +8,23 @@ using System.Collections.Generic;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Fwamework.Data.Database.Sessions;
 using NHibernate.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using FwaEu.MediCare.Referencials;
+using NHibernate.Util;
 
 namespace FwaEu.MediCare.Articles.MasterData
 {
     public class ArticleMasterDataProvider : IMasterDataProvider
     {
-        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, GenericSessionContext sessionContext)
+        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, GenericSessionContext sessionContext, MainSessionContext mainSessionContext)
         {
             _sessionContext = sessionContext ?? throw new ArgumentNullException(nameof(sessionContext));
             if (!_dateTimeNow.HasValue)
             {
                 _dateTimeNow = currentDateTime.Now;
+            }
+            if (GalenicDosageForms == null)
+            {
+                GalenicDosageForms = mainSessionContext.RepositorySession.Create<DosageFormEntityRepository>().Query().Select(x => x.Name).ToArray();
             }
         }
 
@@ -27,6 +32,7 @@ namespace FwaEu.MediCare.Articles.MasterData
         public Type IdType => typeof(string);
 
         private static DateTime? _dateTimeNow = null;
+        public static string[] GalenicDosageForms = null;
 
         public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
         {
@@ -58,13 +64,19 @@ namespace FwaEu.MediCare.Articles.MasterData
         {
             int[] articleIds = parameters.Ids.Select(Convert.ToInt32).ToArray();
             var models = await GetAllAsync();
+  
             return models.Where(x => articleIds.Contains(x.Id));
         }
 
 
         protected async Task<IEnumerable<ArticleEntity>> GetAllAsync()
         {
-            return await _sessionContext.RepositorySession.Create<ArticleEntityRepository>().Query().ToListAsync();
+            var models = await _sessionContext.RepositorySession.Create<ArticleEntityRepository>().Query().ToListAsync();
+            foreach (var model in models)
+            {
+                model.IsGalenicDosageForm = GalenicDosageForms.Contains(model.Unit, StringComparer.OrdinalIgnoreCase);
+            }
+            return models;
         }
     }
 }

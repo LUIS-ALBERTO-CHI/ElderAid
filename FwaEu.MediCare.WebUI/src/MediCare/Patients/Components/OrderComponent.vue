@@ -102,11 +102,15 @@
                 this.showConfirmationDisplayed = false;
             },
             getQuantitySentance() {
+                let textToDisplay = "Commander"
+                if (this.article.isGalenicDosageForm)
+                    return textToDisplay;
                 const quantityType = this.article.countInBox > 1 ? 'boîte' : this.article.invoicingUnit;
                 if (this.selectedQuantity <= 1)
-                    return `Commander ${this.selectedQuantity} ${quantityType}`
+                    textToDisplay += ` ${this.selectedQuantity} ${quantityType}`
                 else
-                    return `Commander ${this.selectedQuantity} ${quantityType}s`
+                    textToDisplay += ` ${this.selectedQuantity} ${quantityType}s`
+                return textToDisplay;
             },
             goToSearchSubstituts(articleTitle) {
                 this.currentArticle = articleTitle;
