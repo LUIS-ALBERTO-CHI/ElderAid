@@ -115,7 +115,7 @@ export default {
             organizationsLink: [],
             startLoadTime: 0,
             distinctPeriodicOrders: [],
-
+            cabinets: []
         };
     },
     created: showLoadingPanel(async function () {
@@ -124,6 +124,8 @@ export default {
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
+
+        this.cabinets = await CabinetsMasterDataService.getAllAsync();
 
         if (this.organizations.length == 1) {
             this.isSingleOrganization = true;
@@ -157,7 +159,6 @@ export default {
                         OrdersMasterDataService.getAllAsync(),
                         BuildingsMasterDataService.getAllAsync(),
                         UserOrganizationsMasterDataService.getAllAsync(),
-                        CabinetsMasterDataService.getAllAsync(),
                         ProtectionsMasterDataService.getAllAsync(),
                         TreatmentsMasterDataService.getAllAsync(),
                         StockConsumptionMasterDataService.getAllAsync()
@@ -200,7 +201,11 @@ export default {
             this.$router.push("/Orders")
         },
         goToCabinetsPage() {
-            this.$router.push("/stockPharmacy")
+            if (this.cabinets.length < 2) {
+                this.$router.push("/Cabinet/" + this.cabinets[0].id);
+            } else {
+                this.$router.push("/stockPharmacy")
+            }
         },
         goToPeriodicPage() {
             // this.$router.push("/PeriodicOrders")
