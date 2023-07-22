@@ -201,7 +201,7 @@ export default {
             this.$router.push("/Orders")
         },
         goToCabinetsPage() {
-            if (this.cabinets.length < 2) {
+            if (this.cabinets.length == 1) {
                 this.$router.push("/Cabinet/" + this.cabinets[0].id);
             } else {
                 this.$router.push("/stockPharmacy")
