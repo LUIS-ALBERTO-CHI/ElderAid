@@ -13,7 +13,7 @@ namespace FwaEu.MediCare.Organizations.Part.Services
 {
 	public class OrganizationPartHandler : EditablePartHandler<OrganizationPartModel, OrganizationPartModel>
 	{
-		public const string PartName = "AdminOrganizations";
+		public const string PartName = "Organizations";
 		public override string Name => PartName;
 
 		public OrganizationPartHandler(

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Orders.WebApi
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class OrdersController : Controller
@@ -85,24 +85,5 @@ namespace FwaEu.MediCare.Orders.WebApi
                 return NotFound();
             }
         }
-
-
-
-
-        // POST /Orders/Create
-        [HttpPost("TESTT")]
-        public async Task<IActionResult> TestAsync(int organizationId, IOrderService orderService)
-        {
-            try
-            {
-                await orderService.CreatePeriodicOrderAsync(organizationId);
-                return Ok();
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
-        }
-
     }
 }
