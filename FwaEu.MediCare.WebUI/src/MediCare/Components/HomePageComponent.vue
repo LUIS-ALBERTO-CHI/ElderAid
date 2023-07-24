@@ -87,45 +87,48 @@
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
     import notificationService from '../../Fwamework/Notifications/Services/notification-service';
 
-    export default {
-        inject: ["deviceInfo"],
-        mixins: [LocalizationMixing],
-        components: {
-            Dropdown
-        },
-        i18n: {
-            messages: {
-                getMessagesAsync(locale) {
-                    return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
-                }
+export default {
+    inject: ["deviceInfo"],
+    mixins: [LocalizationMixing],
+    components: {
+        Dropdown
+    },
+    i18n: {
+        messages: {
+            getMessagesAsync(locale) {
+                return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
             }
-        },
-        data() {
-            const $this = this;
-            return {
-                isCurrentUserAuthenticated: false,
-                selectedOrganization: null,
-                organizationsOptions: [],
-                isSingleOrganization: false,
-                patientsActive: [],
-                currentDatabase: ViewContextService.get()?.id,
-                viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
-                    $this.currentDatabase = viewContext.id;
-                }),
-                isUserAdmin: false,
-                organizations: [],
-                organizationsLink: [],
-                startLoadTime: 0,
-                distinctPeriodicOrders: [],
+        }
+    },
+    data() {
+        const $this = this;
+        return {
+            isCurrentUserAuthenticated: false,
+            selectedOrganization: null,
+            organizationsOptions: [],
+            isSingleOrganization: false,
+            patientsActive: [],
+            currentDatabase: ViewContextService.get()?.id,
+            viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
+                $this.currentDatabase = viewContext.id;
+            }),
+            isUserAdmin: false,
+            organizations: [],
+            organizationsLink: [],
+            startLoadTime: 0,
+            distinctPeriodicOrders: [],
+            cabinets: []
+        };
+    },
+    created: showLoadingPanel(async function () {
+        this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
+        const currentUser = await CurrentUserService.getAsync();
+        this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
-            };
-        },
-        created: showLoadingPanel(async function () {
-            this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
-            const currentUser = await CurrentUserService.getAsync();
-            this.isUserAdmin = currentUser.parts.adminState.isAdmin;
+        this.organizations = await OrganizationsMasterDataService.getAllAsync();
 
-            this.organizations = await OrganizationsMasterDataService.getAllAsync();
+        this.cabinets = await CabinetsMasterDataService.getAllAsync();
+
 
             if (this.organizations.length == 1) {
                 this.isSingleOrganization = true;
@@ -143,34 +146,33 @@
         methods: {
             async loadAllMasterDataAsync(onlyEms) {
 
-                this.startLoadTime = new Date().getTime();
-                const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
-                    {
-                        progressBar: true,
-                        layout: 'center',
-                        killer: true,
-                        timeout: false,
-                        closeWith: [],
-                        modal: true
-                    });
-                try {
-                    //NOTE: Loading data only when the currentdatabase invariantId is avlaible
-                    if (this.currentDatabase != null) {
-                        const patients = await PatientsMasterDataService.getAllAsync();
-                        const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
-                        await Promise.all([
-                            ArticlesMasterDataService.getAllAsync(),
-                            OrdersMasterDataService.getAllAsync(),
-                            BuildingsMasterDataService.getAllAsync(),
-                            UserOrganizationsMasterDataService.getAllAsync(),
-                            CabinetsMasterDataService.getAllAsync(),
-                            ProtectionsMasterDataService.getAllAsync(),
-                            TreatmentsMasterDataService.getAllAsync(),
-                            StockConsumptionMasterDataService.getAllAsync()
-                        ]);
-                        this.patientsActive = patients.filter(x => x.isActive);
-                        this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
-                    }
+            this.startLoadTime = new Date().getTime();
+            const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
+                {
+                    progressBar: true,
+                    layout: 'center',
+                    killer: true,
+                    timeout: false,
+                    closeWith: [],
+                    modal: true
+                });
+            try {
+                //NOTE: Loading data only when the currentdatabase invariantId is avlaible
+                if (this.currentDatabase != null) {
+                    const patients = await PatientsMasterDataService.getAllAsync();
+                    const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+                    await Promise.all([
+                        ArticlesMasterDataService.getAllAsync(),
+                        OrdersMasterDataService.getAllAsync(),
+                        BuildingsMasterDataService.getAllAsync(),
+                        UserOrganizationsMasterDataService.getAllAsync(),
+                        ProtectionsMasterDataService.getAllAsync(),
+                        TreatmentsMasterDataService.getAllAsync(),
+                        StockConsumptionMasterDataService.getAllAsync()
+                    ]);
+                    this.patientsActive = patients.filter(x => x.isActive);
+                    this.distinctPeriodicOrders = periodicOrders.filter((v,i,a)=>a.findIndex(t=>(t.patientId === v.patientId))===i);
+                }
 
                     if (!onlyEms) {
                         await Promise.all([
@@ -179,39 +181,43 @@
                         ]);
                     }
 
-                    const loadingTime = new Date().getTime() - this.startLoadTime;
-                    if (loadingTime < 5000) {
-                        await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
-                    }
-                } finally {
-                    notification.close();
+                const loadingTime = new Date().getTime() - this.startLoadTime;
+                if (loadingTime < 5000) {
+                    await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
                 }
-            },
-            goToLoginFront() {
+            } finally {
+                notification.close();
+            }
+        },
+        goToLoginFront() {
+            this.$router.push("/Login")
+        },
+        async logoutAsync() {
+            AuthenticationService.logoutAsync().then(() => {
                 this.$router.push("/Login")
-            },
-            async logoutAsync() {
-                AuthenticationService.logoutAsync().then(() => {
-                    this.$router.push("/Login")
-                });
-            },
-            goToPatientPage() {
-                this.$router.push("/SearchPatient")
-                localStorage.removeItem("searchPatient")
-            },
-            goToProfilPage() {
-                this.$router.push("/UserSettings")
-            },
-            goToOrdersPage() {
-                this.$router.push("/Orders")
-            },
-            goToCabinetsPage() {
+            });
+        },
+        goToPatientPage() {
+            this.$router.push("/SearchPatient")
+            localStorage.removeItem("searchPatient")
+        },
+        goToProfilPage() {
+            this.$router.push("/UserSettings")
+        },
+        goToOrdersPage() {
+            this.$router.push("/Orders")
+        },
+        goToCabinetsPage() {
+            if (this.cabinets.length == 1) {
+                this.$router.push("/Cabinet/" + this.cabinets[0].id);
+            } else {
                 this.$router.push("/stockPharmacy")
-            },
-            goToPeriodicPage() {
-                // this.$router.push("/PeriodicOrders")
-            },
-            refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
+            }
+        },
+        goToPeriodicPage() {
+            // this.$router.push("/PeriodicOrders")
+        },
+        refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
 
                 // NOTE : Update the ViewContext to save the selected database
                 // const organizations = await OrganizationsMasterDataService.getAllAsync();
