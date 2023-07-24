@@ -65,7 +65,7 @@ using FwaEu.MediCare.Authentication;
 using FwaEu.MediCare.Stock;
 using FwaEu.MediCare.Articles;
 using FwaEu.MediCare.Treatments;
-
+using FwaEu.Modules.BackgroundTasks;
 
 namespace FwaEu.MediCare
 {
@@ -142,6 +142,8 @@ namespace FwaEu.MediCare
                 services.AddFwameworkDataFileServices();
                 services.AddFwameworkFormatting();
                 services.AddFwameworkModelValidation();
+
+                services.AddFwameworkModuleBackgroundTasksServices();
 
                 services.AddFwameworkModuleDataImport();
                 services.AddFwameworkModuleGenericImporter();

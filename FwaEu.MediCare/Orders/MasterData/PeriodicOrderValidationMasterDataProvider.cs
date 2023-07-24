@@ -17,8 +17,7 @@ namespace FwaEu.MediCare.Orders.MasterData
             CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
         {
             return entity => new PeriodicOrderValidationEntityMasterDataModel(entity.Id, entity.ArticleId, entity.PatientId, entity.Organization.Id, 
-                                                        entity.Quantity, entity.DefaultQuantity, entity.OrderedOn, entity.ValidatedBy.Id, entity.ValidatedOn,
-                                                        entity.CreatedBy.Id, entity.CreatedOn, entity.UpdatedBy.Id, entity.UpdatedOn);
+                                                        entity.Quantity, entity.DefaultQuantity, entity.OrderedOn, entity.ValidatedBy.Id, entity.ValidatedOn);
         }
 
         protected override Expression<Func<PeriodicOrderValidationEntity, bool>> CreateSearchExpression(string search,
@@ -32,8 +31,7 @@ namespace FwaEu.MediCare.Orders.MasterData
     {
 
         public PeriodicOrderValidationEntityMasterDataModel(int id, int articleId, int patientId, int organizationId, int quantity,
-                                                                int defaultQuantity, DateTime? orderedOn, int validatedById, DateTime validatedOn, 
-                                                                        int createdById, DateTime createdOn, int updatedById, DateTime updatedOn)
+                                                                int defaultQuantity, DateTime? orderedOn, int validatedById, DateTime validatedOn)
         {
             Id = id;
             ArticleId = articleId;
@@ -44,10 +42,6 @@ namespace FwaEu.MediCare.Orders.MasterData
             OrderedOn = orderedOn;
             ValidatedById = validatedById;
             ValidatedOn = validatedOn;
-            CreatedById = createdById;
-            CreatedOn = createdOn;
-            UpdatedById = updatedById;
-            UpdatedOn = updatedOn;
         }
 
         public int Id { get; }
@@ -61,10 +55,5 @@ namespace FwaEu.MediCare.Orders.MasterData
         public DateTime? OrderedOn { get;  }
         public int ValidatedById { get;  }
         public DateTime ValidatedOn { get; }
-
-        public int CreatedById { get; }
-        public DateTime CreatedOn { get; }
-        public int UpdatedById { get; }
-        public DateTime UpdatedOn { get; }
     }
 }
