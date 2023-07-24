@@ -6,6 +6,7 @@ export default [
         name: 'SearchArticle',
         component: ArticlesSearchPageComponent,
         meta: {
+            title: 'Commander un autre produit',
             breadcrumb: {
                 titleKey: 'Commander un autre produit',
                 parentName: 'Patient'
