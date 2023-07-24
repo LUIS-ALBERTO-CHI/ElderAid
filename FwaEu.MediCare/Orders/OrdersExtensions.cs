@@ -8,6 +8,7 @@ using FwaEu.Modules.BackgroundTasks;
 using System;
 using FwaEu.MediCare.Orders.BackgroundTasks;
 using System.Linq;
+using FwaEu.Fwamework.Data.Database.Nhibernate;
 
 namespace FwaEu.MediCare.Orders
 {
@@ -31,6 +32,8 @@ namespace FwaEu.MediCare.Orders
             var backgroundTaskRegularityInMinutes = Convert.ToDouble(backgroundTaskRegularityInMinutesSection.Value);
             services.AddScheduledBackgroundTask<PeriodicOrderBackgroundTask>
                             (PeriodicOrderBackgroundTask.TaskName, TimeSpan.FromMinutes(backgroundTaskRegularityInMinutes));
+
+            services.AddTransient<IEventListenersInitializer, UpdatingOrganizationEventListenerInitializer>();
 
             return services;
         }

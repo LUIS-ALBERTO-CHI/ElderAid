@@ -22,7 +22,6 @@ namespace FwaEu.MediCare.Organizations
             repositoryRegister.Add<OrganizationUserLinkEntityRepository>();
 
             services.AddMasterDataProvider<OrganizationEntityMasterDataProvider>("Organizations");
-            services.AddMasterDataProvider<AdminOrganizationEntityMasterDataProvider>("AdminOrganizations");
 
             services.AddMasterDataProvider<UserOrganizationsMasterDataProvider>("UserOrganizations");
 

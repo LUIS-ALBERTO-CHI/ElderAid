@@ -24,17 +24,17 @@ namespace FwaEu.MediCare.Orders.Services
         private readonly GenericSessionContext _genericsessionContext;
         private readonly MainSessionContext _mainSessionContext;
         private readonly ICurrentUserService _currentUserService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICurrentDateTime _currentDateTime;
         private readonly IManageGenericDbService _manageGenericDbService;
-
-        public OrderService(GenericSessionContext genericSessionContext, MainSessionContext mainSessionContext, ICurrentUserService currentUserService,
-                            IHttpContextAccessor httpContextAccessor, ICurrentDateTime currentDateTime, IManageGenericDbService manageGenericDbService)
+        public OrderService(GenericSessionContext genericSessionContext,
+                                MainSessionContext mainSessionContext,
+                                    ICurrentUserService currentUserService,
+                                        ICurrentDateTime currentDateTime,
+                                             IManageGenericDbService manageGenericDbService)
         {
             _genericsessionContext = genericSessionContext;
             _mainSessionContext = mainSessionContext;
             _currentUserService = currentUserService;
-            _httpContextAccessor = httpContextAccessor;
             _currentDateTime = currentDateTime;
             _manageGenericDbService = manageGenericDbService;
         }
@@ -52,13 +52,14 @@ namespace FwaEu.MediCare.Orders.Services
             return models.ToList();
         }
 
-        public async Task CreateOrdersAsync(CreateOrdersPost[] orders, bool isPeriodicOrder = false)
+        public async Task CreateOrdersAsync(CreateOrdersPost[] orders, string databaseName = null)
         {
             var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :UserLogin, :UserIp";
-
+            if (databaseName != null)
+                _genericsessionContext.NhibernateSession.Connection.ChangeDatabase(databaseName);
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
 
-            var currentUserLogin = !isPeriodicOrder ? ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login
+            var currentUserLogin = databaseName == null ? ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login
                                                         : "ROBOT";
             var currentUserIp = GetCurrentIpAddress();
 
@@ -143,12 +144,13 @@ namespace FwaEu.MediCare.Orders.Services
                                                       .ToArray();
                 if (orders.Length > 0)
                 {
-                    await CreateOrdersAsync(orders, true);
+                    await CreateOrdersAsync(orders, organization.DatabaseName);
                     var dateTimeNow = _currentDateTime.Now;
                     foreach (var periodicOrderValidation in periodicOrderValidations)
                     {
                         periodicOrderValidation.OrderedOn = dateTimeNow;
                         await periodicOrderValidationRepository.SaveOrUpdateAsync(periodicOrderValidation);
+                        await repositorySession.Session.FlushAsync();
                     }
                     organization.LastPeriodicityOrder = dateTimeNow;
                     await organizationRepository.SaveOrUpdateAsync(organization);

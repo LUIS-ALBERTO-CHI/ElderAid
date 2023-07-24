@@ -1,5 +1,4 @@
-﻿using FluentNHibernate.Utils;
-using FwaEu.Fwamework.Data.Database.Sessions;
+﻿using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.Fwamework.Temporal;
 using FwaEu.MediCare.Orders.Services;
 using FwaEu.MediCare.Organizations;
@@ -8,8 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NHibernate.Linq;
-using NHibernate.Loader.Custom;
-using NHibernate.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
