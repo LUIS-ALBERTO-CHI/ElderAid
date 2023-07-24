@@ -9,6 +9,7 @@ let globalRoutes = [
         path: "/",
         component: Home,
         meta: {
+            title: 'Accueil',
             allowAnonymous: false,
             breadcrumb: {
                 titleKey: 'Accueil'

@@ -8,6 +8,7 @@ export default [
 		name: 'Orders',
 		component: OrdersPageComponent,
 		meta: {
+			title: 'Commandes',
 			breadcrumb: {
 				titleKey: 'Commandes',
 				parentName: 'default'
