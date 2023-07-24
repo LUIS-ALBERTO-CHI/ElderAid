@@ -30,7 +30,7 @@
         <div v-else class="new-order-container">
             <span style="font-weight: bold; font-size: 18px;">Nouvelle commande :</span>
             <Button @click="goToSearchPatient" label="Pour un patient" icon="fa fa-solid fa-angle-right" iconPos="right" />
-            <Button @click="goToSearchPatient" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button @click="goToArticle" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
             <Button @click="displayNewOrder" label="Retour" />
         </div>
     </div>
@@ -91,7 +91,10 @@
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
-                this.$router.push({ name: "SearchPatient" });
+                this.$router.push({ name: "SearchPatientFromOrder" });
+            },
+            goToArticle() {
+                this.$router.push({ name: "SearchArticleForEMSFromOrder" });
             },
             async fillOrders() {
                 const ordersArticleIds = this.orders.map(x => x.articleId);
