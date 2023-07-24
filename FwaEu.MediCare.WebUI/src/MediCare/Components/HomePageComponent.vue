@@ -70,22 +70,11 @@
     import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
     import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
 
-    import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
     import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
-    import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
-    import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
-    import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
     import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
-    import DosageFormMasterDataService from "@/MediCare/Referencials/Services/dosage-form-master-data-service";
-    import ProtectionsMasterDataService from "@/MediCare/Referencials/Services/protections-master-data-service";
-    import TreatmentsMasterDataService from "@/MediCare/Referencials/Services/treatments-master-data-service";
-    import StockConsumptionMasterDataService from "@/MediCare/StockConsumption/Services/stock-consumption-master-data-service";
-    import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
-    import PeriodicOrdersMasterDataService from "@/MediCare/Orders/Services/periodic-orders-master-data-service";
 
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
-    import notificationService from '../../Fwamework/Notifications/Services/notification-service';
+    import CachePreloaderService from '@/MediCare/Services/cache-preloader-service';
 
 export default {
     inject: ["deviceInfo"],
@@ -117,7 +106,7 @@ export default {
             organizationsLink: [],
             startLoadTime: 0,
             distinctPeriodicOrders: [],
-            cabinets: []
+            cabinets: [],
         };
     },
     created: showLoadingPanel(async function () {
@@ -141,54 +130,9 @@ export default {
                     this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
                 }
             }
-            await this.loadAllMasterDataAsync(false);
+            await CachePreloaderService.loadAllMasterDataAsync(this, false);
         }),
         methods: {
-            async loadAllMasterDataAsync(onlyEms) {
-
-            this.startLoadTime = new Date().getTime();
-            const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
-                {
-                    progressBar: true,
-                    layout: 'center',
-                    killer: true,
-                    timeout: false,
-                    closeWith: [],
-                    modal: true
-                });
-            try {
-                //NOTE: Loading data only when the currentdatabase invariantId is avlaible
-                if (this.currentDatabase != null) {
-                    const patients = await PatientsMasterDataService.getAllAsync();
-                    const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
-                    await Promise.all([
-                        ArticlesMasterDataService.getAllAsync(),
-                        OrdersMasterDataService.getAllAsync(),
-                        BuildingsMasterDataService.getAllAsync(),
-                        UserOrganizationsMasterDataService.getAllAsync(),
-                        ProtectionsMasterDataService.getAllAsync(),
-                        TreatmentsMasterDataService.getAllAsync(),
-                        StockConsumptionMasterDataService.getAllAsync()
-                    ]);
-                    this.patientsActive = patients.filter(x => x.isActive);
-                    this.distinctPeriodicOrders = periodicOrders.filter((v,i,a)=>a.findIndex(t=>(t.patientId === v.patientId))===i);
-                }
-
-                    if (!onlyEms) {
-                        await Promise.all([
-                            DosageFormMasterDataService.getAllAsync(),
-                            ArticlesTypeMasterDataService.getAllAsync()
-                        ]);
-                    }
-
-                const loadingTime = new Date().getTime() - this.startLoadTime;
-                if (loadingTime < 5000) {
-                    await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
-                }
-            } finally {
-                notification.close();
-            }
-        },
         goToLoginFront() {
             this.$router.push("/Login")
         },
