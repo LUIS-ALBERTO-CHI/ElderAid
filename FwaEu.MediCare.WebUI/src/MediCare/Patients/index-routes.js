@@ -16,17 +16,19 @@ export default [
 		name: 'SearchPatient',
 		component: SearchPatientPageComponent,
 		meta: {
+			title: 'Patients',
 			breadcrumb: {
 				titleKey: 'Patients',
 				parentName: 'default'
 			},
-		}
+		},
 	},
 	{
 		path: '/Patient/:id',
 		name: 'Patient',
 		component: PatientPageComponent,
 		meta: {
+			title: 'Patient',
 			breadcrumb: {
 				parentName: 'SearchPatient',
 				async onNodeResolve(node, context) {
@@ -49,6 +51,7 @@ export default [
 		name: 'PatientMedications',
 		component: PatientMedicationsPageComponent,
 		meta: {
+			title: 'Médicaments',
 			breadcrumb: {
 				titleKey: 'Médicaments',
 				parentName: 'Patient'
@@ -62,6 +65,7 @@ export default [
 		name: 'Treatments',
 		component: TreatmentPageComponent,
 		meta: {
+			title: 'Traitements',
 			breadcrumb: {
 				titleKey: 'Traitements',
 				parentName: 'Patient'
@@ -73,8 +77,9 @@ export default [
 		name: 'TreatmentsReserve',
 		component: TreatmentPageComponent,
 		meta: {
+			title: 'Traitements de réserve',
 			breadcrumb: {
-				titleKey: 'Traitement de réserve',
+				titleKey: 'Traitements de réserve',
 				parentName: 'PatientMedications'
 			},
 		}
@@ -84,6 +89,7 @@ export default [
 		name: 'TreatmentsFixe',
 		component: TreatmentPageComponent,
 		meta: {
+			title: 'Traitements fixes',
 			breadcrumb: {
 				titleKey: 'Traitements fixes',
 				parentName: 'PatientMedications'
@@ -95,6 +101,7 @@ export default [
 		name: 'TreatmentsErased',
 		component: TreatmentPageComponent,
 		meta: {
+			title: 'Traitements effacés',
 			breadcrumb: {
 				titleKey: 'Traitements effacés',
 				parentName: 'PatientMedications'
@@ -106,6 +113,7 @@ export default [
 		name: 'PatientOrders',
 		component: PatientOrdersPageComponent,
 		meta: {
+			title: 'Commandes du patient',
 			breadcrumb: {
 				titleKey: 'Commandes',
 				parentName: 'Patient'
@@ -117,6 +125,7 @@ export default [
 		name: 'StockConsumption',
 		component: StockConsumptionPageComponent,
 		meta: {
+			title: 'Stock de consommation',
 			breadcrumb: {
 				titleKey: 'Stock de consommation',
 				parentName: 'Patient'
@@ -128,6 +137,7 @@ export default [
 		name: 'OrderArticle',
 		component: OrderArticlePageComponent,
 		meta: {
+			title: 'Commander un article',
 			breadcrumb: {
 				titleKey: 'Commander un article',
 				parentName: 'SearchArticle'
@@ -139,6 +149,7 @@ export default [
 		name: 'Protection',
 		component: ProtectionPageComponent,
 		meta: {
+			title: 'Protections',
 			breadcrumb: {
 				titleKey: 'Protections',
 				parentName: 'Patient'
@@ -150,6 +161,7 @@ export default [
 		name: 'IncontinenceLevel',
 		component: IncontinenceLevelPageComponent,
 		meta: {
+			title: 'Niveau d\'incontinence',
 			breadcrumb: {
 				titleKey: 'Niveau d\'incontinence',
 				parentName: 'Protection'
@@ -161,6 +173,7 @@ export default [
 		name: 'PeriodicOrders',
 		component: PeriodicOrdersPageComponent,
 		meta: {
+			title: 'Commandes périodiques à valider',
 			breadcrumb: {
 				titleKey: 'Commandes périodiques à valider',
 				parentName: 'Patient'
