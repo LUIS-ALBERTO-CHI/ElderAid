@@ -3,8 +3,6 @@ using FwaEu.Modules.MasterData;
 using Microsoft.Extensions.DependencyInjection;
 using FwaEu.Fwamework;
 using FwaEu.MediCare.Stock.Services;
-using FwaEu.MediCare.Referencials.MasterData;
-using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.Stock.MasterData;
 
 namespace FwaEu.MediCare.Stock

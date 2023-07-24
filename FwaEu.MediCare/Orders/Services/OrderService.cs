@@ -14,6 +14,8 @@ using FwaEu.Modules.Data.Database;
 using FwaEu.Fwamework.Temporal;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.GenericSession;
+using System.Net;
+using System.Net.Sockets;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -50,20 +52,23 @@ namespace FwaEu.MediCare.Orders.Services
             return models.ToList();
         }
 
-        public async Task CreateOrdersAsync(CreateOrdersPost[] orders)
+        public async Task CreateOrdersAsync(CreateOrdersPost[] orders, bool isPeriodicOrder = false)
         {
             var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :UserLogin, :UserIp";
 
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
-            var currentUser = (IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity;
-            var currentUserIp = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+
+            var currentUserLogin = !isPeriodicOrder ? ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login
+                                                        : "ROBOT";
+            var currentUserIp = GetCurrentIpAddress();
+
             foreach (var order in orders)
             {
 
                 stockedProcedure.SetParameter("PatientId", order.PatientId);
                 stockedProcedure.SetParameter("ArticleId", order.ArticleId);
                 stockedProcedure.SetParameter("Quantity", order.Quantity);
-                stockedProcedure.SetParameter("UserLogin", currentUser.Login);
+                stockedProcedure.SetParameter("UserLogin", currentUserLogin);
                 stockedProcedure.SetParameter("UserIp", currentUserIp);
 
                 await stockedProcedure.ExecuteUpdateAsync();
@@ -76,7 +81,6 @@ namespace FwaEu.MediCare.Orders.Services
             {
                 var repositorySession = this._mainSessionContext.RepositorySession;
                 var repository = repositorySession.Create<PeriodicOrderValidationEntityRepository>();
-                PeriodicOrderValidationEntity entity;
 
                 var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
                 var currentDbId = _manageGenericDbService.GetGenericDbId();
@@ -86,7 +90,7 @@ namespace FwaEu.MediCare.Orders.Services
                 var dateNow = _currentDateTime.Now;
                 foreach (var article in validatePeriodicOrder.Articles)
                 {
-                    entity = repository.Query().First(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.UpdatedBy.Id == currentUser.Id);
+                    var entity = repository.Query().FirstOrDefault(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.OrderedOn == null && x.UpdatedBy.Id == currentUser.Id);
                     if (entity != null)
                     {
                         entity.Quantity = article.Quantity;
@@ -114,6 +118,58 @@ namespace FwaEu.MediCare.Orders.Services
                 DatabaseExceptionHelper.CheckForDbConstraints(e);
                 throw;
             }
+        }
+
+        public async Task CreatePeriodicOrderAsync(int organizationId)
+        {
+            var repositorySession = this._mainSessionContext.RepositorySession;
+            var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
+            var periodicOrderValidationRepository = repositorySession.Create<PeriodicOrderValidationEntityRepository>();
+
+            var organization = await organizationRepository.GetNoPerimeterAsync(organizationId);
+            if (organization != null)
+            {
+                var periodicOrderValidations = await periodicOrderValidationRepository.Query()
+                                                .Where(x => x.Organization.Id == organization.Id && x.OrderedOn == null)
+                                                .ToListAsync();
+                var orders = periodicOrderValidations.GroupBy(x => x.ArticleId)
+                                                      .Where(x => x.Count() > 0)
+                                                      .Select(x => new CreateOrdersPost()
+                                                      {
+                                                          ArticleId = x.Key,
+                                                          PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
+                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity
+                                                      })
+                                                      .ToArray();
+                if (orders.Length > 0)
+                {
+                    await CreateOrdersAsync(orders, true);
+                    var dateTimeNow = _currentDateTime.Now;
+                    foreach (var periodicOrderValidation in periodicOrderValidations)
+                    {
+                        periodicOrderValidation.OrderedOn = dateTimeNow;
+                        await periodicOrderValidationRepository.SaveOrUpdateAsync(periodicOrderValidation);
+                    }
+                    organization.LastPeriodicityOrder = dateTimeNow;
+                    await organizationRepository.SaveOrUpdateAsync(organization);
+                    await repositorySession.Session.FlushAsync();
+                }
+            }
+        }
+
+        public static string GetCurrentIpAddress()
+        {
+            IPAddress[] localIPAddresses = Dns.GetHostAddresses(Dns.GetHostName());
+
+            IPAddress localIPAddress = localIPAddresses.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip));
+
+            if (localIPAddress == null)
+                localIPAddress = localIPAddresses.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+            if (localIPAddress != null)
+                return localIPAddress.ToString();
+            else
+                return "";
         }
     }
 }

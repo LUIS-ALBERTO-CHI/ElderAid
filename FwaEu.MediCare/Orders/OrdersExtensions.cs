@@ -4,6 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using FwaEu.MediCare.Orders.Services;
 using FwaEu.MediCare.Orders.MasterData;
 using FwaEu.Fwamework;
+using FwaEu.Modules.BackgroundTasks;
+using System;
+using FwaEu.MediCare.Orders.BackgroundTasks;
+using System.Linq;
 
 namespace FwaEu.MediCare.Orders
 {
@@ -19,6 +23,14 @@ namespace FwaEu.MediCare.Orders
 
             services.AddMasterDataProvider<OrderMasterDataProvider>("Orders");
             services.AddMasterDataProvider<PeriodicOrderValidationMasterDataProvider>("PeriodicOrderValidations");
+
+            var periodicOrderSection = context.Configuration.GetSection("Application:PeriodicOrder");
+            services.Configure<PeriodicOrderOptions>(periodicOrderSection);
+
+            var backgroundTaskRegularityInMinutesSection = periodicOrderSection.GetChildren().FirstOrDefault(e => e.Key == "BackgroundTaskRegularityInMinutes");
+            var backgroundTaskRegularityInMinutes = Convert.ToDouble(backgroundTaskRegularityInMinutesSection.Value);
+            services.AddScheduledBackgroundTask<PeriodicOrderBackgroundTask>
+                            (PeriodicOrderBackgroundTask.TaskName, TimeSpan.FromMinutes(backgroundTaskRegularityInMinutes));
 
             return services;
         }

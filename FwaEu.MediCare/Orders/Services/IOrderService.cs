@@ -7,8 +7,10 @@ namespace FwaEu.MediCare.Orders.Services
     {
         Task<List<GetAllOrdersResponse>> GetAllAsync(GetAllOrdersPost model);
 
-        Task CreateOrdersAsync(CreateOrdersPost[] orders);
+        Task CreateOrdersAsync(CreateOrdersPost[] orders, bool isPeriodicOrder = false);
 
         Task ValidatePeriodicOrderAsync(ValidatePeriodicOrderPost validatePeriodicOrder);
+
+        Task CreatePeriodicOrderAsync(int organizationId);
     }
 }
