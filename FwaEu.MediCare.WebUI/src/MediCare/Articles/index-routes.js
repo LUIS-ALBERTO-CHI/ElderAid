@@ -13,4 +13,28 @@ export default [
             },
         }
     },
+    {
+        path: '/Orders/SearchPatient/Patient/:id/SearchArticle/',
+        name: 'SearchArticleFromOrder',
+        component: ArticlesSearchPageComponent,
+        meta: {
+            title: 'Commander un autre produit',
+            breadcrumb: {
+                titleKey: 'Commander un autre produit',
+                parentName: 'SearchPatientFromOrder'
+            },
+        }
+    },
+    {
+        path: '/Orders/SearchArticle/',
+        name: 'SearchArticleForEMSFromOrder',
+        component: ArticlesSearchPageComponent,
+        meta: {
+            title: 'Commander un autre produit',
+            breadcrumb: {
+                titleKey: 'Commander un autre produit',
+                parentName: 'Orders'
+            },
+        }
+    },
 ]
