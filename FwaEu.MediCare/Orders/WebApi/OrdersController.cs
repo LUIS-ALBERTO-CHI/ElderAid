@@ -85,5 +85,20 @@ namespace FwaEu.MediCare.Orders.WebApi
                 return NotFound();
             }
         }
+
+        // POST /Orders/Cancel
+        [HttpPost("Cancel/{orderId}")]
+        public async Task<IActionResult> CancelAsync([FromRoute] int orderId, IOrderService orderService)
+        {
+            try
+            {
+                await orderService.CancelOrderAsync(orderId);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }
