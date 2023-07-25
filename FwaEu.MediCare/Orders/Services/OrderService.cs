@@ -16,6 +16,7 @@ using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
+using Microsoft.Extensions.Options;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -26,16 +27,19 @@ namespace FwaEu.MediCare.Orders.Services
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrentDateTime _currentDateTime;
         private readonly IManageGenericDbService _manageGenericDbService;
+        private readonly string _loginRobot;
         public OrderService(GenericSessionContext genericSessionContext,
                                 MainSessionContext mainSessionContext,
                                     ICurrentUserService currentUserService,
                                         ICurrentDateTime currentDateTime,
-                                             IManageGenericDbService manageGenericDbService)
+                                            IOptions<PeriodicOrderOptions> orderOptions,
+                                                IManageGenericDbService manageGenericDbService)
         {
             _genericsessionContext = genericSessionContext;
             _mainSessionContext = mainSessionContext;
             _currentUserService = currentUserService;
             _currentDateTime = currentDateTime;
+            _loginRobot = orderOptions.Value.RobotEmail;
             _manageGenericDbService = manageGenericDbService;
         }
 
@@ -60,7 +64,7 @@ namespace FwaEu.MediCare.Orders.Services
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
 
             var currentUserLogin = databaseName == null ? ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login
-                                                        : "ROBOT";
+                                                        : _loginRobot;
             var currentUserIp = GetCurrentIpAddress();
 
             foreach (var order in orders)
