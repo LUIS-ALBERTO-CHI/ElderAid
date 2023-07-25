@@ -17,6 +17,7 @@ namespace FwaEu.MediCare.Orders
         public static IServiceCollection AddApplicationOrders(this IServiceCollection services, ApplicationInitializationContext context)
         {
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
+            
             repositoryRegister.Add<OrderEntityRepository>();
             repositoryRegister.Add<PeriodicOrderValidationEntityRepository>();
 
@@ -33,7 +34,6 @@ namespace FwaEu.MediCare.Orders
             services.AddScheduledBackgroundTask<PeriodicOrderBackgroundTask>
                             (PeriodicOrderBackgroundTask.TaskName, TimeSpan.FromMinutes(backgroundTaskRegularityInMinutes));
 
-            services.AddTransient<IEventListenersInitializer, UpdatingOrganizationEventListenerInitializer>();
 
             return services;
         }

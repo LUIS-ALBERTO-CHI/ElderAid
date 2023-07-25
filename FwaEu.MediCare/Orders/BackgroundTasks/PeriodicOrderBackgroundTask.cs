@@ -1,4 +1,6 @@
-﻿using FwaEu.Fwamework.Data.Database.Sessions;
+﻿using FwaEu.Fwamework.Data.Database.Nhibernate.Tracking;
+using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.Fwamework.DependencyInjection;
 using FwaEu.Fwamework.Temporal;
 using FwaEu.MediCare.Orders.Services;
 using FwaEu.MediCare.Organizations;
@@ -22,10 +24,12 @@ namespace FwaEu.MediCare.Orders.BackgroundTasks
         private readonly PeriodicOrderOptions _periodicOrderOptions;
         private readonly IServiceProvider _serviceProvider;
         private readonly ICurrentDateTime _currentDateTime;
+        private readonly AsyncLocalScopedServiceProviderAccessor _asyncLocalScopedServiceProviderAccessor;
 
         private Timer _dailyTimer = null!;
-        public PeriodicOrderBackgroundTask(IServiceProvider serviceProvider, 
-                                            ILogger<BackgroundTasksBackgroundService> logger, 
+        public PeriodicOrderBackgroundTask(IServiceProvider serviceProvider,
+                                     AsyncLocalScopedServiceProviderAccessor asyncLocalScopedServiceProviderAccessor,
+                                            ILogger<BackgroundTasksBackgroundService> logger,
                                                 IOptions<PeriodicOrderOptions> periodicOrderOptions,
                                                     ICurrentDateTime currentDateTime)
         {
@@ -33,24 +37,48 @@ namespace FwaEu.MediCare.Orders.BackgroundTasks
             _periodicOrderOptions = periodicOrderOptions?.Value ?? throw new ArgumentNullException(nameof(periodicOrderOptions));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _currentDateTime = currentDateTime ?? throw new ArgumentNullException(nameof(currentDateTime));
+            _asyncLocalScopedServiceProviderAccessor = asyncLocalScopedServiceProviderAccessor ?? throw new ArgumentNullException(nameof(asyncLocalScopedServiceProviderAccessor));
+
         }
         public async Task<string> ExecuteAsync(ITaskStartParameters taskStartParameters, CancellationToken cancellationToken)
         {
             try
             {
                 var backgroundTaskRegularityInMinutes = _periodicOrderOptions.BackgroundTaskRegularityInMinutes;
-                var scope = _serviceProvider.CreateScope();
-                
-                using (scope)
+                using (var scope = _serviceProvider.CreateScope())
+                using (_asyncLocalScopedServiceProviderAccessor.BeginScope(scope.ServiceProvider))
                 {
                     var mainSessionContext = scope.ServiceProvider.GetService<MainSessionContext>();
-                    var organizationRepository = mainSessionContext.RepositorySession.Create<AdminOrganizationEntityRepository>();
+                    var repositorySession = mainSessionContext.RepositorySession;
+                    var organizationRepository = repositorySession.Create<AdminOrganizationEntityRepository>();
                     var organizations = await organizationRepository.QueryNoPerimeter().Where(x => x.IsActive == true).ToListAsync();
                     foreach (var organization in organizations)
                     {
                         double delayToExecuteOrder = GetDelayToExecuteOrder(organization.OrderPeriodicityDays, organization.OrderPeriodicityDayOfWeek, organization.LastPeriodicityOrder);
                         if (delayToExecuteOrder < backgroundTaskRegularityInMinutes)
-                            _dailyTimer = GetTimerToExecuteOrder(delayToExecuteOrder, organization.Id, organization.Name);
+                        {
+                            var scopeFactory = scope.ServiceProvider.GetService<IServiceScopeFactory>();
+                            new Timer(async (object state) =>
+                            {
+                                using (var scope = scopeFactory.CreateScope())
+                                using (_asyncLocalScopedServiceProviderAccessor.BeginScope(scope.ServiceProvider))
+                                {
+                                    var logger = scope.ServiceProvider.GetService<ILogger<PeriodicOrderBackgroundTask>>();
+                                    try
+                                    {
+                                        using (scope.ServiceProvider.GetRequiredService<CreationOrUpdateTrackingEventListener.Disabler>().Disable())
+                                        {
+                                            var orderService = scope.ServiceProvider.GetService<IOrderService>();
+                                            await orderService.CreatePeriodicOrderAsync(organization.Id);
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        logger.LogError(ex, "Error during adding background tasks service");
+                                    }
+                                }
+                            }, null, TimeSpan.FromMinutes(delayToExecuteOrder), Timeout.InfiniteTimeSpan);
+                        }
                     }
                 }
             }
@@ -60,30 +88,6 @@ namespace FwaEu.MediCare.Orders.BackgroundTasks
             }
             return string.Empty;
         }
-
-        private Timer GetTimerToExecuteOrder(double delayToSendMail, int organizationId, string organizationName)
-        {
-            var scope = _serviceProvider.CreateScope();
-            return new Timer(async (object state) =>
-            {
-                using (scope)
-                {
-                    var logger = scope.ServiceProvider.GetService<ILogger<PeriodicOrderBackgroundTask>>();
-                    try
-                    {
-                        logger.LogInformation("Timer begin scheddle for {0} on: {1}", organizationName, _currentDateTime.Now);
-                        var orderService = scope.ServiceProvider.GetService<IOrderService>();
-                        await orderService.CreatePeriodicOrderAsync(organizationId);
-                        logger.LogInformation("Timer end scheddle for {0} on: {1}", organizationName, _currentDateTime.Now);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error during adding background tasks service");
-                    }
-                }
-            }, null, TimeSpan.FromMinutes(delayToSendMail), Timeout.InfiniteTimeSpan);
-        }
-
 
         private double GetDelayToExecuteOrder(int orderPeriodicityDays, int orderPeriodicityDayOfWeek, DateTime lastPeriodicityOrder)
         {

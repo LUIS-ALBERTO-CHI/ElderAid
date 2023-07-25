@@ -124,7 +124,7 @@ namespace FwaEu.MediCare.Orders.Services
         public async Task CreatePeriodicOrderAsync(int organizationId)
         {
             var repositorySession = this._mainSessionContext.RepositorySession;
-            var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
+            var organizationRepository = repositorySession.Create<AdminOrganizationEntityRepository>();
             var periodicOrderValidationRepository = repositorySession.Create<PeriodicOrderValidationEntityRepository>();
 
             var organization = await organizationRepository.GetNoPerimeterAsync(organizationId);
