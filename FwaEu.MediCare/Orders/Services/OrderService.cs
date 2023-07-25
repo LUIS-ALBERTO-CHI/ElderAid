@@ -159,6 +159,23 @@ namespace FwaEu.MediCare.Orders.Services
             }
         }
 
+
+        public async Task CancelOrderAsync(int orderId)
+        {
+            var query = "exec SP_MDC_RemoveOrder :OrderId, :UserLogin, :UserIp";
+            var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
+
+            var currentUserLogin = ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login;
+            var currentUserIp = GetCurrentIpAddress();
+
+            stockedProcedure.SetParameter("OrderId", orderId);
+            stockedProcedure.SetParameter("UserLogin", currentUserLogin);
+            stockedProcedure.SetParameter("UserIp", currentUserIp);
+            
+            await stockedProcedure.ExecuteUpdateAsync();
+        }
+
+
         public static string GetCurrentIpAddress()
         {
             IPAddress[] localIPAddresses = Dns.GetHostAddresses(Dns.GetHostName());

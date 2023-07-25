@@ -12,5 +12,7 @@ namespace FwaEu.MediCare.Orders.Services
         Task ValidatePeriodicOrderAsync(ValidatePeriodicOrderPost validatePeriodicOrder);
 
         Task CreatePeriodicOrderAsync(int organizationId);
+
+        Task CancelOrderAsync(int orderId);
     }
 }
