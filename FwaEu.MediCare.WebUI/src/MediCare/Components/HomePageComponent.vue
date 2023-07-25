@@ -170,7 +170,8 @@ export default {
                 // NOTE : refraichir toutes les masterdata
                 await MasterDataManagerService.clearCacheAsync();
 
-                await this.loadAllMasterDataAsync(true);
+                await CachePreloaderService.loadAllMasterDataAsync(this, true);
+
             }),
             getNumberOfPatientToValidate() {
                 const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length

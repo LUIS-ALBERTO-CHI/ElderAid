@@ -11,6 +11,8 @@ import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Service
 import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
 import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
 
+let firstLoad = false;
+
 const CachePreloaderService = {
     async loadAllMasterDataAsync(homeComponent, onlyEms) {
 
@@ -47,14 +49,13 @@ const CachePreloaderService = {
                     ArticlesTypeMasterDataService.getAllAsync()
                 ]);
             }
-            firstLoad = true;
 
         if (!firstLoad) {
             const loadingTime = new Date().getTime() - this.startLoadTime;
             if (loadingTime < 5000) {
                 await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
             }
-            firstLoad = false;
+            firstLoad = true;
         }
         } finally {
             notification.close();
