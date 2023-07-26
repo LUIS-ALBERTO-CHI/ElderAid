@@ -22,8 +22,7 @@
                         </div>
                     </div>
                 </div>
-                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus
-                    d'articles</span>
+                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
         </div>
         <div v-if="showScanner">

@@ -6,5 +6,7 @@ namespace FwaEu.MediCare.Stock.Services
     public interface IStockService
     {
         Task<List<GetAllStockConsumptionPatientResponse>> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPost model);
+
+        Task<List<GetAllArticlesCabinetResponse>> GetAllArticlesCabinets(GetAllArticlesCabinetPost model);
     }
 }

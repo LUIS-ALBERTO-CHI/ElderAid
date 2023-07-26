@@ -55,7 +55,7 @@ namespace FwaEu.MediCare.Articles.WebApi
 
 
         [HttpPost("GetAllByIdsAsync")]
-        public async Task<IActionResult> GetAllByIdsAsync(int[] ids, IArticleService articleService)
+        public async Task<IActionResult> GetAllByIdsAsync([FromBody]int[] ids, [FromServices]IArticleService articleService)
         {
             try
             {

@@ -4,8 +4,8 @@
         <div v-show="isPatientSelected">
             <div v-if="selectedArticle">
                 <div class="text-left">
-                    <span class="article-name">{{ selectedArticle.name }}, {{ selectedArticle.unit }}, {{
-                        selectedArticle.countInbox }}</span>
+                    <span class="article-name">{{ selectedArticle.title }}, {{ selectedArticle.unit }}, {{
+                        selectedArticle.countInBox }}</span>
                 </div>
             </div>
             <div class="info-container">
@@ -57,6 +57,8 @@ import InputNumber from 'primevue/inputnumber';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
 import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
+import ArticlesService from '@/MediCare/Referencials/Services/articles-service';
+
 
 export default {
     components: {
@@ -77,11 +79,12 @@ export default {
         };
     },
     async created() {
-        const storedArticle = localStorage.getItem("selectedArticle");
-        if (storedArticle) {
-            this.selectedArticle = JSON.parse(storedArticle);
-        }
         await this.getCurrentCabinetAsync();
+        const selectedArticleData = this.$route.query.selectedArticle;
+        if (selectedArticleData) {
+            this.selectedArticle = JSON.parse(selectedArticleData);
+        }
+        this.boiteOptions = await ArticlesService.getAllBySearchAsync();
     },
     methods: {
         async getCurrentCabinetAsync() {
@@ -90,7 +93,7 @@ export default {
             this.cabinetName = cabinet.name;
             return cabinet;
         },
-        handleSelectedPatient(args) {
+        async handleSelectedPatient(args) {
             args.cancelNavigation = true
             this.selectedPatient = args.selectedPatient;
         },

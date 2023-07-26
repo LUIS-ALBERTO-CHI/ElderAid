@@ -40,6 +40,34 @@ namespace FwaEu.MediCare.Stock.WebApi
             }
         }
 
+        //GET/Articles
+        [HttpPost("SearchPharmacyArticles")]
 
+        public async Task<IActionResult> GetAllArticlesCabinets(GetAllArticlesInStockPostApi modelApi, IStockService stockService)
+        {
+            try
+            {
+                var models = await stockService.GetAllArticlesCabinets(new GetAllArticlesCabinetPost
+                {
+                    CabinetId = modelApi.CabinetId,
+                    SearchTerm = modelApi.SearchTerm,
+                    Page = modelApi.Page,
+                    PageSize = modelApi.PageSize,
+                });
+                return Ok(models.Select(x => new GetAllArticlesInStockResponseApi()
+                {
+                    Id = x.Id,
+                    ArticleId = x.ArticleId,
+                    Quantity = x.Quantity,
+                    MinQuantity = x.MinQuantity,
+                    UpdatedOn = x.UpdatedOn,
+                    CabinetId = x.CabinetId
+                }));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
     }
 }

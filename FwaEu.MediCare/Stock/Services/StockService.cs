@@ -32,5 +32,19 @@ namespace FwaEu.MediCare.Stock.Services
             var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetAllStockConsumptionPatientResponse>()).ListAsync<GetAllStockConsumptionPatientResponse>();
             return models.ToList();
         }
+
+        public async Task<List<GetAllArticlesCabinetResponse>> GetAllArticlesCabinets(GetAllArticlesCabinetPost model)
+        {
+            var query = "exec SP_MDC_SearchPharmacyArticles :CabinetId, :SearchTerm, :Page, :PageSize";
+
+            var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
+            storedProcedure.SetParameter("CabinetId", model.CabinetId);
+            storedProcedure.SetParameter("SearchTerm", model.SearchTerm);
+            storedProcedure.SetParameter("Page", model.Page);
+            storedProcedure.SetParameter("PageSize", model.PageSize);
+
+            var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetAllArticlesCabinetResponse>()).ListAsync<GetAllArticlesCabinetResponse>();
+            return models.ToList();
+        }
     }
 }
