@@ -10,14 +10,13 @@
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <div class="vignette-list">
-                <div v-for="article in filteredArticles" :key="article.id">
-                    <div @click="goToArticleDetails(article)" class="vignette-item">
-                        <span>{{ article.title }}, {{ article.unit }}</span>
-                        <span>{{ article.countInBox }}</span>
+                <div v-for="stockPharmacy in filteredArticles" :key="stockPharmacy.id">
+                    <div @click="goToArticleDetails(stockPharmacy)" class="vignette-item">
+                        <span>{{ stockPharmacy.article.title }}, {{ stockPharmacy.article.unit }}</span>
+                        <span>{{ stockPharmacy.article.countInBox }}</span>
                     </div>
                 </div>
-                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus
-                d'articles</span>
+                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
             <div v-show="filteredArticles.length === 0" class="article-not-found">
                 <i class="fa-solid fa-box-open icon-not-found"></i>
@@ -35,11 +34,14 @@ import InputText from 'primevue/inputtext';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 import ScannerComponent from '@/MediCare/Components/ScanCodeComponent.vue';
 import ArticlesInStockService from '@/MediCare/PharmacyStock/Services/search-articles-in-stock-service';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, watch } from "vue";
 import { watchDebounced } from '@vueuse/core'
 import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
 import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+import ArticlesService from '@/MediCare/Referencials/Services/articles-service';
+import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+
 
 export default {
     components: {
@@ -48,20 +50,21 @@ export default {
     },
         setup() {
         const route = useRoute();
+        const cabinetId = route.params.id;
         const searchValue = ref(route.query.searchMode ?? "");
         const filteredArticles = ref([]);
-        const articles = ref([]);
-        const cabinet = ref();
+        const stockPharmacy = ref([]);
+        const cabinet = ref(cabinetId);
         const currentPage = ref(0);
         const nextPage = ref(0);
         const pageSize = ref(30);
         const performSearch = async () => {
             const value = searchValue.value.toLowerCase().trim();
             if (!value) {
-                filteredArticles.value = articles.value;
+                filteredArticles.value = stockPharmacy.value;
             } else if (value.length >= 3) {
-                const response = await ArticlesInStockService.getAllAsync(cabinet.value, searchValue.value, nextPage.value, pageSize.value);
-                filteredArticles.value = response.articles;
+                const response = await ArticlesInStockService.getAllAsync(cabinet.value, value, nextPage.value, pageSize.value);
+                filteredArticles.value = await ArticlesService.fillArticlesAsync(response);
             } else {
                 filteredArticles.value = [];
             }
@@ -74,7 +77,7 @@ export default {
             searchValue,
             filteredArticles,
             watchSearchValue,
-            articles,
+            stockPharmacy,
             performSearch,
             currentPage,
             watchResetPage,
@@ -92,13 +95,15 @@ export default {
     async created() {
         this.focusSearchBar();
         await this.getCurrentCabinetAsync();
+        this.loadInitialArticles();
+        this.stockPharmacy = await ArticlesMasterDataService.getAllAsync();
     },
     methods: {
             async loadMoreArticlesAsync() {
             if (OnlineService.isOnline()) {
                 const nextPage = this.currentPage + 1;
                 this.currentPage = nextPage;
-                this.performSearch();
+                await this.performSearch();
             } else {
                 NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
             }
@@ -112,9 +117,13 @@ export default {
                 this.$refs.searchInput.$el.focus();
             });
         },
-        goToArticleDetails(article) {
-            localStorage.setItem("selectedArticle", JSON.stringify(article));
-            this.$router.push({ name: "Articles" });
+        goToArticleDetails(stockPharmacy) {
+            const selectedArticleData = {
+                title: stockPharmacy.article.title,
+                unit: stockPharmacy.article.unit,
+                countInBox: stockPharmacy.article.countInBox,
+            };
+            this.$router.push({ name: 'Articles', query: { selectedArticle: JSON.stringify(selectedArticleData) } });
         },
         goToScanCode() {
             this.showScanner = true;

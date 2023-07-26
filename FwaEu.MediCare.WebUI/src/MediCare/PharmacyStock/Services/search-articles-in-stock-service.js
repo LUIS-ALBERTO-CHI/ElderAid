@@ -9,7 +9,8 @@ const ArticlesInStockService = {
             pageSize
         });
         return response.data;
-    }
+    },
+
 }
 
 export default ArticlesInStockService;
