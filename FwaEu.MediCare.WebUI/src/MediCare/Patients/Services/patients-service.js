@@ -17,7 +17,19 @@ const PatientService = {
 		const masterDataService = new MasterDataService(masterDataKey, ['id'], false);
 		const models = await masterDataService.getAllAsync();
 		return models.filter(t => t?.patientId === patientId);
-	}
+	},
+
+	async getIncontinenceLevelAsync(patientId) {
+		const dates = ['dateStart', 'dateEnd', 'virtualDateWithoutOverPassed'];
+		const response = await HttpService.get(`/Patients/${patientId}/GetIncontinenceLevel`);
+
+		for (const date of dates) {
+			if (response.data[date]) {
+				response.data[date] = response.data[date];
+			}
+		}
+		return response.data;
+	},
 }
 
 export const usePatient = () => {

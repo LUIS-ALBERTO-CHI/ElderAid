@@ -30,7 +30,7 @@ namespace FwaEu.MediCare.Patients.WebApi
                     DateEnd= model.DateEnd,
                     DateStart= model.DateStart,
                     FixedPrice= model.FixedPrice,
-                    IncontinenceLevel= model.IncontinenceLevel,
+                    IncontinenceLevel= (IncontinenceLevel)model.IncontinenceLevel,
                     OverPassed= model.OverPassed,
                     VirtualDateWithoutOverPassed = model.VirtualDateWithoutOverPassed
                 });

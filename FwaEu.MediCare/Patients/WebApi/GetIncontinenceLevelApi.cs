@@ -5,7 +5,7 @@ namespace FwaEu.MediCare.Patients.WebApi
     public class GetIncontinenceLevelApi
     {
         public int Id { get; set; }
-        public int IncontinenceLevel { get; set; }
+        public IncontinenceLevel IncontinenceLevel { get; set; }
         public double AnnualFixedPrice { get; set; }
         public double DailyFixedPrice { get; set; }
         public decimal DailyProtocolEntered { get; set; }
