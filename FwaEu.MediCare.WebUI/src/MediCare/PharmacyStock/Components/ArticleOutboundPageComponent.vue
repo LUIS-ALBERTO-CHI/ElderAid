@@ -4,8 +4,7 @@
         <div v-show="isPatientSelected">
             <div v-if="selectedArticle">
                 <div class="text-left">
-                    <span class="article-name">{{ selectedArticle.title }}, {{ selectedArticle.unit }}, {{
-                        selectedArticle.countInBox }}</span>
+                    <span class="article-name">{{ selectedArticle.title }}, {{ selectedArticle.unit }}, {{selectedArticle.countInBox }}</span>
                 </div>
             </div>
             <div class="info-container">
@@ -30,7 +29,7 @@
                     <span>Boîte de</span>
                 </div>
                 <div class="icon-right-container">
-                    <Dropdown v-model="selectedBoite" :options="boiteOptions" />
+                    <Dropdown v-model="selectedBoite" :options="boiteOptionsWithUnit" optionLabel="label" optionValue="countInBox" />
                 </div>
             </div>
             <div class="info-container" v-if="!fullBox">
@@ -72,8 +71,10 @@ export default {
         return {
             selectedArticle: null,
             fullBox: ViewContextService.get().isStockPharmacyPerBox,
-            boiteOptions: ["10 comprimes", "20 comprime", "30 comprime"],
-            selectedBoite: "30 comprime",
+            availableUnitCounts: [],
+            boiteOptions: [],
+            boiteOptionsWithUnit: [],
+            selectedBoite: null,
             quantity: 1,
             selectedPatient: null,
         };
@@ -83,9 +84,31 @@ export default {
         const selectedArticleData = this.$route.query.selectedArticle;
         if (selectedArticleData) {
             this.selectedArticle = JSON.parse(selectedArticleData);
+
+            const groupName = this.selectedArticle.groupName;
+            const articleType = this.selectedArticle.articleType;
+
+            this.availableUnitCounts = await ArticlesService.getAllBySearchAsync(`formats:${groupName}`, articleType, 0, 30);
+
+            this.boiteOptions = this.availableUnitCounts
+                .filter(article => article.countInBox > 0)
+                .map(article => article.countInBox)
+                .filter((value, index, self) => self.indexOf(value) === index)
+                .sort((a, b) => a - b);
+
+            this.boiteOptionsWithUnit = this.availableUnitCounts
+                .filter(article => article.countInBox > 0)
+                .map(article => ({
+                    label: `${article.countInBox} ${article.unit}`,
+                    countInBox: article.countInBox,
+                }));
+
+            if (this.boiteOptions.length > 0) {
+                this.selectedBoite = this.boiteOptions[0];
+            }
         }
-        this.boiteOptions = await ArticlesService.getAllBySearchAsync();
     },
+
     methods: {
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
