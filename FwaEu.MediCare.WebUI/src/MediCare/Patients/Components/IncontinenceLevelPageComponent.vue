@@ -1,22 +1,22 @@
 <template>
     <div class="incontinence-level-page-container">
-        <PatientInfoComponent />
+        <patient-info-component v-if="patient" :patient="patient" />
         <div class="incontinence-info-container">
-            <span class="incontinence-info-label-title">Niveau d'incontinence : Légère</span>
-            <span>Forfait journalier : 4 CHF</span>
-            <span>Protocole journalier saisi : 3,75 CHF</span>
+            <span class="incontinence-info-label-title">Niveau d'incontinence : {{ patientData.incontinenceLevel }}</span>
+            <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
+            <span>Protocole journalier saisi : {{ patientData.dailyProtocolEntered }} CHF</span>
         </div>
         <div class="incontinence-info-container">
             <span class="incontinence-info-label-title">Analyse de consommation à date</span>
-            <span>Entre 1/01/2023 et 14/06/2023</span>
+            <span>Entre {{ $d(new Date(patientData.dateStart)) }} et {{ $d(new Date(patientData.dateEnd)) }}</span> 
             <Chart type="bar" :data="chartData" :options="chartOptions" />
-            <span>Date virtuelle sans dépassement : 30/05/2023</span>
+            <span>Date virtuelle sans dépassement : {{ $d(new Date(patientData.virtualDateWithoutOverPassed)) }}</span> 
         </div>
         <Button v-if="!isIncontinenceLevelChange" @click="changeIncontinenceLevel"
                 label="Changer de niveau d'incontinence" />
         <div v-else class="incontinence-change-container">
             <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
-            <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" />
+            <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" optionValue="id" optionLabel="text" placeholder="Légère"/>
             <Button 
                 label="Confirmer" />
         </div>
@@ -29,7 +29,8 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import Chart from 'primevue/chart';
 import 'chartjs-plugin-datalabels';
-
+import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+import incontinenceLevelMasterDataService from '@/MediCare/Referencials/Services/incontinence-level-master-data-service';
 
 export default {
     components: {
@@ -39,21 +40,21 @@ export default {
         Chart
         // ChartComponent
     },
+        setup() {
+        const { patientLazy, getCurrentPatientAsync } = usePatient();
+        return {
+            patientLazy,
+            getCurrentPatientAsync
+        }
+    },
     data() {
         return {
-            selectedIncontinence: "Légère",
-            incontinenceOptions: ["Légère", "Moyenne", "Sévère", "Totale", "Doublée"],
+            selectedIncontinence: null,
+            incontinenceOptions: [],
             isIncontinenceLevelChange: false,
-            chartData: {
-                labels: ['Forfait', 'Consommé', 'Dépassement'],
-                datasets: [
-                    {
-                        label: 'Analyse de consommation',
-                        backgroundColor: ['#66BB6A', '#FFA726', '#e06666'],
-                        data: [600, 640, -40]
-                    },
-                ]
-            },
+            chartData: null,
+            patient: null,
+            patientData: {},
             chartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -73,6 +74,27 @@ export default {
         };
     },
     async created() {
+        this.incontinenceOptions = await incontinenceLevelMasterDataService.getAllAsync();
+        this.patient = await this.patientLazy.getValueAsync();
+        const patientId = this.$route.params.id;
+        this.patientData = await PatientService.getIncontinenceLevelAsync(patientId);
+
+        if (this.patientData) {
+            this.chartData = {
+                labels: ['Forfait', 'Consommé', 'Dépassement'],
+                datasets: [
+                    {
+                        label: 'Analyse de consommation',
+                        backgroundColor: ['#66BB6A', '#FFA726', '#e06666'],
+                        data: [
+                            this.patientData.fixedPrice,
+                            this.patientData.consumed,
+                            this.patientData.overPassed
+                        ]
+                    },
+                ]
+            };
+        }
     },
     methods: {
         changeIncontinenceLevel() {
