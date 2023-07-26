@@ -61,7 +61,8 @@ export default {
         const performSearch = async () => {
             const value = searchValue.value.toLowerCase().trim();
             if (!value) {
-                filteredArticles.value = stockPharmacy.value;
+                const response = await ArticlesInStockService.getAllAsync(cabinet.value, value, nextPage.value, pageSize.value);
+                filteredArticles.value = await ArticlesService.fillArticlesAsync(response);
             } else if (value.length >= 3) {
                 const response = await ArticlesInStockService.getAllAsync(cabinet.value, value, nextPage.value, pageSize.value);
                 filteredArticles.value = await ArticlesService.fillArticlesAsync(response);
