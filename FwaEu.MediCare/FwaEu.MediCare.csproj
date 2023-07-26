@@ -17,9 +17,17 @@
 
   <ItemGroup>
     <Compile Remove="DbManager\**" />
+    <Compile Remove="Patients\GenericAdmin\**" />
+    <Compile Remove="Referencials\Services\**" />
     <Content Remove="DbManager\**" />
+    <Content Remove="Patients\GenericAdmin\**" />
+    <Content Remove="Referencials\Services\**" />
     <EmbeddedResource Remove="DbManager\**" />
+    <EmbeddedResource Remove="Patients\GenericAdmin\**" />
+    <EmbeddedResource Remove="Referencials\Services\**" />
     <None Remove="DbManager\**" />
+    <None Remove="Patients\GenericAdmin\**" />
+    <None Remove="Referencials\Services\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,8 +71,6 @@
     <Folder Include="DevelopmentData\Users\" />
     <Folder Include="Integration\AfterUpdateSchema\" />
     <Folder Include="Integration\BeforeUpdateSchema\" />
-    <Folder Include="Patients\GenericAdmin\" />
-    <Folder Include="Referencials\Services\" />
   </ItemGroup>
 
   <ItemGroup>

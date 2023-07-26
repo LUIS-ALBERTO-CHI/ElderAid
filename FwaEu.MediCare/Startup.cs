@@ -66,6 +66,7 @@ using FwaEu.MediCare.Stock;
 using FwaEu.MediCare.Articles;
 using FwaEu.MediCare.Treatments;
 using FwaEu.Modules.BackgroundTasks;
+using FwaEu.MediCare.Protections;
 
 namespace FwaEu.MediCare
 {
@@ -188,6 +189,7 @@ namespace FwaEu.MediCare
                 services.AddApplicationPatients(context);
                 services.AddApplicationOrders(context);
                 services.AddApplicationStock(context);
+                services.AddApplicationProtections(context);
 
                 services.AddApplicationHtml();
 

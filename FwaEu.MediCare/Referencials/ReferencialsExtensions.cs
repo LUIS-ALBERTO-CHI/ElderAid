@@ -15,27 +15,20 @@ namespace FwaEu.MediCare.Referencials
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<BuildingEntityRepository>();
 
-            
-
             repositoryRegister.Add<DosageFormEntityRepository>();
 
             repositoryRegister.Add<CabinetEntityRepository>();
             repositoryRegister.Add<ProtectionDosageEntityRepository>();
-            repositoryRegister.Add<ProtectionEntityRepository>();
             repositoryRegister.Add<IncontinenceLevelEntityRepository>();
-
 
             services.AddMasterDataProvider<BuildingMasterDataProvider>("Buildings");
             services.AddMasterDataProvider<DosageFormMasterDataProvider>("DosageForms");
             services.AddMasterDataProvider<CabinetMasterDataProvider>("Cabinets");
             services.AddMasterDataProvider<ProtectionDosageMasterDataProvider>("ProtectionDosages");
-            services.AddMasterDataProvider<ProtectionMasterDataProvider>("Protections");
             services.AddMasterDataProvider<IncontinenceLevelMasterDataProvider>("IncontinenceLevels");
-
 
             services.AddTransient<IGenericAdminModelConfiguration, DosageFormEntityToModelGenericAdminModelConfiguration>();
             services.AddTransient<IGenericAdminModelConfiguration, IncontinenceLevelEntityToModelGenericAdminModelConfiguration>();
-
 
             return services;
         }

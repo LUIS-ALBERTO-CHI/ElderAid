@@ -5,7 +5,7 @@ using FwaEu.MediCare.GenericRepositorySession;
 using System.Globalization;
 using System.Linq.Expressions;
 
-namespace FwaEu.MediCare.Referencials.MasterData
+namespace FwaEu.MediCare.Protections.MasterData
 {
     public class ProtectionMasterDataProvider : EntityMasterDataProvider<ProtectionEntity, int, ProtectionEntityMasterDataModel, ProtectionEntityRepository>
     {
