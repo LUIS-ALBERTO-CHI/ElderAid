@@ -157,7 +157,7 @@ export default [
 		}
 	},
 	{
-		path: '/Patient/:id//IncontinenceLevel',
+		path: '/Patient/:id/IncontinenceLevel',
 		name: 'IncontinenceLevel',
 		component: IncontinenceLevelPageComponent,
 		meta: {

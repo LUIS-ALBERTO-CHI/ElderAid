@@ -75,6 +75,7 @@ export default {
     },
     async created() {
         this.incontinenceOptions = await incontinenceLevelMasterDataService.getAllAsync();
+        console.log(this.incontinenceOptions);
         this.patient = await this.patientLazy.getValueAsync();
         const patientId = this.$route.params.id;
         this.patientData = await PatientService.getIncontinenceLevelAsync(patientId);
