@@ -2,15 +2,15 @@
     <div class="incontinence-level-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div class="incontinence-info-container">
-            <span class="incontinence-info-label-title">Niveau d'incontinence : {{ patientData.incontinenceLevelName }}</span>
+            <span class="incontinence-info-label-title">Niveau d'incontinence : {{ $t(patientData.incontinenceLevel) }}</span>
             <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
             <span>Protocole journalier saisi : {{ patientData.dailyProtocolEntered }} CHF</span>
         </div>
         <div class="incontinence-info-container">
             <span class="incontinence-info-label-title">Analyse de consommation à date</span>
-            <span>Entre {{ $d(new Date(patientData.dateStart)) }} et {{ $d(new Date(patientData.dateEnd)) }}</span> 
+            <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ patientData.dateStart }} et {{ patientData.dateEnd }}</span> 
             <Chart type="bar" :data="chartData" :options="chartOptions" />
-            <span>Date virtuelle sans dépassement : {{ $d(new Date(patientData.virtualDateWithoutOverPassed)) }}</span> 
+            <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ patientData.virtualDateWithoutOverPassed }}</span> 
         </div>
         <Button v-if="!isIncontinenceLevelChange" @click="changeIncontinenceLevel"
                 label="Changer de niveau d'incontinence" />
@@ -37,7 +37,7 @@ export default {
         PatientInfoComponent,
         Dropdown,
         Button,
-        Chart
+        Chart,
         // ChartComponent
     },
         setup() {
@@ -75,7 +75,6 @@ export default {
     },
     async created() {
         this.incontinenceOptions = await incontinenceLevelMasterDataService.getAllAsync();
-        console.log(this.incontinenceOptions);
         this.patient = await this.patientLazy.getValueAsync();
         const patientId = this.$route.params.id;
         this.patientData = await PatientService.getIncontinenceLevelAsync(patientId);
@@ -95,7 +94,6 @@ export default {
                     },
                 ]
             };
-            this.patientData.incontinenceLevelName = this.incontinenceOptions.find(option => option.id === this.patientData.incontinenceLevel).text;
         }
     },
     methods: {
