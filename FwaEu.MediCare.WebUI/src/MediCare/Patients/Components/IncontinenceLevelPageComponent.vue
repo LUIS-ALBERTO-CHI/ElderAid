@@ -8,9 +8,9 @@
         </div>
         <div class="incontinence-info-container">
             <span class="incontinence-info-label-title">Analyse de consommation à date</span>
-            <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ patientData.dateStart }} et {{ patientData.dateEnd }}</span> 
+            <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ $d(patientData.dateStart, 'short') }} et {{ $d(patientData.dateEnd, 'short') }}</span> 
             <Chart type="bar" :data="chartData" :options="chartOptions" />
-            <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ patientData.virtualDateWithoutOverPassed }}</span> 
+            <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ $d(patientData.virtualDateWithoutOverPassed, 'short') }} </span> 
         </div>
         <Button v-if="!isIncontinenceLevelChange" @click="changeIncontinenceLevel"
                 label="Changer de niveau d'incontinence" />

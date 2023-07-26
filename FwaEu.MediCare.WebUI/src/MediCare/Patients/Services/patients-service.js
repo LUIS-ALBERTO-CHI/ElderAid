@@ -25,16 +25,11 @@ const PatientService = {
 
 		for (const date of dates) {
 			if (response.data[date]) {
-				response.data[date] = this.formatDate(response.data[date]);
+				response.data[date] = response.data[date];
 			}
 		}
 		return response.data;
 	},
-	formatDate(date) {
-		const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-		const formattedDate = new Intl.DateTimeFormat('default', options).format(new Date(date));
-		return formattedDate;
-	}
 }
 
 export const usePatient = () => {
