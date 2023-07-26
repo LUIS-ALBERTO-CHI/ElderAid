@@ -2,7 +2,7 @@
     <div class="incontinence-level-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div class="incontinence-info-container">
-            <span class="incontinence-info-label-title">Niveau d'incontinence : {{ patientData.incontinenceLevel }}</span>
+            <span class="incontinence-info-label-title">Niveau d'incontinence : {{ patientData.incontinenceLevelName }}</span>
             <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
             <span>Protocole journalier saisi : {{ patientData.dailyProtocolEntered }} CHF</span>
         </div>
@@ -95,6 +95,7 @@ export default {
                     },
                 ]
             };
+            this.patientData.incontinenceLevelName = this.incontinenceOptions.find(option => option.id === this.patientData.incontinenceLevel).text;
         }
     },
     methods: {
