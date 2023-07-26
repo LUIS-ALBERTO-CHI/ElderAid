@@ -9,5 +9,6 @@ namespace FwaEu.MediCare.Protections.Services
         public DateTime StartDate { get; set; }
         public DateTime StopDate { get; set; }
         public Dictionary<TimeSpan, int> ProtectionDosages { get; set; }
+        public string ArticleUnit { get; set; }
     }
 }

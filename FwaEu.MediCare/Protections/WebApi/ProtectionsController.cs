@@ -12,79 +12,29 @@ namespace FwaEu.MediCare.Protections.WebApi
     [Route("[controller]")]
     public class ProtectionsController : Controller
     {
-        //// GET /Orders/GetAll
-        //[HttpPost("GetAll")]
-        //public async Task<IActionResult> GetAllAsync(GetAllOrdersPostApi modelApi, IOrderService orderService)
-        //{
-        //    try
-        //    {
-        //        var models = await orderService.GetAllAsync(new GetAllOrdersPost
-        //        {
-        //            PatientId = modelApi.PatientId,
-        //            Page = modelApi.Page,
-        //            PageSize = modelApi.PageSize,
-        //        });
-        //        return Ok(models.Select(x => new GetAllOrdersResponseApi()
-        //        {
-        //            Id = x.Id,
-        //            ArticleId = x.ArticleId,
-        //            PatientId = x.PatientId,
-        //            Quantity = x.Quantity,
-        //            State = x.State,
-        //            UpdatedBy = x.UpdatedBy,
-        //            UpdatedOn = x.UpdatedOn
-        //        }));
-        //    }
-        //    catch (NotFoundException)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+        // POST /Protections/Create
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateAsync(CreateProtectionModelApi model, IProtectionService protectionService)
+        {
+            try
+            {
+                await protectionService.CreateProtectionAsync(new CreateProtectionModel
+                {
+                    PatientId = model.PatientId,
+                    ArticleId = model.ArticleId,
+                    StartDate = model.StartDate,
+                    StopDate = model.StopDate,
+                    ProtectionDosages = model.ProtectionDosages,
+                    ArticleUnit = model.ArticleUnit
+                });
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
 
-
-        //// POST /Orders/Create
-        //[HttpPost("Create")]
-        //public async Task<IActionResult> CreateAsync(CreateOrdersPostApi[] orders, IOrderService orderService)
-        //{
-        //    try
-        //    {
-        //        await orderService.CreateOrdersAsync(orders.Select(x => new CreateOrdersPost
-        //        {
-        //            Quantity = x.Quantity,
-        //            ArticleId = x.ArticleId,
-        //            PatientId = x.PatientId
-        //        }).ToArray());
-        //        return Ok();
-        //    }
-        //    catch (NotFoundException)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
-
-        //// POST /Orders/ValidatePeriodicOrder
-        //[HttpPost("ValidatePeriodicOrder")]
-        //public async Task<IActionResult> ValidatePeriodicOrderAsync([FromBody] ValidatePeriodicOrderPostApi validatePeriodicOrder, IOrderService orderService)
-        //{
-        //    try
-        //    {
-        //        var model = new ValidatePeriodicOrderPost(){
-        //             PatientId= validatePeriodicOrder.PatientId,
-        //             Articles = validatePeriodicOrder.Articles.Select(x => new ArticleValidatePeriodicOrderPost()
-        //             {
-        //                 ArticleId= x.ArticleId,
-        //                 DefaultQuantity= x.DefaultQuantity,
-        //                 Quantity= x.Quantity
-        //             }).ToArray()
-        //        };
-        //        await orderService.ValidatePeriodicOrderAsync(model);
-        //        return Ok();
-        //    }
-        //    catch (NotFoundException)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
 
         // POST /Protections/Update
         [HttpPost("Update")]
@@ -98,6 +48,7 @@ namespace FwaEu.MediCare.Protections.WebApi
                     StartDate= model.StartDate,
                     StopDate= model.StopDate,
                     ProtectionDosages = model.ProtectionDosages,
+                    ArticleUnit = model.ArticleUnit
                 });
                 return Ok();
             }
