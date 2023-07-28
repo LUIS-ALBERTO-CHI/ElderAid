@@ -120,7 +120,7 @@ export default {
         },
         goToPeriodicOrdersPage(patientId) {
             this.$router.push({
-                name: "PeriodicOrders",
+                name: "PatientPeriodicOrders",
                 params: { id: patientId },
             });
         },

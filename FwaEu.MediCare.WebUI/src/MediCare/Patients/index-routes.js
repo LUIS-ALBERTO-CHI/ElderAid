@@ -7,7 +7,7 @@ const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/O
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
 const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
 const IncontinenceLevelPageComponent = () => import('@/MediCare/Patients/Components/IncontinenceLevelPageComponent.vue');
-const PeriodicOrdersPageComponent = () => import('@/MediCare/Patients/Components/PeriodicOrdersPageComponent.vue');
+const PatientPeriodicOrdersPageComponent = () => import('@/MediCare/Patients/Components/PeriodicOrdersPageComponent.vue');
 
 
 export default [
@@ -170,8 +170,8 @@ export default [
 	},
 	{
 		path: '/Patient/:id/PeriodicOrders',
-		name: 'PeriodicOrders',
-		component: PeriodicOrdersPageComponent,
+		name: 'PatientPeriodicOrders',
+		component: PatientPeriodicOrdersPageComponent,
 		meta: {
 			title: 'Commandes périodiques à valider',
 			breadcrumb: {

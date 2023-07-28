@@ -159,7 +159,7 @@ export default {
             }
         },
         goToPeriodicPage() {
-            this.$router.push("/periodicCommandes")
+            this.$router.push("/PeriodicOrders")
         },
         refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
 
