@@ -9,7 +9,7 @@
             </span>
             <Dropdown v-model="selectedSector" :options="sectorsTypeOptions" class="select-sector" />
             <Dropdown v-model="selectedOrderType" :options="ordersTypeOptions" class="select-sector" />
-            <div v-if="periodicOrders" class="periodic-orders-container">
+            <div v-if="periodicOrders && selectedOrderType === 'Patients validés'" class="periodic-orders-container">
                 <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
                     class="periodic-orders-item">
                     <div class="header">
@@ -27,6 +27,7 @@
                     </div>
                 </div>
             </div>
+            <OrderToValidateComponentVue v-if="selectedOrderType === 'Patients á valider'"/>
         </div>
     </div>
 </template>
@@ -38,11 +39,12 @@ import Dropdown from 'primevue/dropdown';
 import PeriodicOrdersMasterDataService from '../Services/periodic-orders-master-data-service';
 import PatientService from "@/MediCare/Patients/Services/patients-service";
 import OrderMasterDataService from "../Services/orders-master-data-service";
-
+import OrderToValidateComponentVue from './OrderToValidateComponent.vue';
 export default {
     components: {
         InputText,
-        Dropdown
+        Dropdown,
+        OrderToValidateComponentVue
     },
     data() {
         return {
