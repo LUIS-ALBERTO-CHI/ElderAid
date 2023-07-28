@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using FwaEu.MediCare.Patients.MasterData;
 using FwaEu.Fwamework;
 using FwaEu.MediCare.Patients.Services;
+using FwaEu.Fwamework.Permissions;
+using FwaEu.TemplateCore.FarmManager;
 
 namespace FwaEu.MediCare.Patients
 {
@@ -14,10 +16,11 @@ namespace FwaEu.MediCare.Patients
             var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
             repositoryRegister.Add<PatientEntityRepository>();
 
+            services.AddTransient<IPermissionProviderFactory, DefaultPermissionProviderFactory<PatientPermissionProvider>>();
+
             services.AddTransient<IPatientService, PatientService>();
 
             services.AddMasterDataProvider<PatientMasterDataProvider>("Patients");
-
 
             return services;
         }

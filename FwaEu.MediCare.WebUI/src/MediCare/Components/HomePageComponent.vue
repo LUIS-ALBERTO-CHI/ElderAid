@@ -76,92 +76,91 @@
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
     import CachePreloaderService from '@/MediCare/Services/cache-preloader-service';
 
-export default {
-    inject: ["deviceInfo"],
-    mixins: [LocalizationMixing],
-    components: {
-        Dropdown
-    },
-    i18n: {
-        messages: {
-            getMessagesAsync(locale) {
-                return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
-            }
-        }
-    },
-    data() {
-        const $this = this;
-        return {
-            isCurrentUserAuthenticated: false,
-            selectedOrganization: null,
-            organizationsOptions: [],
-            isSingleOrganization: false,
-            patientsActive: [],
-            currentDatabase: ViewContextService.get()?.id,
-            viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
-                $this.currentDatabase = viewContext.id;
-            }),
-            isUserAdmin: false,
-            organizations: [],
-            organizationsLink: [],
-            startLoadTime: 0,
-            distinctPeriodicOrders: [],
-            cabinets: [],
-        };
-    },
-    created: showLoadingPanel(async function () {
-        this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
-        const currentUser = await CurrentUserService.getAsync();
-        this.isUserAdmin = currentUser.parts.adminState.isAdmin;
-
-        this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
-        this.cabinets = await CabinetsMasterDataService.getAllAsync();
-
-
-            if (this.organizations.length == 1) {
-                this.isSingleOrganization = true;
-            } else {
-                this.organizationsOptions = this.organizations
-                if (this.currentDatabase == null) {
-                    this.selectedOrganization = this.organizationsOptions[0];
-                    ViewContextService.set(new ViewContextModel(this.organizations[0]));
-                } else {
-                    this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+    export default {
+        inject: ["deviceInfo"],
+        mixins: [LocalizationMixing],
+        components: {
+            Dropdown
+        },
+        i18n: {
+            messages: {
+                getMessagesAsync(locale) {
+                    return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
                 }
             }
+        },
+        data() {
+            const $this = this;
+            return {
+                isCurrentUserAuthenticated: false,
+                selectedOrganization: null,
+                organizationsOptions: [],
+                isSingleOrganization: false,
+                patientsActive: [],
+                currentDatabase: ViewContextService.get()?.id,
+                viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
+                    $this.currentDatabase = viewContext.id;
+                }),
+                isUserAdmin: false,
+                organizations: [],
+                organizationsLink: [],
+                startLoadTime: 0,
+                distinctPeriodicOrders: [],
+                cabinets: [],
+            };
+        },
+        created: showLoadingPanel(async function () {
+            this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
+            const currentUser = await CurrentUserService.getAsync();
+            this.isUserAdmin = currentUser.parts.adminState.isAdmin;
+
+            this.organizations = await OrganizationsMasterDataService.getAllAsync();
+
+            this.cabinets = await CabinetsMasterDataService.getAllAsync();
+            if (this.organizations.length == 1) {
+                this.isSingleOrganization = true;
+            }
+            this.organizationsOptions = this.organizations
+
+            if (this.currentDatabase == null) {
+                this.selectedOrganization = this.organizationsOptions[0];
+                ViewContextService.set(new ViewContextModel(this.organizations[0]));
+            } else {
+                this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+            }
+
             await CachePreloaderService.loadAllMasterDataAsync(this, false);
         }),
         methods: {
-        goToLoginFront() {
-            this.$router.push("/Login")
-        },
-        async logoutAsync() {
-            AuthenticationService.logoutAsync().then(() => {
+            goToLoginFront() {
                 this.$router.push("/Login")
-            });
-        },
-        goToPatientPage() {
-            this.$router.push("/SearchPatient")
-            localStorage.removeItem("searchPatient")
-        },
-        goToProfilPage() {
-            this.$router.push("/UserSettings")
-        },
-        goToOrdersPage() {
-            this.$router.push("/Orders")
-        },
-        goToCabinetsPage() {
-            if (this.cabinets.length == 1) {
-                this.$router.push("/Cabinet/" + this.cabinets[0].id);
-            } else {
-                this.$router.push("/stockPharmacy")
-            }
-        },
-        goToPeriodicPage() {
-            // this.$router.push("/PeriodicOrders")
-        },
-        refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
+            },
+            async logoutAsync() {
+                AuthenticationService.logoutAsync().then(() => {
+                    this.$router.push("/Login")
+                });
+            },
+            goToPatientPage() {
+                this.$router.push("/SearchPatient")
+                localStorage.removeItem("searchPatient")
+            },
+            goToProfilPage() {
+                this.$router.push("/UserSettings")
+            },
+            goToOrdersPage() {
+                this.$router.push("/Orders")
+            },
+            goToCabinetsPage() {
+                if (this.cabinets.length == 1) {
+                    this.$router.push("/Cabinet/" + this.cabinets[0].id);
+                } else {
+                    this.$router.push("/stockPharmacy")
+                }
+            },
+            goToPeriodicPage() {
+                // this.$router.push("/PeriodicOrders")
+            },
+            refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
 
                 // NOTE : Update the ViewContext to save the selected database
                 // const organizations = await OrganizationsMasterDataService.getAllAsync();

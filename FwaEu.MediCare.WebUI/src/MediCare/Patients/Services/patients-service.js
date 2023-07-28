@@ -30,6 +30,11 @@ const PatientService = {
 		}
 		return response.data;
 	},
+
+	async saveIncontinenceLevelAsync(data) {
+		const result = await HttpService.post(`/Patients/SaveIncontinenceLevel`, data);
+		return result.data;
+	}
 }
 
 export const usePatient = () => {

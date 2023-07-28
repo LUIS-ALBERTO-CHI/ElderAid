@@ -15,5 +15,8 @@
   "textSalutation": "Bonjour,",
   "textBody": "Veuillez trouver ci-dessous les coordonnées afin de joindre l’interlocuteur souhaité :",
   "textClosing": "Cordialement,",
-  "textSignatureLine": "L’administrateur"
+  "textSignatureLine": "L’administrateur",
+
+  "CanAdminstrateApplicationMasterData": "Peut gérer les données référentiels",
+  "CanChangeIncontinenceLevel": "Peut changer le niveau d'incontinence"
 }

@@ -6,5 +6,4 @@ export class PatientsModule extends AbstractModule {
 	async onInitAsync() {
 		await PatientsMasterDataService.configureAsync();
 	}
-
 }
