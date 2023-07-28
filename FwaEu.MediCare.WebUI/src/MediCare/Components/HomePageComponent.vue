@@ -1,7 +1,8 @@
 <template>
     <div class="page-home">
         <div class="flex-section justify-content-center" v-if="isSingleOrganization">
-            <span class="organization-text">{{ this.organizations[0].name }}</span>
+            <span class="organization-text" v-if="organizations > 0">{{ this.organizations[0].name }}</span>
+            <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
                   @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
@@ -117,12 +118,12 @@
             this.organizations = await OrganizationsMasterDataService.getAllAsync();
 
             this.cabinets = await CabinetsMasterDataService.getAllAsync();
-            if (this.organizations.length == 1) {
+            if (this.organizations.length <= 1) {
                 this.isSingleOrganization = true;
             }
             this.organizationsOptions = this.organizations
 
-            if (this.currentDatabase == null) {
+            if (this.currentDatabase == null && this.organizations.length > 0) {
                 this.selectedOrganization = this.organizationsOptions[0];
                 ViewContextService.set(new ViewContextModel(this.organizations[0]));
             } else {
