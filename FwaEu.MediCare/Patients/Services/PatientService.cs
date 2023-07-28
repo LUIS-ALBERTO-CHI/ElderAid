@@ -36,7 +36,7 @@ namespace FwaEu.MediCare.Patients.Services
 
         public async Task SaveIncontinenceLevelAsync(SaveIncontinenceLevel model)
         {
-            if(model.DateStart < model.DateEnd)
+            if(model.DateStart > model.DateEnd)
                 throw new NotImplementedException();
             var query = "exec SP_MDC_SaveIncontinenceLevel :PatientId, :IncontinenceLevel, :StartDateSubscription, :StopDateSubscription, :UserLogin, :UserIp";
 
