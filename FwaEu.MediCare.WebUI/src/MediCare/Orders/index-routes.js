@@ -8,19 +8,19 @@ export default [
 		name: 'Orders',
 		component: OrdersPageComponent,
 		meta: {
-			title: 'Commandes',
+			title: 'Commandes unitaires',
 			breadcrumb: {
-				titleKey: 'Commandes periodiqués',
+				titleKey: 'Commandes unitaires',
 				parentName: 'default'
 			},
 		}
 	},
 	{
-		path: '/periodicCommandes',
-		name: 'periodicCommandes',
+		path: '/PeriodicOrders',
+		name: 'PeriodicOrders',
 		component: PeriodicOrdersPageComponent,
 		meta: {
-			title: 'Commandes Periodiques',
+			title: 'Commandes périodiques',
 			breadcrumb: {
 				titleKey: 'Commandes périodiques',
 				parentName: 'default'

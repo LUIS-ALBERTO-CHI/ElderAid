@@ -9,9 +9,8 @@
             </span>
             <Dropdown v-model="selectedSector" :options="sectorsTypeOptions" class="select-sector" />
             <Dropdown v-model="selectedOrderType" :options="ordersTypeOptions" class="select-sector" />
-            <div v-if="periodicOrders && selectedOrderType === 'Patients validés'" class="periodic-orders-container">
-                <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
-                    class="periodic-orders-item">
+            <div v-if="periodicOrders && selectedOrderType === 'Patients validés' || selectedOrderType === 'Toutes'" class="periodic-orders-container">
+                <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id" class="periodic-orders-item">
                     <div class="header">
                         <div class="patient-info">
                             <i class="fa-solid fa-check check-icon" />
@@ -23,11 +22,29 @@
                         </div>
                     </div>
                     <div class="quantity-info">
-                        <span>{{ getTotalQuantity(patient.id) }} produits validés</span>
+                        <span>{{ getTotalQuantityPeriodic(patient.id) }} produits validés</span>
                     </div>
                 </div>
             </div>
-            <OrderToValidateComponentVue v-if="selectedOrderType === 'Patients á valider'"/>
+            <div v-if="orders && selectedOrderType === 'Patients á valider' || selectedOrderType === 'Toutes'"
+                class="periodic-orders-container">
+                <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
+                    class="periodic-orders-item">
+                    <div class="header">
+                        <div class="patient-info">
+                            <i class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon" />
+                            <span>{{ patient.fullName }}</span>
+                        </div>
+                        <div class="room-info">
+                            <i class="fa-solid fa-bed" />
+                            <span>{{ patient.roomName }}</span>
+                        </div>
+                    </div>
+                    <div class="quantity-info">
+                        <span>{{ getTotalQuantity(patient.id) }} produits á valider</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -39,12 +56,10 @@ import Dropdown from 'primevue/dropdown';
 import PeriodicOrdersMasterDataService from '../Services/periodic-orders-master-data-service';
 import PatientService from "@/MediCare/Patients/Services/patients-service";
 import OrderMasterDataService from "../Services/orders-master-data-service";
-import OrderToValidateComponentVue from './OrderToValidateComponent.vue';
 export default {
     components: {
         InputText,
         Dropdown,
-        OrderToValidateComponentVue
     },
     data() {
         return {
@@ -53,7 +68,7 @@ export default {
             ordersTypeOptions: ["Toutes", "Patients validés", "Patients á valider"],
             selectedOrderType: "Toutes",
             periodicOrders: null,
-            orders: null,
+            orders: [],
             patientsData: {},
             searchOrders: "",
             filteredPatients: []
@@ -61,12 +76,23 @@ export default {
     },
     async created() {
         this.periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+        await this.orderPeriodicPatientData();
         await this.orderPatientData();
         this.orders = await OrderMasterDataService.getAllAsync();
     },
     methods: {
+        async orderPeriodicPatientData() {
+            for (const periodicOrder of this.periodicOrders) {
+                if (periodicOrder.patientId != null && periodicOrder.patientId > 0) {
+                    if (!this.patientsData[periodicOrder.patientId]) {
+                        const patient = await PatientService.getPatientById(periodicOrder.patientId);
+                        this.patientsData[periodicOrder.patientId] = patient;
+                    }
+                }
+            }
+        },
         async orderPatientData() {
-            for (const order of this.periodicOrders) {
+            for (const order of this.orders) {
                 if (order.patientId != null && order.patientId > 0) {
                     if (!this.patientsData[order.patientId]) {
                         const patient = await PatientService.getPatientById(order.patientId);
@@ -87,7 +113,7 @@ export default {
         getValidatedOrdersCount(patientId) {
             return this.periodicOrders.filter(order => order.patientId === patientId && order.isValidated).length;
         },
-        getTotalQuantity(patientId) {
+        getTotalQuantityPeriodic(patientId) {
             const ordersForPatient = this.periodicOrders.filter(order => order.patientId === patientId);
             const totalQuantity = ordersForPatient.reduce((total, order) => total + order.quantity, 0);
             return totalQuantity;
@@ -98,14 +124,23 @@ export default {
                 params: { id: patientId },
             });
         },
+        getTotalQuantity(patientId) {
+            const ordersForPatient = this.orders.filter(order => order.patientId === patientId);
+            const totalQuantity = ordersForPatient.reduce((total, order) => total + order.quantity, 0);
+            return totalQuantity;
+        },
     },
     computed: {
-        patientsFiltered() {
-            return Object.values(this.patientsData);
-        },
         filteredPatients() {
             return Object.values(this.patientsData).filter(
-                (patient) => patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim())
+                (patient) => patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
+                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
+                    (this.selectedOrderType == "Patients validés" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id)) ||
+                    patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
+                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
+                    (this.selectedOrderType == "Patients á valider" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id)) ||
+                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
+                    (this.selectedOrderType == "Toutes" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id))
             );
         },
     }
