@@ -1,5 +1,5 @@
 const OrdersPageComponent = () => import('@/MediCare/Orders/Components/OrdersPageComponent.vue');
-
+const PeriodicOrdersPageComponent = () => import('@/MediCare/Orders/Components/PeriodicOrdersPageComponent.vue');
 
 
 export default [
@@ -8,11 +8,24 @@ export default [
 		name: 'Orders',
 		component: OrdersPageComponent,
 		meta: {
-			title: 'Commandes',
+			title: 'Commandes unitaires',
 			breadcrumb: {
-				titleKey: 'Commandes',
+				titleKey: 'Commandes unitaires',
 				parentName: 'default'
 			},
 		}
 	},
+	{
+		path: '/PeriodicOrders',
+		name: 'PeriodicOrders',
+		component: PeriodicOrdersPageComponent,
+		meta: {
+			title: 'Commandes périodiques',
+			breadcrumb: {
+				titleKey: 'Commandes périodiques',
+				parentName: 'default'
+			},
+		}
+	},
+
 ];

@@ -159,7 +159,7 @@
                 }
             },
             goToPeriodicPage() {
-                // this.$router.push("/PeriodicOrders")
+                this.$router.push("/PeriodicOrders")
             },
             refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
 
