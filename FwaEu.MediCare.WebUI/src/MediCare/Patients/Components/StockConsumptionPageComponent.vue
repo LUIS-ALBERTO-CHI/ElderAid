@@ -18,7 +18,7 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import StockConsumptionMasterDataService from '@/MediCare/StockConsumption/Services/stock-consumption-master-data-service'
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import StockConsumptionService from '@/MediCare/StockConsumption/Services/stock-consumption-service'

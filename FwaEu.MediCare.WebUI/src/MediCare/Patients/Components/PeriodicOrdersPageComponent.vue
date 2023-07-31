@@ -26,7 +26,7 @@
     import InputNumber from 'primevue/inputnumber';
 
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';

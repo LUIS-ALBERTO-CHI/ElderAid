@@ -48,7 +48,7 @@
 
     import Accordion from 'primevue/accordion';
     import AccordionTab from 'primevue/accordiontab';
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import PatientService from "@/MediCare/Patients/Services/patients-service";
 

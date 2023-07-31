@@ -56,7 +56,7 @@ import InputNumber from 'primevue/inputnumber';
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
 import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
-import ArticlesService from '@/MediCare/Referencials/Services/articles-service';
+import ArticlesService from '@/MediCare/Articles/Services/articles-service';
 
 
 export default {

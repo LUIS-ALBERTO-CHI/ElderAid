@@ -34,11 +34,11 @@
 import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
 import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
 import InputText from "primevue/inputtext";
-import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+import ArticlesMasterDataService from "../Services/articles-master-data-service";
 import Dropdown from "primevue/dropdown";
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import ArticlesService from "@/MediCare/Referencials/Services/articles-service";
-import ArticlesTypeMasterDataService from "@/MediCare/Referencials/Services/articles-type-master-data-service";
+import ArticlesService from "../Services/articles-service";
+import ArticlesTypeMasterDataService from "../Services/articles-type-master-data-service";
 import { useRoute } from 'vue-router';
 import { ref, watch } from "vue";
 import { watchDebounced } from '@vueuse/core'

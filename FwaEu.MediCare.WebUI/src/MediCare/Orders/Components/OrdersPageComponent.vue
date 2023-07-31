@@ -42,7 +42,7 @@
     import Dropdown from 'primevue/dropdown';
     import AccordionOrderComponent from './AccordionOrderComponent.vue';
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';

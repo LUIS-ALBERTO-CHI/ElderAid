@@ -35,8 +35,8 @@ import PatientInfoComponent from './PatientInfoComponent.vue';
 import Button from 'primevue/button';
 import ProtectionAccordionTabComponent from './ProtectionAccordionTabComponent.vue';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import ProtectionsMasterDataService from '@/MediCare/Referencials/Services/protections-master-data-service';
-import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
+import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
+import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
 import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 
 

@@ -59,7 +59,7 @@
 import PatientInfoComponent from './PatientInfoComponent.vue';
 import OrderComponent from './OrderComponent.vue';
 import Button from 'primevue/button';
-import ArticlesMasterDataService from '@/MediCare/Referencials/Services/articles-master-data-service';
+import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
 
 

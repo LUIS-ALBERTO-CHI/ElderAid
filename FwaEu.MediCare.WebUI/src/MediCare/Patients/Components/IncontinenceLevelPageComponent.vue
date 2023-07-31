@@ -30,7 +30,7 @@ import Button from 'primevue/button';
 import Chart from 'primevue/chart';
 import 'chartjs-plugin-datalabels';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import incontinenceLevelMasterDataService from '@/MediCare/Referencials/Services/incontinence-level-master-data-service';
+import incontinenceLevelMasterDataService from '@/MediCare/Patients/Services/incontinence-level-master-data-service';
 
 export default {
     components: {
