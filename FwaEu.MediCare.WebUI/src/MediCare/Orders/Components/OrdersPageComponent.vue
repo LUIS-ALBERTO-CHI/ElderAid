@@ -10,17 +10,11 @@
             <div style="display: flex; flex-direction: column;">
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
-                        <div v-if="order.state === 'Delivred'" class="accordion-content">
-                            <Button label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                        </div>
-                        <div v-else class="accordion-content">
-                            <Button label="Annuler la commande" style="height: 45px !important;"></Button>
-                            <Button label="Commander à nouveau pour Dimitri" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                        <div class="accordion-content">
+                            <Button v-show="order.state != 'Delivred'" label="Annuler la commande" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId != null" @click="goToArticleWithPatientId(order)" :label="`Commander à nouveau pour ${order.patient.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button @click="goToArticle(order.articleId)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                         </div>
                     </AccordionOrderComponent>
                 </div>
@@ -30,7 +24,7 @@
         <div v-else class="new-order-container">
             <span style="font-weight: bold; font-size: 18px;">Nouvelle commande :</span>
             <Button @click="goToSearchPatient" label="Pour un patient" icon="fa fa-solid fa-angle-right" iconPos="right" />
-            <Button @click="goToSearchPatient" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button @click="goToSearchArticleForEms" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
             <Button @click="displayNewOrder" label="Retour" />
         </div>
     </div>
@@ -76,6 +70,7 @@
             this.patients = await PatientsMasterDataService.getAllAsync();
             this.orders[0].patientId = null;
             this.fillOrders();
+            console.log(this.orders);
         },
         methods: {
             removeSearch() {
@@ -91,7 +86,19 @@
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
-                this.$router.push({ name: "SearchPatient" });
+                this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: 0 } });
+            },
+            goToSearchPatientWithArticleId(articleId) {
+                this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: articleId } });
+            },
+            goToSearchArticleForEms() {
+                this.$router.push({ name: "SearchArticleForEMSFromOrder" });
+            },
+            goToArticle(articleId) {
+                this.$router.push({ name: "OrderArticleFromOrder", params : {id: 0, articleId: articleId} });
+            },
+            goToArticleWithPatientId(order) {
+                this.$router.push({ name: "OrderArticleFromOrder", params : {id: order.patientId, articleId: order.articleId} });
             },
             async fillOrders() {
                 const ordersArticleIds = this.orders.map(x => x.articleId);

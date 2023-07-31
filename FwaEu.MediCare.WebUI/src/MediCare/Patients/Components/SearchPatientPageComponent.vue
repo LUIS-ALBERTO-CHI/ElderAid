@@ -8,7 +8,7 @@
         <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
-                <div @click="goToPatientPage(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
+                <div @click="onPatientClick(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
                     <div class="name-patient-area">
                         <span>{{cuttedName(patient)}}</span>
                         <i v-show="!patient.isActive" class="fa-solid fa-circle patient-state" />
@@ -68,12 +68,21 @@
             changeDisplayInactive() {
                 this.displayInactivePatients = !this.displayInactivePatients;
             },
-            goToPatientPage(patient) {
-            const args = { cancelNavigation: false, selectedPatient: patient };
-            this.$emit("selectedPatient", args);
-            if (!args.cancelNavigation) {
-                this.$router.push({ name: "Patient", params: { id: patient.id }});
-            }
+            onPatientClick(patient) {
+                const args = { cancelNavigation: false, selectedPatient: patient };
+
+                this.$emit("selectedPatient", args);
+                if (!args.cancelNavigation) {
+                    if (this.$route.name === "SearchPatientFromOrder") {
+                        if (this.$route.params.articleId != 0) {
+                            this.$router.push({ name: "OrderArticleFromOrder", params: { id: patient.id, articleId: this.$route.params.articleId } });
+                        } else {
+                            this.$router.push({ name: "SearchArticleFromOrder", params: { id: patient.id } });
+                        }
+                    } else {
+                        this.$router.push({ name: "Patient", params: { id: patient.id } });
+                    }
+                }
             },
             removeSearch() {
                 this.searchPatient = "";
