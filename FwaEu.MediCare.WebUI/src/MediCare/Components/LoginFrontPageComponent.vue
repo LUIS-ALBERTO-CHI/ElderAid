@@ -1,5 +1,6 @@
 <template>
 	<div class="login-page">
+		<img @click="goToHome" class="logo" alt="" src="../Content/logo.png" />
 		<page-container type="form">
 			<h3 class="login-box-content">{{$t('welcomeMessage', {applicationName: applicationName})}}</h3>
 			<div class="login-box-container">
@@ -70,7 +71,6 @@
 </script>
 <style type="text/css">
 	.login-page {
-		margin-top: 50px;
 		width: 100%;
 	}
 
@@ -100,5 +100,12 @@
 		height: 5px;
 		filter: blur(1px);
 		margin: 15px auto;
+	}
+
+	.logo {
+		display: flex;
+		margin: 0 auto;
+		height: 100px;
+		width: auto;
 	}
 </style>
