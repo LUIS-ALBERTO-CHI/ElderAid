@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="quantity-info">
-                        <span>{{ getTotalQuantity(patient.id) }} produits à valider</span>
+                        <span>{{ getTotalQuantity(patient.id)}} {{ (getTotalQuantity(patient.id) > 0 ? 'produits' : 'produit') }} à valider</span>
                     </div>
                 </div>
             </div>
