@@ -1,4 +1,5 @@
 const ArticlesSearchPageComponent = () => import('@/MediCare/Articles/Components/ArticlesSearchPageComponent.vue');
+const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
 
 export default [
     {
@@ -37,4 +38,40 @@ export default [
             },
         }
     },
+    {
+		path: '/Patient/:id/OrderArticle/:articleId',
+		name: 'OrderArticle',
+		component: OrderArticlePageComponent,
+		meta: {
+			title: 'Commander un article',
+			breadcrumb: {
+				titleKey: 'Commander un article',
+				parentName: 'SearchArticle'
+			},
+		}
+	},
+	{
+		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
+		name: 'OrderArticleFromOrder',
+		component: OrderArticlePageComponent,
+		meta: {
+			title: 'Commander un article',
+			breadcrumb: {
+				titleKey: 'Commander un article',
+				parentName: 'SearchPatientFromOrder'
+			},
+		}
+	},
+    {
+		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
+		name: 'OrderArticleFromOrder',
+		component: OrderArticlePageComponent,
+		meta: {
+			title: 'Commander un article',
+			breadcrumb: {
+				titleKey: 'Commander un article',
+				parentName: 'Orders'
+			},
+		}
+	},
 ]

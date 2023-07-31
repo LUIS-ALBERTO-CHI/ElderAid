@@ -1,6 +1,6 @@
 <template>
     <div class="order-article-page-container">
-        <patient-info-component :patient="patient" />
+        <patient-info-component v-if="patient" :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
             <i class="fa-solid fa-heart"></i>
@@ -31,23 +31,19 @@
         <div v-else class="order-submitted-container">
             <span>Commande réalisée avec succès !</span>
             <span>Votre prochaine action : </span>
-            <Button
-                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
                 <span style="text-align: center;">Voir les commandes en cours pour {{ patient.fullName }}</span>
                 <i class="fa fa-solid fa-angle-right"></i>
             </Button>
-            <Button
-                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
                 <span style="text-align: center;">Commander un autre article pour {{ patient.fullName }}</span>
                 <i class="fa fa-solid fa-angle-right"></i>
             </Button>
-            <Button
-                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
                 <span style="text-align: center;">Consulter la fiche du patient {{ patient.fullName }}</span>
                 <i class="fa fa-solid fa-angle-right"></i>
             </Button>
-            <Button
-                style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+            <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
                 <span style="text-align: center;">Revenir à l'accueil {{ patient.fullName }}</span>
                 <i class="fa fa-solid fa-angle-right"></i>
             </Button>
@@ -92,7 +88,8 @@ export default {
             const [article] = await ArticlesMasterDataService.getByIdsAsync([articleId]);
             this.article = article;
         }
-        this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+        if (this.patient)
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
     },
     methods: {
 

@@ -74,7 +74,11 @@
                 this.$emit("selectedPatient", args);
                 if (!args.cancelNavigation) {
                     if (this.$route.name === "SearchPatientFromOrder") {
-                        this.$router.push({ name: "SearchArticleFromOrder", params: { id: patient.id } });
+                        if (this.$route.params.articleId != 0) {
+                            this.$router.push({ name: "OrderArticleFromOrder", params: { id: patient.id, articleId: this.$route.params.articleId } });
+                        } else {
+                            this.$router.push({ name: "SearchArticleFromOrder", params: { id: patient.id } });
+                        }
                     } else {
                         this.$router.push({ name: "Patient", params: { id: patient.id } });
                     }

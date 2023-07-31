@@ -3,7 +3,6 @@ const PatientPageComponent = () => import('@/MediCare/Patients/Components/Patien
 const TreatmentPageComponent = () => import('@/MediCare/Patients/Components/TreatmentPageComponent.vue');
 const PatientOrdersPageComponent = () => import('@/MediCare/Patients/Components/PatientOrdersPageComponent.vue');
 const StockConsumptionPageComponent = () => import('@/MediCare/Patients/Components/StockConsumptionPageComponent.vue');
-const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
 const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
 const IncontinenceLevelPageComponent = () => import('@/MediCare/Patients/Components/IncontinenceLevelPageComponent.vue');
@@ -24,7 +23,7 @@ export default [
 		},
 	},
 	{
-		path: '/Orders/SearchPatient',
+		path: '/Orders/:articleId/SearchPatient',
 		name: 'SearchPatientFromOrder',
 		component: SearchPatientPageComponent,
 		meta: {
@@ -141,18 +140,6 @@ export default [
 			breadcrumb: {
 				titleKey: 'Stock de consommation',
 				parentName: 'Patient'
-			},
-		}
-	},
-	{
-		path: '/Patient/:id/OrderArticle/:articleId',
-		name: 'OrderArticle',
-		component: OrderArticlePageComponent,
-		meta: {
-			title: 'Commander un article',
-			breadcrumb: {
-				titleKey: 'Commander un article',
-				parentName: 'SearchArticle'
 			},
 		}
 	},
