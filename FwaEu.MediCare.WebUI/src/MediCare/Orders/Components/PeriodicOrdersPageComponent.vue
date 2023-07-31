@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="periodicOrders && selectedOrderType === 'Patients á valider' || selectedOrderType === 'Toutes'"
+            <div v-if="periodicOrders && selectedOrderType === 'Patients à valider' || selectedOrderType === 'Toutes'"
                 class="periodic-orders-container">
                 <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
                     class="periodic-orders-item">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="quantity-info">
-                        <span>{{ getTotalQuantity(patient.id) }} produits á valider</span>
+                        <span>{{ getTotalQuantity(patient.id) }} produits à valider</span>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@ export default {
         return {
             sectorsTypeOptions: ["Toutes", "Secteur A", "Secteur B"],
             selectedSector: "Toutes",
-            ordersTypeOptions: ["Toutes", "Patients validés", "Patients á valider"],
+            ordersTypeOptions: ["Toutes", "Patients validés", "Patients à valider"],
             selectedOrderType: "Toutes",
             periodicOrders: null,
             patientsData: {},
