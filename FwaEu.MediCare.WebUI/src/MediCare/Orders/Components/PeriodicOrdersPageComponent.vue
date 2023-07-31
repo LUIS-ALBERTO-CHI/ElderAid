@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="orders && selectedOrderType === 'Patients á valider' || selectedOrderType === 'Toutes'"
+            <div v-if="periodicOrders && selectedOrderType === 'Patients á valider' || selectedOrderType === 'Toutes'"
                 class="periodic-orders-container">
                 <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
                     class="periodic-orders-item">
@@ -68,7 +68,6 @@ export default {
             ordersTypeOptions: ["Toutes", "Patients validés", "Patients á valider"],
             selectedOrderType: "Toutes",
             periodicOrders: null,
-            orders: [],
             patientsData: {},
             searchOrders: "",
             filteredPatients: []
@@ -77,8 +76,6 @@ export default {
     async created() {
         this.periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
         await this.orderPeriodicPatientData();
-        await this.orderPatientData();
-        this.orders = await OrderMasterDataService.getAllAsync();
     },
     methods: {
         async orderPeriodicPatientData() {
@@ -87,16 +84,6 @@ export default {
                     if (!this.patientsData[periodicOrder.patientId]) {
                         const patient = await PatientService.getPatientById(periodicOrder.patientId);
                         this.patientsData[periodicOrder.patientId] = patient;
-                    }
-                }
-            }
-        },
-        async orderPatientData() {
-            for (const order of this.orders) {
-                if (order.patientId != null && order.patientId > 0) {
-                    if (!this.patientsData[order.patientId]) {
-                        const patient = await PatientService.getPatientById(order.patientId);
-                        this.patientsData[order.patientId] = patient;
                     }
                 }
             }
@@ -125,24 +112,23 @@ export default {
             });
         },
         getTotalQuantity(patientId) {
-            const ordersForPatient = this.orders.filter(order => order.patientId === patientId);
-            const totalQuantity = ordersForPatient.reduce((total, order) => total + order.quantity, 0);
-            return totalQuantity;
+        const zeroQuantityOrdersForPatient = this.periodicOrders.filter(order => order.patientId === patientId && order.quantity === 0);
+        const totalQuantity = zeroQuantityOrdersForPatient.length;
+        return totalQuantity;
         },
     },
     computed: {
         filteredPatients() {
-            return Object.values(this.patientsData).filter(
-                (patient) => patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
-                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
-                    (this.selectedOrderType == "Patients validés" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id)) ||
-                    patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
-                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
-                    (this.selectedOrderType == "Patients á valider" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id)) ||
-                    patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) &&
-                    (this.selectedOrderType == "Toutes" && this.periodicOrders.some(periodicOrder => periodicOrder.patientId === patient.id))
+            return Object.values(this.patientsData).filter(patient =>
+                (patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
+                    patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim())) &&
+                (
+                    this.selectedOrderType === "Toutes" && this.getTotalQuantity(patient.id) > 0 ||
+                    (this.selectedOrderType === "Patients validés" && patient.id != null) ||
+                    (this.selectedOrderType === "Patients á valider" && patient.id != null && this.getTotalQuantity(patient.id) > 0)
+                )
             );
-        },
+        }
     }
 };
 </script>
