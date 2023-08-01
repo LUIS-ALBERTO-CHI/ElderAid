@@ -104,7 +104,6 @@
             }
             if (this.patient)
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-            console.log(this.article)
             this.loadGallery();
         },
         methods: {
