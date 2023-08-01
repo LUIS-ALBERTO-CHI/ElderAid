@@ -235,3 +235,7 @@
   background: var(--button-background-color);
   border: var(--button-background-color);
 }
+
+.p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
+  background-color:  var(--button-background-color);
+}
