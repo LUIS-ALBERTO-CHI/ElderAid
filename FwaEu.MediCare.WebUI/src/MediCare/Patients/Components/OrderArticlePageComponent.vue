@@ -108,10 +108,10 @@
         },
         methods: {
             loadGallery() {
-                //NOTE : FAKE DATA CHANGE WHEN WE HAVE REAL DATA
-                for (var i = 0; i != 5; i++) {
+                var imagesParsed = this.article.imageURLs.split("|");
+                for (var i = 0; i != imagesParsed.length; i++) {
                     this.gallery.push({
-                        itemImageSrc: "https://apps.hcisolutions.ch/MyProducts/Picture/5625265_pif_M.jpg?key=pharmacode",
+                        itemImageSrc: imagesParsed[i],
                     })
                 }
             },
