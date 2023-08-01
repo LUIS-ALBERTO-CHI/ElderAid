@@ -30,7 +30,7 @@ import Button from 'primevue/button';
 import Chart from 'primevue/chart';
 import 'chartjs-plugin-datalabels';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import incontinenceLevelMasterDataService from '@/MediCare/Referencials/Services/incontinence-level-master-data-service';
+import incontinenceLevelMasterDataService from '@/MediCare/Patients/Services/incontinence-level-master-data-service';
 import Calendar from 'primevue/calendar';
 import NotificationService from "@/Fwamework/Notifications/Services/notification-service";
 import { hasPermissionAsync } from "@/Fwamework/Permissions/Services/current-user-permissions-service";

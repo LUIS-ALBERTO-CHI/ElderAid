@@ -1,5 +1,5 @@
 const ArticlesSearchPageComponent = () => import('@/MediCare/Articles/Components/ArticlesSearchPageComponent.vue');
-const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/OrderArticlePageComponent.vue');
+const PatientOrderArticlePageComponent = () => import('@/MediCare/Patients/Components/PatientOrderArticlePageComponent.vue');
 
 export default [
     {
@@ -41,7 +41,7 @@ export default [
     {
 		path: '/Patient/:id/OrderArticle/:articleId',
 		name: 'OrderArticle',
-		component: OrderArticlePageComponent,
+		component: PatientOrderArticlePageComponent,
 		meta: {
 			title: 'Commander un article',
 			breadcrumb: {
@@ -53,7 +53,7 @@ export default [
 	{
 		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
 		name: 'OrderArticleFromOrder',
-		component: OrderArticlePageComponent,
+		component: PatientOrderArticlePageComponent,
 		meta: {
 			title: 'Commander un article',
 			breadcrumb: {
@@ -65,7 +65,7 @@ export default [
     {
 		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
 		name: 'OrderArticleFromOrder',
-		component: OrderArticlePageComponent,
+		component: PatientOrderArticlePageComponent,
 		meta: {
 			title: 'Commander un article',
 			breadcrumb: {

@@ -124,7 +124,7 @@ export default {
                 (
                     this.selectedOrderType === "Toutes" && this.getTotalQuantity(patient.id) > 0 ||
                     (this.selectedOrderType === "Patients validés" && patient.id != null) ||
-                    (this.selectedOrderType === "Patients á valider" && patient.id != null && this.getTotalQuantity(patient.id) > 0)
+                    (this.selectedOrderType === "Patients à valider" && patient.id != null && this.getTotalQuantity(patient.id) > 0)
                 )
             );
         }
