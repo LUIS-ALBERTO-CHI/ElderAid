@@ -145,7 +145,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
             goToArticlePage(article) {
                 this.selectedArticle = article;
                 this.$router.push({
-                    name: "OrderArticleFromOrder",
+                    name: "OrderArticle",
                     params: { articleId: article.id }
                 });
             },
