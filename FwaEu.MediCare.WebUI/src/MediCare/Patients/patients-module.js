@@ -12,5 +12,4 @@ export class PatientsModule extends AbstractModule {
 		await ProtectionMasterDataService.configureAsync();
 		await IncontinenceLevelMasterDataService.configureAsync();
 	}
-
 }

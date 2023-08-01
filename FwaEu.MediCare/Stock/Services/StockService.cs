@@ -43,8 +43,16 @@ namespace FwaEu.MediCare.Stock.Services
             storedProcedure.SetParameter("Page", model.Page);
             storedProcedure.SetParameter("PageSize", model.PageSize);
 
-            var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetAllArticlesCabinetResponse>()).ListAsync<GetAllArticlesCabinetResponse>();
-            return models.ToList();
+            try
+            {
+                var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetAllArticlesCabinetResponse>()).ListAsync<GetAllArticlesCabinetResponse>();
+                return models.ToList();
+            }
+            catch(Exception ex)
+            {
+                
+            }
+            return new List<GetAllArticlesCabinetResponse>();
         }
     }
 }

@@ -87,7 +87,8 @@ export default {
             this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id);
         },
         goToIncontinenceLevelPage() {
-            this.$router.push({ name: 'IncontinenceLevel' });
+            const patientId = this.patient.id;
+            this.$router.push({ name: 'IncontinenceLevel', params: { id: patientId } });
         },
         async getMoreProtections() {
             var model = {

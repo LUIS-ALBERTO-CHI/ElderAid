@@ -1,7 +1,8 @@
 {
-    "Light": "Légère",
-    "Medium": "Moyenne",
-    "Severe": "Sévère",
-    "Total": "Totale",
-    "Double": "Doublée"
+  "None": "Aucune",
+  "Light": "Légère",
+  "Medium": "Moyenne",
+  "Severe": "Sévère",
+  "Total": "Totale",
+  "Double": "Doublée"
 }

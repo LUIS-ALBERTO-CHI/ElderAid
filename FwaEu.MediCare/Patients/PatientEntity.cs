@@ -9,11 +9,12 @@ namespace FwaEu.MediCare.Patients
 {
     public enum IncontinenceLevel
     {
-        Light = 0,
-        Medium = 1,
-        Severe = 2,
-        Total = 3,
-        Double = 4
+        None = 0,
+        Light = 1,
+        Medium = 2,
+        Severe = 3,
+        Total = 4,
+        Double = 5
     }
 
     public class PatientEntity : IUpdatedOnTracked

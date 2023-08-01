@@ -1,7 +1,11 @@
 <template>
 	<!-- <vue-use-online>
 	</vue-use-online> -->
-	<breadcrumbs v-show="isBreadcrumbsEnabled" />
+	<div v-show="isBreadcrumbsEnabled" class="header-container">
+		<breadcrumbs  />
+		<img @click="goToHome" class="logo" alt="" src="../Content/logo.png" />
+	</div>
+
 </template>
 
 <script>
@@ -46,7 +50,10 @@
             },
             handleOfflineEvent() {
                 console.log('Internet is offline');
-            }
+            },
+			goToHome() {
+				this.$router.push('/');
+			}
 		},
 		computed: {
 			isBreadcrumbsEnabled() {
@@ -62,3 +69,17 @@
 		}
 	}
 </script>
+<style>
+
+.header-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+}
+.logo {
+	width: auto;
+	height: 50px;
+}
+
+</style>
