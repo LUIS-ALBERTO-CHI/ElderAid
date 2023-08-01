@@ -7,8 +7,6 @@ const OrderArticlePageComponent = () => import('@/MediCare/Patients/Components/O
 const PatientMedicationsPageComponent = () => import('@/MediCare/Patients/Components/PatientMedicationsPageComponent.vue');
 const ProtectionPageComponent = () => import('@/MediCare/Patients/Components/ProtectionPageComponent.vue');
 const IncontinenceLevelPageComponent = () => import('@/MediCare/Patients/Components/IncontinenceLevelPageComponent.vue');
-const PatientPeriodicOrdersPageComponent = () => import('@/MediCare/Patients/Components/PeriodicOrdersPageComponent.vue');
-
 
 export default [
 	{
@@ -165,18 +163,6 @@ export default [
 			breadcrumb: {
 				titleKey: 'Niveau d\'incontinence',
 				parentName: 'Protection'
-			},
-		}
-	},
-	{
-		path: '/Patient/:id/PeriodicOrders',
-		name: 'PatientPeriodicOrders',
-		component: PatientPeriodicOrdersPageComponent,
-		meta: {
-			title: 'Commandes périodiques à valider',
-			breadcrumb: {
-				titleKey: 'Commandes périodiques à valider',
-				parentName: 'Patient'
 			},
 		}
 	}

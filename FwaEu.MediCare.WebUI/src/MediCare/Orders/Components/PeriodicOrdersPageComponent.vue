@@ -55,7 +55,6 @@ import Dropdown from 'primevue/dropdown';
 
 import PeriodicOrdersMasterDataService from '../Services/periodic-orders-master-data-service';
 import PatientService from "@/MediCare/Patients/Services/patients-service";
-import OrderMasterDataService from "../Services/orders-master-data-service";
 export default {
     components: {
         InputText,
@@ -107,7 +106,7 @@ export default {
         },
         goToPeriodicOrdersPage(patientId) {
             this.$router.push({
-                name: "PatientPeriodicOrders",
+                name: "PeriodicOrder",
                 params: { id: patientId },
             });
         },

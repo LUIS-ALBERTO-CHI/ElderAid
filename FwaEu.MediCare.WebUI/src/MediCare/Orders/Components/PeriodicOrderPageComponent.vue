@@ -22,7 +22,7 @@
 <script>
 
     import Button from 'primevue/button';
-    import PatientInfoComponent from './PatientInfoComponent.vue';
+    import PatientInfoComponent from '../../Patients/Components/PatientInfoComponent.vue';
     import InputNumber from 'primevue/inputnumber';
 
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";

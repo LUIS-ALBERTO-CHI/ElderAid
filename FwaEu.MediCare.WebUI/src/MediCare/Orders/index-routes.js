@@ -1,6 +1,6 @@
 const OrdersPageComponent = () => import('@/MediCare/Orders/Components/OrdersPageComponent.vue');
 const PeriodicOrdersPageComponent = () => import('@/MediCare/Orders/Components/PeriodicOrdersPageComponent.vue');
-
+const PeriodicOrderPageComponent = () => import('@/MediCare/Orders/Components/PeriodicOrderPageComponent.vue');
 
 export default [
 	{
@@ -27,5 +27,16 @@ export default [
 			},
 		}
 	},
-
+	{
+		path: '/Patient/:id/PeriodicOrder',
+		name: 'PeriodicOrder',
+		component: PeriodicOrderPageComponent,
+		meta: {
+			title: 'Commandes périodiques à valider',
+			breadcrumb: {
+				titleKey: 'Commandes périodiques à valider',
+				parentName: 'Patient'
+			},
+		}
+	}
 ];
