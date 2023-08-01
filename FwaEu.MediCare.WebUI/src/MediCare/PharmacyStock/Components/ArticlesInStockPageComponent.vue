@@ -39,8 +39,8 @@ import { ref, watch } from "vue";
 import { watchDebounced } from '@vueuse/core'
 import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
 import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-import ArticlesService from '@/MediCare/Referencials/Services/articles-service';
-import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+import ArticlesService from '@/MediCare/Articles/Services/articles-service';
+import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
 
 
 export default {

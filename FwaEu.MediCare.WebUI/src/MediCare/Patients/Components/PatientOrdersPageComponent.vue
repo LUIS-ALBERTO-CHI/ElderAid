@@ -26,7 +26,7 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-    import ArticlesMasterDataService from "@/MediCare/Referencials/Services/articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import OrderComponent from './OrderComponent.vue';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import OrderService from '@/MediCare/Orders/Services/orders-service'

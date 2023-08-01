@@ -92,7 +92,7 @@
                 this.$router.push({ name: "Protection" });
             },
             goToPeriodicOrdersPage() {
-                this.$router.push({ name: "PeriodicOrders", params: { id: this.patient.id } });
+                this.$router.push({ name: "PeriodicOrder", params: { id: this.patient.id } });
             },
         },
         computed: {
