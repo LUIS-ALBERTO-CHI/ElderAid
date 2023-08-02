@@ -28,3 +28,16 @@
     margin-top: 10px;
     column-gap: 10px;
 }
+
+.cancel-confirmation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.button-confirmation {
+    border: none !important;
+    height: 30px !important;
+    color: #7092be !important
+}

@@ -23,5 +23,10 @@ export default {
 	async validatePeriodicOrderAsync(data) {
 		const result = await HttpService.post(`Orders/ValidatePeriodicOrder`, data);
 		return result.data;
+	},
+
+	async cancelOrderAsync(id) {
+		const result = await HttpService.post(`Orders/Cancel/${id}`);
+		return result.data;
 	}
 }
