@@ -37,7 +37,7 @@ namespace FwaEu.MediCare.Referencials
             Id(entity => entity.Id).Column("Id");
             Map(entity => entity.ProtectionId).Column("ProtectionId");
             Map(entity => entity.Quantity).Column("Quantity");
-            Map(entity => entity.Hour).Column("Hour");
+            Map(entity => entity.Hour).Column("AppliedHour");
             Map(entity => entity.UpdatedOn).Column("UpdatedOn").Not.Nullable();
         }
     }
