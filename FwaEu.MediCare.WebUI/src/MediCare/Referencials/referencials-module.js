@@ -5,6 +5,7 @@ import DosageFormConfiguration from './Services/dosage-form-configuration';
 import DosageFormMasterDataService from './Services/dosage-form-master-data-service';
 import CabinetsMasterDataService from './Services/cabinets-master-data-service'
 import IncontinenceLevelConfiguration from './Services/incontinence-level-configuration';
+import ProtectionMasterDataService from './Services/protection-dosages-master-data-service';
 
 
 export class ReferencialsModule extends AbstractModule {
@@ -13,6 +14,7 @@ export class ReferencialsModule extends AbstractModule {
 		await BuildingsMasterDataService.configureAsync();
 		await DosageFormMasterDataService.configureAsync();
 		await CabinetsMasterDataService.configureAsync();
+		await ProtectionMasterDataService.configureAsync();
 
 		GenericAdminConfigurationService.register(IncontinenceLevelConfiguration);
 		GenericAdminConfigurationService.register(DosageFormConfiguration);

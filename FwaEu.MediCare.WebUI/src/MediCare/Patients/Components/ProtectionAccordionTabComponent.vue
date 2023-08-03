@@ -6,12 +6,12 @@
                     <span class="header-title">{{protection.article.title}}</span>
                     <span class="header-subtitle">{{protection.dosageDescription }}</span>
                     <span class="header-subtitle">De {{ $d(new Date(protection.dateStart)) }} à {{ $d(new Date(protection.dateEnd)) }}</span>
-                    </div>
+                </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
                 <Button label="Commander" style="height: 40px !important;"></Button>
                 <Button @click="changePosology" label="Changer la posologie" style="height: 40px !important;"></Button>
-                <Button @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
+                <Button v-show="!isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
             </div>
             <div v-else-if="protectionState == ProtectionState.Change" class="accordion-content">
                 <span style="font-weight: bold;">Changer la posologie</span>
@@ -30,10 +30,10 @@
                 <div class="posology-container">
                     <div v-for="(posologyItem, index) in changeForm.posology" :key="index">
                         <div class="label-container">
-                            <InputNumber v-model="posologyItem.number" ref="inputNumber" showButtons buttonLayout="horizontal" style="width: 55%; height: 40px !important;"
+                            <InputNumber v-model="posologyItem.quantity" ref="inputNumber" showButtons buttonLayout="horizontal" style="width: 55%; height: 40px !important;"
                                          decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
                                          incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
-                            <Calendar v-model="posologyItem.date" style="width: 30% !important" timeOnly />
+                            <Calendar v-model="posologyItem.hour" style="width: 30% !important" timeOnly />
                             <i v-show="changeForm.posology.length > 1" @click="deletePosology(index)" style="font-size: 24px;" class="fa fa-solid fa-close"></i>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <span style="font-weight: bold;">Arrêter</span>
                 <div class="label-container">
                     <span>Date de fin :</span>
-                    <Calendar v-model="changeForm.startDate" style="width: 50% !important" showIcon />
+                    <Calendar v-model="stopEndDate" style="width: 50% !important" showIcon />
                 </div>
                 <Button style="height: 40px !important;" label="Confirmer" />
 
@@ -79,10 +79,7 @@
                 changeForm: {
                     startdate: null,
                     endDate: null,
-                    posology: [{
-                        number: 0,
-                        date: null
-                    }]
+                    posology: []
                 },
                 stopEndDate: null,
             };
@@ -92,8 +89,16 @@
                 type: Object,
                 required: true
             },
+            protectionDosages: {
+                type: Array,
+                required: true
+            }
         },
         async created() {
+            this.changeForm.startDate = new Date(this.protection.dateStart);
+            this.changeForm.endDate = new Date(this.protection.dateEnd);
+            this.stopEndDate = new Date(this.protection.dateEnd);
+            this.fillPosology();
         },
         methods: {
             changePosology() {
@@ -110,6 +115,24 @@
             },
             deletePosology(index) {
                 this.changeForm.posology.splice(index, 1)
+            },
+            isStopDatePassed(protectionDateEnd) {
+                var dateEnd = new Date(protectionDateEnd);
+                return dateEnd < new Date();
+            },
+            fillPosology() {
+                this.protectionDosages.forEach(posology => {
+                    this.changeForm.posology.push({
+                        quantity: posology.quantity,
+                        hour: new Date(posology.hour)
+                    });
+                });
+                if (this.changeForm.posology.length == 0) {
+                    this.changeForm.posology.push({
+                        quantity: 0,
+                        hour: null
+                    });
+                }
             }
         },
         computed: {
