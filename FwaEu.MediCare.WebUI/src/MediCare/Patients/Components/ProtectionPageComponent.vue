@@ -108,7 +108,6 @@
                 this.protections = this.protections.concat(protections)
             },
             getProtectionDosages(protection) {
-                // return []
                 return this.protectionDosages.filter(x => x.protectionId === protection.id)
             }
         },
