@@ -4,13 +4,22 @@
         <div style="display: flex; flex-direction: column;">
             <div v-if="patient" v-for="(order, index) in patientOrders" :key="index">
                 <AccordionOrderComponent :order="order">
-                    <div v-if="isOrderingIndex != index" class="button-order-item-container">
-                        <Button v-show="!isOrderDelivered(order)" severity="danger" style="height: 50px !important;"
-                                label="Annuler la commande" />
-                        <Button style="height: 50px !important;" label="Commander à nouveau" @click="showOrderComponent(index)" />
+                    <div v-if="isOrderingIndex != index">
+                        <div v-if="!isCancelConfirmationDisplayed" class="button-order-item-container">
+                            <Button v-show="isOrderPending(order)" @click="showConfirmation" severity="danger" style="height: 50px !important;"
+                                    label="Annuler la commande" />
+                            <Button style="height: 50px !important;" label="Commander à nouveau" @click="showOrderComponent(index)" />
+                        </div>
+                        <div v-else class="cancel-confirmation-container">
+                            <span>Etes vous sûr d'annuler la commande ?</span>
+                            <div class="confirmaton-button-container">
+                                <Button @click="cancelOrder(order.id)" label="OUI" outlined class="button-confirmation " />
+                                <Button @click="showConfirmation()" label="NON" outlined class="button-confirmation" />
+                            </div>
+                        </div>
                     </div>
                     <div v-else>
-                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" />
+                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" />
                     </div>
 
                 </AccordionOrderComponent>
@@ -59,6 +68,7 @@
                 articles: [],
                 actualPage: 0,
                 isEndOfPagination: false,
+                isCancelConfirmationDisplayed: false
             };
         },
         async created() {
@@ -67,8 +77,10 @@
             this.articles = await ArticlesMasterDataService.getAllAsync()
         },
         methods: {
-            isOrderDelivered(patientOrder) {
-                return patientOrder.isDelivered;
+            isOrderPending(patientOrder) {
+                if (patientOrder.state == 'Pending')
+                    return true;
+                return false;
             },
             getArticleInfo(articleId) {
                 return this.articles.find(x => x.id == articleId)
@@ -83,19 +95,33 @@
                         page: this.actualPage++,
                         pageSize: Configuration.paginationSize.orders,
                     }
-
                     var orders = await OrderService.getAllAsync(model)
-
                     if (orders.length < Configuration.paginationSize.orders)
                         this.isEndOfPagination = true;
-
                     this.patientOrders = this.patientOrders.concat(orders)
+                    console.log(this.patientOrders)
 
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
 
-            }
+            },
+            orderSubmitted() {
+                this.isOrderingIndex = null;
+            },
+            async cancelOrder(id) {
+                try {
+                    await OrderService.cancelOrderAsync(id).then(() => {
+                        NotificationService.showConfirmation("La commande a bien été annulée")
+                    })
+                } catch (error) {
+                    NotificationService.showError("Une erreur est survenue lors de l'annulation de la commande")
+                }
+                this.isCancelConfirmationDisplayed = !this.isCancelConfirmationDisplayed;
+            },
+            showConfirmation() {
+                this.isCancelConfirmationDisplayed = !this.isCancelConfirmationDisplayed;
+            },
         },
         computed: {
         },
