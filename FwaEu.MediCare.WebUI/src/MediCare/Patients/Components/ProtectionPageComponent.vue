@@ -20,7 +20,6 @@
                  v-for="(protection, index) in filteredProtections" :key="index">
                 <ProtectionAccordionTabComponent :protection="protection" :protectionDosages="getProtectionDosages(protection)" />
             </div>
-            <span v-show="!isEndOfPagination" @click="getMoreProtections()" class="load-more-text">Charger plus</span>
         </div>
         <Button label="Imprimer le protocole"></Button>
         <Button label="Ajouter une protection"></Button>
@@ -39,7 +38,6 @@
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
-
 
     export default {
         components: {
@@ -60,8 +58,6 @@
                 isAlert: true,
                 patient: null,
                 protections: [],
-                actualPage: 0,
-                isEndOfPagination: false,
                 filteredProtections: [],
                 protectionDosages: [],
             };
@@ -93,19 +89,6 @@
             goToIncontinenceLevelPage() {
                 const patientId = this.patient.id;
                 this.$router.push({ name: 'IncontinenceLevel', params: { id: patientId } });
-            },
-            async getMoreProtections() {
-                var model = {
-                    patientId: this.patient.id,
-                    page: this.actualPage++,
-                    pageSize: Configuration.paginationSize.protections,
-                }
-
-                var protections = await ProtectionsMasterDataService.getAllAsync(model)
-                if (protections.length < Configuration.paginationSize.protections)
-                    this.isEndOfPagination = true;
-
-                this.protections = this.protections.concat(protections)
             },
             getProtectionDosages(protection) {
                 return this.protectionDosages.filter(x => x.protectionId === protection.id)
