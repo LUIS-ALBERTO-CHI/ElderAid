@@ -10,12 +10,16 @@
             <div style="display: flex; flex-direction: column;">
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
-                        <div class="accordion-content">
+                        <div v-if="!isOrderComponentDisplayed" class="accordion-content">
                             <Button v-show="order.state != 'Delivred'" label="Annuler la commande" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button v-if="order.patientId != null" @click="goToArticleWithPatientId(order)" :label="`Commander à nouveau pour ${order.patient.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="goToArticle(order.articleId)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId != null" @click="displayOrderComponent(false)" :label="`Commander à nouveau pour ${order.patient?.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button @click="goToSearchPatient()" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button @click="displayOrderComponent(true)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
+                                    iconPos="right" />
+                            <Button @click="goToArticle(order.articleId)" label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
+                                    iconPos="right" />
                         </div>
+                        <OrderComponent :article="order.article" :patientOrders="getPatientOrders(order.patientId)" @order-done="orderSubmitted" v-else />
                     </AccordionOrderComponent>
                 </div>
                 <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commande</span>
@@ -42,6 +46,7 @@
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import OrderComponent from '@/MediCare/Patients/Components/OrderComponent.vue';
 
 
 
@@ -50,7 +55,8 @@
             InputText,
             Dropdown,
             Button,
-            AccordionOrderComponent
+            AccordionOrderComponent,
+            OrderComponent
         },
         data() {
             return {
@@ -61,7 +67,9 @@
                 orders: [],
                 patients: [],
                 actualPage: 0,
-                isEndOfPagination: false
+                isEndOfPagination: false,
+                isOrderComponentDisplayed: false,
+                isOrderForEms: false,
             };
         },
         async created() {
@@ -70,7 +78,6 @@
             this.patients = await PatientsMasterDataService.getAllAsync();
             this.orders[0].patientId = null;
             this.fillOrders();
-            console.log(this.orders);
         },
         methods: {
             removeSearch() {
@@ -88,17 +95,8 @@
             goToSearchPatient() {
                 this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: 0 } });
             },
-            goToSearchPatientWithArticleId(articleId) {
-                this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: articleId } });
-            },
-            goToSearchArticleForEms() {
-                this.$router.push({ name: "SearchArticleForEMSFromOrder" });
-            },
             goToArticle(articleId) {
-                this.$router.push({ name: "OrderArticleFromOrder", params : {id: 0, articleId: articleId} });
-            },
-            goToArticleWithPatientId(order) {
-                this.$router.push({ name: "OrderArticleFromOrder", params : {id: order.patientId, articleId: order.articleId} });
+                this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });
             },
             async fillOrders() {
                 const ordersArticleIds = this.orders.map(x => x.articleId);
@@ -128,6 +126,21 @@
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
+            },
+            displayOrderComponent(isOrderForEms) {
+                this.isOrderComponentDisplayed = true
+                if (isOrderForEms)
+                    this.isOrderForEms = true;
+            },
+            orderSubmitted() {
+                this.isOrderComponentDisplayed = false;
+                this.isOrderForEms = false;
+            },
+            getPatientOrders(patientId) {
+                if (this.isOrderForEms)
+                    return this.orders.filter(order => order.patientId == null)
+                else
+                    return this.orders.filter(order => order.patientId == patientId)
             }
         },
         computed: {
