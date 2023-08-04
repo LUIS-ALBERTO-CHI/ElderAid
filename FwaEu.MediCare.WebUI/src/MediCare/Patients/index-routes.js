@@ -21,7 +21,7 @@ export default [
 		},
 	},
 	{
-		path: '/Orders/:articleId/SearchPatient',
+		path: '/Orders/SearchPatient',
 		name: 'SearchPatientFromOrder',
 		component: SearchPatientPageComponent,
 		meta: {

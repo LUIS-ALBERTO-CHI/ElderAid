@@ -20,7 +20,7 @@
             <div @click="goToOrdersPage" class="vignette-item">
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;" />
-                    <span class="vignette-text">Commandes</span>
+                    <span class="vignette-text">Commandes unitaires</span>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
