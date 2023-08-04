@@ -9,9 +9,8 @@
                 </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
-                <Button label="Commander" style="height: 40px !important;"></Button>
                 <Button @click="changePosology" label="Changer la posologie" style="height: 40px !important;"></Button>
-                <Button v-show="!isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
+                <Button v-show="isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
             </div>
             <div v-else-if="protectionState == ProtectionState.Change" class="accordion-content">
                 <span style="font-weight: bold;">Changer la posologie</span>
@@ -38,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <Button style="height: 40px !important;" label="Confirmer" />
+                <Button @click="submitChangedPosology" style="height: 40px !important;" label="Confirmer" />
             </div>
             <div v-else class="accordion-content">
                 <span style="font-weight: bold;">Arrêter</span>
@@ -46,7 +45,7 @@
                     <span>Date de fin :</span>
                     <Calendar v-model="stopEndDate" style="width: 50% !important" showIcon />
                 </div>
-                <Button style="height: 40px !important;" label="Confirmer" />
+                <Button @click="submitStoppedPosology" style="height: 40px !important;" label="Confirmer" />
 
             </div>
         </AccordionTab>
@@ -60,6 +59,8 @@
     import Button from 'primevue/button';
     import InputNumber from 'primevue/inputnumber';
     import Calendar from 'primevue/calendar';
+    import ProtectionService from '@/MediCare/Patients/Services/protection-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 
 
@@ -77,11 +78,11 @@
                 ProtectionState,
                 protectionState: ProtectionState.Normal,
                 changeForm: {
-                    startdate: null,
-                    endDate: null,
+                    startDate: new Date(),
+                    endDate: new Date(),
                     posology: []
                 },
-                stopEndDate: null,
+                stopEndDate: new Date(),
             };
         },
         props: {
@@ -109,8 +110,8 @@
             },
             addPosology() {
                 this.changeForm.posology.push({
-                    number: 0,
-                    date: null
+                    quantity: 0,
+                    hour: new Date()
                 });
             },
             deletePosology(index) {
@@ -128,10 +129,44 @@
                     });
                 });
                 if (this.changeForm.posology.length == 0) {
-                    this.changeForm.posology.push({
-                        quantity: 0,
-                        hour: null
-                    });
+                    this.addPosology();
+                }
+            },
+            async submitChangedPosology() {
+                const model = {
+                    protectionId: this.protection.id,
+                    startDate: new Date(this.changeForm.startDate),
+                    stopDate: new Date(this.changeForm.endDate),
+                    protectionDosages: this.posologyArrayToDictionnary(),
+                    articleUnit: "test"
+                }
+                try {
+                    await ProtectionService.updateAsync(model);
+                    NotificationService.showConfirmation("La posologie a bien été modifiée");
+                } catch {
+                    NotificationService.showError("Une erreur est survenue lors de la modification de la posologie");
+                }
+            },
+            posologyArrayToDictionnary() {
+                this.changeForm.posology.forEach(element => {
+                    element.hour = new Date(element.hour).getHours() + ":" + new Date(element.hour).getMinutes();
+                });
+
+                return this.changeForm.posology.reduce((acc, posology) => {
+                    acc[posology.hour] = posology.quantity;
+                    return acc;
+                }, {});
+            },
+            async submitStoppedPosology() {
+                const model = {
+                    protectionId: this.protection.id,
+                    stopDate: new Date(this.stopEndDate),
+                }
+                try {
+                    await ProtectionService.stopAsync(model);
+                    NotificationService.showConfirmation("La posologie a bien été arrêtée");
+                } catch {
+                    NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
                 }
             }
         },
