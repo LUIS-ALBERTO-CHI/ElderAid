@@ -6,6 +6,8 @@ import ApplicationHeaderService from './Services/application-header-service';
 import ApplicationSearchService from './Services/application-search-service';
 import CustomRouterNavigatorService from './Services/custom-router-navigator-service';
 
+import IncontinenceLevelMasterDataService from '@/MediCare/Patients/Services/incontinence-level-master-data-service';
+
 export class ApplicationModule extends AbstractModule {
 
 	async onInitAsync(vueApp) {
@@ -13,5 +15,6 @@ export class ApplicationModule extends AbstractModule {
 		await ApplicationHeaderService.configureAsync();
 		await ApplicationSearchService.configureAsync();
 		await CustomRouterNavigatorService.configureAsync();
+		await IncontinenceLevelMasterDataService.configureAsync();
 	}
 }

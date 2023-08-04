@@ -2,6 +2,7 @@ using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.Fwamework.Permissions;
 using FwaEu.MediCare.Patients;
 using FwaEu.Modules.GenericAdmin;
+using FwaEu.Modules.GenericAdminMasterData;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace FwaEu.MediCare.Referencials.GenericAdmin
         public int? Id { get; set; }
 
         [Required]
+        [EnumMasterData(typeof(IncontinenceLevel))]
         public IncontinenceLevel Level { get; set; }
 
         [Required]
