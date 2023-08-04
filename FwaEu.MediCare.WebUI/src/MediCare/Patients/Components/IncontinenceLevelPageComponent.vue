@@ -1,12 +1,13 @@
 <template>
     <div class="incontinence-level-page-container" />
     <patient-info-component v-if="patient" :patient="patient" />
+    <span class="incontinence-info-label-title">Niveau d'incontinence : {{ $t(''+patientData.incontinenceLevel) }}</span>
     <div class="incontinence-info-container">
-        <span class="incontinence-info-label-title">Niveau d'incontinence : {{ $t(''+patientData.incontinenceLevel) }}</span>
+        <span>Forfait annuel : {{ patientData.annualFixedPrice }} CHF</span>
         <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
         <span>Protocole journalier saisi : {{ patientData.dailyProtocolEntered }} CHF</span>
     </div>
-    <div class="incontinence-info-container">
+    <div v-if="new Date(patientData.dateStart) >= new Date(new Date().getFullYear(), 0, 1)"  class="incontinence-info-container">
         <span class="incontinence-info-label-title">Analyse de consommation à date</span>
         <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ $d(patientData.dateStart, 'short') }} et {{ $d(patientData.dateEnd, 'short') }}</span>
         <Chart type="bar" :data="chartData" :options="chartOptions" />
@@ -30,7 +31,7 @@ import Button from 'primevue/button';
 import Chart from 'primevue/chart';
 import 'chartjs-plugin-datalabels';
 import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import incontinenceLevelMasterDataService from '@/MediCare/Patients/Services/incontinence-level-master-data-service';
+import IncontinenceLevelMasterDataService from '@/MediCare/Patients/Services/incontinence-level-master-data-service';
 import Calendar from 'primevue/calendar';
 import NotificationService from "@/Fwamework/Notifications/Services/notification-service";
 import { hasPermissionAsync } from "@/Fwamework/Permissions/Services/current-user-permissions-service";
@@ -81,7 +82,7 @@ import { CanChangeIncontinenceLevel } from "../patients-permissions";
         },
         async created() {
             this.isUserCanToChangeIncontinence = await hasPermissionAsync(CanChangeIncontinenceLevel);
-            this.incontinenceOptions = await incontinenceLevelMasterDataService.getAllAsync();
+            this.incontinenceOptions = await IncontinenceLevelMasterDataService.getAllAsync();
             this.patient = await this.patientLazy.getValueAsync();
             await this.getPatientDataAsync();
         },
