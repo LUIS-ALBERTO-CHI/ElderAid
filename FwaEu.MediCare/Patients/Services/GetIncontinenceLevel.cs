@@ -8,7 +8,7 @@ namespace FwaEu.MediCare.Patients
         public int IncontinenceLevel { get; set; }
         public double AnnualFixedPrice { get; set; }
         public double DailyFixedPrice { get; set; }
-        public decimal DailyProtocolEntered { get; set; }
+        public double DailyProtocolEntered { get; set; }
 
         public DateTime DateStart { get; set; }
         public DateTime DateEnd { get; set; }

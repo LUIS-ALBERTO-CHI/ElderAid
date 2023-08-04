@@ -4,6 +4,7 @@ using FwaEu.MediCare.Patients.Services;
 using FwaEu.TemplateCore.FarmManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,15 +27,15 @@ namespace FwaEu.MediCare.Patients.WebApi
                                             : new GetIncontinenceLevelApi()
                                             {
                                                 Id = model.Id,
-                                                Consumed = model.Consumed,
-                                                AnnualFixedPrice = model.AnnualFixedPrice,
-                                                DailyFixedPrice = model.DailyFixedPrice,
-                                                DailyProtocolEntered = model.DailyProtocolEntered,
+                                                Consumed = Math.Round(model.Consumed, 2),
+                                                AnnualFixedPrice = Math.Round(model.AnnualFixedPrice, 2),
+                                                DailyFixedPrice = Math.Round(model.DailyFixedPrice, 2),
+                                                DailyProtocolEntered = Math.Round(model.DailyProtocolEntered, 2),
                                                 DateEnd = model.DateEnd,
                                                 DateStart = model.DateStart,
-                                                FixedPrice = model.FixedPrice,
+                                                FixedPrice = Math.Round(model.FixedPrice, 2),
                                                 IncontinenceLevel = (IncontinenceLevel)model.IncontinenceLevel,
-                                                OverPassed = model.OverPassed,
+                                                OverPassed = Math.Round(model.OverPassed,2),
                                                 VirtualDateWithoutOverPassed = model.VirtualDateWithoutOverPassed
                                             };
                 return Ok(modelApi);
