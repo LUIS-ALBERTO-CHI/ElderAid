@@ -21,10 +21,10 @@
             <span>Consommation du stock pharmacie</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div @click="goToPeriodicOrdersPage"  class="patient-info-item">
+        <div @click="goToPeriodicOrdersPage" class="patient-info-item">
             <div class="periodic-container">
-                <i class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
-                <span>{{ periodicOrders.length }} commandes périodiques à valider</span>
+                <i v-if="isPeriodicAlertEnabled()" class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
+                <span>Commandes périodiques à valider</span>
             </div>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
@@ -37,6 +37,7 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
 
 
     export default {
@@ -56,19 +57,19 @@
                 patient: null,
                 patientTreatments: null,
                 patientsOrders: null,
-                periodicOrders: null,
                 contentLoaded: false,
-                protections: null
+                protections: null,
+                organization: {},
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-            this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.protections = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+            this.organization = ViewContextService.get();
 
-            if (this.patientTreatments != null && this.patientsOrders != null && this.periodicOrders != null && this.protections != null) {
+            if (this.patientTreatments != null && this.patientsOrders != null && this.protections != null) {
                 this.contentLoaded = true;
             }
         },
@@ -83,7 +84,7 @@
                 this.$router.push({ name: "PatientOrders", params: { id: this.patient.id } });
             },
             goToStockConsumptionPage() {
-                this.$router.push({ name: "StockConsumption", params: { id: this.patient.id }});
+                this.$router.push({ name: "StockConsumption", params: { id: this.patient.id } });
             },
             goToSearchArticlePage() {
                 this.$router.push({ name: "SearchArticle" });
@@ -94,6 +95,11 @@
             goToPeriodicOrdersPage() {
                 this.$router.push({ name: "PeriodicOrder", params: { id: this.patient.id } });
             },
+            isPeriodicAlertEnabled() {
+                const periodicAlertDate = new Date(this.organization.nextPeriodicityOrder);
+                periodicAlertDate.setDate(periodicAlertDate.getDate() - this.organization.periodicityOrderActivationDaysNumber);
+                return new Date() > periodicAlertDate
+            }
         },
         computed: {
 

@@ -116,18 +116,20 @@
             this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
             this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
             this.cabinets = await CabinetsMasterDataService.getAllAsync();
             if (this.organizations.length <= 1) {
                 this.isSingleOrganization = true;
             }
             this.organizationsOptions = this.organizations
-
             if (this.currentDatabase == null && this.organizations.length > 0) {
                 this.selectedOrganization = this.organizationsOptions[0];
                 ViewContextService.set(new ViewContextModel(this.organizations[0]));
             } else {
+                const updatedOn = (ViewContextService.get()).updatedOn;
                 this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+                if (updatedOn != new Date(this.selectedOrganization.updatedOn)) {
+                    ViewContextService.set(new ViewContextModel(this.selectedOrganization));
+                }
             }
 
             await CachePreloaderService.loadAllMasterDataAsync(this, false);
