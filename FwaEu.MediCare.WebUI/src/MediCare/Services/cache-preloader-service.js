@@ -40,7 +40,7 @@ const CachePreloaderService = {
                     StockConsumptionMasterDataService.getAllAsync()
                 ]);
                 homeComponent.patientsActive = patients.filter(x => x.isActive);
-                homeComponent.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
+                homeComponent.distinctPeriodicOrders = periodicOrders.filter((actualElement, i, periodicOrders) => periodicOrders.findIndex(x => (x.patientId === actualElement.patientId)) === i);
             }
 
             if (!onlyEms) {

@@ -13,9 +13,11 @@ export class ViewContextModel {
 		this.name = organization.name;
 		this.orderPeriodicityDays = organization.orderPeriodicityDays;
 		this.orderPeriodicityDayOfWeek = organization.orderPeriodicityDayOfWeek;
-		this.lastPeriodicityOrder = organization.lastPeriodicityOrder;
+		this.lastPeriodicityOrder = new Date(organization.lastPeriodicityOrder);
+		this.nextPeriodicityOrder = new Date(organization.nextPeriodicityOrder);
 		this.periodicityOrderActivationDaysNumber = organization.periodicityOrderActivationDaysNumber;
 		this.isStockPharmacyPerBox = organization.isStockPharmacyPerBox;
+		this.updatedOn = new Date(organization.updatedOn);
 	}
 
 	databaseName = null

@@ -2,7 +2,9 @@
 using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
+using FwaEu.Fwamework.Temporal;
 using FwaEu.Fwamework.Users;
+using FwaEu.MediCare.Orders;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +12,7 @@ namespace FwaEu.MediCare.Organizations
 {
     public class OrganizationEntity : ICreationAndUpdateTracked
     {
-       
+
         public int Id { get; set; }
         public string InvariantId { get; set; }
         public string Name { get; set; }
@@ -39,6 +41,7 @@ namespace FwaEu.MediCare.Organizations
         {
             return Name;
         }
+
     }
 
     public class OrganizationEntityClassMap : ClassMap<OrganizationEntity>
