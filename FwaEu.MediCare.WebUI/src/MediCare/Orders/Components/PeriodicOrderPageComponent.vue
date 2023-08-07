@@ -108,8 +108,9 @@
                 }
 
                 try {
-                    OrderService.validatePeriodicOrderAsync(model);
-                    NotificationService.showConfirmation('Commandes périodiques validées')
+                    await OrderService.validatePeriodicOrderAsync(model).then(() => {
+                        NotificationService.showConfirmation('Commandes périodiques validées')
+                    })
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
