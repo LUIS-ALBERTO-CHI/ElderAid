@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" href="/icon512.png">
     <title>{{appSettings.application.name}}</title>
     <script type="module" src="/src/main.js"></script>
+    <script src="https://cdnjs.com/libraries/bodymovin" type="text/javascript"></script>
 </head>
 <body>
     <div id="not-supported-browser-message" style="display: none;">
@@ -70,13 +71,13 @@
 
                 </div>
                 <div id="loaderIconContainer">
-                    <img id="loaderIcon" src="loader.gif" />
+                    <img id="loaderIcon" src="fold.gif" />
                     <a id="reloadLink" href="{{appSettings.application.publicUrl}}">Reload</a>
                 </div>
             </div>
             <style type="text/css">
                 #applicationLoader {
-                    background: #f8f8f8;
+                    background: #ffff;
                     color: #424242;
                     position: fixed;
                     display: flex;
@@ -110,9 +111,9 @@
 
                 #loaderIcon {
                     display: block;
-                    width: 70px;
+                    width: 220px;
                     margin: auto;
-                    height: 70px;
+                    height: 220px;
                 }
 
                 #reloadLink {
@@ -127,6 +128,7 @@
             </style>
         </div>
         <script type="text/javascript">
+            
 			const delayToShowLoaderInMs = 1200;
 			setTimeout(function () {
 				const loader = document.getElementById("applicationLoader");

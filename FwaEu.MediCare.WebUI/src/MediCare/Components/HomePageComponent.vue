@@ -76,6 +76,8 @@
 
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
     import CachePreloaderService from '@/MediCare/Services/cache-preloader-service';
+    import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
+    import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
 
     export default {
         inject: ["deviceInfo"],
@@ -111,6 +113,9 @@
             };
         },
         created: showLoadingPanel(async function () {
+            const patients = await PatientsMasterDataService.getAllAsync();
+            const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+
             this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
             const currentUser = await CurrentUserService.getAsync();
             this.isUserAdmin = currentUser.parts.adminState.isAdmin;
@@ -123,14 +128,11 @@
             }
             this.organizationsOptions = this.organizations
 
-            if (this.currentDatabase == null && this.organizations.length > 0) {
-                this.selectedOrganization = this.organizationsOptions[0];
-                ViewContextService.set(new ViewContextModel(this.organizations[0]));
-            } else {
-                this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
-            }
+            this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+            console.log(this.currentDatabase);
 
-            await CachePreloaderService.loadAllMasterDataAsync(this, false);
+            this.patientsActive = patients.filter(x => x.isActive);
+            this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
         }),
         methods: {
             goToLoginFront() {
@@ -170,7 +172,7 @@
                 // NOTE : refraichir toutes les masterdata
                 await MasterDataManagerService.clearCacheAsync();
 
-                await CachePreloaderService.loadAllMasterDataAsync(this, true);
+                await CachePreloaderService.loadAllMasterDataAsync(true);
 
             }),
             getNumberOfPatientToValidate() {

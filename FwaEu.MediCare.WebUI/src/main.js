@@ -58,6 +58,7 @@ import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consum
 import { ArticlesModule } from "./MediCare/Articles/articles-module";
 
 import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
+import { CachePreloaderModule } from '@/MediCare/Services/cache-module';
 
 import PrimeVue from 'primevue/config';
 
@@ -118,7 +119,8 @@ const application = new Application(IndexApp)
 		}
 	))
 	.useModule(new OnlineStatusModule())
-	.useModule(new UtilsModule());
+	.useModule(new UtilsModule())
+	.useModule(new CachePreloaderModule())
 
 application.vueApp.use(PrimeVue);
 

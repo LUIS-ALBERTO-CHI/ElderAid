@@ -73,7 +73,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
                     filteredArticles.value = [];
                 }
                 if (selectedArticleType.value) {
-                    filteredArticles.value = filteredArticles.value.filter(
+                    filteredArticles.value = articles.value.filter(
                         (article) => article.articleType == selectedArticleType.value
                     );
                 }
@@ -109,7 +109,6 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.focusSearchBar();
-            this.articles = await ArticlesMasterDataService.getAllAsync();
             this.articlesType = [{ id: null, text: "Tous" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
             this.loadInitialArticles();
         },

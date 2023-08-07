@@ -10,11 +10,13 @@ import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildin
 import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
 import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
 import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
+import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
+import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
 
 let notFirstLoad = false;
 
 const CachePreloaderService = {
-    async loadAllMasterDataAsync(homeComponent, onlyEms) {
+    async loadAllMasterDataAsync(onlyEms) {
 
         this.startLoadTime = new Date().getTime();
         const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
@@ -27,9 +29,13 @@ const CachePreloaderService = {
                 modal: true
             });
         try {
-            if (homeComponent.currentDatabase != null) {
-                const patients = await PatientsMasterDataService.getAllAsync();
-                const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+
+            const Organizations = await OrganizationsMasterDataService.getAllAsync();
+            if (ViewContextService.get() == null) {
+
+                ViewContextService.set(new ViewContextModel(Organizations[0]));
+            }
+
                 await Promise.all([
                     ArticlesMasterDataService.getAllAsync(),
                     OrdersMasterDataService.getAllAsync(),
@@ -37,11 +43,10 @@ const CachePreloaderService = {
                     UserOrganizationsMasterDataService.getAllAsync(),
                     ProtectionsMasterDataService.getAllAsync(),
                     TreatmentsMasterDataService.getAllAsync(),
-                    StockConsumptionMasterDataService.getAllAsync()
+                    StockConsumptionMasterDataService.getAllAsync(),
+                    PatientsMasterDataService.getAllAsync(),
+                    PeriodicOrdersMasterDataService.getAllAsync()
                 ]);
-                homeComponent.patientsActive = patients.filter(x => x.isActive);
-                homeComponent.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
-            }
 
             if (!onlyEms) {
                 await Promise.all([

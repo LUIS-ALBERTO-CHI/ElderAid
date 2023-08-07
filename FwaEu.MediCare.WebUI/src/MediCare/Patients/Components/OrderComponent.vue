@@ -116,9 +116,9 @@
                 this.currentArticle = articleTitle;
                 this.$router.push({ name: 'SearchArticle', query: { searchMode: "substituts: " + articleTitle } })
             },
-            goToSearchFormats(articleTitle) {
-                this.currentArticle = articleTitle;
-                this.$router.push({ name: 'SearchArticle', query: { searchMode: "formats: " + articleTitle } })
+            goToSearchFormats(groupName) {
+                this.currentArticle = groupName;
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: `formats:${groupName}` }})
             }
         },
         watch: {
