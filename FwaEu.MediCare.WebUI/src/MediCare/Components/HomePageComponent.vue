@@ -75,7 +75,7 @@
     import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
-    import CachePreloaderService from '@/MediCare/Services/cache-preloader-service';
+    import CachePreloaderService from '@/MediCare/Cache/Services/cache-preloader-service';
     import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
     import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
 
