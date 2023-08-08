@@ -22,7 +22,7 @@
             </div>
         </div>
         <Button label="Imprimer le protocole"></Button>
-        <Button label="Ajouter une protection"></Button>
+        <Button @click="goToSearchArticle" label="Ajouter une protection"></Button>
 
     </div>
 </template>
@@ -92,6 +92,9 @@
             },
             getProtectionDosages(protection) {
                 return this.protectionDosages.filter(x => x.protectionId === protection.id)
+            },
+            goToSearchArticle() {
+                this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id } });
             }
         },
         computed: {
