@@ -4,7 +4,6 @@ import '@/Fwamework/DevExtreme/Themes/generated/theme.base.css';
 
 // import Vue from 'vue';
 import IndexApp from './IndexApp.vue';
-import { createApp } from 'vue';
 
 import { SentryModule } from "@/Modules/Sentry/sentry-module";
 
@@ -58,7 +57,7 @@ import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consum
 import { ArticlesModule } from "./MediCare/Articles/articles-module";
 
 import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
-import { CachePreloaderModule } from '@/MediCare/Services/cache-module';
+import { CachePreloaderModule } from '@/MediCare/Cache/cache-module';
 
 import PrimeVue from 'primevue/config';
 
