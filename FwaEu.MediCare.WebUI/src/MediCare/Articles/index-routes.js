@@ -14,6 +14,30 @@ export default [
             },
         }
     },
+	{
+        path: '/Patient/:id/Protection/SearchArticle/',
+        name: 'SearchArticleFromProtection',
+        component: ArticlesSearchPageComponent,
+        meta: {
+            title: 'Rechercher un article',
+            breadcrumb: {
+                titleKey: 'Rechercher un article',
+                parentName: 'Protection'
+            },
+        }
+    },
+	{
+		path: '/Patient/:id/Protection/SearchArticle/AddPosology/:articleId',
+		name: 'AddPosology',
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: 'Ajout d\'une protection, posologie',
+			breadcrumb: {
+				titleKey: 'Ajout d\'une protection, posologie',
+				parentName: 'SearchArticleFromProtection'
+			},
+		}
+	},
     {
 		path: '/Patient/:id/OrderArticle/:articleId',
 		name: 'OrderArticle',

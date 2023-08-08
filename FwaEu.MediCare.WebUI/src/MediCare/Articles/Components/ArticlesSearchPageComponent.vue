@@ -31,19 +31,19 @@
     </div>
 </template>
 <script>
-import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
-import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
-import InputText from "primevue/inputtext";
-import ArticlesMasterDataService from "../Services/articles-master-data-service";
-import Dropdown from "primevue/dropdown";
-import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import ArticlesService from "../Services/articles-service";
-import ArticlesTypeMasterDataService from "../Services/articles-type-master-data-service";
-import { useRoute } from 'vue-router';
-import { ref, watch } from "vue";
-import { watchDebounced } from '@vueuse/core'
-import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
-import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
+    import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
+    import InputText from "primevue/inputtext";
+    import ArticlesMasterDataService from "../Services/articles-master-data-service";
+    import Dropdown from "primevue/dropdown";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import ArticlesService from "../Services/articles-service";
+    import ArticlesTypeMasterDataService from "../Services/articles-type-master-data-service";
+    import { useRoute } from 'vue-router';
+    import { ref, watch } from "vue";
+    import { watchDebounced } from '@vueuse/core'
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
     export default {
         components: {
@@ -144,10 +144,12 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
             },
             goToArticlePage(article) {
                 this.selectedArticle = article;
-                this.$router.push({
-                    name: "OrderArticle",
-                    params: { articleId: article.id }
-                });
+                if (this.$route.name === "SearchArticleFromProtection") {
+                    this.$router.push({ name: "AddPosology", params: { id: this.patient.id, articleId: article.id } });
+                } else {
+                    this.$router.push({ name: "OrderArticle", params: { articleId: article.id } });
+                }
+
             },
             loadInitialArticles() {
                 this.performSearch();
