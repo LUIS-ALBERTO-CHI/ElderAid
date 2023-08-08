@@ -8,7 +8,6 @@
                     <div class="main-header">
                         <PublicHeaderToolbarComponent>
                         </PublicHeaderToolbarComponent>
-                        
                     </div>
                 </header>
                 <div class="home-content">
@@ -17,6 +16,7 @@
             </component>
         </div>
     </div>
+    <DynamicDialog/>
 </template>
 
 <script>
@@ -30,6 +30,7 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
     import "primevue/resources/themes/lara-light-indigo/theme.css";
     import "primevue/resources/primevue.min.css";
 
+    import DynamicDialog from 'primevue/dynamicdialog';
     
     import PublicHeaderToolbarComponent from "@/MediCare/Components/PublicHeaderToolbarComponent.vue";
 
@@ -121,7 +122,8 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
             unsubscribe(this.screenSizeChanged);
         },
         components: {
-            PublicHeaderToolbarComponent
+            PublicHeaderToolbarComponent,
+            DynamicDialog
         }
     }
 </script>

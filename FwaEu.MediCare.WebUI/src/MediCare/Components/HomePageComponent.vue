@@ -129,7 +129,6 @@
             this.organizationsOptions = this.organizations
 
             this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
-            console.log(this.currentDatabase);
 
             this.patientsActive = patients.filter(x => x.isActive);
             this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);

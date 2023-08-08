@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/icon512.png">
     <title>{{appSettings.application.name}}</title>
     <script type="module" src="/src/main.js"></script>
-    <script src="https://cdnjs.com/libraries/bodymovin" type="text/javascript"></script>
+    <script src="lottie-player.js"></script>
 </head>
 <body>
     <div id="not-supported-browser-message" style="display: none;">
@@ -71,7 +71,14 @@
 
                 </div>
                 <div id="loaderIconContainer">
-                    <img id="loaderIcon" src="fold.gif" />
+                        <lottie-player 
+                        src="loader.json"
+                        background="Transparent"
+                        speed="2" 
+                        style="width: 250px;" 
+                        direction="1" mode="normal" 
+                        autoplay
+                        loop></lottie-player>
                     <a id="reloadLink" href="{{appSettings.application.publicUrl}}">Reload</a>
                 </div>
             </div>

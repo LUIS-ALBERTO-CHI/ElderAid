@@ -12,6 +12,8 @@ import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-mas
 import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
 import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
 import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
+import DialogService from '@/MediCare/Cache/Services/dialog-service';
+import LoaderComponent from '@/MediCare/Cache/Components/LoaderComponent.vue';
 
 let notFirstLoad = false;
 
@@ -19,14 +21,20 @@ const CachePreloaderService = {
     async loadAllMasterDataAsync(onlyEms) {
 
         this.startLoadTime = new Date().getTime();
-        const notification = notificationService.showInformation("Chargement des données, veuillez patienter...",
+        const dialog = DialogService.open(LoaderComponent,
             {
-                progressBar: true,
-                layout: 'center',
-                killer: true,
-                timeout: false,
-                closeWith: [],
-                modal: true
+                props: {
+                    header: 'Chargement des données, veuillez patienter...',
+                    style: {
+                        width: '380px',
+                        height: '430px',
+                        background: '#f8f8f8',
+                        position: 'center'
+                    },
+                    modal: true,
+                    closable: false,
+                    closeOnEscape: false,
+                },
             });
         try {
 
@@ -63,7 +71,7 @@ const CachePreloaderService = {
                 notFirstLoad = true;
         }
         } finally {
-            notification.close();
+            dialog.close();
         }
     }
 }

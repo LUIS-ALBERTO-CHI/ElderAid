@@ -60,6 +60,7 @@ import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
 import { CachePreloaderModule } from '@/MediCare/Cache/cache-module';
 
 import PrimeVue from 'primevue/config';
+import DialogService from 'primevue/dialogservice';
 
 const application = new Application(IndexApp)
 .useModule(new CoreModule({
@@ -122,6 +123,7 @@ const application = new Application(IndexApp)
 	.useModule(new CachePreloaderModule())
 
 application.vueApp.use(PrimeVue);
+application.vueApp.use(DialogService);
 
 
 //NOTE: To make works chartjs-plugin-datalabels you need to register it globally i didn't find a better way to do it
