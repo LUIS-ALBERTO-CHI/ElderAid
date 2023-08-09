@@ -171,7 +171,7 @@ export default {
             // NOTE : refraichir toutes les masterdata
             await MasterDataManagerService.clearCacheAsync();
 
-            await CachePreloaderService.loadAllMasterDataAsync(true);
+            await CachePreloaderService.loadAllMasterDataAsync(true, true);
 
         }),
         getNumberOfPatientToValidate() {
