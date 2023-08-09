@@ -11,8 +11,7 @@ const ArticlesService = {
         });
         return response.data;
     },
-    async fillArticlesAsync(filteredArticles) {
-
+    async fillArticlesAsync(filteredArticles, searchValue = "") {
         let articleIds = filteredArticles.map(x => x.articleId);
         const articlesFromMasterData = await ArticlesMasterDataService.getByIdsAsync(articleIds);
         filteredArticles.forEach(item => {
@@ -26,6 +25,10 @@ const ArticlesService = {
             const article = articles.find(article => article.id == item.articleId)
             item.article = article
         });
+
+        if (searchValue != "") {
+            filteredArticles = filteredArticles.filter(x => x.article.title.toLowerCase().includes(searchValue.toLowerCase()));
+        }
         return filteredArticles;
     },
 

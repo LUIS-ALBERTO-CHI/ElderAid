@@ -4,7 +4,6 @@ import '@/Fwamework/DevExtreme/Themes/generated/theme.base.css';
 
 // import Vue from 'vue';
 import IndexApp from './IndexApp.vue';
-import { createApp } from 'vue';
 
 import { SentryModule } from "@/Modules/Sentry/sentry-module";
 
@@ -58,8 +57,10 @@ import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consum
 import { ArticlesModule } from "./MediCare/Articles/articles-module";
 
 import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
+import { CachePreloaderModule } from '@/MediCare/Cache/cache-module';
 
 import PrimeVue from 'primevue/config';
+import DialogService from 'primevue/dialogservice';
 
 const application = new Application(IndexApp)
 .useModule(new CoreModule({
@@ -118,9 +119,11 @@ const application = new Application(IndexApp)
 		}
 	))
 	.useModule(new OnlineStatusModule())
-	.useModule(new UtilsModule());
+	.useModule(new UtilsModule())
+	.useModule(new CachePreloaderModule())
 
 application.vueApp.use(PrimeVue);
+application.vueApp.use(DialogService);
 
 
 //NOTE: To make works chartjs-plugin-datalabels you need to register it globally i didn't find a better way to do it
