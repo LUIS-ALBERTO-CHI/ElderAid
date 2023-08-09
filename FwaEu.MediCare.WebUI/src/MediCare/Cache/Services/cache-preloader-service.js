@@ -44,17 +44,17 @@ const CachePreloaderService = {
                 ViewContextService.set(new ViewContextModel(Organizations[0]));
             }
 
-                await Promise.all([
-                    ArticlesMasterDataService.getAllAsync(),
-                    OrdersMasterDataService.getAllAsync(),
-                    BuildingsMasterDataService.getAllAsync(),
-                    UserOrganizationsMasterDataService.getAllAsync(),
-                    ProtectionsMasterDataService.getAllAsync(),
-                    TreatmentsMasterDataService.getAllAsync(),
-                    StockConsumptionMasterDataService.getAllAsync(),
-                    PatientsMasterDataService.getAllAsync(),
-                    PeriodicOrdersMasterDataService.getAllAsync()
-                ]);
+            await Promise.all([
+                ArticlesMasterDataService.getAllAsync(),
+                OrdersMasterDataService.getAllAsync(),
+                BuildingsMasterDataService.getAllAsync(),
+                UserOrganizationsMasterDataService.getAllAsync(),
+                ProtectionsMasterDataService.getAllAsync(),
+                TreatmentsMasterDataService.getAllAsync(),
+                StockConsumptionMasterDataService.getAllAsync(),
+                PatientsMasterDataService.getAllAsync(),
+                PeriodicOrdersMasterDataService.getAllAsync()
+            ]);
 
             if (!onlyEms) {
                 await Promise.all([
@@ -64,12 +64,12 @@ const CachePreloaderService = {
             }
 
             if (!notFirstLoad) {
-            const loadingTime = new Date().getTime() - this.startLoadTime;
-            if (loadingTime < 5000) {
-                await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
-            }
+                const loadingTime = new Date().getTime() - this.startLoadTime;
+                if (loadingTime < 5000) {
+                    await new Promise(resolve => setTimeout(resolve, 5000 - loadingTime));
+                }
                 notFirstLoad = true;
-        }
+            }
         } finally {
             dialog.close();
         }

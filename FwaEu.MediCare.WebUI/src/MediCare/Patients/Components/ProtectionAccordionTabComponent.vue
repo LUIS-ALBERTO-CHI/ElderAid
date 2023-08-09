@@ -141,8 +141,10 @@
                     articleUnit: "test"
                 }
                 try {
-                    await ProtectionService.updateAsync(model);
-                    NotificationService.showConfirmation("La posologie a bien été modifiée");
+                    await ProtectionService.updateAsync(model).then(() => {
+                        NotificationService.showConfirmation("La posologie a bien été modifiée");
+                        this.$emit('refreshData');
+                    })
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de la modification de la posologie");
                 }
@@ -163,8 +165,10 @@
                     stopDate: new Date(this.stopEndDate),
                 }
                 try {
-                    await ProtectionService.stopAsync(model);
-                    NotificationService.showConfirmation("La posologie a bien été arrêtée");
+                    await ProtectionService.stopAsync(model).then(() => {
+                        NotificationService.showConfirmation("La posologie a bien été arrêtée");
+                        this.$emit('refreshData');
+                    });
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
                 }

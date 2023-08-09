@@ -10,5 +10,10 @@ export default {
     async stopAsync(data) {
         const result = await HttpService.post(`/Protections/Stop`, data);
         return result.data;
-    }
+    },
+
+	async createAsync(data) {
+		const result = await HttpService.post(`/Protections/Create`, data);
+		return result.data;
+	}
 }

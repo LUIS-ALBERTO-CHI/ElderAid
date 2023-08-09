@@ -5,7 +5,7 @@
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
-                  @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
+            @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
         <div v-if="this.patientsActive.length > 0 && this.distinctPeriodicOrders.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -62,122 +62,122 @@
     </div>
 </template>
 <script>
-    import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
-    import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
-    const path = Configuration.application.customResourcesPath;
-    import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
-    import Dropdown from 'primevue/dropdown';
-    import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
-    import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
-    import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
+import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
+const path = Configuration.application.customResourcesPath;
+import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
+import Dropdown from 'primevue/dropdown';
+import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
+import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
+import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
 
-    import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
-    import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
+import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
+import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
-    import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
-    import CachePreloaderService from '@/MediCare/Cache/Services/cache-preloader-service';
-    import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
-    import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
+import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+import CachePreloaderService from '@/MediCare/Cache/Services/cache-preloader-service';
+import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
+import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
 
-    export default {
-        inject: ["deviceInfo"],
-        mixins: [LocalizationMixing],
-        components: {
-            Dropdown
-        },
-        i18n: {
-            messages: {
-                getMessagesAsync(locale) {
-                    return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
-                }
-            }
-        },
-        data() {
-            const $this = this;
-            return {
-                isCurrentUserAuthenticated: false,
-                selectedOrganization: null,
-                organizationsOptions: [],
-                isSingleOrganization: false,
-                patientsActive: [],
-                currentDatabase: ViewContextService.get()?.id,
-                viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
-                    $this.currentDatabase = viewContext.id;
-                }),
-                isUserAdmin: false,
-                organizations: [],
-                organizationsLink: [],
-                startLoadTime: 0,
-                distinctPeriodicOrders: [],
-                cabinets: [],
-            };
-        },
-        created: showLoadingPanel(async function () {
-            const patients = await PatientsMasterDataService.getAllAsync();
-            const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
-
-            this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
-            const currentUser = await CurrentUserService.getAsync();
-            this.isUserAdmin = currentUser.parts.adminState.isAdmin;
-
-            this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
-            this.cabinets = await CabinetsMasterDataService.getAllAsync();
-            if (this.organizations.length <= 1) {
-                this.isSingleOrganization = true;
-            }
-            this.organizationsOptions = this.organizations
-
-            this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
-
-            this.patientsActive = patients.filter(x => x.isActive);
-            this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
-        }),
-        methods: {
-            goToLoginFront() {
-                this.$router.push("/Login")
-            },
-            async logoutAsync() {
-                AuthenticationService.logoutAsync().then(() => {
-                    this.$router.push("/Login")
-                });
-            },
-            goToPatientPage() {
-                this.$router.push("/SearchPatient")
-                localStorage.removeItem("searchPatient")
-            },
-            goToProfilPage() {
-                this.$router.push("/UserSettings")
-            },
-            goToOrdersPage() {
-                this.$router.push("/Orders")
-            },
-            goToCabinetsPage() {
-                if (this.cabinets.length == 1) {
-                    this.$router.push("/Cabinet/" + this.cabinets[0].id);
-                } else {
-                    this.$router.push("/stockPharmacy")
-                }
-            },
-            goToPeriodicPage() {
-                this.$router.push("/PeriodicOrders")
-            },
-            refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
-
-                // NOTE : Update the ViewContext to save the selected database
-                // const organizations = await OrganizationsMasterDataService.getAllAsync();
-                ViewContextService.set(new ViewContextModel(e.value));
-
-                // NOTE : refraichir toutes les masterdata
-                await MasterDataManagerService.clearCacheAsync();
-
-                await CachePreloaderService.loadAllMasterDataAsync(true);
-
-            }),
-            getNumberOfPatientToValidate() {
-                const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length
-                return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
+export default {
+    inject: ["deviceInfo"],
+    mixins: [LocalizationMixing],
+    components: {
+        Dropdown
+    },
+    i18n: {
+        messages: {
+            getMessagesAsync(locale) {
+                return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
             }
         }
+    },
+    data() {
+        const $this = this;
+        return {
+            isCurrentUserAuthenticated: false,
+            selectedOrganization: null,
+            organizationsOptions: [],
+            isSingleOrganization: false,
+            patientsActive: [],
+            currentDatabase: ViewContextService.get()?.id,
+            viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
+                $this.currentDatabase = viewContext.id;
+            }),
+            isUserAdmin: false,
+            organizations: [],
+            organizationsLink: [],
+            startLoadTime: 0,
+            distinctPeriodicOrders: [],
+            cabinets: [],
+        };
+    },
+    created: showLoadingPanel(async function () {
+        const patients = await PatientsMasterDataService.getAllAsync();
+        const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
+
+        this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
+        const currentUser = await CurrentUserService.getAsync();
+        this.isUserAdmin = currentUser.parts.adminState.isAdmin;
+
+        this.organizations = await OrganizationsMasterDataService.getAllAsync();
+
+        this.cabinets = await CabinetsMasterDataService.getAllAsync();
+        if (this.organizations.length <= 1) {
+            this.isSingleOrganization = true;
+        }
+        this.organizationsOptions = this.organizations
+
+        this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+
+        this.patientsActive = patients.filter(x => x.isActive);
+        this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
+    }),
+    methods: {
+        goToLoginFront() {
+            this.$router.push("/Login")
+        },
+        async logoutAsync() {
+            AuthenticationService.logoutAsync().then(() => {
+                this.$router.push("/Login")
+            });
+        },
+        goToPatientPage() {
+            this.$router.push("/SearchPatient")
+            localStorage.removeItem("searchPatient")
+        },
+        goToProfilPage() {
+            this.$router.push("/UserSettings")
+        },
+        goToOrdersPage() {
+            this.$router.push("/Orders")
+        },
+        goToCabinetsPage() {
+            if (this.cabinets.length == 1) {
+                this.$router.push("/Cabinet/" + this.cabinets[0].id);
+            } else {
+                this.$router.push("/stockPharmacy")
+            }
+        },
+        goToPeriodicPage() {
+            this.$router.push("/PeriodicOrders")
+        },
+        refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
+
+            // NOTE : Update the ViewContext to save the selected database
+            // const organizations = await OrganizationsMasterDataService.getAllAsync();
+            ViewContextService.set(new ViewContextModel(e.value));
+
+            // NOTE : refraichir toutes les masterdata
+            await MasterDataManagerService.clearCacheAsync();
+
+            await CachePreloaderService.loadAllMasterDataAsync(true);
+
+        }),
+        getNumberOfPatientToValidate() {
+            const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length
+            return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
+        }
     }
+}
 </script>

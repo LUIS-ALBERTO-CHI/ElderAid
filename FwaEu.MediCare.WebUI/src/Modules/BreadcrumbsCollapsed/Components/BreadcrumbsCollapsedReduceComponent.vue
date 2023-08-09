@@ -76,22 +76,23 @@
 <style scoped>
     .breadcrimbs {
         position: relative;
-        color: white;
+        color: var(--primary-bg-color);
     }
 
     .crumb {
-        color: #fff;
+        color: var(--primary-bg-color);
         text-decoration: none;
         font-family: sans-serif;
         font-size: 16px;
     }
 
     .crumb-link {
-        color: #fff;
+        color: var(--primary-bg-color);
     }
 
     .crumb-no-link {
-        color: #e5e5e5;
+        color: var(--primary-bg-color);
+        opacity: 0.5;
     }
 
     .crumb-separator {
@@ -112,6 +113,7 @@
         gap: 0.5rem;
         font-size: 28px;
         white-space: nowrap;
+        padding-right: 30px;
     }
 
 
@@ -125,11 +127,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
     }
 
     .dropdown-button-icon {
-        color: white;
+        color: var(--primary-bg-color);
         font-size: 18px;
     }
 
@@ -149,8 +150,8 @@
         padding: 10px;
     }
 
-        .dropdownContent .crumb:hover {
-            background: #f3f3f3;
+        .dropdownContent .crumb {
+            color: #f3f3f3;
         }
 
     .dropdown:hover .dropdownContent {

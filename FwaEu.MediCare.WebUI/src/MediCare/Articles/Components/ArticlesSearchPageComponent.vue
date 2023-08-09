@@ -22,7 +22,6 @@
                         </div>
                     </div>
                 </div>
-                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
         </div>
         <div v-if="showScanner">
@@ -31,19 +30,19 @@
     </div>
 </template>
 <script>
-import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
-import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
-import InputText from "primevue/inputtext";
-import ArticlesMasterDataService from "../Services/articles-master-data-service";
-import Dropdown from "primevue/dropdown";
-import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-import ArticlesService from "../Services/articles-service";
-import ArticlesTypeMasterDataService from "../Services/articles-type-master-data-service";
-import { useRoute } from 'vue-router';
-import { ref, watch } from "vue";
-import { watchDebounced } from '@vueuse/core'
-import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
-import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
+    import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
+    import InputText from "primevue/inputtext";
+    import ArticlesMasterDataService from "../Services/articles-master-data-service";
+    import Dropdown from "primevue/dropdown";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import ArticlesService from "../Services/articles-service";
+    import ArticlesTypeMasterDataService from "../Services/articles-type-master-data-service";
+    import { useRoute } from 'vue-router';
+    import { ref, watch } from "vue";
+    import { watchDebounced } from '@vueuse/core'
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
     export default {
         components: {
@@ -59,6 +58,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
             const filteredArticles = ref([]);
             const selectedArticleType = ref(null);
             const articles = ref([]);
+            // we don't know if there is pagination on this page so we let the variable and logic for the moment
             const currentPage = ref(0);
             const nextPage = ref(0);
             const pageSize = ref(30);
@@ -68,7 +68,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
                     filteredArticles.value = articles.value;
                 } else if (value.length >= 3) {
                     const response = await ArticlesService.getAllBySearchAsync(searchValue.value, selectedArticleType.value, nextPage.value, pageSize.value);
-                    filteredArticles.value = response.articles;
+                    filteredArticles.value = response;
                 } else {
                     filteredArticles.value = [];
                 }
@@ -117,7 +117,6 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
                 if (OnlineService.isOnline()) {
                     const nextPage = this.currentPage + 1;
                     this.currentPage = nextPage;
-                    this.performSearch();
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
@@ -143,10 +142,12 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
             },
             goToArticlePage(article) {
                 this.selectedArticle = article;
-                this.$router.push({
-                    name: "OrderArticle",
-                    params: { articleId: article.id }
-                });
+                if (this.$route.name === "SearchArticleFromProtection") {
+                    this.$router.push({ name: "AddPosology", params: { id: this.patient.id, articleId: article.id } });
+                } else {
+                    this.$router.push({ name: "OrderArticle", params: { articleId: article.id } });
+                }
+
             },
             loadInitialArticles() {
                 this.performSearch();
