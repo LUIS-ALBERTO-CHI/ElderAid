@@ -16,8 +16,8 @@
             <i style="font-size: 30px;" class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div style="display: flex; flex-direction: column; margin-top: 20px;">
-            <div v-if="filteredProtections && filteredProtections.some(protection => 'article' in protection)"
-                 v-for="(protection, index) in filteredProtections" :key="index">
+            <div v-if="filteredProtections && filteredProtections.some(protection => 'article' in protection) "
+                 v-for="(protection, index) in filteredProtections.filter(protection => protection.article != null)" :key="index">
                 <ProtectionAccordionTabComponent :protection="protection" :protectionDosages="getProtectionDosages(protection)"
                                                  @refreshData="refreshData" />
             </div>

@@ -2,7 +2,7 @@
     <div class="periodic-orders-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div v-if="periodicOrders && periodicOrders.some(periodicOrders => 'article' in periodicOrders)"
-             v-for="(periodicOrder, index) in periodicOrders" :key="index">
+             v-for="(periodicOrder, index) in periodicOrders.filter(periodicOrder => periodicOrder.article != null)" :key="index">
             <div class="periodic-order-item">
                 <span class="periodic-order-item-title">{{periodicOrder.article.title}}</span>
                 <span>{{periodicOrder.dosageDescription}}</span>
@@ -69,11 +69,13 @@
                 const periodicOrdersArticleIds = this.periodicOrders.map(x => x.articleId);
                 const articles = await ArticlesMasterDataService.getByIdsAsync(periodicOrdersArticleIds);
                 this.periodicOrders.forEach(periodicOrder => {
-                    const article = articles.find(article => article.id === periodicOrder.articleId)
-                    periodicOrder.article = article
-                    periodicOrder.periodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
-                    periodicOrder.defaultPeriodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
-                    this.getPeriodicQuantity(periodicOrder, article)
+                    const article = articles.find(article => article.id === periodicOrder.articleId);
+                    if (article != null) {
+                        periodicOrder.article = article
+                        periodicOrder.periodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
+                        periodicOrder.defaultPeriodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
+                        this.getPeriodicQuantity(periodicOrder, article)
+                    }
                 })
             },
             quantityNeeded(periodicOrder) {
