@@ -104,7 +104,8 @@
             this.patient = await this.patientLazy.getValueAsync();
             const articleId = this.$route.params.articleId;
             if (articleId) {
-                const [article] = await ArticlesMasterDataService.getByIdsAsync([articleId]);
+                const article = await ArticlesMasterDataService.getAsync(articleId);
+                
                 this.article = article;
             }
             if (this.patient)

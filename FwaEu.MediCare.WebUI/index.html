@@ -9,6 +9,7 @@
     <link rel="apple-touch-icon" href="/icon512.png">
     <title>{{appSettings.application.name}}</title>
     <script type="module" src="/src/main.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
 </head>
 <body>
     <div id="not-supported-browser-message" style="display: none;">
@@ -70,13 +71,20 @@
 
                 </div>
                 <div id="loaderIconContainer">
-                    <img id="loaderIcon" src="loader.gif" />
+                        <dotlottie-player 
+                        src="loader.lottie"
+                        background="Transparent"
+                        speed="2" 
+                        style="width: 250px;" 
+                        direction="1" mode="normal" 
+                        autoplay
+                        loop></dotlottie-player>
                     <a id="reloadLink" href="{{appSettings.application.publicUrl}}">Reload</a>
                 </div>
             </div>
             <style type="text/css">
                 #applicationLoader {
-                    background: #f8f8f8;
+                    background: #ffff;
                     color: #424242;
                     position: fixed;
                     display: flex;
@@ -110,9 +118,9 @@
 
                 #loaderIcon {
                     display: block;
-                    width: 70px;
+                    width: 220px;
                     margin: auto;
-                    height: 70px;
+                    height: 220px;
                 }
 
                 #reloadLink {
@@ -127,6 +135,7 @@
             </style>
         </div>
         <script type="text/javascript">
+            
 			const delayToShowLoaderInMs = 1200;
 			setTimeout(function () {
 				const loader = document.getElementById("applicationLoader");
