@@ -22,7 +22,6 @@
                         </div>
                     </div>
                 </div>
-                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
         </div>
         <div v-if="showScanner">
@@ -59,6 +58,7 @@
             const filteredArticles = ref([]);
             const selectedArticleType = ref(null);
             const articles = ref([]);
+            // we don't know if there is pagination on this page so we let the variable and logic for the moment
             const currentPage = ref(0);
             const nextPage = ref(0);
             const pageSize = ref(30);
@@ -68,7 +68,7 @@
                     filteredArticles.value = articles.value;
                 } else if (value.length >= 3) {
                     const response = await ArticlesService.getAllBySearchAsync(searchValue.value, selectedArticleType.value, nextPage.value, pageSize.value);
-                    filteredArticles.value = response.articles;
+                    filteredArticles.value = response;
                 } else {
                     filteredArticles.value = [];
                 }
@@ -118,7 +118,6 @@
                 if (OnlineService.isOnline()) {
                     const nextPage = this.currentPage + 1;
                     this.currentPage = nextPage;
-                    this.performSearch();
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
