@@ -1,22 +1,26 @@
 <template>
-	<div class="anonymous-page-layout cite-educative-layout" >
-		
+	<div class="anonymous-page-layout cite-educative-layout">
+
 		<div class="layout-content-container">
 
 			<div class="content">
 				<slot />
 			</div>
-			
+
 		</div>
 
 	</div>
+	<loading-panel container="window">
+	</loading-panel>
 </template>
 
 <script>
 	import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import LoadingPanel from '@/Fwamework/LoadingPanel/Components/LoadingPanelComponent.vue';
 	
 	export default {
 		components: {
+            LoadingPanel
 		},
 		props: {
 			title: String

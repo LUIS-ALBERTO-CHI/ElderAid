@@ -4,3 +4,8 @@
 
 /.vs
 *.exemple
+.DS_STORE
+tasks.json
+launch.json
+package-lock.json
+appsettings.Development.json

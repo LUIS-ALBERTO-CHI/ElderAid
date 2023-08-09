@@ -15,5 +15,8 @@
 	"textSalutation": "Hello,",
 	"textBody": "You can find below the contact details to join the desired contact:",
 	"textClosing": "Best regard,",
-	"textSignatureLine": "The administrator"
+	"textSignatureLine": "The administrator",
+
+	"CanAdminstrateApplicationMasterData": "Can administrate application referencials data",
+	"CanChangeIncontinenceLevel": "Can change the incontinence level"
 }

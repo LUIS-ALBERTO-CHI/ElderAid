@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace FwaEu.Modules.MasterData.WebApi
 {
-	//[Authorize] NOTE: Remove Authorize for the project MediCare
+	[Authorize]
 	[ApiController]
 	[Route("[controller]")]
 	public class MasterDataController : ControllerBase

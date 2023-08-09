@@ -1,50 +1,40 @@
 <template>
     <div class="treatment-page-container">
-        <patient-info-component />
-        <Accordion>
-            <template v-for="(treatment, index) in treatments" :key="index">
-                <AccordionTab>
+        <patient-info-component v-if="patient" :patient="patient" />
+        <Accordion v-if="patientTreatments && patientTreatments.some(treatment => 'article' in treatment)">
+            <template v-for="(treatment, index) in patientTreatments" :key="index">
+                <AccordionTab :disabled="isArticleNotFound(treatment)">
                     <template #header>
-                        <div class="accordion-header">
-                            <span class="header-title">
-                                {{ treatment.medicationOrdered }}
-                            </span>
-                            <span class="header-subtitle">{{treatment.initialMedication}}</span>
-                            <span class="header-subtitle">{{treatment.frequency}}</span>
-                            <span class="header-subtitle">{{treatment.date}}</span>
+                        <div v-if="treatment.article != null" class="accordion-header">
+                            <div class="accordion-top-area">
+                                <span class="header-title">
+                                    {{ treatment.article.title }}
+                                </span>
+                                    <i v-show="treatment.article.isGalenicDosageForm" class="fa-solid fa-briefcase-medical bag-icon"></i>
+                            </div>
+                            <span class="header-subtitle">{{treatment.article.groupName}}</span>
+                            <span class="header-subtitle">{{treatment.dosageDescription}}</span>
+                            <div>
+                                <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
+                            </div>
+                        </div>
+                        <div v-else class="accordion-header">
+                            <div class="accordion-top-area">
+                                <span class="header-title">
+                                    {{ treatment.alternativeArticleDescription }}
+                                </span>
+                            </div>
                         </div>
                     </template>
-                    <div class="accordion-content">
-                        <span>Commander une quantité :</span>
-                        <div v-show="moreQuantityDisplayedIndex != index" class="quantity-container">
-                            <div style="width: 75%;">
-                                <SelectButton @change="handleOptionChange" class="quantity-select-button" v-model="selectedQuantity" :options="quantityOptions" />
-                            </div>
-                            <i @click="displayMoreQuantity(index)" class="fa fa-solid fa-plus add-icon"></i>
-                        </div>
-                        <div v-show="moreQuantityDisplayedIndex == index">
-                            <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal" style="width: 75%;"
-                                         decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
-                                         incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
-
-                        </div>
-                        <SelectButton class="custom-select-button" v-model="selectedOption" :options="selectOptions" />
-                        <div class="confirmation-container" v-if="showConfirmationIndex === index">
-                            <span>Etes vous sûre de commander?</span>
-                            <div class="confirmaton-button-container">
-                                <Button label="OUI" outlined style="border: none !important; height: 30px !important;" />
-                                <Button @click="hideConfirmation" label="NON" outlined style="border: none !important; height: 30px !important;" />
-                            </div>
-                        </div>
-                        <Button v-else @click="showConfirmation(index)" style="height: 35px !important;" label="Commander" />
-                    </div>
+                    <OrderComponent v-if="treatment.article" :article="treatment.article" :patientOrders="patientOrders" />
                 </AccordionTab>
             </template>
         </Accordion>
+        <EmptyListComponent v-show="patientTreatments != null && patientTreatments.length < 1" />
     </div>
 
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
     import Button from 'primevue/button';
@@ -53,6 +43,11 @@
     import SelectButton from 'primevue/selectbutton';
     import InputNumber from 'primevue/inputnumber';
     import PatientInfoComponent from './PatientInfoComponent.vue';
+    import OrderComponent from './OrderComponent.vue';
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
 
     export default {
         components: {
@@ -61,42 +56,37 @@
             AccordionTab,
             SelectButton,
             InputNumber,
-            PatientInfoComponent
+            PatientInfoComponent,
+            OrderComponent,
+            DateLiteral,
+            EmptyListComponent
+        },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
         },
         data() {
             return {
-                patient: {},
-                isMoreQuandityDisplayed: false,
-                moreQuantityDisplayedIndex: -1,
-                quantityOptions: [1, 2, 3],
-                selectedQuantity: 1,
-                selectOptions: ["à l'unité", "boîtes complètes"],
-                selectedOption: "à l'unité",
-                treatments: [{
-                    medicationOrdered: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    initialMedication: "Jelonet gaze coton paraffinée 10x10cm bte 10pce",
-                    frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023"
-                },
-                {
-                    medicationOrdered: "ANTIDRY lotion huilde amande 500ml",
-                    initialMedication: "ANTIDRY calm lotion 500ml",
-                    frequency: "unité/1:matin/Ts les jours",
-                    date: "De 23/02/2023 à 30/05/2023"
-                }],
-                showConfirmationIndex: -1
+                patient: null,
+                patientTreatments: null,
+                patientOrders: []
             };
         },
         async created() {
+            this.patient = await this.patientLazy.getValueAsync();
+            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+            if (this.$route.params.treatmentType) {
+                this.patientTreatments = this.patientTreatments.filter(treatment => treatment.treatmentType === this.$route.params.treatmentType)
+            }
+            this.fillPatientTreatments()
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
         },
         methods: {
             goToTreatmentPage() {
                 this.$router.push({ name: "Treatment" });
-            },
-            displayMoreQuantity(index) {
-                this.moreQuantityDisplayedIndex = index;
-                this.selectedQuantity = 4;
-                this.focusInputNumber(index);
             },
             handleOptionChange(newValue) {
                 // TODO: prevent the user to deselect the selected option
@@ -106,17 +96,31 @@
                     this.$refs.inputNumber[index].$el.querySelector("input").focus();
                 });
             },
-            showConfirmation(index) {
-                this.showConfirmationIndex = index;
+            async fillPatientTreatments() {
+                let treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
+                treatmentArticleIds = treatmentArticleIds.concat(this.patientTreatments.map(treatment => treatment.prescribedArticleId))
+                const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
+                this.patientTreatments.forEach(treatment => {
+                    if (treatment.appliedArticleId !== 0 || treatment.appliedArticleId !== null) {
+                        const article = articles.find(article => article.id === treatment.appliedArticleId)
+                        treatment.article = article
+                    } else if (treatment.prescribedArticleId !== 0 || treatment.prescribedArticleId !== null) {
+                        const article = articles.find(article => article.id === treatment.prescribedArticleId)
+                        treatment.article = article
+                    } else {
+                        treatment.article = null
+                    }
+                })
             },
-            hideConfirmation() {
-                this.showConfirmationIndex = -1;
+            isArticleNotFound(treatment) {
+                if (treatment.appliedArticleId === 0 || treatment.appliedArticleId === null &&
+                    treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
+                    return true
+                } else {
+                    return false
+                }
             }
         },
-        computed: {
-
-        },
-
     }
 </script>
 <style type="text/css" scoped src="./Content/treatment-page.css">

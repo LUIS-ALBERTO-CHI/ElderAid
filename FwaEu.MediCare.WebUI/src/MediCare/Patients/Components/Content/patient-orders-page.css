@@ -22,20 +22,6 @@
     transition: box-shadow 0.2s;
 }
 
-.patient-order-item-delivered {
-    border-left: 12px solid var(--button-background-color);
-}
-
-.patient-order-item-waiting {
-    border-left: 12px solid orange;
-}
-
-.patient-order-item:hover {
-    outline: 0 none;
-    outline-offset: 0;
-    box-shadow: inset 0 0 0 .2rem #c7d2fe;
-}
-
 .button-order-item-container {
     display: flex;
     justify-content: space-around;
@@ -43,24 +29,15 @@
     column-gap: 10px;
 }
 
-.patient-order-title {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.patient-order-subtitle {
-    font-size: 14px;
-    opacity: 0.8;
-    font-weight: 500;
-}
-
-.patient-order-item-bottom-container {
+.cancel-confirmation-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.display-more-order-text {
-    color: #1A0DAB;
-    text-decoration: underline;
-    align-self: center;
+.button-confirmation {
+    border: none !important;
+    height: 30px !important;
+    color: #7092be !important
 }

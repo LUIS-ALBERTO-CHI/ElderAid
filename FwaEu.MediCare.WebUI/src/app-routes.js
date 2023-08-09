@@ -1,4 +1,4 @@
-const context = import.meta.glob('/**/routes.js', { eager: true });
+const context = import.meta.glob('/**/index-routes.js', { eager: true });
 import { defineAsyncComponent } from 'vue';
 const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
 const PublicLayoutComponent = defineAsyncComponent(() => import('@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue'));
@@ -9,6 +9,7 @@ let globalRoutes = [
         path: "/",
         component: Home,
         meta: {
+            title: 'Accueil',
             allowAnonymous: false,
             breadcrumb: {
                 titleKey: 'Accueil'

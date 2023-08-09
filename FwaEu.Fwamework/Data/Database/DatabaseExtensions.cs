@@ -13,6 +13,7 @@ namespace FwaEu.Fwamework.Data.Database
 		{
 			services.AddTransient<IRepositoryFactory, RepositoryFactory>();
 			services.AddSingleton<IInterceptorFactory, CompositeDispatchInterceptorFactory>();
+			services.AddTransient(typeof(IEntityKeyResolver<>), typeof(PluralizationEntityResolver<>));
 
 			return services;
 		}

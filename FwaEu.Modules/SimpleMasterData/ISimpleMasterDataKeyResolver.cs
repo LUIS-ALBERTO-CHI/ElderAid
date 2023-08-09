@@ -6,12 +6,14 @@ using System.Text;
 
 namespace FwaEu.Modules.SimpleMasterData
 {
-	public interface ISimpleMasterDataKeyResolver<TEntity>
-		where TEntity : SimpleMasterDataEntityBase
+	public interface ISimpleMasterDataKeyResolver
 	{
 		string ResolveKey();
 	}
-
+	public interface ISimpleMasterDataKeyResolver<TEntity> : ISimpleMasterDataKeyResolver
+	where TEntity : SimpleMasterDataEntityBase
+	{
+	}
 	public class PluralizationSimpleMasterDataKeyResolver<TEntity> : ISimpleMasterDataKeyResolver<TEntity>
 		where TEntity : SimpleMasterDataEntityBase
 	{

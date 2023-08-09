@@ -29,17 +29,19 @@ import { MasterDataModule } from "./Fwamework/MasterData/master-data-module";
 import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot-net-type-conversion-module";
 import { UserCultureModule } from "@/Modules/UserCulture/user-culture-module";
 import { ApplicationUsersModule } from "@/MediCare/Users/users-module";
+import { ApplicationCultureModule } from "@/MediCare/Culture/culture-module";
 
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
-import { PermissionsByIsAdminModule } from "@/MediCare/PermissionsByIsAdmin/permissions-by-is-admin-module";
+import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
 
 import { UserSettingsModule } from "@/Fwamework/UserSettings/user-settings-module";
 import { UsersMasterDataModule } from "@/Modules/UserMasterData/users-master-data-module";
 import { UserHistoryPartModule } from "@/Modules/UserHistory/user-history-part-module";
 import { UserAmdinStatePartModule } from "@/Modules/UserAdminState/user-admin-state-part-module";
 import DefaultAuthenticationHandler from "@/Modules/DefaultAuthentication/Services/default-authentication-handler";
-
+import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
+import { ViewContextModule } from "@/MediCare/ViewContext/view-context-module";
 
 import AppRoutes from './app-routes';
 import { UtilsModule } from '@/Fwamework/Utils/utils-module';
@@ -48,8 +50,14 @@ import SetupImpersonateAuthenticationHandler from "./Modules/ImpersonateAuthenti
 
 import { ApplicationModule } from "@/MediCare/application-module";
 
+import { ReferencialsModule } from "@/MediCare/Referencials/referencials-module";
 import { PatientsModule } from "@/MediCare/Patients/patients-module";
+import { OrdersModule } from "@/MediCare/Orders/orders-module";
+import { CabinetsModule } from "@/MediCare/PharmacyStock/cabinets-module";
+import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consumption-module";
+import { ArticlesModule } from "./MediCare/Articles/articles-module";
 
+import { OnlineStatusModule } from '@/Fwamework/OnlineStatus/online-module';
 
 import PrimeVue from 'primevue/config';
 
@@ -78,7 +86,6 @@ const application = new Application(IndexApp)
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation
 		defaultStore: new InMemoryStore()
 	}))
-
 	
 	.useModule(new DevextremeModule())
 
@@ -93,16 +100,31 @@ const application = new Application(IndexApp)
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
 	.useModule(new ApplicationUsersModule())
+	.useModule(new ApplicationCultureModule())
+	.useModule(new ViewContextModule())
+	.useModule(new OrganizationsModule())
+	.useModule(new ReferencialsModule())
 	.useModule(new PatientsModule())
+	.useModule(new OrdersModule())
+	.useModule(new CabinetsModule())
+	.useModule(new StockConsumptionModule())
+	.useModule(new ArticlesModule())
 	
-	.useModule(new PermissionsByIsAdminModule())
+	.useModule(new PermissionsByRoleModule())
 	.useModule(new RoutingModule({
 			routerOptions: {
 				routes: AppRoutes
 			}
 		}
 	))
+	.useModule(new OnlineStatusModule())
 	.useModule(new UtilsModule());
 
 application.vueApp.use(PrimeVue);
+
+
+//NOTE: To make works chartjs-plugin-datalabels you need to register it globally i didn't find a better way to do it
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Chart } from 'chart.js';
+Chart.register(ChartDataLabels);
 application.mountAsync("#app");

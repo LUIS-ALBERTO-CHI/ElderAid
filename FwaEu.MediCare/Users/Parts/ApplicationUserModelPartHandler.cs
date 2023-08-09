@@ -10,99 +10,113 @@ using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.Users
 {
-	public class ApplicationUserModel
-	{
-		[Required]
-		public string FirstName { get; set; }
+    public class ApplicationUserModel
+    {
+        [Required]
+        public string FirstName { get; set; }
 
-		[Required]
-		public string LastName { get; set; }
+        [Required]
+        public string LastName { get; set; }
 
-		[Required]
-		[EmailAddress]
-		public string Email { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
 
-	}
+        public string Login { get; set; }
 
-	public class ApplicationUserModelPartHandler : EditablePartHandler<ApplicationUserModel, ApplicationUserModel>
-	{
-		public override string Name => "Application";
+    }
 
-		private readonly UserSessionContext _userSessionContext;
-		private readonly CurrentUserPermissionService _currentUserPermissionService;
-		private readonly IAuthenticationChangeInfoService _authenticationChangeInfoService;
+    public class ApplicationUserModelPartHandler : EditablePartHandler<ApplicationUserModel, ApplicationUserModel>
+    {
+        public override string Name => "Application";
 
-		public ApplicationUserModelPartHandler(UserSessionContext userSessionContext,
-			CurrentUserPermissionService currentUserPermissionService,
-			IAuthenticationChangeInfoService authenticationChangeInfoService)
-		{
-			this._userSessionContext = userSessionContext
-				?? throw new ArgumentNullException(nameof(userSessionContext));
+        private readonly UserSessionContext _userSessionContext;
+        private readonly CurrentUserPermissionService _currentUserPermissionService;
+        private readonly IAuthenticationChangeInfoService _authenticationChangeInfoService;
+        private readonly IUserSynchronizationService _userSynchronizationService;
 
-			this._currentUserPermissionService = currentUserPermissionService
-				?? throw new ArgumentNullException(nameof(currentUserPermissionService));
+        public ApplicationUserModelPartHandler(UserSessionContext userSessionContext,
+            CurrentUserPermissionService currentUserPermissionService,
+            IAuthenticationChangeInfoService authenticationChangeInfoService,
+            IUserSynchronizationService userSynchronizationService
+        )
+        {
+            this._userSessionContext = userSessionContext
+                ?? throw new ArgumentNullException(nameof(userSessionContext));
 
-			this._authenticationChangeInfoService = authenticationChangeInfoService
-				?? throw new ArgumentNullException(nameof(authenticationChangeInfoService));
-		}
+            this._currentUserPermissionService = currentUserPermissionService
+                ?? throw new ArgumentNullException(nameof(currentUserPermissionService));
 
-		public override bool IsRequiredOnCreation => true;
-		public override bool IsRequiredOnUpdate => true;
-		public override bool IsRequiredOnUpdateForCurrentUser => false;
+            this._authenticationChangeInfoService = authenticationChangeInfoService
+                ?? throw new ArgumentNullException(nameof(authenticationChangeInfoService));
 
-		public override async Task<bool> CurrentUserCanEditAsync()
-		{
-			var currentUser = this._currentUserPermissionService.CurrentUserService.User;
-			var user = this._userSessionContext.SaveUserEntity;
+            this._userSynchronizationService = userSynchronizationService
+                ?? throw new ArgumentNullException(nameof(userSynchronizationService));
+        }
 
-			return currentUser.Entity.Id != user.Id
-				&& await this._currentUserPermissionService.HasPermissionAsync<UsersPermissionProvider>(
-					provider => provider.CanAdministrateUsers);
-		}
+        public override bool IsRequiredOnCreation => true;
+        public override bool IsRequiredOnUpdate => true;
+        public override bool IsRequiredOnUpdateForCurrentUser => false;
 
-		public override Task<ApplicationUserModel> LoadAsync()
-		{
-			var loadingModel = (IApplicationPartLoadingModelPropertiesAccessor)this._userSessionContext.LoadingModel;
+        public override async Task<bool> CurrentUserCanEditAsync()
+        {
+            var currentUser = this._currentUserPermissionService.CurrentUserService.User;
+            var user = this._userSessionContext.SaveUserEntity;
 
-			return Task.FromResult(new ApplicationUserModel()
-			{
-				FirstName = loadingModel.FirstName,
-				LastName = loadingModel.LastName,
-				Email = loadingModel.Email,
-			});
-		}
+            return currentUser.Entity.Id != user.Id
+                && await this._currentUserPermissionService.HasPermissionAsync<UsersPermissionProvider>(
+                    provider => provider.CanAdministrateUsers);
+        }
 
-		private static void ValidateSaveModel(ApplicationUserModel model)
-		{
-			if (model.Email?.Length < 3
-				|| !model.Email.Contains("@")
-				|| model.Email.StartsWith("@")
-				|| model.Email.EndsWith("@"))
-			{
-				throw new UserSaveValidationException("InvalidEmail",
-					"Invalid email.");
-			}
-		}
+        public override Task<ApplicationUserModel> LoadAsync()
+        {
+            var loadingModel = (IApplicationPartLoadingModelPropertiesAccessor)this._userSessionContext.LoadingModel;
 
-		public override Task<IPartSaveResult> SaveAsync(ApplicationUserModel model)
-		{
-			var entity = (IApplicationPartEntityPropertiesAccessor)this._userSessionContext.SaveUserEntity;
+            return Task.FromResult(new ApplicationUserModel()
+            {
+                FirstName = loadingModel.FirstName,
+                LastName = loadingModel.LastName,
+                Email = loadingModel.Email,
+                Login = loadingModel.Login,
+            });
+        }
+        //Cannot read properties of undefined (reading 'parentName')
 
-			ValidateSaveModel(model);
 
-			var emailChanged = entity.Email != model.Email;
+        private static void ValidateSaveModel(ApplicationUserModel model)
+        {
+            if (model.Email?.Length < 3
+                || !model.Email.Contains("@")
+                || model.Email.StartsWith("@")
+                || model.Email.EndsWith("@"))
+            {
+                throw new UserSaveValidationException("", "InvalidEmail",
+                    "Invalid email.");
+            }
+        }
 
-			entity.FirstName = model.FirstName;
-			entity.LastName = model.LastName;
-			entity.Email = model.Email;
+        public override Task<IPartSaveResult> SaveAsync(ApplicationUserModel model)
+        {
+            var entity = (IApplicationPartEntityPropertiesAccessor)this._userSessionContext.SaveUserEntity;
 
-			return Task.FromResult<IPartSaveResult>(
-				emailChanged//NOTE: Email change date is just tracked as an information, because on the next load of the current user, it will fail because the identity will not be found in the database
-				? new PartSaveResult(afterSaveTask: async () =>
-				{
-					await this._authenticationChangeInfoService.SetLastChangeDateAsync(entity.Id);
-				})
-				: null);
-		}
-	}
+            ValidateSaveModel(model);
+
+            var emailChanged = entity.Email != model.Email;
+
+            entity.FirstName = model.FirstName;
+            entity.LastName = model.LastName;
+            entity.Email = model.Email;
+            entity.Login = model.Login;
+
+            return Task.FromResult<IPartSaveResult>(
+                new PartSaveResult(afterSaveTask: async () =>
+                {
+                    if (emailChanged)
+                    {
+                        await this._authenticationChangeInfoService.SetLastChangeDateAsync(entity.Id);
+                    }
+                    await this._userSynchronizationService.SyncUserAsync(entity.Id);
+                }));
+        }
+    }
 }

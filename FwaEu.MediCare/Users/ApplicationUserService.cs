@@ -35,6 +35,7 @@ namespace FwaEu.MediCare.Users
 				LastName = user.LastName,
 				Email = user.Email,
 				Identity = user.Identity,
+				Login = user.Login,
 				UpdatedById = user.UpdatedBy.Id,
 				UpdatedOn = user.UpdatedOn,
 			};
@@ -50,7 +51,7 @@ namespace FwaEu.MediCare.Users
 				Email = user.Email,
 				IsAdmin = user.IsAdmin,
 				State = user.State,
-
+				Login= user.Login,
 				CreatedById = user.CreatedBy.Id,
 				CreatedOn = user.CreatedOn,
 				UpdatedById = user.UpdatedBy.Id,

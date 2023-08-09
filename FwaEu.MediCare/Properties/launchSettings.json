@@ -13,17 +13,17 @@
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS Express - Default": {
+    "IIS Express": {
       "commandName": "IISExpress",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development.Default"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS - Default": {
+    "IIS": {
       "commandName": "IIS",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development.Default"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "ancmHostingModel": "OutOfProcess"
     }

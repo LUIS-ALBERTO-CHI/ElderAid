@@ -8,6 +8,7 @@ export default class Application {
 		this.vueConfig = vueConfig;
 		let originalCreated = this.vueConfig.created;
 		this.vueConfig.created = function () {
+
 			const vueInstance = this;
 			if (originalCreated)
 				originalCreated.bind(vueInstance)();
@@ -49,6 +50,7 @@ export default class Application {
 		
 		if (!this.initialized) {
 			for (let module of ModuleRegistry.getAll()) {
+
 				if (module.onInitAsync) {
 					await module.onInitAsync(this.vueApp);
 				}

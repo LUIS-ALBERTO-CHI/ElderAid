@@ -1,0 +1,28 @@
+.incontinence-level-page-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.incontinence-info-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.incontinence-info-label-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--alt-secondary-text-color);
+}
+
+.incontinence-info-label-container {
+    display: flex;
+    column-gap: 5px;
+}
+
+.incontinence-change-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}

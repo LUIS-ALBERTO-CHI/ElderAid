@@ -22,7 +22,7 @@ const application = new Application(App)
 		authenticationHandlers: [
 			SetupImpersonateAuthenticationHandler,
 		]
-	}) )
+	}))
 	.useModule(new DevextremeModule())
 	.useModule(new LoadingPanelModule())
 	.useModule(new ErrorModule())

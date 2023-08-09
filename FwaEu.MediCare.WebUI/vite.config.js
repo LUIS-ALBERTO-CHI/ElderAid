@@ -60,7 +60,8 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				main: resolve(rootPath, 'index.html'),
-				nested: resolve(rootPath, 'setup.html')
+				nested: resolve(rootPath, 'setup.html'),
+				admin: resolve(rootPath, 'admin.html')
 			}
 		}
 	}

@@ -75,7 +75,7 @@
 			},
 			onFileUploadButtonClick: showLoadingPanel(async function () {
 				let results = null;
-				
+
 				await DataImportService.importDataAsync(this.files).then(function (data) {
 					results = data;
 				})
@@ -94,7 +94,7 @@
 		},
 		computed: {
 			supportedFileExtensions() {
-				return Configuration.actorPhoto.supportedImageExtensions.join(',');
+				return Configuration.dataImport.supportedFileExtensions.join(',');
 			}
 		}
 	}

@@ -67,7 +67,6 @@
 			}
 		},
 		created: showLoadingPanel(async function () {
-			console.log("HIHI")
 		}),
 		methods: {
 			onPasswordEntered() {

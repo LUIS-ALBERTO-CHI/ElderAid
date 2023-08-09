@@ -1,5 +1,6 @@
 import { I18n } from "@/Fwamework/Culture/Services/localization-service";
 import UserStateService from '@/Fwamework/Users/Services/user-state-service';
+import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 export default {
 	partName: "adminState",

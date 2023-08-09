@@ -1,12 +1,6 @@
-using FwaEu.Fwamework.Data.Database.Nhibernate;
 using FwaEu.Fwamework.Data.Database.Nhibernate.Interceptors;
 using FwaEu.Fwamework.Data.Database.Sessions;
-using NHibernate;
-using NHibernate.Cfg;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FwaEu.Fwamework.Data.Database.Nhibernate
 {

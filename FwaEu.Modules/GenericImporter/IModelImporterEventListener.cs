@@ -9,7 +9,7 @@ namespace FwaEu.Modules.GenericImporter
 	public interface IModelImporterEventListenerFactory<TEventListener>
 		where TEventListener : IModelImporterEventListener
 	{
-		TEventListener Create(ServiceStore serviceStore);
+		TEventListener Create(ServiceStore serviceStore, IServiceProvider serviceProvider);
 	}
 
 	public interface IModelImporterEventListener : IAsyncDisposable

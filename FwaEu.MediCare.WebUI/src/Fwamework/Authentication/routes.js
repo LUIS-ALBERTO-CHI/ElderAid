@@ -9,7 +9,6 @@ export default [
 		component: LoginPageComponent,
 		meta: {
 			allowAnonymous: true,
-			zoneName: 'admin',
 			breadcrumb: {
 				titleKey: 'Login',
 				parentName: 'default'

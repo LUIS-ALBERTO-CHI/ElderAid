@@ -2,7 +2,7 @@
 	<div class="anonymous-page-layout">
 		<dx-scroll-view class="layout-content-container with-footer d-flex">
 			<div class="d-flex application-name">
-				<!-- <img class="logo" alt="" src="@/MediCare/Content/logo-company.png" height="30" /> -->
+				<img class="logo" alt="" src="@/MediCare/Content/logo-company.png" height="30" />
 				<h2>{{ applicationName }}</h2>
 			</div>
 			<div class="content">

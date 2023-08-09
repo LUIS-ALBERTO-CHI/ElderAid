@@ -1,17 +1,17 @@
 <template>
-    <div class="patient-container">
+    <div v-if="patient" class="patient-container">
         <div class="patient-main-info-container">
             <div class="patient-area">
-                <span style="font-weight: bold;">{{patient.firstname}} {{patient.lastname}}</span>
+                <span style="font-weight: bold;">{{cuttedName(patient)}}</span>
                 <i class="fa-solid fa-circle " :class="patient.isActive ? 'active-patient-text' : 'inactive-patient-text'" />
             </div>
-            <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomNumber}}</span>
+            <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomName}}</span>
         </div>
-        <span>Mise à jour: 29/10/22 à 9:12</span>
+        <span>Mise à jour : 29/10/22 à 9:12</span>
     </div>
 
 </template>
-<!-- eslint-disable @fwaeu/custom-rules/no-local-storage -->
+
 <script>
 
 
@@ -19,14 +19,23 @@
     export default {
         data() {
             return {
-                patient: {},
             };
         },
+        props: {
+            patient: {
+                type: Object,
+                required: true
+            }
+        },
         async created() {
-            var patient = localStorage.getItem("patient");
-            this.patient = JSON.parse(patient);
         },
         methods: {
+            cuttedName(patient) {
+                if (patient.fullName == null)
+                    return "";
+                return patient?.fullName.length > 20 ? patient?.fullName.substring(0, 20) + "..." : patient?.fullName;
+
+            }
         },
         computed: {
 

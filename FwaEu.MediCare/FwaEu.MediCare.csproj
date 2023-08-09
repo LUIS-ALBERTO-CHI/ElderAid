@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>FwaEu.MediCare</RootNamespace>
     <StartupObject>FwaEu.MediCare.Program</StartupObject>
@@ -14,7 +16,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="appsettings.Development.local.json" />
+    <Compile Remove="DbManager\**" />
+    <Compile Remove="Patients\GenericAdmin\**" />
+    <Compile Remove="Referencials\Services\**" />
+    <Content Remove="DbManager\**" />
+    <Content Remove="Patients\GenericAdmin\**" />
+    <Content Remove="Referencials\Services\**" />
+    <EmbeddedResource Remove="DbManager\**" />
+    <EmbeddedResource Remove="Patients\GenericAdmin\**" />
+    <EmbeddedResource Remove="Referencials\Services\**" />
+    <None Remove="DbManager\**" />
+    <None Remove="Patients\GenericAdmin\**" />
+    <None Remove="Referencials\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Html\Mail\_Layout.cshtml" />
   </ItemGroup>
 
@@ -27,9 +43,11 @@
   <ItemGroup>
 
     <PackageReference Include="Aspose.Cells" Version="21.4.0" />
+
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
@@ -53,10 +71,6 @@
     <Folder Include="DevelopmentData\Users\" />
     <Folder Include="Integration\AfterUpdateSchema\" />
     <Folder Include="Integration\BeforeUpdateSchema\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="appsettings.Development.local.json" />
   </ItemGroup>
 
   <ItemGroup>

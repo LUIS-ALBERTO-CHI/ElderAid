@@ -87,7 +87,8 @@ class AzureADAuthenticationHandler extends AuthenticationHandler {
 		const account = this.getActiveAccount();
 
 		this.setActiveAccount(null);
-		await this.msalInstance.logoutRedirect({ account, prompt: 'none' });
+		await this.msalInstance.logoutPopup({ account: account, prompt: 'none' });
+
 		return true;
 	}
 

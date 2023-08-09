@@ -29,8 +29,6 @@ export default {
 
 			let isAuthenticated = await authenticationService.isAuthenticatedAsync();
 			if (isAuthenticated) {
-			cacheStore = cacheStore ?? (await import("@/Fwamework/Routing/Services/routing-cache-store")).default;
-
 				if (!await cacheStore.getValueAsync(currentUserStoreKey) || forceReload) {
 					const httpService = (await import('@/Fwamework/Core/Services/http-service')).default;
 

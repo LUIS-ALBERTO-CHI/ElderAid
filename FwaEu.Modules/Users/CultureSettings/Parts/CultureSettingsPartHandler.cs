@@ -69,7 +69,7 @@ namespace FwaEu.Modules.Users.CultureSettings.Parts
 					.Select(ac => ac.TwoLetterISOLanguageName)
 					.Contains(model.LanguageTwoLetterIsoCode))
 				{
-					throw new UserSaveValidationException("SelectedLanguageNotAvailable",
+					throw new UserSaveValidationException("cultureSettings", "SelectedLanguageNotAvailable",
 						"The selected language is not available.");
 				}
 

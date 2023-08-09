@@ -1,0 +1,475 @@
+[33mcommit f227ac18a7290e1410f5d58c43df2c4b2cc418bd[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/10455-add-select-ems-in-home[m[33m, [m[1;31morigin/feature/10455-add-select-ems-in-home[m[33m, [m[1;31morigin/develop[m[33m)[m
+Merge: 4f764c7 e7d5b10
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 19 10:00:19 2023 +0000
+
+    Merged PR 14741: bloack access for some page
+    
+    bloack access for some page
+    
+    Related work items: #10454
+
+[33mcommit e7d5b10b9358d44168e04c8af973296c11956fb9[m[33m ([m[1;31morigin/feature/10454-block-access-page[m[33m, [m[1;32mfeature/10454-block-access-page[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 19 11:59:41 2023 +0200
+
+    bloack access for some page
+
+[33mcommit 4f764c7f388b2ec990e0dd0138e771fe4cfc7a55[m
+Merge: cfd7b72 986232c
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 19 09:38:55 2023 +0000
+
+    Merged PR 14740: Add admin side (Back office)
+    
+    Add admin side (Back office)
+    
+    Related work items: #10453
+
+[33mcommit 986232c0dbca326167d714e1af9937e23d378c0c[m[33m ([m[1;31morigin/feature/10453-add-admin-back-office[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 19 11:37:26 2023 +0200
+
+    Add back office
+
+[33mcommit cfd7b7282f616e2dfde88dbaacfc61f5905c28c4[m
+Merge: b87b2c4 835b664
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 19 08:53:21 2023 +0000
+
+    Merged PR 14739: add master data
+    
+    add master data
+    article, order, treatment + implemntation of patient and building in front
+
+[33mcommit 835b6642064b05b72ee384be6cc2d66366be7b50[m[33m ([m[1;31morigin/feature/10451-add-master-data-in-front[m[33m, [m[1;32mfeature/10451-add-master-data-in-front[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 19 10:44:46 2023 +0200
+
+    add master data
+
+[33mcommit b87b2c4cc83b712ce4a6a2c17a80cd87c06baf39[m
+Merge: 16e076c 292f8ee
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 16 11:55:11 2023 +0000
+
+    Merged PR 14738: add master data in front for patient and building
+    
+    add masteer data in front
+    
+    Related work items: #10451
+
+[33mcommit 292f8ee999d1113cfbc1cc36b7f7ac936767308f[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 16 13:54:24 2023 +0200
+
+    add masteer data in front
+
+[33mcommit 16e076ca571a131707869a05b17835347bd9207f[m[33m ([m[1;31morigin/feature/10450-create-dynamic-session-db[m[33m, [m[1;32mdevelop[m[33m)[m
+Merge: 04748ee c814515
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Thu Jun 15 16:09:42 2023 +0000
+
+    Merged PR 14734: Update database config + add services for patients and buildings
+    
+    Update database config + add services for patients and buildings
+    
+    Related work items: #10441
+
+[33mcommit c8145153903b8b8add65b1bcdc29e375025a3951[m[33m ([m[1;31morigin/feature/10441-index-db-browser[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Thu Jun 15 18:09:01 2023 +0200
+
+    Update database config + add services for patients and buildings
+
+[33mcommit 04748eec82e9b9e92044ecff5427bafd887dc7b4[m[33m ([m[1;31morigin/feature/10449-update-sql-server-db[m[33m)[m
+Merge: 977428c d124e4e
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Thu Jun 15 12:36:29 2023 +0000
+
+    Merged PR 14733: Integrate IndexDb and service of synchronisation
+    
+    Integrate IndexDb and service of synchronisation
+    
+    Related work items: #10441
+
+[33mcommit d124e4ee032a4abbf7a808ade8b8bfa78b6d7224[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Thu Jun 15 14:35:54 2023 +0200
+
+    Update files
+
+[33mcommit 977428cf3936b4aa7a5e58218f31926a68c61a4a[m
+Merge: 38dc9bb bf39687
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 15 08:37:50 2023 +0000
+
+    Merged PR 14731: fix bug after migration
+    
+    fix bug after migration
+    
+    Related work items: #10444
+
+[33mcommit bf3968724181f5496ff871e969ce026fa6502583[m[33m ([m[1;31morigin/feature/10444-fix-component-style-after-migration[m[33m, [m[1;32mfeature/10444-fix-component-style-after-migration[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 15 10:37:15 2023 +0200
+
+    fix bug after migration
+
+[33mcommit 77b59da358cd948fe909d372a30d8fc31c9e629e[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Wed Jun 14 14:46:20 2023 +0200
+
+    Version 1 of indexed db
+
+[33mcommit a46e31b0e8a5fa3dbe3afbdd57b2c8155d788d92[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Wed Jun 14 10:50:15 2023 +0200
+
+    Integrate IndexDb for MasterData
+
+[33mcommit 38dc9bb8cbc11988d66ab94e318b0cb876940243[m
+Merge: 927f513 c076d17
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 13 07:50:00 2023 +0000
+
+    Merged PR 14718: Update name of the of the logo header
+    
+    Update name of the of the logo header
+    
+    Related work items: #10434
+
+[33mcommit c076d17acdb32e3d87f2ce704132502594329c45[m[33m ([m[1;31morigin/feature/10434-update-from-template-core[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 17:55:46 2023 +0200
+
+    Update name of the of the logo header
+
+[33mcommit 927f513657da38fda7141a7064d5f4279d481f14[m[33m ([m[1;31morigin/fix/10436-pipeline-error-preprod[m[33m)[m
+Merge: 157a151 d8ae8a1
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 15:31:23 2023 +0000
+
+    Merged PR 14715: Updated BreadcrumbsCollapsedComponent.vue
+    
+    Updated BreadcrumbsCollapsedComponent.vue
+    
+    Related work items: #10433
+
+[33mcommit d8ae8a1a73ce860643ef776d7fb8e386a6f5bf71[m[33m ([m[1;31morigin/fix/10433-resolving-error-login[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 14:30:32 2023 +0000
+
+    Updated BreadcrumbsCollapsedComponent.vue
+
+[33mcommit 157a1514ac95283240a02ee7a62d269774920b3b[m
+Merge: 809a09b eed0102
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 14:27:20 2023 +0000
+
+    Merged PR 14714: Update from TemplateCore
+    
+    Update from TemplateCore
+    
+    Related work items: #10434
+
+[33mcommit eed01029a90305e111ce815729046792b3d448fa[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 14:41:46 2023 +0200
+
+    Update from TemplateCore
+
+[33mcommit 7bb05e8472f4834ff12a763466bc18018f5333bf[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Mon Jun 12 14:41:38 2023 +0200
+
+    Update from TemplaeteCore (Add current password + getting new changes of some modules)
+
+[33mcommit 809a09b4522397ac69946eca8e6c2cb6561204d2[m[33m ([m[1;31morigin/feature/create-service-transformer[m[33m)[m
+Merge: 1c34860 665fda0
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 9 12:38:26 2023 +0000
+
+    Merged PR 14709: add command page and global front change + add re usable component
+    
+    add command page and global front change + add re usable component
+    
+    Related work items: #10423
+
+[33mcommit 665fda04df98ab6dcbdd604d25fed3811a9876d5[m[33m ([m[1;31morigin/feature/10423-add-command-page[m[33m, [m[1;32mfeature/10423-add-command-page[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 9 14:21:35 2023 +0200
+
+    add command page and global front change + add re usable component
+
+[33mcommit 1c34860bdedd4101c2217eb2bb33a16993f2e16e[m
+Merge: 3f70aac 6d1edb5
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Fri Jun 9 12:07:11 2023 +0000
+
+    Merged PR 14708: Update he code fornt and back
+    
+    Update he code fornt and back
+    
+    Related work items: #10419
+
+[33mcommit 6d1edb55359bd0b4db93d768f02972b04cdb7505[m[33m ([m[1;31morigin/feature/10419-service-db-transformer[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Fri Jun 9 14:06:15 2023 +0200
+
+    Update code front
+
+[33mcommit bb874bbd624b6c2ed027ed83ff3d198757e00662[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Fri Jun 9 14:03:29 2023 +0200
+
+    Update code
+
+[33mcommit 3f70aacc7e646201c7488c5d2637db9f7ccc8155[m
+Merge: bf3295e 7bb12b3
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Fri Jun 9 07:45:20 2023 +0000
+
+    Merged PR 14707: Add mapping transformer service (Read from stored procedural)
+    
+    Add mapping transformer service (Read from stored procedural)
+    
+    Related work items: #10419, #10425, #10426, #10427
+
+[33mcommit 7bb12b3bd0c00be39b420503473ea23fa65088c8[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Fri Jun 9 09:40:49 2023 +0200
+
+    Add trnsformer service
+
+[33mcommit 41ed407c0165f81b9f24e745b7bc507b899ee952[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Thu Jun 8 09:18:45 2023 +0200
+
+    Update database transformer
+
+[33mcommit bf3295e871b809fdfb09ad07f84b9249dc07c95b[m
+Merge: 1082144 b0a0556
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 8 07:18:23 2023 +0000
+
+    Merged PR 14701: Ajout order article page et component
+    
+    Related work items: #10416
+
+[33mcommit b0a0556f0e440c96e1a73422dc0c7efa0d55b2cf[m[33m ([m[1;31morigin/feature/10416-command-article[m[33m, [m[1;32mfeature/10416-command-article[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 8 09:17:29 2023 +0200
+
+    Add article page and order article component
+
+[33mcommit 87a6d8149e4cfd274d429e531db63c67872c9f77[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Wed Jun 7 17:41:20 2023 +0200
+
+    Creating service Transformer and somes entities
+
+[33mcommit d4fde7a0def2bf83c9838b2bef2b970885ea5c45[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Wed Jun 7 14:16:29 2023 +0200
+
+    Resolve the problem of the breadcrumbs width
+
+[33mcommit 1c75a349a41aec36d1dc0cbec0867c3c3c061a42[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Wed Jun 7 11:08:40 2023 +0200
+
+    add command article page (begininng)
+
+[33mcommit 1082144b42b36e7639be8794f500a458f836c9af[m
+Merge: b267d8d b9184e5
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Tue Jun 6 16:18:08 2023 +0000
+
+    Merged PR 14698: add change in breadcrumb
+    
+    add change in breadcrumb
+    
+    Related work items: #10414
+
+[33mcommit b9184e5b1f2d8b48bb8a684c669dae03f081815f[m[33m ([m[1;31morigin/feature/10414-change-style-breadcrumb[m[33m, [m[1;32mfeature/10414-change-style-breadcrumb[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Tue Jun 6 18:04:02 2023 +0200
+
+    add change in breadcrumb
+
+[33mcommit b267d8d1d737e346298f709b127b7e3f2ba17f7f[m
+Merge: 3578203 2d73370
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Tue Jun 6 13:13:06 2023 +0000
+
+    Merged PR 14697: updater master to dev
+    
+    Related work items: #10409, #10410
+
+[33mcommit 3578203b93b8e895fd0c5297b77f8f105c56cd9d[m
+Merge: 18a005e fc3960f
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 6 13:04:16 2023 +0000
+
+    Merged PR 14696: Add action button preve node
+    
+    Add action button preve node
+    ![back-node.gif](https://dev.azure.com/fwaeu/64cbda9b-153e-485e-a293-26d69a1376a4/_apis/git/repositories/1b2e9029-afc4-4df4-9dd4-05ace888e59b/pullRequests/14696/attachments/back-node.gif)
+    
+    Related work items: #10413
+
+[33mcommit fc3960f5811d035a969cb9afca3e4320cbab2a25[m[33m ([m[1;31morigin/feature/10413-add-action-node-breadcrumbs[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 6 15:00:43 2023 +0200
+
+    Update breadcrumbs and back
+
+[33mcommit 2d73370912b59c220c0ce73ec82fd15c34caf034[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 3ff2017 df70acb
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Tue Jun 6 12:43:38 2023 +0000
+
+    Merged PR 14695: Refactorisation code et fichier
+    
+    Creation of Patient Module and refactoring folder
+    
+    Related work items: #10410
+
+[33mcommit df70acb6be60f7be01aad4d8cf3a43c95297e44d[m[33m ([m[1;31morigin/feature/10410-refacto-folder[m[33m, [m[1;32mfeature/10410-refacto-folder[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Tue Jun 6 14:40:43 2023 +0200
+
+    Creation of Patient Module and refactoring folder
+
+[33mcommit 18a005e314dbfba154b132140ccf4d89f7be78b2[m
+Merge: 82c304f 6d31707
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 6 12:05:48 2023 +0000
+
+    Merged PR 14694: Add collapsable breadcrumbs like JeFile app
+    
+    Add collapsable breadcrumbs like JeFile app
+    
+    Related work items: #10377, #10385, #10387, #10389, #10395, #10398, #10405, #10407, #10412
+
+[33mcommit 6d3170744cec7914af954392ede1d79c265d4933[m[33m ([m[1;31morigin/develop-05-06-2023[m[33m)[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 6 14:04:12 2023 +0200
+
+    Remove unnecessary code
+
+[33mcommit cbc63320e834f57903c5311ab770a17d18cb0eac[m
+Author: Soufian BOUTAIB <soufian.boutaib@fwa.eu>
+Date:   Tue Jun 6 13:51:59 2023 +0200
+
+    Add collapsed breadcrumbs
+
+[33mcommit 3ff2017bc28cc4204eac39bfc545a2e876a46247[m
+Merge: 5810069 b2b8c68
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 5 15:23:58 2023 +0000
+
+    Merged PR 14693: graphical change
+    
+    graphical change
+    
+    Login largeur
+    Validation des commandes
+    
+    lien profil dans la page home
+    selection secteur search
+    changer couleur main button comme header
+    Dans la page orderOtherProduct mettre une limite de caractere (dans une constant
+    liste traitement fixe hauteur dynamique
+    
+    Related work items: #10409
+
+[33mcommit b2b8c68ff9cf15c287183682b8d4bedddfb11cdf[m[33m ([m[1;31morigin/feature/10409-graphical-correction[m[33m, [m[1;32mfeature/10409-graphical-correction[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Mon Jun 5 17:22:41 2023 +0200
+
+    graphical change
+
+[33mcommit 82c304fbae78442c1fdddd757012b2419f2db0f1[m
+Merge: 37386ac 5810069
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 2 14:47:50 2023 +0000
+
+    Merged PR 14685: update master to dev
+    
+    Related work items: #10407
+
+[33mcommit 5810069456ed1568e0c2d1236ff0371c1f849d5a[m
+Merge: 3e7d7ad e122995
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 2 14:47:03 2023 +0000
+
+    Merged PR 14684: add change home
+    
+    add change home
+    
+    Related work items: #10407
+
+[33mcommit e122995604c97e1e44d99815e998176f246d3444[m[33m ([m[1;31morigin/feature/10407-order-other-product[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 2 16:38:10 2023 +0200
+
+    add change for Dimitri
+
+[33mcommit 3e7d7ad794df195db1222fe8d9f6a025786e68f7[m
+Merge: 3cca703 5751f83
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 2 13:22:25 2023 +0000
+
+    Merged PR 14683: add product page
+    
+    add product page
+    
+    Related work items: #10407
+
+[33mcommit 5751f83e90efc0f734d91ba3762cd26822c3d03c[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Fri Jun 2 15:21:55 2023 +0200
+
+    add product page
+
+[33mcommit 37386ac77c83695139526e170556c695b5f6aef9[m
+Merge: 04d07bc 3cca703
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 1 15:31:24 2023 +0000
+
+    Merged PR 14682: update master to dev
+    
+    Related work items: #10398, #10405
+
+[33mcommit 3cca7030599cf5f75392e5f8cc6386dac1119a72[m
+Merge: 99fab27 8455865
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 1 15:30:46 2023 +0000
+
+    Merged PR 14681: add consumption stock page
+    
+    add consumption stock page
+    
+    Related work items: #10405
+
+[33mcommit 8455865644473cb6c4603d056ee67493403c3fe3[m[33m ([m[1;31morigin/feature/10405-stock-consumption-page[m[33m, [m[1;32mfeature/10405-stock-consumption-page[m[33m)[m
+Author: Mathis <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 1 17:27:06 2023 +0200
+
+    add consumption stock page
+
+[33mcommit 99fab276a0e3356dc8ebe4ed164ff826ec3003cb[m
+Merge: a23ae5d 41900cd
+Author: Mathis RODRIGUES <mathis.rodrigues@fwa.eu>
+Date:   Thu Jun 1 11:53:31 2023 +0000
+
+    Merged PR 14680: Add multiple graphical change
+    
+    centrer le numéro page traitement (fait)
+    quand on vient de l'accueil on vide la recherche (fait)
+    croix supprimer l'input recherche pâtient et griser ou supp si vide (fait)
+    mettre focus quand on arrive sur la page recherche patient (fait)
+    Réduire année, enelver seconde et mettre maj au besoin (fait)
+    Accordion tout fe

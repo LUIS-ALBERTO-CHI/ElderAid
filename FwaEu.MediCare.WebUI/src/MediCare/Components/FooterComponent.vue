@@ -1,6 +1,7 @@
 <template>
 	<footer class="footer">
 		<div>
+			<!--<internetStatus />-->
 			<a v-if="!showLogoutLink" class="connexion-container" @click="goToLoginFront">Se connecter</a>
 			<a v-else class="connexion-container" @click="logoutAsync">Se déconnecter</a>
 			{{ getVersionLabel() }}
@@ -13,6 +14,8 @@
 				<img class="logo company-logo" alt="" src="../Content/logo.png" />
 			</div>
 		</div>
+
+
 	</footer>
 </template>
 
@@ -25,8 +28,12 @@
 	import UserService from '@/Fwamework/Users/Services/user-service';
     import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 
+	//import InternetStatus from "@/MediCare/OfflineDataSynchronization/Components/InternetStatusComponent.vue";
 
 	export default {
+        //components: {
+        //    InternetStatus
+        //},
 		mixins: [LocalizationMixing],
 		i18n: {
 			messages: {

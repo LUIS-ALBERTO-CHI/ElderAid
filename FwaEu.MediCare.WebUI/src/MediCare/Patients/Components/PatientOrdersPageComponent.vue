@@ -1,81 +1,131 @@
 <template>
     <div class="patient-orders-page-container">
-        <patient-info-component />
-        <div class="patient-orders">
-            <div v-for="(patientOrder, index) in patientOrders" :key="patientOrder.name">
-                <div @click="displayButton(index)" class="patient-order-item" :class="getStateColor(patientOrder)">
-                    <span class="patient-order-title">{{patientOrder.name}}</span>
-                    <span class="patient-order-subtitle">{{patientOrder.quantity}}</span>
-                    <div class="patient-order-item-bottom-container">
-                        <span class="patient-order-subtitle">{{patientOrder.date}}</span>
-                        <span class="patient-order-subtitle">{{patientOrder.state}}</span>
+        <patient-info-component v-if="patient" :patient="patient" />
+        <div style="display: flex; flex-direction: column;">
+            <div v-if="patient" v-for="(order, index) in patientOrders" :key="index">
+                <AccordionOrderComponent :order="order">
+                    <div v-if="isOrderingIndex != index">
+                        <div v-if="!isCancelConfirmationDisplayed" class="button-order-item-container">
+                            <Button v-show="isOrderPending(order)" @click="showConfirmation" severity="danger" style="height: 50px !important;"
+                                    label="Annuler la commande" />
+                            <Button style="height: 50px !important;" label="Commander à nouveau" @click="showOrderComponent(index)" />
+                        </div>
+                        <div v-else class="cancel-confirmation-container">
+                            <span>Etes vous sûr d'annuler la commande ?</span>
+                            <div class="confirmaton-button-container">
+                                <Button @click="cancelOrder(order.id)" label="OUI" outlined class="button-confirmation " />
+                                <Button @click="showConfirmation()" label="NON" outlined class="button-confirmation" />
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" />
+                    </div>
 
-                    </div>
-                    <div class="button-order-item-container" v-show="selectedItemIndex === index">
-                        <Button v-show="!isOrderDelivered(patientOrder)" severity="danger" style="height: 50px !important;" label="Annuler la commande" />
-                        <Button style="height: 50px !important;" label="Commander à nouveau" />
-                    </div>
-                </div>
+                </AccordionOrderComponent>
             </div>
         </div>
-        <span class="display-more-order-text">Plus de commandes</span>
+        <empty-list-component v-show="patientOrders != null && patientOrders.length < 1" />
+        <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Charger d'autres commandes</span>
     </div>
-
 </template>
 <script>
 
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
+    import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import OrderComponent from './OrderComponent.vue';
+    import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
+    import OrderService from '@/MediCare/Orders/Services/orders-service'
+    import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
+    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 
 
 
     export default {
         components: {
             PatientInfoComponent,
-            Button
+            Button,
+            AccordionOrderComponent,
+            OrderComponent,
+            EmptyListComponent
+        },
+        setup() {
+            const { patientLazy, getCurrentPatientAsync } = usePatient();
+            return {
+                patientLazy,
+                getCurrentPatientAsync
+            }
         },
         data() {
             return {
-                patientOrders: [{
-                    name: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    quantity: "4 boîtes",
-                    date: "23/03/2023 à 9:23:33",
-                    state: "En attente"
-                },
-                {
-                    name: "ADAPTRIC pensements 7.6x7.6 stériles sach 10 pce",
-                    quantity: "3 boîtes",
-                    date: "23/03/2023 à 9:23:33",
-                    state: "Livrée"
-                }],
-                selectedItemIndex: -1,
+                patient: null,
+                patientOrders: null,
+                isOrderingIndex: null,
+                articles: [],
+                actualPage: 0,
+                isEndOfPagination: false,
+                isCancelConfirmationDisplayed: false
             };
         },
         async created() {
+            this.patient = await this.patientLazy.getValueAsync();
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+            this.articles = await ArticlesMasterDataService.getAllAsync()
         },
         methods: {
-            displayButton(index) {
-                this.selectedItemIndex = index;
+            isOrderPending(patientOrder) {
+                if (patientOrder.state == 'Pending')
+                    return true;
+                return false;
             },
-            getStateColor(patientOrder) {
-                if (patientOrder.state === "En attente") {
-                    return "patient-order-item-waiting";
-                }
-                else if (patientOrder.state === "Livrée") {
-                    return "patient-order-item-delivered";
-                }
-                else
-                    return "patient-order-item-waiting";
+            getArticleInfo(articleId) {
+                return this.articles.find(x => x.id == articleId)
             },
-            isOrderDelivered(patientOrder) {
-                return patientOrder.state === "Livrée";
-            }
+            showOrderComponent(index) {
+                this.isOrderingIndex = index;
+            },
+            async getMoreOrders() {
+                if (OnlineService.isOnline()) {
+                    var model = {
+                        patientId: this.patient.id,
+                        page: this.actualPage++,
+                        pageSize: Configuration.paginationSize.orders,
+                    }
+                    var orders = await OrderService.getAllAsync(model)
+                    if (orders.length < Configuration.paginationSize.orders)
+                        this.isEndOfPagination = true;
+                    this.patientOrders = this.patientOrders.concat(orders)
+                    console.log(this.patientOrders)
+
+                } else {
+                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
+                }
+
+            },
+            orderSubmitted() {
+                this.isOrderingIndex = null;
+            },
+            async cancelOrder(id) {
+                try {
+                    await OrderService.cancelOrderAsync(id).then(() => {
+                        NotificationService.showConfirmation("La commande a bien été annulée")
+                    })
+                } catch (error) {
+                    NotificationService.showError("Une erreur est survenue lors de l'annulation de la commande")
+                }
+                this.isCancelConfirmationDisplayed = !this.isCancelConfirmationDisplayed;
+            },
+            showConfirmation() {
+                this.isCancelConfirmationDisplayed = !this.isCancelConfirmationDisplayed;
+            },
         },
         computed: {
-
         },
 
     }
 </script>
-<style type="text/css" scoped src="./Content/patient-orders-page.css">
-</style>
+<style type="text/css" scoped src="./Content/patient-orders-page.css"></style>

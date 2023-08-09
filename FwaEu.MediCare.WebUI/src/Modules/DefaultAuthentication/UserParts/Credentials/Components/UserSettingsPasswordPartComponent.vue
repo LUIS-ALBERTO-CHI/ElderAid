@@ -2,6 +2,13 @@
 	<div>
 		<dx-form :form-data="modelValue.data"
 				 ref="passwordPart">
+
+			<dx-item data-field="currentPassword"
+					 :editor-options="passwordOptions"
+					 :label="{text: $t('currentPassword')}">
+				<dx-required-rule />
+			</dx-item>
+
 			<dx-item data-field="newPassword"
 					 :editor-options="passwordOptions"
 					 :label="{text: $t('newPassword')}">

@@ -49,6 +49,8 @@ namespace FwaEu.MediCare.Users
 			services.AddTransient<IListPartHandler, ApplicationUserModelListPartHandler>();
 			services.AddTransient<IPartHandler, ApplicationUserModelPartHandler>();
 
+			services.AddTransient<IUserSynchronizationService, UserSynchronizationService>();
+			
 			return services;
 		}
 	}

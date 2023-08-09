@@ -11,7 +11,6 @@ using FwaEu.Fwamework.Data.Database.Nhibernate;
 using FwaEu.MediCare.Initialization;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Temporal;
-using Microsoft.Extensions.Hosting;
 using FwaEu.Fwamework.DependencyInjection;
 using FwaEu.Fwamework.Permissions;
 using FwaEu.Fwamework;
@@ -55,7 +54,19 @@ using FwaEu.Modules.Authentication.JsonWebToken;
 
 using FwaEu.Fwamework.Mail;
 using FwaEu.MediCare.Users;
-using FwaEu.MediCare.Permissions;
+using FwaEu.MediCare.Patients;
+using FwaEu.MediCare.Orders;
+using FwaEu.MediCare.Referencials;
+using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.ViewContext;
+using FwaEu.MediCare.GenericSession;
+using FwaEu.Modules.Permissions.ByRole;
+using FwaEu.MediCare.Authentication;
+using FwaEu.MediCare.Stock;
+using FwaEu.MediCare.Articles;
+using FwaEu.MediCare.Treatments;
+using FwaEu.Modules.BackgroundTasks;
+using FwaEu.MediCare.Protections;
 
 namespace FwaEu.MediCare
 {
@@ -133,6 +144,8 @@ namespace FwaEu.MediCare
                 services.AddFwameworkFormatting();
                 services.AddFwameworkModelValidation();
 
+                services.AddFwameworkModuleBackgroundTasksServices();
+
                 services.AddFwameworkModuleDataImport();
                 services.AddFwameworkModuleGenericImporter();
                 services.AddFwameworkModuleSqlImportServices();
@@ -155,7 +168,7 @@ namespace FwaEu.MediCare
 				services.AddFwameworkModuleNHibernateLogging(context);
                 services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
 
-                services.AddApplicationPermissionsByIsAdmin();
+                services.AddFwameworkModulePermissionsByRole(context);
                 services.AddMasterDataPermissions();
 
                 services.AddApplicationInformation(context);
@@ -168,9 +181,20 @@ namespace FwaEu.MediCare
                 services.AddApplicationSwagger(authenticationFeatures, context);
                 services.AddFwaEuMediCareAssemblyProviderExtension();
 
-				services.AddApplicationHtml();
+                services.AddApplicationOrganizations(context);
+                services.AddApplicationGenericSession();
+                services.AddApplicationArticles(context);
+                services.AddApplicationTreatments(context);
+                services.AddApplicationReferencials(context);
+                services.AddApplicationPatients(context);
+                services.AddApplicationOrders(context);
+                services.AddApplicationStock(context);
+                services.AddApplicationProtections(context);
 
+                services.AddApplicationHtml();
 
+                services.AddApplicationViewContext();
+                services.AddApplicationAuthentication();
             }
         }
 
@@ -209,15 +233,15 @@ namespace FwaEu.MediCare
                 .AllowAnyHeader()
                 .AllowCredentials());
 
-            application.UseRouting();
             application.UseAuthentication();
+            application.UseRouting();
+            application.UseAuthorization();
 
             application.UseWhen(IsNotSetupRoute, application => application
                     .UseFwameworkCurrentUser()
             );
 
-
-            application.UseAuthorization();
+            application.UseApplicationViewContext();
 
             application.UseEndpoints(endpoints =>
             {
