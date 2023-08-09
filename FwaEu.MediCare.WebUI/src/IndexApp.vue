@@ -132,6 +132,7 @@ import { defineAsyncComponent, shallowRef, computed } from 'vue'
 
 <style scoped>
     .app-header {
+        background-color: #f7f9fa;
         border-bottom: 1px solid var(--bg-color);
     }
     .app-footer {
