@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="/icon512.png">
     <title>{{appSettings.application.name}}</title>
     <script type="module" src="/src/main.js"></script>
-    <script src="lottie-player.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
 </head>
 <body>
     <div id="not-supported-browser-message" style="display: none;">
@@ -71,14 +71,14 @@
 
                 </div>
                 <div id="loaderIconContainer">
-                        <lottie-player 
-                        src="loader.json"
+                        <dotlottie-player 
+                        src="loader.lottie"
                         background="Transparent"
                         speed="2" 
                         style="width: 250px;" 
                         direction="1" mode="normal" 
                         autoplay
-                        loop></lottie-player>
+                        loop></dotlottie-player>
                     <a id="reloadLink" href="{{appSettings.application.publicUrl}}">Reload</a>
                 </div>
             </div>

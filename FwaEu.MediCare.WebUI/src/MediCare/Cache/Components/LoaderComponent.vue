@@ -1,13 +1,13 @@
 <template>
     <div class="icon-container">
         <div>
-            <lottie-player 
-            src="folder.json"
+            <dotlottie-player 
+            src="modalLoader.lottie"
             background="Transparent"
             speed="1"
             style="width: 320px; height: 320px; padding: 5px; align-self: end"  
             loop
-            autoplay></lottie-player>
+            autoplay></dotlottie-player>
         </div>
     </div>
 </template>
