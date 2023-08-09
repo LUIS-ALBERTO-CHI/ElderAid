@@ -18,7 +18,8 @@
         <div style="display: flex; flex-direction: column; margin-top: 20px;">
             <div v-if="filteredProtections && filteredProtections.some(protection => 'article' in protection)"
                  v-for="(protection, index) in filteredProtections" :key="index">
-                <ProtectionAccordionTabComponent :protection="protection" :protectionDosages="getProtectionDosages(protection)" />
+                <ProtectionAccordionTabComponent :protection="protection" :protectionDosages="getProtectionDosages(protection)"
+                                                 @refreshData="refreshData" />
             </div>
         </div>
         <Button label="Imprimer le protocole"></Button>
@@ -67,7 +68,6 @@
             this.protections = await ProtectionsMasterDataService.getAllAsync();
             this.fillProtections();
 
-            this.protectionDosages = await ProtectionDosagesMasterDataService.getAllAsync();
         },
         methods: {
             async fillProtections() {
@@ -85,6 +85,8 @@
 
                 this.protections = protections;
                 this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id);
+                this.protectionDosages = await ProtectionDosagesMasterDataService.getAllAsync();
+
             },
             goToIncontinenceLevelPage() {
                 const patientId = this.patient.id;
@@ -95,6 +97,11 @@
             },
             goToSearchArticle() {
                 this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id } });
+            },
+            async refreshData() {
+                await ProtectionsMasterDataService.clearCacheAsync();
+                await ProtectionDosagesMasterDataService.clearCacheAsync();
+                this.fillProtections();
             }
         },
         computed: {
