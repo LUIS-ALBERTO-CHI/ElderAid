@@ -79,6 +79,9 @@
                 try {
                     await ProtectionService.createAsync(model).then(() => {
                         NotificationService.showConfirmation("La posologie a bien été créée");
+                        if (this.$route.name !== 'Protection') {
+                            this.$router.push({ name: 'Protection' })
+                        }
                     })
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de la création de la posologie");

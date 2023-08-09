@@ -143,6 +143,7 @@
                 try {
                     await ProtectionService.updateAsync(model).then(() => {
                         NotificationService.showConfirmation("La posologie a bien été modifiée");
+                        this.$emit('refreshData');
                     })
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de la modification de la posologie");
@@ -166,6 +167,7 @@
                 try {
                     await ProtectionService.stopAsync(model).then(() => {
                         NotificationService.showConfirmation("La posologie a bien été arrêtée");
+                        this.$emit('refreshData');
                     });
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
