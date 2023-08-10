@@ -128,7 +128,11 @@ export default {
         }
         this.organizationsOptions = this.organizations
 
+        const updatedOn = (ViewContextService.get()).updatedOn;
         this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+        if (updatedOn != new Date(this.selectedOrganization.updatedOn)) {
+            ViewContextService.set(new ViewContextModel(this.selectedOrganization));
+        }
 
         this.patientsActive = patients.filter(x => x.isActive);
         this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
