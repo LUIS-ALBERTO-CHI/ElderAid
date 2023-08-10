@@ -10,7 +10,6 @@ const ArticlesInStockService = {
         });
         return response.data;
     },
-
 }
 
 export default ArticlesInStockService;

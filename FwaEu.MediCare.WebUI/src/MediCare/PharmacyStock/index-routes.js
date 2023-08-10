@@ -43,7 +43,7 @@ export default [
 		}
 	},
 	{
-		path: '/Cabinet/:id/Articles',
+		path: '/Cabinet/:id/Articles/:articleId',
 		name: 'Articles',
 		component: ArticleOutboundPageComponent,
 		meta: {
