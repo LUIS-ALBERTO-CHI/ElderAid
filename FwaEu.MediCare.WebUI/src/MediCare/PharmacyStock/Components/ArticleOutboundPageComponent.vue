@@ -1,10 +1,10 @@
 <template>
-    <div class="page-articles">
+    <div class="page-article">
         <SearchPatientComponent v-show="!isPatientSelected" @selectedPatient="handleSelectedPatient" />
         <div v-show="isPatientSelected">
-            <div v-if="selectedArticle">
+            <div v-if="article">
                 <div class="text-left">
-                    <span class="article-name">{{ selectedArticle.title }}, {{ selectedArticle.unit }}, {{selectedArticle.countInBox }}</span>
+                    <span class="article-name">{{ article.title }}</span>
                 </div>
             </div>
             <div class="info-container">
@@ -57,6 +57,8 @@ import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets
 import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
 import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
 import ArticlesService from '@/MediCare/Articles/Services/articles-service';
+import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+import ArticlesInStockService from '@/MediCare/PharmacyStock/Services/search-articles-in-stock-service';
 
 
 export default {
@@ -69,7 +71,7 @@ export default {
     },
     data() {
         return {
-            selectedArticle: null,
+            article: null,
             fullBox: ViewContextService.get().isStockPharmacyPerBox,
             availableUnitCounts: [],
             boiteOptions: [],
@@ -77,16 +79,22 @@ export default {
             selectedBoite: null,
             quantity: 1,
             selectedPatient: null,
+            cabinetName: ""
         };
     },
     async created() {
         await this.getCurrentCabinetAsync();
-        const selectedArticleData = this.$route.query.selectedArticle;
-        if (selectedArticleData) {
-            this.selectedArticle = JSON.parse(selectedArticleData);
+        const articleId = this.$route.params.articleId;
+        if (articleId) {
+            const article = await ArticlesMasterDataService.getAsync(articleId);
+            this.article = article;
 
-            const groupName = this.selectedArticle.groupName;
-            const articleType = this.selectedArticle.articleType;
+            if (!article) {
+                const [article] = await ArticlesService.getByIdsAsync([articleId]);
+                this.article = article;
+            }
+            const groupName = this.article.groupName;
+            const articleType = this.article.articleType;
 
             this.availableUnitCounts = await ArticlesService.getAllBySearchAsync(`formats:${groupName}`, articleType, 0, 30);
 
@@ -95,7 +103,7 @@ export default {
                 .map(article => article.countInBox)
                 .filter((value, index, self) => self.indexOf(value) === index)
                 .sort((a, b) => a - b);
-
+            
             this.boiteOptionsWithUnit = this.availableUnitCounts
                 .filter(article => article.countInBox > 0)
                 .map(article => ({
@@ -113,7 +121,7 @@ export default {
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
             const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
-            this.cabinetName = cabinet.name;
+            this.cabinetName = cabinet.id;
             return cabinet;
         },
         async handleSelectedPatient(args) {

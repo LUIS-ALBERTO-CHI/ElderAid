@@ -119,14 +119,7 @@ export default {
             });
         },
         goToArticleDetails(stockPharmacy) {
-            const selectedArticleData = {
-                title: stockPharmacy.article.title,
-                unit: stockPharmacy.article.unit,
-                countInBox: stockPharmacy.article.countInBox,
-                articleType: stockPharmacy.article.articleType,
-                groupName: stockPharmacy.article.groupName
-            };
-            this.$router.push({ name: 'Articles', query: { selectedArticle: JSON.stringify(selectedArticleData) } });
+            this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id } });
         },
         goToScanCode() {
             this.showScanner = true;
