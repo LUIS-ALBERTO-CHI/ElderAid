@@ -35,11 +35,11 @@ namespace FwaEu.MediCare.Stock.Services
 
         public async Task<List<GetAllArticlesCabinetResponse>> GetAllArticlesCabinets(GetAllArticlesCabinetPost model)
         {
-            var query = "exec SP_MDC_SearchPharmacyArticles :CabinetId, :SearchTerm, :Page, :PageSize";
+            var query = "exec SP_MDC_SearchPharmacyArticles :CabinetId, :SearchExpression, :Page, :PageSize";
 
             var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
             storedProcedure.SetParameter("CabinetId", model.CabinetId);
-            storedProcedure.SetParameter("SearchTerm", model.SearchTerm);
+            storedProcedure.SetParameter("SearchExpression", model.SearchTerm);
             storedProcedure.SetParameter("Page", model.Page);
             storedProcedure.SetParameter("PageSize", model.PageSize);
 

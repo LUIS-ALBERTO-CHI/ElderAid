@@ -73,7 +73,7 @@
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import Galleria from 'primevue/galleria';
     import AddPosologyComponent from '@/MediCare/Patients/Components/AddPosologyComponent.vue'
-
+    import ArticleService from '@/MediCare/Articles/Services/articles-service'
 
     export default {
         components: {
@@ -104,9 +104,12 @@
             this.patient = await this.patientLazy.getValueAsync();
             const articleId = this.$route.params.articleId;
             if (articleId) {
-                const article = await ArticlesMasterDataService.getAsync(articleId);
-                
-                this.article = article;
+                const [article] = await ArticlesMasterDataService.getByIdsAsync([articleId]);
+                if (article != null)
+                    this.article = article;
+                else {
+                    [this.article]  = await ArticleService.getByIdsAsync([this.$route.params.articleId])
+                }
             }
             if (this.patient)
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
