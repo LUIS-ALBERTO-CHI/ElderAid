@@ -6,7 +6,7 @@
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
             @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
-        <div v-if="this.patientsActive.length > 0 && this.distinctPeriodicOrders.length > 0" class="vignette-list">
+        <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
                     <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
@@ -108,7 +108,6 @@ export default {
             organizations: [],
             organizationsLink: [],
             startLoadTime: 0,
-            distinctPeriodicOrders: [],
             cabinets: [],
         };
     },
@@ -135,7 +134,6 @@ export default {
         }
 
         this.patientsActive = patients.filter(x => x.isActive);
-        this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
     }),
     methods: {
         goToLoginFront() {
@@ -179,7 +177,7 @@ export default {
 
         }),
         getNumberOfPatientToValidate() {
-            const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length
+            const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 0).length;
             return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
         }
     }
