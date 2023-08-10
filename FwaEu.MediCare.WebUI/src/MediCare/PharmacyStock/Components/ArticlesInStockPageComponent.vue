@@ -91,6 +91,7 @@ export default {
         return {
             cabinetName: '',
             showScanner: false,
+            hasVideoInput: false
         };
     },
     async created() {
@@ -98,6 +99,8 @@ export default {
         await this.getCurrentCabinetAsync();
         this.loadInitialArticles();
         this.stockPharmacy = await ArticlesMasterDataService.getAllAsync();
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        this.hasVideoInput = devices.some(device => device.kind === 'videoinput');
     },
     methods: {
             async loadMoreArticlesAsync() {
@@ -129,7 +132,11 @@ export default {
             this.$router.push({ name: 'Articles', query: { selectedArticle: JSON.stringify(selectedArticleData) } });
         },
         goToScanCode() {
-            this.showScanner = true;
+            if (this.hasVideoInput)
+                this.showScanner = true;
+            else {
+                NotificationService.showError("Aucune caméra n'est détectée sur votre appareil")
+            }
         },
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
