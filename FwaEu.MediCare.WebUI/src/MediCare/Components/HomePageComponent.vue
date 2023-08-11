@@ -120,7 +120,6 @@ export default {
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
-        console.log(this.organizations)
         this.cabinets = await CabinetsMasterDataService.getAllAsync();
         if (this.organizations.length <= 1) {
             this.isSingleOrganization = true;
