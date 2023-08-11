@@ -63,6 +63,10 @@
             patientOrders: {
                 type: Array,
                 required: true
+            },
+            patientId: {
+                type: Number,
+                required: true
             }
         },
         data() {
@@ -84,8 +88,9 @@
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
             async submitOrder() {
+                console.log(this.patientId)
                 const modelOrder = [{
-                    patientId: this.patientOrders[0].patientId,
+                    patientId: this.patientId,
                     articleId: this.article.id,
                     quantity: this.selectedQuantity
                 }];

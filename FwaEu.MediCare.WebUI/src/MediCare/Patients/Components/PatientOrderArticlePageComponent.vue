@@ -40,7 +40,7 @@
         </div>
         <AddPosologyComponent v-if="isAddPosologyPage && patient" :article="article" :patient="patient" />
         <div v-else>
-            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" />
+            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" :patientId="getPatientId()"/>
             <div v-else class="order-submitted-container">
                 <span>Commande réalisée avec succès !</span>
                 <span>Votre prochaine action : </span>
@@ -126,6 +126,9 @@
             },
             displayGallery() {
                 this.isGalleryDisplayed = !this.isGalleryDisplayed;
+            },
+            getPatientId() {
+                return parseInt(this.$route.params.id);
             }
         },
         computed: {
