@@ -1,6 +1,6 @@
 <template>
     <div class="order-article-page-container">
-        <patient-info-component v-if="patient" :patient="patient" />
+        <patient-info-component v-if="patient != undefined" :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
             <i class="fa-solid fa-heart"></i>
@@ -108,12 +108,13 @@
                 if (article != null)
                     this.article = article;
                 else {
-                    [this.article]  = await ArticleService.getByIdsAsync([this.$route.params.articleId])
+                    [this.article] = await ArticleService.getByIdsAsync([this.$route.params.articleId])
                 }
             }
             if (this.patient)
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.loadGallery();
+            console.log(this.patient)
         },
         methods: {
             loadGallery() {

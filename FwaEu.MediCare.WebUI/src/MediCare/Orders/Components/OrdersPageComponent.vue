@@ -90,10 +90,14 @@
                 });
             },
             displayNewOrder() {
+                console.log("lol")
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
-                this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: 0 } });
+                this.$router.push({ name: "SearchPatientFromOrder" });
+            },
+            goToSearchArticleForEms() {
+                this.$router.push({ name: "SearchArticleForEMSFromOrder", params: { id: 0 } });
             },
             goToArticle(articleId) {
                 this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });

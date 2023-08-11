@@ -27,6 +27,30 @@ export default [
         }
     },
 	{
+        path: '/Orders/SearchPatient/Patient/:id/SearchArticle/',
+        name: 'SearchArticleFromOrder',
+        component: ArticlesSearchPageComponent,
+        meta: {
+            title: 'Rechercher un article',
+            breadcrumb: {
+                titleKey: 'Rechercher un article',
+                parentName: 'SearchPatientFromOrder'
+            },
+        }
+    },
+	{
+        path: '/Orders/Patient/:id/SearchArticleForEms/',
+        name: 'SearchArticleForEMSFromOrder',
+        component: ArticlesSearchPageComponent,
+        meta: {
+            title: 'Rechercher un article',
+            breadcrumb: {
+                titleKey: 'Rechercher un article',
+                parentName: 'Orders'
+            },
+        }
+    },
+	{
 		path: '/Patient/:id/Protection/SearchArticle/AddPosology/:articleId',
 		name: 'AddPosology',
 		component: PatientOrderArticlePageComponent,
@@ -59,6 +83,18 @@ export default [
 			breadcrumb: {
 				titleKey: 'Commander un article',
 				parentName: 'Orders'
+			},
+		}
+	},
+	{
+		path: '/Orders/Patient/:id/SearchArticleForEms/:articleId',
+		name: 'OrderArticleForEmsFromOrder',
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: 'Commander un article',
+			breadcrumb: {
+				titleKey: 'Commander un article',
+				parentName: 'SearchArticleForEMSFromOrder'
 			},
 		}
 	},
