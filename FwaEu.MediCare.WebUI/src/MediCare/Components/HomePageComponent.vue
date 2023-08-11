@@ -1,7 +1,7 @@
 <template>
     <div class="page-home">
         <div class="flex-section justify-content-center" v-if="isSingleOrganization">
-            <span class="organization-text" v-if="organizations > 0">{{ this.organizations[0].name }}</span>
+            <span class="organization-text" v-if="organizations.length > 0">{{ organizations[0].name }}</span>
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
@@ -120,7 +120,7 @@ export default {
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
+        console.log(this.organizations)
         this.cabinets = await CabinetsMasterDataService.getAllAsync();
         if (this.organizations.length <= 1) {
             this.isSingleOrganization = true;
