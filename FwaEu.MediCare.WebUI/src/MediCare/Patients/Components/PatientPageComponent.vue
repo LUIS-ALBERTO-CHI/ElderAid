@@ -64,7 +64,9 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
+            this.patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments').then(x => {
+                return x.filter(x => x.articleType == "CareEquipment")
+            })
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.protections = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.organization = ViewContextService.get();

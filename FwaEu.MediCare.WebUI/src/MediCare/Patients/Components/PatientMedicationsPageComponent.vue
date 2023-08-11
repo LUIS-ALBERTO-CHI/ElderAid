@@ -45,7 +45,7 @@
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             var patientTreatments = await PatientService.getMasterDataByPatientId(this.patient.id, 'Treatments')
-            this.patientTreatments = patientTreatments.filter(obj => obj.appliedArticleId !== 0)
+            this.patientTreatments = patientTreatments.filter(obj => obj.articleType == "Medicine")
         },
         methods: {
             goToTreatmentPage(treatmentType) {

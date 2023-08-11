@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" />
+                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" :patientId="patient.id" />
                     </div>
 
                 </AccordionOrderComponent>
