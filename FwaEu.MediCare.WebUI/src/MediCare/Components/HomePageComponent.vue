@@ -1,12 +1,12 @@
 <template>
     <div class="page-home">
         <div class="flex-section justify-content-center" v-if="isSingleOrganization">
-            <span class="organization-text" v-if="organizations > 0">{{ this.organizations[0].name }}</span>
+            <span class="organization-text" v-if="organizations.length > 0">{{ organizations[0].name }}</span>
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
             @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
-        <div v-if="this.patientsActive.length > 0 && this.distinctPeriodicOrders.length > 0" class="vignette-list">
+        <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
                     <i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
@@ -108,7 +108,6 @@ export default {
             organizations: [],
             organizationsLink: [],
             startLoadTime: 0,
-            distinctPeriodicOrders: [],
             cabinets: [],
         };
     },
@@ -121,17 +120,20 @@ export default {
         this.isUserAdmin = currentUser.parts.adminState.isAdmin;
 
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
+        console.log(this.organizations)
         this.cabinets = await CabinetsMasterDataService.getAllAsync();
         if (this.organizations.length <= 1) {
             this.isSingleOrganization = true;
         }
         this.organizationsOptions = this.organizations
 
+        const updatedOn = (ViewContextService.get()).updatedOn;
         this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
+        if (updatedOn != new Date(this.selectedOrganization.updatedOn)) {
+            ViewContextService.set(new ViewContextModel(this.selectedOrganization));
+        }
 
         this.patientsActive = patients.filter(x => x.isActive);
-        this.distinctPeriodicOrders = periodicOrders.filter((v, i, a) => a.findIndex(t => (t.patientId === v.patientId)) === i);
     }),
     methods: {
         goToLoginFront() {
@@ -175,7 +177,7 @@ export default {
 
         }),
         getNumberOfPatientToValidate() {
-            const patientsToValidate = this.patientsActive.length - this.distinctPeriodicOrders.length
+            const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 0).length;
             return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
         }
     }

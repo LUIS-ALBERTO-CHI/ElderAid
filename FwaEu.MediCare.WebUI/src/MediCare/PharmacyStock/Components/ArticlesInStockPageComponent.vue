@@ -16,6 +16,7 @@
                         <span>{{ stockPharmacy.article.countInBox }}</span>
                     </div>
                 </div>
+                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
             <div v-show="filteredArticles.length === 0" class="article-not-found">
                 <i class="fa-solid fa-box-open icon-not-found"></i>
@@ -54,7 +55,6 @@ export default {
         const filteredArticles = ref([]);
         const stockPharmacy = ref([]);
         const cabinet = ref(cabinetId);
-        // we don't know if there is pagination on this page so we let the variable and logic for the moment
         const currentPage = ref(0);
         const nextPage = ref(0);
         const pageSize = ref(30);
@@ -65,7 +65,7 @@ export default {
                 filteredArticles.value = await ArticlesService.fillArticlesAsync(response);
             } else if (value.length >= 3) {
                 const response = await ArticlesInStockService.getAllAsync(cabinet.value, value, nextPage.value, pageSize.value);
-                filteredArticles.value = await ArticlesService.fillArticlesAsync(response, value);
+                filteredArticles.value = await ArticlesService.fillArticlesAsync(response);
             } else {
                 filteredArticles.value = [];
             }
@@ -91,6 +91,7 @@ export default {
         return {
             cabinetName: '',
             showScanner: false,
+            hasVideoInput: false
         };
     },
     async created() {
@@ -98,6 +99,8 @@ export default {
         await this.getCurrentCabinetAsync();
         this.loadInitialArticles();
         this.stockPharmacy = await ArticlesMasterDataService.getAllAsync();
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        this.hasVideoInput = devices.some(device => device.kind === 'videoinput');
     },
     methods: {
             async loadMoreArticlesAsync() {
@@ -119,17 +122,14 @@ export default {
             });
         },
         goToArticleDetails(stockPharmacy) {
-            const selectedArticleData = {
-                title: stockPharmacy.article.title,
-                unit: stockPharmacy.article.unit,
-                countInBox: stockPharmacy.article.countInBox,
-                articleType: stockPharmacy.article.articleType,
-                groupName: stockPharmacy.article.groupName
-            };
-            this.$router.push({ name: 'Articles', query: { selectedArticle: JSON.stringify(selectedArticleData) } });
+            this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id } });
         },
         goToScanCode() {
-            this.showScanner = true;
+            if (this.hasVideoInput)
+                this.showScanner = true;
+            else {
+                NotificationService.showError("Aucune caméra n'est détectée sur votre appareil")
+            }
         },
         async getCurrentCabinetAsync() {
             const cabinetId = this.$route.params.id;
