@@ -145,7 +145,10 @@ export default {
             this.selectedArticle = article;
             if (this.$route.name === "SearchArticleFromProtection") {
                 this.$router.push({ name: "AddPosology", params: { id: this.patient.id, articleId: article.id } });
-            } else {
+            } else if (this.$route.name === "SearchArticleForEMSFromOrder") {
+                this.$router.push({ name: "OrderArticleForEmsFromOrder", params: { articleId: article.id } });
+            }
+            else {
                 this.$router.push({ name: "OrderArticle", params: { articleId: article.id } });
             }
 

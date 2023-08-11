@@ -10,16 +10,17 @@
             <div style="display: flex; flex-direction: column;">
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
-                        <div v-if="!isOrderComponentDisplayed" class="accordion-content">
+                        <div v-if="orderComponentDisplayedIndex !== index" class="accordion-content">
                             <Button v-show="order.state != 'Delivred'" label="Annuler la commande" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button v-if="order.patientId != null" @click="displayOrderComponent(false)" :label="`Commander à nouveau pour ${order.patient?.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId != null" @click="displayOrderComponent(false, index)" :label="`Commander à nouveau pour ${order.patient?.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button @click="goToSearchPatient()" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="displayOrderComponent(true)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
+                            <Button @click="displayOrderComponent(true, index)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
                             <Button @click="goToArticle(order.articleId)" label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
                         </div>
-                        <OrderComponent :article="order.article" :patientOrders="getPatientOrders(order.patientId)" @order-done="orderSubmitted" v-else />
+                        <OrderComponent v-else :article="order.article" :patientOrders="getPatientOrders(order.patientId)"
+                        @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)"/>
                     </AccordionOrderComponent>
                 </div>
                 <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commande</span>
@@ -68,7 +69,7 @@
                 patients: [],
                 actualPage: 0,
                 isEndOfPagination: false,
-                isOrderComponentDisplayed: false,
+                orderComponentDisplayedIndex: -1,
                 isOrderForEms: false,
             };
         },
@@ -93,7 +94,10 @@
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
-                this.$router.push({ name: "SearchPatientFromOrder", params: { articleId: 0 } });
+                this.$router.push({ name: "SearchPatientFromOrder" });
+            },
+            goToSearchArticleForEms() {
+                this.$router.push({ name: "SearchArticleForEMSFromOrder", params: { id: 0 } });
             },
             goToArticle(articleId) {
                 this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });
@@ -127,13 +131,13 @@
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
             },
-            displayOrderComponent(isOrderForEms) {
-                this.isOrderComponentDisplayed = true
+            displayOrderComponent(isOrderForEms, index) {
+                this.orderComponentDisplayedIndex = index;
                 if (isOrderForEms)
                     this.isOrderForEms = true;
             },
             orderSubmitted() {
-                this.isOrderComponentDisplayed = false;
+                this.orderComponentDisplayedIndex = -1;
                 this.isOrderForEms = false;
             },
             getPatientOrders(patientId) {
@@ -141,6 +145,9 @@
                     return this.orders.filter(order => order.patientId == null)
                 else
                     return this.orders.filter(order => order.patientId == patientId)
+            },
+            getPatientId(patientId) {
+                return patientId ?? 0;
             }
         },
         computed: {

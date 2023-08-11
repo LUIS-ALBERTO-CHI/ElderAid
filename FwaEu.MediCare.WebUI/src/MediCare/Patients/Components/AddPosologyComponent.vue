@@ -64,7 +64,6 @@
         },
         async created() {
             this.addPosology()
-            console.log(this.patient)   
         },
         methods: {
             async submitPosology() {

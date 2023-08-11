@@ -1,6 +1,6 @@
 <template>
     <div class="order-article-page-container">
-        <patient-info-component v-if="patient" :patient="patient" />
+        <patient-info-component v-if="patient != undefined" :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
             <i class="fa-solid fa-heart"></i>
@@ -40,7 +40,7 @@
         </div>
         <AddPosologyComponent v-if="isAddPosologyPage && patient" :article="article" :patient="patient" />
         <div v-else>
-            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" />
+            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" :patientId="getPatientId()"/>
             <div v-else class="order-submitted-container">
                 <span>Commande réalisée avec succès !</span>
                 <span>Votre prochaine action : </span>
@@ -108,7 +108,7 @@
                 if (article != null)
                     this.article = article;
                 else {
-                    [this.article]  = await ArticleService.getByIdsAsync([this.$route.params.articleId])
+                    [this.article] = await ArticleService.getByIdsAsync([this.$route.params.articleId])
                 }
             }
             if (this.patient)
@@ -126,6 +126,9 @@
             },
             displayGallery() {
                 this.isGalleryDisplayed = !this.isGalleryDisplayed;
+            },
+            getPatientId() {
+                return parseInt(this.$route.params.id);
             }
         },
         computed: {

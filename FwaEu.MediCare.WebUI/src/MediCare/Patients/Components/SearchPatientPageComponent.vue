@@ -70,10 +70,12 @@
             },
             onPatientClick(patient) {
                 const args = { cancelNavigation: false, selectedPatient: patient };
-
                 this.$emit("selectedPatient", args);
                 if (!args.cancelNavigation) {
-                    this.$router.push({ name: "Patient", params: { id: patient.id } });
+                    if (this.$route.name == "SearchPatientFromOrder")
+                        this.$router.push({ name: "SearchArticleFromOrder", params: { id: patient.id } });
+                    else
+                        this.$router.push({ name: "Patient", params: { id: patient.id } });
                 }
             },
             removeSearch() {

@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" />
+                        <OrderComponent :article="getArticleInfo(order.articleId)" :patientOrders="patientOrders" @order-done="orderSubmitted" :patientId="patient.id" />
                     </div>
 
                 </AccordionOrderComponent>
@@ -99,8 +99,6 @@
                     if (orders.length < Configuration.paginationSize.orders)
                         this.isEndOfPagination = true;
                     this.patientOrders = this.patientOrders.concat(orders)
-                    console.log(this.patientOrders)
-
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
