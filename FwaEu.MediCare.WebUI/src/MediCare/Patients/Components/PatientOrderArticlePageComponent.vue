@@ -114,7 +114,6 @@
             if (this.patient)
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.loadGallery();
-            console.log(this.patient)
         },
         methods: {
             loadGallery() {

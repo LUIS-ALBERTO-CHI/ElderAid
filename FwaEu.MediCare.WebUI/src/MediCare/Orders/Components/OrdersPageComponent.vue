@@ -90,7 +90,6 @@
                 });
             },
             displayNewOrder() {
-                console.log("lol")
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
