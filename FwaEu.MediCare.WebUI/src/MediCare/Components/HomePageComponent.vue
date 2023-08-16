@@ -77,7 +77,6 @@ import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets
 import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
 import CachePreloaderService from '@/MediCare/Cache/Services/cache-preloader-service';
 import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
-import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
 
 export default {
     inject: ["deviceInfo"],
@@ -113,7 +112,6 @@ export default {
     },
     created: showLoadingPanel(async function () {
         const patients = await PatientsMasterDataService.getAllAsync();
-        const periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
 
         this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
         const currentUser = await CurrentUserService.getAsync();
