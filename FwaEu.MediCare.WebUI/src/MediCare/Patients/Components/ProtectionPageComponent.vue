@@ -38,6 +38,7 @@
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import { protectionType } from '@/MediCare/Articles/article-filter-types';
 
     export default {
         components: {
@@ -95,7 +96,7 @@
                 return this.protectionDosages.filter(x => x.protectionId === protection.id)
             },
             goToSearchArticle() {
-                this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id } });
+                this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id }, query: { articleFilterType: protectionType } });
             },
             async refreshData() {
                 await ProtectionsMasterDataService.clearCacheAsync();

@@ -112,6 +112,8 @@ export default {
         this.articles = await ArticlesMasterDataService.getAllAsync();
         this.articlesType = [{ id: null, text: "Tous" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
         this.loadInitialArticles();
+        if (this.$route.query.articleFilterType)
+            this.selectedArticleType = this.articlesType.find(x => x.id == this.$route.query.articleFilterType).id;
     },
     methods: {
         async loadMoreArticlesAsync() {
