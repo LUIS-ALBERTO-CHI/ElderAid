@@ -34,8 +34,8 @@
     import InputNumber from 'primevue/inputnumber';
     import Calendar from 'primevue/calendar';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-
-
+    import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
+    import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
 
     export default {
         components: {
@@ -76,11 +76,13 @@
                     articleUnit: "test"
                 }
                 try {
-                    await ProtectionService.createAsync(model).then(() => {
+                    await ProtectionService.createAsync(model).then(async() => {
                         NotificationService.showConfirmation("La posologie a bien été créée");
                         if (this.$route.name !== 'Protection') {
                             this.$router.push({ name: 'Protection' })
                         }
+                        await ProtectionsMasterDataService.clearCacheAsync();
+                        await ProtectionDosagesMasterDataService.clearCacheAsync();
                     })
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de la création de la posologie");
