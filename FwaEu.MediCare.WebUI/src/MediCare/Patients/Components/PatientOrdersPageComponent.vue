@@ -127,10 +127,7 @@
                 await OrderMasterDataService.clearCacheAsync();
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             }
-        },
-        computed: {
-        },
-
+        }
     }
 </script>
 <style type="text/css" scoped src="./Content/patient-orders-page.css"></style>

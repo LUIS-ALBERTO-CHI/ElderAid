@@ -99,8 +99,8 @@ export default {
         await this.getCurrentCabinetAsync();
         this.loadInitialArticles();
         this.stockPharmacy = await ArticlesMasterDataService.getAllAsync();
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        this.hasVideoInput = devices.some(device => device.kind === 'videoinput');
+        const devices = await navigator.mediaDevices?.enumerateDevices();
+        this.hasVideoInput = devices?.some(device => device.kind === 'videoinput');
     },
     methods: {
             async loadMoreArticlesAsync() {
