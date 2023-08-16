@@ -42,6 +42,7 @@
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import OrderMasterDataService from '@/MediCare/Orders/Services/orders-master-data-service';
 
 
 
@@ -73,7 +74,7 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+            this.fillPatientOrders()
             this.articles = await ArticlesMasterDataService.getAllAsync()
         },
         methods: {
@@ -104,13 +105,15 @@
                 }
 
             },
-            orderSubmitted() {
+            async orderSubmitted() {
+                this.fillPatientOrders()
                 this.isOrderingIndex = null;
             },
             async cancelOrder(id) {
                 try {
                     await OrderService.cancelOrderAsync(id).then(() => {
                         NotificationService.showConfirmation("La commande a bien été annulée")
+                        this.fillPatientOrders()
                     })
                 } catch (error) {
                     NotificationService.showError("Une erreur est survenue lors de l'annulation de la commande")
@@ -120,6 +123,10 @@
             showConfirmation() {
                 this.isCancelConfirmationDisplayed = !this.isCancelConfirmationDisplayed;
             },
+            async fillPatientOrders() {
+                await OrderMasterDataService.clearCacheAsync();
+                this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+            }
         },
         computed: {
         },
