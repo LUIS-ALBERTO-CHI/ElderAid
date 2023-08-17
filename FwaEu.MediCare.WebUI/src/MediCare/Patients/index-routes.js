@@ -21,8 +21,20 @@ export default [
 		},
 	},
 	{
-		path: '/Orders/SearchPatient',
+		path: '/Orders/SearchPatient/',
 		name: 'SearchPatientFromOrder',
+		component: SearchPatientPageComponent,
+		meta: {
+			title: 'Patients',
+			breadcrumb: {
+				titleKey: 'Patients',
+				parentName: 'Orders'
+			},
+		},
+	},
+	{
+		path: '/Orders/SearchPatient/:articleId',
+		name: 'SearchPatientFromOrderWithArticleId',
 		component: SearchPatientPageComponent,
 		meta: {
 			title: 'Patients',
