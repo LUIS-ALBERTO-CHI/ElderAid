@@ -164,7 +164,6 @@
                 return patientId ?? 0;
             },
             showCancelOrderDisplay(index) {
-                console.log(index)
                 this.cancelOrderDisplayedIndex = index;
             },
             hideCancelOrderDisplay() {
@@ -184,7 +183,6 @@
         },
         computed: {
             filteredOrders() {
-                console.log(this.orders)
                 return this.orders.filter(order => {
                     return (
                         (order?.article?.title.toLowerCase().includes(this.searchOrders.toLowerCase()) ||

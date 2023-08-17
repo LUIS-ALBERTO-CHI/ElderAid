@@ -60,7 +60,6 @@
                 patient: null,
                 filteredProtections: [],
                 protectionDosages: [],
-                isContentLoaded: false
             };
         },
         async created() {
@@ -80,8 +79,6 @@
                     protection.posology = filteredProtectionDosages.filter(x => x.protectionId === protection.id);
                 });
                 this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id && protection.article != null);
-                this.isContentLoaded = true;
-                console.log(this.filteredProtections)
 
             },
             goToIncontinenceLevelPage() {
