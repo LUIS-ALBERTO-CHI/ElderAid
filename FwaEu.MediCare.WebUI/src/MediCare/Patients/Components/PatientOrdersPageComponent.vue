@@ -74,7 +74,7 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            this.fillPatientOrders()
+            this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
             this.articles = await ArticlesMasterDataService.getAllAsync()
         },
         methods: {

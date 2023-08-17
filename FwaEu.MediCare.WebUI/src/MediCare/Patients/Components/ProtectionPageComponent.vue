@@ -16,9 +16,9 @@
             <i style="font-size: 30px;" class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div style="display: flex; flex-direction: column; margin-top: 20px;">
-            <div v-if="filteredProtections && filteredProtections.some(protection => 'article' in protection) "
-                 v-for="(protection, index) in filteredProtections.filter(protection => protection.article != null)" :key="index">
-                <ProtectionAccordionTabComponent :protection="protection" :protectionDosages="getProtectionDosages(protection)"
+            <div v-if="filteredProtections.some(protection => 'article' && 'posology' in protection) && protectionDosages"
+                 v-for="(protection, index) in filteredProtections" :key="index">
+                <ProtectionAccordionTabComponent v-if="protection.posology.length > 0" :protection="protection" :protectionDosages="protection.posology"
                                                  @refreshData="refreshData" />
             </div>
         </div>
@@ -38,6 +38,7 @@
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import ArticlesService from '@/MediCare/Articles/Services/articles-service';
 
     export default {
         components: {
@@ -57,42 +58,35 @@
             return {
                 isAlert: true,
                 patient: null,
-                protections: [],
                 filteredProtections: [],
                 protectionDosages: [],
+                isContentLoaded: false
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            this.protections = await ProtectionsMasterDataService.getAllAsync();
-            this.fillProtections();
-
+            this.refreshData();
         },
         methods: {
             async fillProtections() {
-                const model = {
-                    patientId: this.patient.id,
-                };
-                const protections = await ProtectionsMasterDataService.getAllAsync(model);
-
-                const protectionsArticleIds = protections.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getByIdsAsync(protectionsArticleIds);
-                protections.forEach(protection => {
-                    const article = articles.find(article => article.id === protection.articleId);
-                    protection.article = article;
-                });
-
-                this.protections = protections;
-                this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id);
                 this.protectionDosages = await ProtectionDosagesMasterDataService.getAllAsync();
+                const protections = await ProtectionsMasterDataService.getAllAsync();
+                const protectionsArticleIds = protections.map(x => x.articleId);
+                const articles = await ArticlesService.getByIdsAsync(protectionsArticleIds);
+                const protectionIds = protections.map(protection => protection.id)
+                const filteredProtectionDosages = this.protectionDosages.filter(x => protectionIds.includes(x.protectionId))
+                protections.forEach(protection => {
+                    protection.article = articles.find(article => article.id === protection.articleId);
+                    protection.posology = filteredProtectionDosages.filter(x => x.protectionId === protection.id);
+                });
+                this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id && protection.article != null);
+                this.isContentLoaded = true;
+                console.log(this.filteredProtections)
 
             },
             goToIncontinenceLevelPage() {
                 const patientId = this.patient.id;
                 this.$router.push({ name: 'IncontinenceLevel', params: { id: patientId } });
-            },
-            getProtectionDosages(protection) {
-                return this.protectionDosages.filter(x => x.protectionId === protection.id)
             },
             goToSearchArticle() {
                 this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id } });
@@ -102,11 +96,7 @@
                 await ProtectionDosagesMasterDataService.clearCacheAsync();
                 this.fillProtections();
             }
-        },
-        computed: {
-
-        },
-
+        }
     }
 </script>
 <style type="text/css" scoped src="./Content/protection-page.css"></style>

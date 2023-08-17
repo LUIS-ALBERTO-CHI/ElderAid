@@ -143,6 +143,7 @@
                 try {
                     await ProtectionService.updateAsync(model).then(() => {
                         NotificationService.showConfirmation("La posologie a bien été modifiée");
+                        this.protectionState = this.ProtectionState.Normal;
                         this.$emit('refreshData');
                     })
                 } catch {
@@ -167,6 +168,7 @@
                 try {
                     await ProtectionService.stopAsync(model).then(() => {
                         NotificationService.showConfirmation("La posologie a bien été arrêtée");
+                        this.protectionState = this.ProtectionState.Normal;
                         this.$emit('refreshData');
                     });
                 } catch {

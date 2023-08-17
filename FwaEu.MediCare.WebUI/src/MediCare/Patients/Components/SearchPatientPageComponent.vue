@@ -27,16 +27,10 @@
 
 
 <script>
-    import patientsData from './patients.json';
-
     import Dropdown from 'primevue/dropdown';
     import InputText from 'primevue/inputtext';
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
-
-
-
-
 
     export default {
         inject: ["deviceInfo"],
@@ -89,7 +83,7 @@
             },
             cuttedName(patient) {
                 return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
-            },
+            }
         },
         computed: {
             filteredPatients() {
@@ -111,7 +105,7 @@
                     });
                 }
                 return patients;
-            },
+            }
         },
         beforeUnmount() {
             // keep research in local storage
