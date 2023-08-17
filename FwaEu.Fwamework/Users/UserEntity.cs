@@ -47,7 +47,7 @@ namespace FwaEu.Fwamework.Users
 
 	public class UserEntityClassMapOptions
 	{
-		public string IdentityColumnName { get; set; } = "email";
+		public string IdentityColumnName { get; set; } = "login";
 	}
 
 	public abstract class UserEntityClassMap<TUserEntity> : ClassMap<TUserEntity>

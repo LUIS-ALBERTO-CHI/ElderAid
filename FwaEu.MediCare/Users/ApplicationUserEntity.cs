@@ -64,11 +64,11 @@ namespace FwaEu.MediCare.Users
 	/// </summary>
 	public class ApplicationUserEntityClassMap : ApplicationUserEntityClassMap<ApplicationUserEntity>
 	{
-		public const string EmailColumnName = "email";
+		public const string EmailColumnName = "login";
 
 		public ApplicationUserEntityClassMap()
 		{
-			Map(entity => entity.Email)
+			Map(entity => entity.Login)
 				.Column(EmailColumnName)
 				.Not.Nullable()
 				.Unique();
@@ -79,7 +79,7 @@ namespace FwaEu.MediCare.Users
 			Map(entity => entity.LastName)
 			   .Not.Nullable();
 
-            Map(entity => entity.Login);
+            Map(entity => entity.Email);
 
             this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
 		}
