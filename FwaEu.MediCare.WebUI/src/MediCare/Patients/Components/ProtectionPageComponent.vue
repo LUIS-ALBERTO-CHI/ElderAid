@@ -37,8 +37,8 @@
     import { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
-    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
     import ArticlesService from '@/MediCare/Articles/Services/articles-service';
+    import { protectionType } from '@/MediCare/Articles/article-filter-types';
 
     export default {
         components: {
@@ -89,7 +89,7 @@
                 this.$router.push({ name: 'IncontinenceLevel', params: { id: patientId } });
             },
             goToSearchArticle() {
-                this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id } });
+                this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id }, query: { articleFilterType: protectionType } });
             },
             async refreshData() {
                 await ProtectionsMasterDataService.clearCacheAsync();

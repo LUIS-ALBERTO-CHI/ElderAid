@@ -22,6 +22,7 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import { medicineType } from '@/MediCare/Articles/article-filter-types'
 
 
     export default {
@@ -57,7 +58,7 @@
                     this.$router.push({ name: "TreatmentsReserve", params: { id: this.patient.id, treatmentType: treatmentType } });
             },
             goToSearchArticlePage() {
-                this.$router.push({ name: "SearchArticle" });
+                this.$router.push({ name: "SearchArticle", query: { articleFilterType: medicineType } });
             },
         },
         computed: {
