@@ -16,6 +16,7 @@
                 <i class="fa-solid fa-heart-pulse icon-not-found"></i>
                 <span>Saisir un mot dans le champ de recherche pour afficher les articles</span>
             </div>
+            <ProgressSpinner v-show="isLoading" />
             <div v-if="!isSearchResultEmpty" class="article-list">
                 <div v-for="article in filteredArticles" :key="article.id">
                     <div class="article-item" @click="goToArticlePage(article)">
@@ -51,6 +52,7 @@
     import { watchDebounced } from '@vueuse/core'
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
+    import ProgressSpinner from 'primevue/progressspinner';
 
     export default {
         components: {
@@ -58,6 +60,7 @@
             Dropdown,
             PatientInfoComponent,
             ScannerComponent,
+            ProgressSpinner
         },
 
         setup() {
@@ -72,13 +75,19 @@
             const pageSize = ref(30);
             const isSearchActive = ref(false);
             const isSearchResultEmpty = ref(false);
+            const isLoading = ref(false);
             const performSearch = async () => {
                 const value = searchValue.value.toLowerCase().trim();
 
                 if (value.length >= 3) {
-                    const response = await ArticlesService.getAllBySearchAsync(searchValue.value, selectedArticleType.value, nextPage.value, pageSize.value);
-                    filteredArticles.value = response;
                     isSearchActive.value = true;
+                    isLoading.value = true;
+                    isSearchResultEmpty.value = false;
+                    const response = await ArticlesService.getAllBySearchAsync(searchValue.value, selectedArticleType.value, nextPage.value, pageSize.value).then(result => {
+                        isLoading.value = false;
+                        return result;
+                    });
+                    filteredArticles.value = response;
                     if (response.length == 0) {
                         isSearchResultEmpty.value = true;
                     } else {
@@ -114,7 +123,8 @@
                 nextPage,
                 pageSize,
                 isSearchActive,
-                isSearchResultEmpty
+                isSearchResultEmpty,
+                isLoading
             };
         },
         data() {
