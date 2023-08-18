@@ -11,16 +11,26 @@
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
                         <div v-if="orderComponentDisplayedIndex !== index" class="accordion-content">
-                            <Button v-show="order.state != 'Delivred'" label="Annuler la commande" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <div v-show="order.state == 'Pending'">
+                                <Button v-if="cancelOrderDisplayedIndex !== index" style="width: 100% !important;"
+                                        @click="showCancelOrderDisplay(index)" label="Annuler la commande" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                                <div v-else class="cancel-confirmation-container">
+                                    <span>Etes vous sûr d'annuler la commande ?</span>
+                                    <div class="confirmaton-button-container">
+                                        <Button @click="cancelOrder(order.id)" label="OUI" outlined class="button-confirmation " />
+                                        <Button @click="hideCancelOrderDisplay()" label="NON" outlined class="button-confirmation" />
+                                    </div>
+                                </div>
+                            </div>
                             <Button v-if="order.patientId != null" @click="displayOrderComponent(false, index)" :label="`Commander à nouveau pour ${order.patient?.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="goToSearchPatient()" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                             <Button @click="displayOrderComponent(true, index)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
                             <Button @click="goToArticle(order.articleId)" label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
                         </div>
                         <OrderComponent v-else :article="order.article" :patientOrders="getPatientOrders(order.patientId)"
-                        @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)"/>
+                                        @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)" />
                     </AccordionOrderComponent>
                 </div>
                 <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commande</span>
@@ -70,14 +80,13 @@
                 actualPage: 0,
                 isEndOfPagination: false,
                 orderComponentDisplayedIndex: -1,
+                cancelOrderDisplayedIndex: -1,
                 isOrderForEms: false,
             };
         },
         async created() {
             this.focusSearchBar();
-            this.orders = await OrderMasterDataService.getAllAsync();
             this.patients = await PatientsMasterDataService.getAllAsync();
-            this.orders[0].patientId = null;
             this.fillOrders();
         },
         methods: {
@@ -94,7 +103,10 @@
                 this.isNewOrder = !this.isNewOrder;
             },
             goToSearchPatient() {
-                this.$router.push({ name: "SearchPatientFromOrder" });
+                this.$router.push({ name: "SearchPatientFromOrder"});
+            },
+            goToSearchPatientWithArticleId(articleId) {
+                this.$router.push({ name: "SearchPatientFromOrderWithArticleId", params: { articleId: articleId } });
             },
             goToSearchArticleForEms() {
                 this.$router.push({ name: "SearchArticleForEMSFromOrder", params: { id: 0 } });
@@ -103,6 +115,8 @@
                 this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });
             },
             async fillOrders() {
+                await OrderMasterDataService.clearCacheAsync();
+                this.orders = await OrderMasterDataService.getAllAsync();
                 const ordersArticleIds = this.orders.map(x => x.articleId);
                 const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
 
@@ -148,18 +162,34 @@
             },
             getPatientId(patientId) {
                 return patientId ?? 0;
-            }
+            },
+            showCancelOrderDisplay(index) {
+                this.cancelOrderDisplayedIndex = index;
+            },
+            hideCancelOrderDisplay() {
+                this.cancelOrderDisplayedIndex = -1;
+            },
+            async cancelOrder(id) {
+                try {
+                    await OrderService.cancelOrderAsync(id).then(() => {
+                        NotificationService.showConfirmation("La commande a bien été annulée")
+                        this.fillOrders();
+                        this.hideCancelOrderDisplay();
+                    })
+                } catch (error) {
+                    NotificationService.showError("Une erreur est survenue lors de l'annulation de la commande")
+                }
+            },
         },
         computed: {
             filteredOrders() {
                 return this.orders.filter(order => {
                     return (
                         (order?.article?.title.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.updatedBy.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order?.patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
-                            order.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
+                        order?.patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order?.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
+                        order?.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
                         (this.selectedOrdersType == "Toutes" ||
                             (this.selectedOrdersType == "Patients" && order.patientId != null) ||
                             (this.selectedOrdersType == "EMS" && order.patientId == null))

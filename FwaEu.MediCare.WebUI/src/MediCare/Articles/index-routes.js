@@ -87,6 +87,18 @@ export default [
 		}
 	},
 	{
+		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
+		name: 'OrderArticleFromOrderWithArticleId',
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: 'Commander un article',
+			breadcrumb: {
+				titleKey: 'Commander un article',
+				parentName: 'SearchPatientFromOrderWithArticleId'
+			},
+		}
+	},
+	{
 		path: '/Orders/Patient/:id/SearchArticleForEms/:articleId',
 		name: 'OrderArticleForEmsFromOrder',
 		component: PatientOrderArticlePageComponent,
