@@ -12,7 +12,7 @@ namespace FwaEu.MediCare.Stock.WebApi
     [Route("[controller]")]
     public class StockController : Controller
     {
-        // GET /Orders
+        // POST /Stock/StockConsumptionPatient
         [HttpPost("StockConsumptionPatient")]
         public async Task<IActionResult> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPostApi modelApi, IStockService stockService)
         {
@@ -40,7 +40,7 @@ namespace FwaEu.MediCare.Stock.WebApi
             }
         }
 
-        //GET/Articles
+        // POST /Stock/SearchPharmacyArticles
         [HttpPost("SearchPharmacyArticles")]
 
         public async Task<IActionResult> GetAllArticlesCabinets(GetAllArticlesInStockPostApi modelApi, IStockService stockService)
@@ -63,6 +63,25 @@ namespace FwaEu.MediCare.Stock.WebApi
                     UpdatedOn = x.UpdatedOn,
                     CabinetId = x.CabinetId
                 }));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        // POST /Stock/Update
+        [HttpPost("Update")]
+        public async Task<IActionResult> CreateAsync(UpdateStockPostApi model, IStockService stockService)
+        {
+            try
+            {
+                await stockService.UpdateAsync(new UpdateStockPost
+                {
+                    Quantity = model.Quantity,
+                    StockId = model.StockId
+                });
+                return Ok();
             }
             catch (NotFoundException)
             {

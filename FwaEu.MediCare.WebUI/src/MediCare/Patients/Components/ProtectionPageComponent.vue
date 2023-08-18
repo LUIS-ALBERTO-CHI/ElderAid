@@ -37,7 +37,7 @@
     import { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
-    import ArticlesService from '@/MediCare/Articles/Services/articles-service';
+    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
     import { protectionType } from '@/MediCare/Articles/article-filter-types';
 
     export default {
@@ -71,7 +71,7 @@
                 this.protectionDosages = await ProtectionDosagesMasterDataService.getAllAsync();
                 const protections = await ProtectionsMasterDataService.getAllAsync();
                 const protectionsArticleIds = protections.map(x => x.articleId);
-                const articles = await ArticlesService.getByIdsAsync(protectionsArticleIds);
+                const articles = await ArticlesMasterDataService.getByIdsAsync(protectionsArticleIds);
                 const protectionIds = protections.map(protection => protection.id)
                 const filteredProtectionDosages = this.protectionDosages.filter(x => protectionIds.includes(x.protectionId))
                 protections.forEach(protection => {

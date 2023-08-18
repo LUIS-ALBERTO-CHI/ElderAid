@@ -59,6 +59,9 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--secondary-text-color);
 }
 
 .custom-switch .p-inputswitch-slider {
