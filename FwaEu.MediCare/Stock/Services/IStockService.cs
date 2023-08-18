@@ -8,5 +8,7 @@ namespace FwaEu.MediCare.Stock.Services
         Task<List<GetAllStockConsumptionPatientResponse>> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPost model);
 
         Task<List<GetAllArticlesCabinetResponse>> GetAllArticlesCabinets(GetAllArticlesCabinetPost model);
+
+        Task UpdateAsync(UpdateStockPost model);
     }
 }

@@ -91,7 +91,7 @@
         },
         computed: {
             filteredPatients() {
-                var patients = this.patients.filter(patient => {
+                let patients = this.patients.filter(patient => {
                     return patient.fullName.toLowerCase().includes(this.searchPatient.toLowerCase()) ||
                         patient.roomName.toLowerCase().includes(this.searchPatient.toLowerCase());
                 });

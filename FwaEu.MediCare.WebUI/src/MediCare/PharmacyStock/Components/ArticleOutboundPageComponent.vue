@@ -12,8 +12,7 @@
                     <span>Pour {{ patientName }}</span>
                 </div>
                 <div class="icon-right-container">
-                    <Button @click="openSearchPatientComponent" class="custom-button" style="width: 100px;"
-                        label="Modifier" />
+                    <span @click="openSearchPatientComponent">Autre patient ?</span>
                 </div>
             </div>
             <div class="info-container">
@@ -41,109 +40,113 @@
                 </div>
             </div>
             <div class="button-confirmer">
-                <Button @click="confirmOrder" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
-                    label="Confirmer" />
+                <Button @click="confirmOrderAsync" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
+                        label="Sortir de stock" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import InputSwitch from 'primevue/inputswitch';
-import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
-import InputNumber from 'primevue/inputnumber';
-import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
-import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
-import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
-import ArticlesService from '@/MediCare/Articles/Services/articles-service';
-import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
-import ArticlesInStockService from '@/MediCare/PharmacyStock/Services/search-articles-in-stock-service';
+    import InputSwitch from 'primevue/inputswitch';
+    import Button from 'primevue/button';
+    import Dropdown from 'primevue/dropdown';
+    import InputNumber from 'primevue/inputnumber';
+    import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
+    import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
+    import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
+    import NotificationService from "@/Fwamework/Notifications/Services/notification-service";
+    import ArticlesService from '@/MediCare/Articles/Services/articles-service';
+    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import PharmacyStockService from '@/MediCare/PharmacyStock/Services/pharmacy-stock-service';
 
-
-export default {
-    components: {
-        InputSwitch,
-        Button,
-        Dropdown,
-        InputNumber,
-        SearchPatientComponent,
-    },
-    data() {
-        return {
-            article: null,
-            fullBox: ViewContextService.get().isStockPharmacyPerBox,
-            availableUnitCounts: [],
-            boiteOptions: [],
-            boiteOptionsWithUnit: [],
-            selectedBoite: null,
-            quantity: 1,
-            selectedPatient: null,
-            cabinetName: ""
-        };
-    },
-    async created() {
-        await this.getCurrentCabinetAsync();
-        const articleId = this.$route.params.articleId;
-        if (articleId) {
-            const article = await ArticlesMasterDataService.getAsync(articleId);
-            this.article = article;
-
-            if (!article) {
-                const [article] = await ArticlesService.getByIdsAsync([articleId]);
+    export default {
+        components: {
+            InputSwitch,
+            Button,
+            Dropdown,
+            InputNumber,
+            SearchPatientComponent,
+        },
+        data() {
+            return {
+                article: null,
+                fullBox: ViewContextService.get().isStockPharmacyPerBox,
+                availableUnitCounts: [],
+                boiteOptions: [],
+                boiteOptionsWithUnit: [],
+                selectedBoite: null,
+                quantity: 1,
+                selectedPatient: null,
+                cabinetName: ""
+            };
+        },
+        async created() {
+            await this.getCurrentCabinetAsync();
+            const articleId = this.$route.params.articleId;
+            if (articleId) {
+                const article = await ArticlesMasterDataService.getAsync(articleId);
                 this.article = article;
+
+                if (!article) {
+                    const [article] = await ArticlesService.getByIdsAsync([articleId]);
+                    this.article = article;
+                }
+                const groupName = this.article.groupName;
+                const articleType = this.article.articleType;
+
+                this.availableUnitCounts = await ArticlesService.getAllBySearchAsync(`formats:${groupName}`, articleType, 0, 30);
+
+                this.boiteOptions = this.availableUnitCounts
+                    .filter(article => article.countInBox > 0)
+                    .map(article => article.countInBox)
+                    .filter((value, index, self) => self.indexOf(value) === index)
+                    .sort((a, b) => a - b);
+
+                this.boiteOptionsWithUnit = this.availableUnitCounts
+                    .filter(article => article.countInBox > 0)
+                    .map(article => ({
+                        label: `${article.countInBox} ${article.unit}`,
+                        countInBox: article.countInBox,
+                    }));
+
+                if (this.boiteOptions.length > 0) {
+                    this.selectedBoite = this.boiteOptions[0];
+                }
             }
-            const groupName = this.article.groupName;
-            const articleType = this.article.articleType;
-
-            this.availableUnitCounts = await ArticlesService.getAllBySearchAsync(`formats:${groupName}`, articleType, 0, 30);
-
-            this.boiteOptions = this.availableUnitCounts
-                .filter(article => article.countInBox > 0)
-                .map(article => article.countInBox)
-                .filter((value, index, self) => self.indexOf(value) === index)
-                .sort((a, b) => a - b);
-            
-            this.boiteOptionsWithUnit = this.availableUnitCounts
-                .filter(article => article.countInBox > 0)
-                .map(article => ({
-                    label: `${article.countInBox} ${article.unit}`,
-                    countInBox: article.countInBox,
-                }));
-
-            if (this.boiteOptions.length > 0) {
-                this.selectedBoite = this.boiteOptions[0];
+        },
+        methods: {
+            async getCurrentCabinetAsync() {
+                const cabinetId = this.$route.params.id;
+                const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
+                this.cabinetName = cabinet.id;
+                return cabinet;
+            },
+            async handleSelectedPatient(args) {
+                args.cancelNavigation = true
+                this.selectedPatient = args.selectedPatient;
+            },
+            openSearchPatientComponent() {
+                this.selectedPatient = null;
+            },
+            async confirmOrderAsync() {
+                await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity }).then(async () => {
+                    NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
+                    this.$router.push({ name: "Cabinet" });
+                }).catch(() => {
+                        NotificationService.showError("Erreur lors de traitement de l'opération de la sortie de l'article " + this.article.title + " de stock.");
+                });
+            },
+        },
+        computed: {
+            patientName() {
+                return this.selectedPatient ? this.selectedPatient.fullName : "";
+            },
+            isPatientSelected() {
+                return !!this.selectedPatient;
             }
         }
-    },
-
-    methods: {
-        async getCurrentCabinetAsync() {
-            const cabinetId = this.$route.params.id;
-            const cabinet = await CabinetsMasterDataService.getAsync(cabinetId);
-            this.cabinetName = cabinet.id;
-            return cabinet;
-        },
-        async handleSelectedPatient(args) {
-            args.cancelNavigation = true
-            this.selectedPatient = args.selectedPatient;
-        },
-        openSearchPatientComponent() {
-            this.selectedPatient = null;
-        },
-        confirmOrder() {
-            this.$router.push({ name: "Cabinet" });
-        },
-    },
-    computed: {
-        patientName() {
-            return this.selectedPatient ? this.selectedPatient.fullName : "";
-        },
-        isPatientSelected() {
-            return !!this.selectedPatient;
-        },
-    },
-}; 
+    };
 </script>
 
 <style type="text/css" scoped src="./Content/articles.css"></style>

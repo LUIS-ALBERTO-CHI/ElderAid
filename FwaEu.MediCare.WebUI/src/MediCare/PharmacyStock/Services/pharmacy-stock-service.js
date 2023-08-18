@@ -1,6 +1,7 @@
 import HttpService from "@/Fwamework/Core/Services/http-service";
 
-const ArticlesInStockService = {
+export default {
+
     async getAllAsync(cabinetId, searchTerm, page, pageSize) {
         const response = await HttpService.post('/Stock/SearchPharmacyArticles', {
             cabinetId,
@@ -10,6 +11,9 @@ const ArticlesInStockService = {
         });
         return response.data;
     },
-}
 
-export default ArticlesInStockService;
+    async updateAsync(data) {
+        const result = await HttpService.post(`/Stock/Update`, data);
+        return result.data;
+    }
+}
