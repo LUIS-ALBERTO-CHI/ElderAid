@@ -2,8 +2,10 @@
 	<footer class="footer">
 		<div>
 			<!--<internetStatus />-->
-			<a v-if="!showLogoutLink" class="connexion-container" @click="goToLoginFront">Se connecter</a>
-			<a v-else class="connexion-container" @click="logoutAsync">Se déconnecter</a>
+			<div class="logout-container" >
+				<a v-if="!showLogoutLink" @click="goToLoginFront">Se connecter</a>
+				<a v-else @click="logoutAsync">Se déconnecter</a>
+			</div>
 			{{ getVersionLabel() }}
 			-
 			Copyright © 2023, <a href="https://www.fwa.eu" target="_blank">FWA</a>

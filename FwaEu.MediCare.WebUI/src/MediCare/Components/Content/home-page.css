@@ -123,6 +123,19 @@
   margin-top: 40px;
 }
 
+.logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  margin-top: 40px;
+}
+
+.logout-container > a {
+  cursor: pointer;
+}
+
 .vignette-list {
   display: flex;
   flex-direction: column;

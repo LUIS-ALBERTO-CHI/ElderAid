@@ -97,15 +97,6 @@
                 treatmentArticleIds = treatmentArticleIds.concat(this.patientTreatments.map(treatment => treatment.prescribedArticleId))
                 const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
                 this.patientTreatments.forEach(treatment => {
-                    // if (treatment.appliedArticleId !== 0 || treatment.appliedArticleId !== null) {
-                    //     const article = articles.find(article => article.id === treatment.appliedArticleId)
-                    //     treatment.article = article
-                    // } else if (treatment.prescribedArticleId !== 0 || treatment.prescribedArticleId !== null) {
-                    //     const article = articles.find(article => article.id === treatment.prescribedArticleId)
-                    //     treatment.article = article
-                    // } else {
-                    //     treatment.article = null
-                    // }*
                     treatment.prescribedArticle = articles.find(article => article.id === treatment.prescribedArticleId)
                     if (treatment.appliedArticleId !== 0 || treatment.appliedArticleId !== null)
                         treatment.appliedArticle = articles.find(article => article.id === treatment.appliedArticleId)

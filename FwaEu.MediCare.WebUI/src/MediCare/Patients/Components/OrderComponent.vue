@@ -34,7 +34,7 @@
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     :label="article.substitutionsCount + ' ' + substitutionLabel"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
-                    @click="goToSearchSubstituts(article.title)" />
+                    @click="goToSearchSubstituts(article.groupName)" />
         </div>
     </div>
 </template>
@@ -123,7 +123,7 @@
             },
             goToSearchFormats(groupName) {
                 this.currentArticle = groupName;
-                this.$router.push({ name: 'SearchArticle', query: { searchMode: `formats:${groupName}` }})
+                this.$router.push({ name: 'SearchArticle', query: { searchMode: `formats:${groupName}` } })
             }
         },
         watch: {
