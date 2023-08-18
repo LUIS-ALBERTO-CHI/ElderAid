@@ -27,16 +27,10 @@
 
 
 <script>
-    import patientsData from './patients.json';
-
     import Dropdown from 'primevue/dropdown';
     import InputText from 'primevue/inputtext';
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
-
-
-
-
 
     export default {
         inject: ["deviceInfo"],
@@ -72,8 +66,12 @@
                 const args = { cancelNavigation: false, selectedPatient: patient };
                 this.$emit("selectedPatient", args);
                 if (!args.cancelNavigation) {
-                    if (this.$route.name == "SearchPatientFromOrder")
+                    if (this.$route.name == "SearchPatientFromOrder") {
                         this.$router.push({ name: "SearchArticleFromOrder", params: { id: patient.id } });
+                    }
+                    else if (this.$route.name == "SearchPatientFromOrderWithArticleId") {
+                        this.$router.push({ name: "OrderArticleFromOrderWithArticleId", params: { id: patient.id, articleId: this.$route.params.articleId } });
+                    }
                     else
                         this.$router.push({ name: "Patient", params: { id: patient.id } });
                 }
@@ -89,7 +87,7 @@
             },
             cuttedName(patient) {
                 return patient.fullName.length > 20 ? patient.fullName.substring(0, 20) + "..." : patient.fullName;
-            },
+            }
         },
         computed: {
             filteredPatients() {
@@ -111,7 +109,7 @@
                     });
                 }
                 return patients;
-            },
+            }
         },
         beforeUnmount() {
             // keep research in local storage
