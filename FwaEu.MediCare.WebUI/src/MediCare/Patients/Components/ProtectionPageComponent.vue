@@ -22,7 +22,6 @@
                                                  @refreshData="refreshData" />
             </div>
         </div>
-        <Button label="Imprimer le protocole"></Button>
         <Button @click="goToSearchArticle" label="Ajouter une protection"></Button>
 
     </div>

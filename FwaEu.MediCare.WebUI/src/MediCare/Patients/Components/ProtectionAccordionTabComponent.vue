@@ -32,7 +32,7 @@
                             <InputNumber v-model="posologyItem.quantity" ref="inputNumber" showButtons buttonLayout="horizontal" style="width: 55%; height: 40px !important;"
                                          decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
                                          incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
-                            <Calendar v-model="posologyItem.hour" style="width: 30% !important" timeOnly />
+                            <Calendar v-model="posologyItem.hour" style="width: 30% !important" timeOnly @update:modelValue="resetMinutes"/>
                             <i v-show="changeForm.posology.length > 1" @click="deletePosology(index)" style="font-size: 24px;" class="fa fa-solid fa-close"></i>
                         </div>
                     </div>
@@ -174,7 +174,10 @@
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
                 }
-            }
+            },
+            resetMinutes(date) {
+                date.setMinutes(0);
+            },
         },
         computed: {
 
