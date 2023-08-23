@@ -15,13 +15,14 @@
             </div>
             <i style="font-size: 30px;" class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <div style="display: flex; flex-direction: column; margin-top: 20px;">
+        <div v-if="!isLoading" style="display: flex; flex-direction: column; margin-top: 20px;">
             <div v-if="filteredProtections.some(protection => 'article' && 'posology' in protection) && protectionDosages"
                  v-for="(protection, index) in filteredProtections" :key="index">
                 <ProtectionAccordionTabComponent v-if="protection.posology.length > 0" :protection="protection" :protectionDosages="protection.posology"
                                                  @refreshData="refreshData" />
             </div>
         </div>
+        <ProgressSpinner v-else />
         <Button @click="goToSearchArticle" label="Ajouter une protection"></Button>
 
     </div>
@@ -38,6 +39,8 @@
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
     import { protectionType } from '@/MediCare/Articles/article-filter-types';
+    import ProgressSpinner from 'primevue/progressspinner';
+
 
     export default {
         components: {
@@ -45,6 +48,7 @@
             PatientInfoComponent,
             Button,
             ProtectionAccordionTabComponent,
+            ProgressSpinner
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -59,6 +63,7 @@
                 patient: null,
                 filteredProtections: [],
                 protectionDosages: [],
+                isLoading: false
             };
         },
         async created() {
@@ -78,7 +83,7 @@
                     protection.posology = filteredProtectionDosages.filter(x => x.protectionId === protection.id);
                 });
                 this.filteredProtections = protections.filter(protection => protection.patientId === this.patient.id && protection.article != null);
-
+                this.isLoading = false;
             },
             goToIncontinenceLevelPage() {
                 const patientId = this.patient.id;
@@ -88,6 +93,7 @@
                 this.$router.push({ name: 'SearchArticleFromProtection', params: { id: this.patient.id }, query: { articleFilterType: protectionType } });
             },
             async refreshData() {
+                this.isLoading = true;
                 await ProtectionsMasterDataService.clearCacheAsync();
                 await ProtectionDosagesMasterDataService.clearCacheAsync();
                 this.fillProtections();

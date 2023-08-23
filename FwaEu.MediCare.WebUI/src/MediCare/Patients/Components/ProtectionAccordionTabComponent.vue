@@ -12,32 +12,8 @@
                 <Button @click="changePosology" label="Changer la posologie" style="height: 40px !important;"></Button>
                 <Button v-show="isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
             </div>
-            <div v-else-if="protectionState == ProtectionState.Change" class="accordion-content">
-                <span style="font-weight: bold;">Changer la posologie</span>
-                <div class="label-container">
-                    <span>Date de changement :</span>
-                    <Calendar v-model="changeForm.startDate" style="width: 50% !important" showIcon />
-                </div>
-                <div class="label-container">
-                    <span>Date de fin :</span>
-                    <Calendar v-model="changeForm.endDate" style="width: 50% !important" showIcon />
-                </div>
-                <div class="label-container">
-                    <span>Posologie :</span>
-                    <i @click="addPosology" style="font-size: 26px;" class="fa fa-solid fa-add"></i>
-                </div>
-                <div class="posology-container">
-                    <div v-for="(posologyItem, index) in changeForm.posology" :key="index">
-                        <div class="label-container">
-                            <InputNumber v-model="posologyItem.quantity" ref="inputNumber" showButtons buttonLayout="horizontal" style="width: 55%; height: 40px !important;"
-                                         decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary"
-                                         incrementButtonIcon="fa fa-solid fa-plus" decrementButtonIcon="fa fa-solid fa-minus" />
-                            <Calendar v-model="posologyItem.hour" style="width: 30% !important" timeOnly @update:modelValue="resetMinutes"/>
-                            <i v-show="changeForm.posology.length > 1" @click="deletePosology(index)" style="font-size: 24px;" class="fa fa-solid fa-close"></i>
-                        </div>
-                    </div>
-                </div>
-                <Button @click="submitChangedPosology" style="height: 40px !important;" label="Confirmer" />
+            <div v-else-if="protectionState == ProtectionState.Change">
+                <ChangePosologyComponent :protection="protection" :protectionDosages="protectionDosages" @changePosologySubmitted="changedPosology" />
             </div>
             <div v-else class="accordion-content">
                 <span style="font-weight: bold;">Arrêter</span>
@@ -46,7 +22,6 @@
                     <Calendar v-model="stopEndDate" style="width: 50% !important" showIcon />
                 </div>
                 <Button @click="submitStoppedPosology" style="height: 40px !important;" label="Confirmer" />
-
             </div>
         </AccordionTab>
     </Accordion>
@@ -61,7 +36,7 @@
     import Calendar from 'primevue/calendar';
     import ProtectionService from '@/MediCare/Patients/Services/protection-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-
+    import ChangePosologyComponent from '@/MediCare/Patients/Components/ChangePosologyComponent.vue'
 
 
     export default {
@@ -70,18 +45,16 @@
             AccordionTab,
             Button,
             InputNumber,
-            Calendar
+            Calendar,
+            ChangePosologyComponent
+
+
         },
         data() {
             const ProtectionState = Object.freeze({ Normal: 1, Change: 2, Stop: 3 });
             return {
                 ProtectionState,
                 protectionState: ProtectionState.Normal,
-                changeForm: {
-                    startDate: new Date(),
-                    endDate: new Date(),
-                    posology: []
-                },
                 stopEndDate: new Date(),
             };
         },
@@ -96,10 +69,8 @@
             }
         },
         async created() {
-            this.changeForm.startDate = new Date(this.protection.dateStart);
-            this.changeForm.endDate = new Date(this.protection.dateEnd);
+
             this.stopEndDate = new Date(this.protection.dateEnd);
-            this.fillPosology();
         },
         methods: {
             changePosology() {
@@ -108,57 +79,13 @@
             stopPosology() {
                 this.protectionState = this.ProtectionState.Stop;
             },
-            addPosology() {
-                this.changeForm.posology.push({
-                    quantity: 0,
-                    hour: new Date()
-                });
-            },
-            deletePosology(index) {
-                this.changeForm.posology.splice(index, 1)
-            },
             isStopDatePassed(protectionDateEnd) {
                 var dateEnd = new Date(protectionDateEnd);
                 return dateEnd < new Date();
             },
-            fillPosology() {
-                this.protectionDosages.forEach(posology => {
-                    this.changeForm.posology.push({
-                        quantity: posology.quantity,
-                        hour: new Date(posology.hour)
-                    });
-                });
-                if (this.changeForm.posology.length == 0) {
-                    this.addPosology();
-                }
-            },
-            async submitChangedPosology() {
-                const model = {
-                    protectionId: this.protection.id,
-                    startDate: new Date(this.changeForm.startDate),
-                    stopDate: new Date(this.changeForm.endDate),
-                    protectionDosages: this.posologyArrayToDictionnary(),
-                    articleUnit: "test"
-                }
-                try {
-                    await ProtectionService.updateAsync(model).then(() => {
-                        NotificationService.showConfirmation("La posologie a bien été modifiée");
-                        this.protectionState = this.ProtectionState.Normal;
-                        this.$emit('refreshData');
-                    })
-                } catch {
-                    NotificationService.showError("Une erreur est survenue lors de la modification de la posologie");
-                }
-            },
-            posologyArrayToDictionnary() {
-                this.changeForm.posology.forEach(element => {
-                    element.hour = new Date(element.hour).getHours() + ":" + new Date(element.hour).getMinutes();
-                });
-
-                return this.changeForm.posology.reduce((acc, posology) => {
-                    acc[posology.hour] = posology.quantity;
-                    return acc;
-                }, {});
+            changedPosology() {
+                this.protectionState = this.ProtectionState.Normal;
+                this.$emit('refreshData');
             },
             async submitStoppedPosology() {
                 const model = {
@@ -175,14 +102,7 @@
                     NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
                 }
             },
-            resetMinutes(date) {
-                date.setMinutes(0);
-            },
         },
-        computed: {
-
-        },
-
     }
 </script>
 <style type="text/css">
