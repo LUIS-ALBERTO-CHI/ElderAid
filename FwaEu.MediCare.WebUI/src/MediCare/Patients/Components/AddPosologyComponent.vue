@@ -71,7 +71,7 @@
                     patientId: this.patient.id,
                     articleId: this.article.id,
                     startDate: new Date(this.changeForm.startDate),
-                    stopDate: new Date(this.changeForm.endDate),
+                    stopDate: this.changeForm.endDate ? new Date(this.changeForm.endDate) : null,
                     protectionDosages: this.posologyArrayToDictionnary(),
                     articleUnit: "test"
                 }

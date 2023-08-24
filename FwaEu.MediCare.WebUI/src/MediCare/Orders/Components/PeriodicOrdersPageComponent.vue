@@ -10,7 +10,7 @@
             <Dropdown v-show="buildings.length > 1" v-model="selectedBuilding" :options="buildingOptions" class="select-sector"/>
 
             <Dropdown v-model="selectedOrderType" :options="ordersTypeOptions" class="select-sector" />
-            <div v-if="periodicOrders && selectedOrderType === 'Patients validés' || selectedOrderType === 'Toutes'" class="periodic-orders-container">
+            <div v-if="periodicOrders && selectedOrderType === 'Patients validés' || selectedOrderType === 'Tous les états des commandes'" class="periodic-orders-container">
                 <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id" class="periodic-orders-item">
                     <div class="header">
                         <div class="patient-info">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="periodicOrders && selectedOrderType === 'Patients à valider' || selectedOrderType === 'Toutes'"
+            <div v-if="periodicOrders && selectedOrderType === 'Patients à valider' || selectedOrderType === 'Tous les états des commandes'"
                  class="periodic-orders-container">
                 <div @click="goToPeriodicOrdersPage(patient.id)" v-for="patient in filteredPatients" :key="patient.id"
                      class="periodic-orders-item">
@@ -65,8 +65,8 @@
         },
         data() {
             return {
-                ordersTypeOptions: ["Toutes", "Patients validés", "Patients à valider"],
-                selectedOrderType: "Toutes",
+                ordersTypeOptions: ["Tous les états des commandes", "Patients validés", "Patients à valider"],
+                selectedOrderType: "Tous les états des commandes",
                 periodicOrders: null,
                 patientsData: {},
                 searchOrders: "",
@@ -130,7 +130,7 @@
                     (patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase().trim()) ||
                         patient?.roomName.toLowerCase().includes(this.searchOrders.toLowerCase().trim())) &&
                     (
-                        this.selectedOrderType === "Toutes" && this.getTotalQuantity(patient.id) > 0 ||
+                        this.selectedOrderType === "Tous les états des commandes" && this.getTotalQuantity(patient.id) > 0 ||
                         (this.selectedOrderType === "Patients validés" && patient.id != null) ||
                         (this.selectedOrderType === "Patients à valider" && patient.id != null && this.getTotalQuantity(patient.id) > 0)
                     )

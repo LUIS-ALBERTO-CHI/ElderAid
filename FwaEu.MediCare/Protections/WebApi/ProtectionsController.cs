@@ -2,6 +2,7 @@
 using FwaEu.MediCare.Protections.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,10 @@ namespace FwaEu.MediCare.Protections.WebApi
         {
             try
             {
+                if (model.StopDate < model.StartDate)
+                {
+                    throw new ArgumentException("Stop date cannot be before start date.");
+                }
                 await protectionService.CreateProtectionAsync(new CreateProtectionModel
                 {
                     PatientId = model.PatientId,
@@ -33,6 +38,10 @@ namespace FwaEu.MediCare.Protections.WebApi
             {
                 return NotFound();
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
@@ -42,6 +51,10 @@ namespace FwaEu.MediCare.Protections.WebApi
         {
             try
             {
+                if (model.StopDate < model.StartDate)
+                {
+                    throw new ArgumentException("Stop date cannot be before start date.");
+                }
                 await protectionService.UpdateProtectionAsync(new UpdateProtectionModel
                 {
                     ProtectionId= model.ProtectionId,
@@ -55,6 +68,10 @@ namespace FwaEu.MediCare.Protections.WebApi
             catch (NotFoundException)
             {
                 return NotFound();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

@@ -88,7 +88,6 @@
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
             async submitOrder() {
-                console.log(this.patientId)
                 const modelOrder = [{
                     patientId: this.patientId,
                     articleId: this.article.id,
@@ -96,7 +95,7 @@
                 }];
                 try {
                     await OrdersService.saveAsync(modelOrder).then(() => {
-                        NotificationService.showConfirmation('Vous avez commander à nouveau la commande')
+                        NotificationService.showConfirmation('Votre commande a été passée avec succès')
                     })
                     await MasterDataManagerService.clearCacheAsync();
                     if (!(this.$route.name === "Orders")) {
@@ -110,13 +109,14 @@
             },
             getQuantitySentance() {
                 let textToDisplay = "Commander"
-                if (this.article.isGalenicDosageForm)
-                    return textToDisplay;
                 const quantityType = this.article.countInBox > 1 ? 'boîte' : this.article.invoicingUnit;
                 if (this.selectedQuantity <= 1)
                     textToDisplay += ` ${this.selectedQuantity} ${quantityType}`
                 else
                     textToDisplay += ` ${this.selectedQuantity} ${quantityType}s`
+                if (this.article.isGalenicDosageForm && this.article.countInBox > 1) {
+                    textToDisplay += ` de ${this.article.countInBox}`
+                }
                 return textToDisplay;
             },
             goToSearchSubstituts(articleTitle) {

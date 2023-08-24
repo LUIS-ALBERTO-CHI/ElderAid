@@ -5,7 +5,9 @@
                 <div class="accordion-header">
                     <span class="header-title">{{protection.article.title}}</span>
                     <span class="header-subtitle">{{protection.dosageDescription }}</span>
-                    <span class="header-subtitle">De {{ $d(new Date(protection.dateStart)) }} à {{ $d(new Date(protection.dateEnd)) }}</span>
+                    <span class="header-subtitle">{{isGoodEndDate(protection.dateEnd, protection.dateStart) ?
+                    `De ${$d(new Date(protection.dateStart))} à ${$d(new Date(protection.dateEnd))}`
+                    : $d(new Date(protection.dateStart))}}</span>
                 </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
@@ -102,6 +104,13 @@
                     NotificationService.showError("Une erreur est survenue lors de l'arrêt de la posologie");
                 }
             },
+            isGoodEndDate(dateEnd, dateStart) {
+                if (dateEnd === null || dateEnd < dateStart) {
+                    return false
+                } else {
+                    return true
+                }
+            }
         },
     }
 </script>

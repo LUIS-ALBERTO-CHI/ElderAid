@@ -34,7 +34,7 @@
                         </div>
                         <div v-else style="color: red;" class="accordion-header-title-area">
                             <i class="fa-solid fa-xmark"></i>
-                            <span>Annulé</span>
+                            <span>Annulée</span>
                         </div>
                     </div>
                 </div>
