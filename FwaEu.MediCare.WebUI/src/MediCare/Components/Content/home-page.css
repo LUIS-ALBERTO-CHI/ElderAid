@@ -192,6 +192,23 @@
   color: var(--primary-text-color);
 }
 
+
+.change-organization-container {
+	display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+
+}
+
+.change-organization-icon {
+  font-size: 25px;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+}
+
 /* TODO: Trouver un moyen de faire fonctionner les selecteur css dans les scoped css*/
 /* Ne fonctionne pas dans les autres fichier css ... */
 .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {

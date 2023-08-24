@@ -99,7 +99,9 @@
                         NotificationService.showConfirmation('Vous avez commander à nouveau la commande')
                     })
                     await MasterDataManagerService.clearCacheAsync();
-
+                    if (!(this.$route.name === "Orders")) {
+                        this.$router.push("/Orders")
+                    }
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la commande')
                 }

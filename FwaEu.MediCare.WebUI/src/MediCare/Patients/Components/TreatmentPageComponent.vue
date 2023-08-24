@@ -10,12 +10,13 @@
                                 <span class="header-title">
                                     {{ treatment.prescribedArticle.title }}
                                 </span>
-                                <i v-show="treatment.prescribedArticle.isGalenicDosageForm" class="fa-solid fa-briefcase-medical bag-icon"></i>
+                                <span v-show="treatment.prescribedArticle.isGalenicDosageForm" 
+                                >Sachet</span>
                             </div>
                             <span v-show="treatment.appliedArticle != null" class="header-subtitle">{{treatment.appliedArticle?.title }}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>
                             <div>
-                                <span class="header-subtitle">De {{ $d(new Date(treatment.dateStart))}} à {{ $d(new Date(treatment.dateEnd))}}</span>
+                                <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd) ? `De ${$d(new Date(treatment.dateStart))} à ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
                             </div>
                         </div>
                     </template>
@@ -108,6 +109,14 @@
                     return true
                 } else {
                     return false
+                }
+            },
+            isGoodEndDate(date) {
+                const referenceDate = new Date("1970-01-01");
+                if (date === null || date <= referenceDate) {
+                    return false
+                } else {
+                    return true
                 }
             }
         },

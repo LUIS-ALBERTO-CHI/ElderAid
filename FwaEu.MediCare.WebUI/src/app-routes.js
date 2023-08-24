@@ -2,6 +2,9 @@ const context = import.meta.glob('/**/index-routes.js', { eager: true });
 import { defineAsyncComponent } from 'vue';
 const Home = () => import('@/MediCare/Components/HomePageComponent.vue');
 const PublicLayoutComponent = defineAsyncComponent(() => import('@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue'));
+const OrganizationSelection = () => import('@/MediCare/Components/OrganizationSelectionPage.vue');
+
+
 
 let globalRoutes = [
     {
@@ -15,16 +18,30 @@ let globalRoutes = [
                 titleKey: 'Accueil'
             },
             layout: PublicLayoutComponent
-        }
+        },
     },
     {
         path: '/:pathMatch(.*)',
         redirect: "/"
-    }
+    },
+    {
+        name: 'OrganizationSelection',
+        path: "/OrganizationSelection",
+        component: OrganizationSelection,
+        meta: {
+            title: 'Selection de l\'organisation',
+            allowAnonymous: false,
+            breadcrumb: {
+                titleKey: 'Selection de l\'organisation',
+                parentName: 'default'
+            },
+            layout: PublicLayoutComponent
+        }
+    },
 ];
 Object.keys(context).forEach(function (path) {
-	let exportedModule = context[path];
-	let exportedRoutes = exportedModule.default;
+    let exportedModule = context[path];
+    let exportedRoutes = exportedModule.default;
     if (exportedRoutes) {
         globalRoutes = globalRoutes.concat(exportedRoutes);
     }
