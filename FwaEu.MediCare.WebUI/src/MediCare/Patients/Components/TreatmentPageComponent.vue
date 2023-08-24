@@ -10,8 +10,8 @@
                                 <span class="header-title">
                                     {{ treatment.prescribedArticle.title }}
                                 </span>
-                                <i v-show="treatment.prescribedArticle.isGalenicDosageForm"
-                                class="fa-solid fa-bag-shopping bag-icon" title="Produit en sachet"></i>
+                                <span v-show="treatment.prescribedArticle.isGalenicDosageForm" 
+                                >Sachet</span>
                             </div>
                             <span v-show="treatment.appliedArticle != null" class="header-subtitle">{{treatment.appliedArticle?.title }}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>

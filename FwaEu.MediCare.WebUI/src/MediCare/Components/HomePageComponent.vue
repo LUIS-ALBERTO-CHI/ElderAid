@@ -4,8 +4,7 @@
             <span class="organization-text" v-if="organizations.length > 0">{{ organizations[0].name }}</span>
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
-        <Dropdown v-else v-model="selectedOrganization" :options="organizationsOptions"
-            @change="refreshMasterDataByDatabaseInvariantId" optionLabel="name" />
+        <span v-else @click="goToOrganizationSelectionPage" class="change-organization-text">Changer son organisation</span>
         <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -67,15 +66,12 @@ import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
 const path = Configuration.application.customResourcesPath;
 import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 import Dropdown from 'primevue/dropdown';
-import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
-import CurrentUserService from "@/Fwamework/Users/Services/current-user-service";
+
 import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
 
 import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
-import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
-import CachePreloaderService from '@/MediCare/Cache/Services/cache-preloader-service';
 import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
 
 export default {
@@ -94,16 +90,9 @@ export default {
     data() {
         const $this = this;
         return {
-            isCurrentUserAuthenticated: false,
             selectedOrganization: null,
-            organizationsOptions: [],
             isSingleOrganization: false,
             patientsActive: [],
-            currentDatabase: ViewContextService.get()?.id,
-            viewContextChangeOff: ViewContextService.onChanged((viewContext) => {
-                $this.currentDatabase = viewContext.id;
-            }),
-            isUserAdmin: false,
             organizations: [],
             organizationsLink: [],
             startLoadTime: 0,
@@ -112,22 +101,10 @@ export default {
     },
     created: showLoadingPanel(async function () {
         const patients = await PatientsMasterDataService.getAllAsync();
-
-        this.isCurrentUserAuthenticated = await AuthenticationService.isAuthenticatedAsync();
-        const currentUser = await CurrentUserService.getAsync();
-        this.isUserAdmin = currentUser.parts.adminState.isAdmin;
-
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
         this.cabinets = await CabinetsMasterDataService.getAllAsync();
         if (this.organizations.length <= 1) {
             this.isSingleOrganization = true;
-        }
-        this.organizationsOptions = this.organizations
-
-        const updatedOn = (ViewContextService.get()).updatedOn;
-        this.selectedOrganization = this.organizations.find(x => x.id == this.currentDatabase);
-        if (updatedOn != new Date(this.selectedOrganization.updatedOn)) {
-            ViewContextService.set(new ViewContextModel(this.selectedOrganization));
         }
 
         this.patientsActive = patients.filter(x => x.isActive);
@@ -161,18 +138,9 @@ export default {
         goToPeriodicPage() {
             this.$router.push("/PeriodicOrders")
         },
-        refreshMasterDataByDatabaseInvariantId: showLoadingPanel(async function (e) {
-
-            // NOTE : Update the ViewContext to save the selected database
-            // const organizations = await OrganizationsMasterDataService.getAllAsync();
-            ViewContextService.set(new ViewContextModel(e.value));
-
-            // NOTE : refraichir toutes les masterdata
-            await MasterDataManagerService.clearCacheAsync();
-
-            await CachePreloaderService.loadAllMasterDataAsync(true, true);
-
-        }),
+        goToOrganizationSelectionPage() {
+            this.$router.push("/OrganizationSelection")
+        },
         getNumberOfPatientToValidate() {
             const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 0).length;
             return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`

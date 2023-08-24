@@ -44,7 +44,6 @@ const CachePreloaderService = {
 
                 const Organizations = await OrganizationsMasterDataService.getAllAsync();
                 if (ViewContextService.get() == null) {
-
                     ViewContextService.set(new ViewContextModel(Organizations[0]));
                 }
 

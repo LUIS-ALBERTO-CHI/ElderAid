@@ -192,6 +192,13 @@
   color: var(--primary-text-color);
 }
 
+.change-organization-text {
+	color: #1A0DAB;
+	text-decoration: underline;
+	align-self: center;
+  cursor: pointer;
+}
+
 /* TODO: Trouver un moyen de faire fonctionner les selecteur css dans les scoped css*/
 /* Ne fonctionne pas dans les autres fichier css ... */
 .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
