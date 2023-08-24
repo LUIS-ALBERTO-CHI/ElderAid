@@ -1,5 +1,6 @@
 <template>
     <div class="organization-selection-page-container">
+        <span class="title">Veuillez sélectionner un EMS dans la liste déroulante</span>
         <Dropdown v-model="selectedOrganization" :options="organizationsOptions"
             optionLabel="name" style="width: 100%;" placeholder="Choisir une organisation"/>
             <Button :disabled="selectedOrganization == null" @click="refreshMasterDataByDatabaseInvariantId" label="Confirmer le changement" />

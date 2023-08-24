@@ -6,3 +6,10 @@
     row-gap: 20px;
 
 }
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary-text-color);
+    text-align: center;
+}

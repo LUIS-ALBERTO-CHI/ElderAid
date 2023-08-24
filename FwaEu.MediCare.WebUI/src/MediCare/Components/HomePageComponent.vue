@@ -5,8 +5,8 @@
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <div v-else class="change-organization-container">
-            <span @click="goToOrganizationSelectionPage">{{ organization?.name }}</span>
-            <i class="fa-solid fa-pen-to-square change-organization-icon "></i>
+            <span>{{ organization?.name }}</span>
+            <i @click="goToOrganizationSelectionPage" class="fa-solid fa-pen-to-square change-organization-icon "></i>
         </div>
         <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
