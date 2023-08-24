@@ -1,10 +1,12 @@
 <template>
-    <div class="protection-page-container">
-        <patient-info-component v-if="patient" :patient="patient" />
+    <div class="protection-page-container"  v-if="patient !== null">
+        <patient-info-component :patient="patient" />
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
-                <span>Niveau d'incontience: légère</span>
-                <div v-if="isAlert" :style="{ color: '#f44538' }" class="alert-container">
+                <span>
+                    Niveau d'incontience : {{ $t(''+patient.incontinenceLevel) }} {{ patient.isIncontinenceLevelOverPassed }}
+                </span>
+                <div v-if="patient.isIncontinenceLevelOverPassed === false" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
                     <span>Le forfait d'incontinence est dépassé</span>
                 </div>
@@ -24,12 +26,9 @@
         </div>
         <ProgressSpinner v-else />
         <Button @click="goToSearchArticle" label="Ajouter une protection"></Button>
-
     </div>
 </template>
-
 <script>
-
     import Accordion from 'primevue/accordion';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import Button from 'primevue/button';
@@ -40,8 +39,6 @@
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
     import { protectionType } from '@/MediCare/Articles/article-filter-types';
     import ProgressSpinner from 'primevue/progressspinner';
-
-
     export default {
         components: {
             Accordion,
@@ -59,7 +56,6 @@
         },
         data() {
             return {
-                isAlert: true,
                 patient: null,
                 filteredProtections: [],
                 protectionDosages: [],
