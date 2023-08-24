@@ -15,9 +15,7 @@
                             </div>
                             <span v-show="treatment.appliedArticle != null" class="header-subtitle">{{treatment.appliedArticle?.title }}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>
-                            <div>
-                                <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd) ? `De ${$d(new Date(treatment.dateStart))} à ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
-                            </div>
+                            <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd, treatment.dateStart) ? `De ${$d(new Date(treatment.dateStart))} à ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
                         </div>
                     </template>
                     <OrderComponent v-if="treatment.prescribedArticle" :article="treatment.prescribedArticle" :patientOrders="patientOrders" :patientId="patient.id"/>
@@ -111,9 +109,8 @@
                     return false
                 }
             },
-            isGoodEndDate(date) {
-                const referenceDate = new Date("1970-01-01");
-                if (date === null || date <= referenceDate) {
+            isGoodEndDate(dateEnd, dateStart) {
+                if (dateEnd === null || dateEnd < dateStart) {
                     return false
                 } else {
                     return true

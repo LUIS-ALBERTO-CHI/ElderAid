@@ -8,6 +8,7 @@ export default [
 		name: 'stockPharmacy',
 		component: CabinetsListPageComponent,
 		meta: {
+			title: 'Stock pharmarcie',
 			breadcrumb: {
 				titleKey: 'stockPharmacy',
 				parentName: 'default'
@@ -19,6 +20,7 @@ export default [
 		name: 'Cabinet',
 		component: ArticlesInStockPageComponent,
 		meta: {
+			title: 'Cabinet',
 			breadcrumb: {
 				parentName: "stockPharmacy",
 				async onNodeResolve(node, context) {
@@ -47,6 +49,7 @@ export default [
 		name: 'Articles',
 		component: ArticleOutboundPageComponent,
 		meta: {
+			title: 'Articles',
 			breadcrumb: {
 				titleKey: 'Articles',
 				parentName: 'Cabinet'

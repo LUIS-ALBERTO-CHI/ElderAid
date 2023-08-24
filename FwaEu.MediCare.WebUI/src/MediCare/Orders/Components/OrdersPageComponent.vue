@@ -33,7 +33,7 @@
                                         @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)" />
                     </AccordionOrderComponent>
                 </div>
-                <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commande</span>
+                <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commandes</span>
             </div>
         </div>
         <div v-else class="new-order-container">
