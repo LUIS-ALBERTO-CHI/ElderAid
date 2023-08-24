@@ -192,10 +192,20 @@
   color: var(--primary-text-color);
 }
 
-.change-organization-text {
-	color: #1A0DAB;
-	text-decoration: underline;
-	align-self: center;
+
+.change-organization-container {
+	display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+
+}
+
+.change-organization-icon {
+  font-size: 25px;
+  color: var(--secondary-text-color);
   cursor: pointer;
 }
 

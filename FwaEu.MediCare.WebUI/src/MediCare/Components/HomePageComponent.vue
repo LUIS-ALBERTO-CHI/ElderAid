@@ -4,7 +4,10 @@
             <span class="organization-text" v-if="organizations.length > 0">{{ organizations[0].name }}</span>
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
-        <span v-else @click="goToOrganizationSelectionPage" class="change-organization-text">Changer son organisation</span>
+        <div v-else class="change-organization-container">
+            <span @click="goToOrganizationSelectionPage">{{ organization?.name }}</span>
+            <i class="fa-solid fa-pen-to-square change-organization-icon "></i>
+        </div>
         <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
                 <div @click="goToPatientPage" class="vignette-main-info">
@@ -73,6 +76,7 @@ import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/or
 import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
 import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
+import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
 
 export default {
     inject: ["deviceInfo"],
@@ -94,19 +98,20 @@ export default {
             isSingleOrganization: false,
             patientsActive: [],
             organizations: [],
-            organizationsLink: [],
             startLoadTime: 0,
             cabinets: [],
+            organization: null,
         };
     },
     created: showLoadingPanel(async function () {
         const patients = await PatientsMasterDataService.getAllAsync();
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
+
         this.cabinets = await CabinetsMasterDataService.getAllAsync();
         if (this.organizations.length <= 1) {
             this.isSingleOrganization = true;
         }
-
+        this.organization = ViewContextService.get();
         this.patientsActive = patients.filter(x => x.isActive);
     }),
     methods: {

@@ -67,12 +67,5 @@ export default {
     },
 }
 </script>
-<style type="text/css" scoped scr="./Content/organization-selection-page.css">
-.organization-selection-page-container { 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 20px;
-
-}
+<style type="text/css" scoped src="./Content/organization-selection-page.css">
 </style>
