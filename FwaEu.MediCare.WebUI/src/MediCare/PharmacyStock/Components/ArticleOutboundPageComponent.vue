@@ -20,7 +20,7 @@
                     <span>Boîte entière</span>
                 </div>
                 <div class="icon-right-container">
-                    <InputSwitch v-model="fullBox" class="custom-switch" />
+                    <InputSwitch :disabled="isSwitchDisabled" v-model="fullBox" class="custom-switch" />
                 </div>
             </div>
             <div class="info-container" v-if="fullBox">
@@ -71,14 +71,15 @@
         data() {
             return {
                 article: null,
-                fullBox: ViewContextService.get().isStockPharmacyPerBox,
+                fullBox: false,
                 availableUnitCounts: [],
                 boiteOptions: [],
                 boiteOptionsWithUnit: [],
                 selectedBoite: null,
                 quantity: 1,
                 selectedPatient: null,
-                cabinetName: ""
+                cabinetName: "",
+                isSwitchDisabled: false,
             };
         },
         async created() {
@@ -96,7 +97,6 @@
                 const articleType = this.article.articleType;
 
                 this.availableUnitCounts = await ArticlesService.getAllBySearchAsync(`formats:${groupName}`, articleType, 0, 30);
-
                 this.boiteOptions = this.availableUnitCounts
                     .filter(article => article.countInBox > 0)
                     .map(article => article.countInBox)
@@ -112,6 +112,8 @@
 
                 if (this.boiteOptions.length > 0) {
                     this.selectedBoite = this.boiteOptions[0];
+                } else {
+                    this.isSwitchDisabled = true;
                 }
             }
         },

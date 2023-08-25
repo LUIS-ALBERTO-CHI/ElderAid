@@ -95,6 +95,7 @@
             };
         },
         async created() {
+            localStorage.removeItem("searchPatient")
             this.focusSearchBar();
             await this.getCurrentCabinetAsync();
             this.loadInitialArticles();

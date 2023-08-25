@@ -104,6 +104,7 @@ export default {
         };
     },
     created: showLoadingPanel(async function () {
+        localStorage.removeItem("searchPatient")
         const patients = await PatientsMasterDataService.getAllAsync();
         this.organizations = await OrganizationsMasterDataService.getAllAsync();
 

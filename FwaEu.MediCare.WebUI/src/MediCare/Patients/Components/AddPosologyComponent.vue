@@ -73,7 +73,7 @@
                     startDate: new Date(this.changeForm.startDate),
                     stopDate: this.changeForm.endDate ? new Date(this.changeForm.endDate) : null,
                     protectionDosages: this.posologyArrayToDictionnary(),
-                    articleUnit: "test"
+                    articleUnit: this.article.unit ? this.article.unit : this.article.invoicingUnit
                 }
                 try {
                     await ProtectionService.createAsync(model).then(async() => {
