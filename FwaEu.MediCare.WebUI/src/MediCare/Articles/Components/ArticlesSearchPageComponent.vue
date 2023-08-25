@@ -2,7 +2,7 @@
     <div>
         <div v-show="showPage" class="articles-search-page">
             <patient-info-component v-if="patient" :patient="patient" />
-            <span class="command-title">Commander un article:</span>
+            <span class="command-title">Commander un article :</span>
             <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                    :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />

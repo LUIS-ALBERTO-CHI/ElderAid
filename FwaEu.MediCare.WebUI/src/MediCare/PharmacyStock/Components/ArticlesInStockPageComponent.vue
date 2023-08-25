@@ -95,6 +95,7 @@
             };
         },
         async created() {
+            localStorage.removeItem("searchPatient")
             this.focusSearchBar();
             await this.getCurrentCabinetAsync();
             this.loadInitialArticles();
@@ -122,7 +123,7 @@
                 });
             },
             goToArticleDetails(stockPharmacy) {
-                this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id, stockId: stockPharmacy.id } });
+                this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id, stockId: stockPharmacy.id }, query: { stockQuantity: stockPharmacy.quantity } });
             },
             goToScanCode() {
                 if (this.hasVideoInput)

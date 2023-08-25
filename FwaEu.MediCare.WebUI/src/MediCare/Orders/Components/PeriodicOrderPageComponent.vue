@@ -116,14 +116,8 @@
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
-
-            },
-        },
-        computed: {
-
-        },
-
+            }
+        }
     }
 </script>
-<style type="text/css" scoped src="./Content/periodic-orders-page.css">
-</style>
+<style type="text/css" scoped src="./Content/periodic-orders-page.css"></style>

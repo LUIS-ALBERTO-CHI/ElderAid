@@ -5,17 +5,17 @@
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
             <i class="fa-solid fa-heart"></i>
         </div>
-        <div v-show="!isGalleryDisplayed" class="article-label-container">
+        <div v-if="!isGalleryDisplayed && patientOrders" class="article-label-container">
             <i class="fa-solid fa-clock-rotate-left history-icon"></i>
-            <span>Utilisé par le patient en mars 2022</span>
+            <span>{{ articleLastOrderForPatient() }}</span>
         </div>
         <div v-show="!isGalleryDisplayed" class="article-container">
             <div class="article-info-container">
                 <div class="article-label-container">
-                    <span style="font-weight: bold;">{{ article.unit }}</span>
-                    <span>{{ article.price }}</span>
+                    <span style="font-weight: bold;">CHF</span>
+                    <span>{{ article.price }} </span>
                 </div>
-                <div class="article-label-container">
+                <div v-show="article.leftAtChargeExplanation" class="article-label-container">
                     <i class="fa-solid fa-money-bill-1"></i>
                     <span>{{ article.leftAtChargeExplanation }}, reste à charge</span>
                 </div>
@@ -129,6 +129,13 @@
             },
             getPatientId() {
                 return parseInt(this.$route.params.id);
+            },
+            articleLastOrderForPatient() {
+                const order = this.patientOrders.find(order => order.articleId == this.article.id);
+                if (order)
+                    return "Dernière commande le " +  new Date(order.updatedOn).toLocaleDateString('fr-FR');
+                else
+                    return "Pas de commande récente pour cette article" 
             }
         },
         computed: {
