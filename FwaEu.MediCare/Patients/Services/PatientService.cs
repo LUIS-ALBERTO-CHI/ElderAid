@@ -52,16 +52,10 @@ namespace FwaEu.MediCare.Patients.Services
                 }
                 int totalDaysFromFirstDayInYearToDateNow = (DateTime.Now - new DateTime(currentYear, 1, 1)).Days;
                 incontinenceLevelModel.FixedPrice = totalDaysFromFirstDayInYearToDateNow * incontinenceLevelModel.DailyFixedPrice;
-                incontinenceLevelModel.OverPassed = incontinenceLevelModel.FixedPrice - incontinenceLevelModel.Consumed;
+                incontinenceLevelModel.OverPassed = incontinenceLevelModel.Consumed - incontinenceLevelModel.FixedPrice;
                 incontinenceLevelModel.DailyProtocolEntered = incontinenceLevelModel.Consumed / totalDaysFromFirstDayInYearToDateNow;
 
                 // NOTE: We can remove this comment later
-                //incontinenceLevelModel.FixedPrice = 365 - 148;
-                //incontinenceLevelModel.AnnualFixedPrice = 365;
-                //incontinenceLevelModel.DailyFixedPrice = 1;
-                //incontinenceLevelModel.Consumed = 148;
-                //incontinenceLevelModel.OverPassed = incontinenceLevelModel.FixedPrice - incontinenceLevelModel.Consumed;
-                
                 var virtualDateWithoutOverPassed = incontinenceLevelModel.OverPassed  / (incontinenceLevelModel.FixedPrice / totalDaysFromFirstDayInYearToDateNow);
                 incontinenceLevelModel.VirtualDateWithoutOverPassed = (new DateTime(currentYear, 12, 31)).AddDays(virtualDateWithoutOverPassed);
             }

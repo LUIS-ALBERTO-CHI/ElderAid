@@ -4,9 +4,9 @@
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
                 <span>
-                    Niveau d'incontience : {{ $t(''+patient.incontinenceLevel) }} {{ patient.isIncontinenceLevelOverPassed }}
+                    Niveau d'incontience : {{ $t(''+patient.incontinenceLevel) }}
                 </span>
-                <div v-if="patient.isIncontinenceLevelOverPassed === false" :style="{ color: '#f44538' }" class="alert-container">
+                <div v-if="patient.isIncontinenceLevelOverPassed" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
                     <span>Le forfait d'incontinence est dépassé</span>
                 </div>
@@ -33,7 +33,7 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import Button from 'primevue/button';
     import ProtectionAccordionTabComponent from './ProtectionAccordionTabComponent.vue';
-    import { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
     import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
@@ -64,6 +64,8 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
+            const incontinenceLevelData = await PatientService.getIncontinenceLevelAsync(this.patient.id);
+            this.patient.isIncontinenceLevelOverPassed = incontinenceLevelData.overPassed > 0;
             this.refreshData();
         },
         methods: {
