@@ -39,7 +39,14 @@
                     <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
                 </div>
             </div>
-            <div class="button-confirmer">
+            <div class="confirmation-container" v-if="showConfirmationDisplayed">
+                <span>Etes vous sûr de faire sortir cette quantité ? <small>La quantité restante en stock va être négative</small></span>
+                <div class="confirmaton-button-container">
+                    <Button @click="confirmOrderAsync()" label="OUI" outlined class="button-confirmation" />
+                    <Button @click="() => showConfirmationDisplayed = false" label="NON" outlined class="button-confirmation" />
+                </div>
+            </div>
+            <div v-else class="button-confirmer">
                 <Button @click="confirmOrderAsync" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
                         label="Sortir de stock" />
             </div>
@@ -80,6 +87,7 @@
                 selectedPatient: null,
                 cabinetName: "",
                 isSwitchDisabled: false,
+                showConfirmationDisplayed: false
             };
         },
         async created() {
@@ -132,12 +140,17 @@
                 this.selectedPatient = null;
             },
             async confirmOrderAsync() {
-                await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity }).then(async () => {
-                    NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
-                    this.$router.push({ name: "Cabinet" });
-                }).catch(() => {
+                if (this.showConfirmationDisplayed || (this.$route?.query?.stockQuantity !== null && this.$route?.query?.stockQuantity - this.quantity > 0)) {
+                    await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity }).then(async () => {
+                        NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
+                        this.$router.push({ name: "Cabinet" });
+                    }).catch(() => {
                         NotificationService.showError("Erreur lors de traitement de l'opération de la sortie de l'article " + this.article.title + " de stock.");
-                });
+                    });
+                }
+                else {
+                    this.showConfirmationDisplayed = true;
+                }
             },
         },
         computed: {

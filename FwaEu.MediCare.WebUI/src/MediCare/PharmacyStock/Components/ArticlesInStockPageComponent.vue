@@ -123,7 +123,7 @@
                 });
             },
             goToArticleDetails(stockPharmacy) {
-                this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id, stockId: stockPharmacy.id } });
+                this.$router.push({ name: 'Articles', params: { articleId: stockPharmacy.article.id, stockId: stockPharmacy.id }, query: { stockQuantity: stockPharmacy.quantity } });
             },
             goToScanCode() {
                 if (this.hasVideoInput)
