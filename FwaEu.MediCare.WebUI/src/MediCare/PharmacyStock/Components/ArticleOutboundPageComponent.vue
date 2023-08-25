@@ -41,7 +41,7 @@
             </div>
             <div class="confirmation-container" v-if="showConfirmationDisplayed">
                 <span>Etes vous sûr de faire sortir cette quantité ? <small>La quantité restante en stock va être négative</small></span>
-                <div class="confirmaton-button-container">
+                <div class="confirmaton-button-container" style="margin-top: 10px;">
                     <Button @click="confirmOrderAsync()" label="OUI" outlined class="button-confirmation" />
                     <Button @click="() => showConfirmationDisplayed = false" label="NON" outlined class="button-confirmation" />
                 </div>
