@@ -30,7 +30,7 @@
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     :label="article.alternativePackagingCount + ' ' + alternativePackagingLabel"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
-                    @click="goToSearchFormats(article.title)" />
+                    @click="goToSearchFormats(article.groupName)" />
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     :label="article.substitutionsCount + ' ' + substitutionLabel"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
