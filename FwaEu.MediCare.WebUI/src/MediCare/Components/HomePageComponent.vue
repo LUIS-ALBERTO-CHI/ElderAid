@@ -5,8 +5,7 @@
             <span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
         </div>
         <div v-else class="change-organization-container">
-            <span>{{ organization?.name }}</span>
-            <i @click="goToOrganizationSelectionPage" class="fa-solid fa-pen-to-square change-organization-icon "></i>
+            <span @click="goToOrganizationSelectionPage">{{ organization?.name }}</span>
         </div>
         <div v-if="this.patientsActive.length > 0" class="vignette-list">
             <div class="vignette-item">
@@ -64,93 +63,93 @@
     </div>
 </template>
 <script>
-import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
-import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
-const path = Configuration.application.customResourcesPath;
-import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
-import Dropdown from 'primevue/dropdown';
+    import LocalizationMixing from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+    import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
+    const path = Configuration.application.customResourcesPath;
+    import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
+    import Dropdown from 'primevue/dropdown';
 
-import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
+    import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
 
-import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
-import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
+    import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
+    import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
 
-import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
-import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
+    import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
+    import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
 
-export default {
-    inject: ["deviceInfo"],
-    mixins: [LocalizationMixing],
-    components: {
-        Dropdown
-    },
-    i18n: {
-        messages: {
-            getMessagesAsync(locale) {
-                return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
+    export default {
+        inject: ["deviceInfo"],
+        mixins: [LocalizationMixing],
+        components: {
+            Dropdown
+        },
+        i18n: {
+            messages: {
+                getMessagesAsync(locale) {
+                    return import(`@/MediCare/Components/Content/home-page-messages.${locale}.json`);
+                }
             }
-        }
-    },
-    data() {
-        const $this = this;
-        return {
-            selectedOrganization: null,
-            isSingleOrganization: false,
-            patientsActive: [],
-            organizations: [],
-            startLoadTime: 0,
-            cabinets: [],
-            organization: null,
-        };
-    },
-    created: showLoadingPanel(async function () {
-        localStorage.removeItem("searchPatient")
-        const patients = await PatientsMasterDataService.getAllAsync();
-        this.organizations = await OrganizationsMasterDataService.getAllAsync();
-
-        this.cabinets = await CabinetsMasterDataService.getAllAsync();
-        if (this.organizations.length <= 1) {
-            this.isSingleOrganization = true;
-        }
-        this.organization = ViewContextService.get();
-        this.patientsActive = patients.filter(x => x.isActive);
-    }),
-    methods: {
-        goToLoginFront() {
-            this.$router.push("/Login")
         },
-        async logoutAsync() {
-            AuthenticationService.logoutAsync().then(() => {
-                this.$router.push("/Login")
-            });
+        data() {
+            const $this = this;
+            return {
+                selectedOrganization: null,
+                isSingleOrganization: false,
+                patientsActive: [],
+                organizations: [],
+                startLoadTime: 0,
+                cabinets: [],
+                organization: null,
+            };
         },
-        goToPatientPage() {
-            this.$router.push("/SearchPatient")
+        created: showLoadingPanel(async function () {
             localStorage.removeItem("searchPatient")
-        },
-        goToProfilPage() {
-            this.$router.push("/UserSettings")
-        },
-        goToOrdersPage() {
-            this.$router.push("/Orders")
-        },
-        goToCabinetsPage() {
-            if (this.cabinets.length == 1) {
-                this.$router.push("/Cabinet/" + this.cabinets[0].id);
-            } else {
-                this.$router.push("/stockPharmacy")
+            const patients = await PatientsMasterDataService.getAllAsync();
+            this.organizations = await OrganizationsMasterDataService.getAllAsync();
+
+            this.cabinets = await CabinetsMasterDataService.getAllAsync();
+            if (this.organizations.length <= 1) {
+                this.isSingleOrganization = true;
             }
-        },
-        goToPeriodicPage() {
-            this.$router.push("/PeriodicOrders")
-        },
-        goToOrganizationSelectionPage() {
-            this.$router.push("/OrganizationSelection")
-        },
-        getNumberOfPatientToValidate() {
-            const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 0).length;
-            return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
+            this.organization = ViewContextService.get();
+            this.patientsActive = patients.filter(x => x.isActive);
+        }),
+        methods: {
+            goToLoginFront() {
+                this.$router.push("/Login")
+            },
+            async logoutAsync() {
+                AuthenticationService.logoutAsync().then(() => {
+                    this.$router.push("/Login")
+                });
+            },
+            goToPatientPage() {
+                this.$router.push("/SearchPatient")
+                localStorage.removeItem("searchPatient")
+            },
+            goToProfilPage() {
+                this.$router.push("/UserSettings")
+            },
+            goToOrdersPage() {
+                this.$router.push("/Orders")
+            },
+            goToCabinetsPage() {
+                if (this.cabinets.length == 1) {
+                    this.$router.push("/Cabinet/" + this.cabinets[0].id);
+                } else {
+                    this.$router.push("/stockPharmacy")
+                }
+            },
+            goToPeriodicPage() {
+                this.$router.push("/PeriodicOrders")
+            },
+            goToOrganizationSelectionPage() {
+                this.$router.push("/OrganizationSelection")
+            },
+            getNumberOfPatientToValidate() {
+                const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 'None').length;
+                return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
+            }
         }
     }
-}
 </script>
