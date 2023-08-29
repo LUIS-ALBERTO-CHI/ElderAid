@@ -149,7 +149,6 @@
                     date.setMinutes(0);
             },
             async checkValidation() {
-                //this.validationErrors = [];
                 this.formError = "";
                 const validationSchema = Yup.object().shape({
                     startDate: Yup.date().required("La date de changement est requise."),

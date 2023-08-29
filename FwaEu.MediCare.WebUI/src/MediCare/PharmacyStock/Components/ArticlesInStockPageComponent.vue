@@ -16,7 +16,7 @@
                         <span>{{ stockPharmacy.quantity }}</span>
                     </div>
                 </div>
-                <span @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
+                <span v-show="filteredArticles.length >= pageSize"  @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
             </div>
             <div v-show="filteredArticles.length === 0" class="article-not-found">
                 <i class="fa-solid fa-box-open icon-not-found"></i>

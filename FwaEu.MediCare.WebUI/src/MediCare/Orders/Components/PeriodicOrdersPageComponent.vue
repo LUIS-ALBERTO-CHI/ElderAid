@@ -12,7 +12,7 @@
             <Dropdown v-model="selectedOrderType" :options="ordersTypeOptions" class="select-sector" />
             <div v-if="periodicOrders"
                  class="periodic-orders-container">
-                <div v-for="patient in filteredPatients" @click="goToPeriodicOrdersPage(patient.id)" :key="patient.id"
+                <div v-for="patient in filteredPatients" @click="goToPeriodicOrdersPage(patient)" :key="patient.id"
                      class="periodic-orders-item">
                     <div class="header">
                         <div class="patient-info">
@@ -53,7 +53,7 @@
         data() {
             return {
                 ordersTypeOptions: ["Tous les états des commandes", "Patients validés", "Patients à valider"],
-                selectedOrderType: "Tous les états des commandes",
+                selectedOrderType: "Patients à valider",
                 periodicOrders: null,
                 patients: [],
                 searchOrders: "",
@@ -64,7 +64,7 @@
                 protections: [],
             };
         },
-        async created() {
+        async created() {            
             this.buildings = await BuildingsMasterDataService.getAllAsync();
             this.periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
             this.protections = await ProtectionMasterDataService.getAllAsync();
@@ -88,11 +88,12 @@
                     this.$refs.searchInput.$el.focus();
                 });
             },
-            goToPeriodicOrdersPage(patientId) {
-                this.$router.push({
-                    name: "PeriodicOrder",
-                    params: { id: patientId },
-                });
+            goToPeriodicOrdersPage(patient) {
+                if (!this.isPeriodicOrderValidated(patient))
+                    this.$router.push({
+                        name: "PeriodicOrder",
+                        params: { id: patient.id },
+                    });
             },
             getQuantityPeriodicOrderNotValidated(patient) {
                 const patientProtections = this.protections.filter(protection => protection.patientId === patient.id);
