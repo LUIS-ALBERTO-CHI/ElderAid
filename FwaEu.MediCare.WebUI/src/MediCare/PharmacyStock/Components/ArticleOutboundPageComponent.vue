@@ -36,7 +36,10 @@
                     <span>Quantité sortie (comprimés)</span>
                 </div>
                 <div class="icon-right-container">
-                    <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" />
+                    <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" showButtons buttonLayout="horizontal"
+                         style="width: 100%;" decrementButtonClassName="p-button-secondary"
+                         incrementButtonClassName="p-button-secondary" incrementButtonIcon="fa fa-solid fa-plus"
+                         decrementButtonIcon="fa fa-solid fa-minus"/>
                 </div>
             </div>
             <div class="confirmation-container" v-if="showConfirmationDisplayed">

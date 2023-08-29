@@ -11,7 +11,7 @@
             </div>
             <i @click="displayMoreQuantity()" class="fa fa-solid fa-plus add-icon" style="font-size: 20px;"></i>
         </div>
-        <div v-show="moreQ9uantityDisplayed">
+        <div v-show="moreQuantityDisplayed">
             <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal"
                          style="width: 100%;" decrementButtonClassName="p-button-secondary"
                          incrementButtonClassName="p-button-secondary" incrementButtonIcon="fa fa-solid fa-plus"

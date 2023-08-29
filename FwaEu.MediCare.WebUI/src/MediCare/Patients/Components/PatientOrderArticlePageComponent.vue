@@ -112,7 +112,9 @@
                 }
             }
             if (this.patient)
-                this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
+                this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders').then((orders) => {
+                    return orders.filter(order => order.state != 'Cancelled');
+                });
             this.loadGallery();
         },
         methods: {
@@ -131,9 +133,10 @@
                 return parseInt(this.$route.params.id);
             },
             articleLastOrderForPatient() {
-                const order = this.patientOrders.find(order => order.articleId == this.article.id);
-                if (order)
-                    return "Dernière commande le " +  new Date(order.updatedOn).toLocaleDateString('fr-FR');
+                const orders = this.patientOrders.filter(order => order.articleId == this.article.id)
+                const order = orders.sort((a, b) => new Date(b.updatedOn) - new Date(a.updatedOn));
+                if (order[0])
+                    return "Dernière commande le " +  new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
                 else
                     return "Pas de commande récente pour cette article" 
             }

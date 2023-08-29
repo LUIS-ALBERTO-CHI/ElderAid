@@ -155,6 +155,7 @@
 }
 .vignette-item:hover {
   background-color: #e4e1e1;
+  cursor: pointer;
 }
 
 .vignette-icon {

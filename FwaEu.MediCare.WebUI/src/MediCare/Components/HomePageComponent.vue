@@ -42,10 +42,10 @@
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
-            <div class="vignette-item">
+            <div class="vignette-item" style="opacity: 0.4;">
                 <div class="vignette-main-info">
                     <i class="fa-regular fa-truck vignette-icon fa-fw" style="color: #a5ae9d;" />
-                    <span class="vignette-text">Livraison</span>
+                    <span class="vignette-text">Livraison (en cours de développement)</span>
                 </div>
                 <i class="fa-regular fa-angle-right chevron-icon" />
             </div>
