@@ -62,7 +62,6 @@
             ScannerComponent,
             ProgressSpinner
         },
-
         setup() {
             const route = useRoute();
             const searchValue = ref(route.query.searchMode ?? "");
@@ -182,17 +181,16 @@
                 else {
                     this.$router.push({ name: "OrderArticle", params: { articleId: article.id } });
                 }
-
             },
             loadInitialArticles() {
                 this.performSearch();
-            },
+            }
         },
         computed: {
             showPage() {
                 return !this.showScanner;
-            },
-        },
+            }
+        }
     };
 </script>
 

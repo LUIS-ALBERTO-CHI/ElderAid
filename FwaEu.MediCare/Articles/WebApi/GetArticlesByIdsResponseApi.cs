@@ -22,6 +22,7 @@ namespace FwaEu.MediCare.Articles.WebApi
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
         public int? LikesCount { get; set; }
+        public bool IsDeleted { get; set; }
         public bool IsGalenicDosageForm { get; set; }
         public int PharmaCode { get; set; }
     }

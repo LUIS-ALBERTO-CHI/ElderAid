@@ -33,7 +33,7 @@ namespace FwaEu.MediCare.Articles
 
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
-
+        public bool? IsDeleted  { get; set; }
         public bool IsGalenicDosageForm { get; set; }
         public int PharmaCode { get; set; }
         public DateTime UpdatedOn { get { return _dateTime; } set { } }
@@ -69,7 +69,7 @@ namespace FwaEu.MediCare.Articles
             Map(entity => entity.Unit).Column("Unit");
             Map(entity => entity.InvoicingUnit).Column("InvoicingUnit");
             Map(entity => entity.IsGalenicDosageForm).Column("IsGalenicDosageForm");
-
+            Map(entity => entity.IsDeleted).Column("IsDeleted");
             Map(entity => entity.PharmaCode).Column("PharmaCode");
         }
     }

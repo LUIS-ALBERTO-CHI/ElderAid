@@ -21,8 +21,10 @@ namespace FwaEu.Modules.MasterData.WebApi
 			[FromBody]GetChangeInfosParametersModel[] parameters,
 			[FromServices]IMasterDataService masterDataService)
 		{
-
-			var changesInfos = await masterDataService.GetChangesInfosAsync(
+            var rr = "dd";
+            if (parameters[0].MasterDataKey == "Patients")
+                rr = "deed";
+            var changesInfos = await masterDataService.GetChangesInfosAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetChangesParameters>(
 						p.MasterDataKey, new MasterDataProviderGetChangesParameters()))
 					.ToArray());
@@ -42,8 +44,10 @@ namespace FwaEu.Modules.MasterData.WebApi
 			[FromServices]IMasterDataService masterDataService,
 			[FromServices]IUserContextLanguage userContextLanguage)
 		{
-
-			var models = await masterDataService.GetModelsAsync(
+            var rr = "dd";
+			if (parameters[0].MasterDataKey == "Patients")
+				rr = "deed";
+            var models = await masterDataService.GetModelsAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetModelsParameters>(
 						p.MasterDataKey, new MasterDataProviderGetModelsParameters(
 							p.Pagination == null ? null
@@ -74,7 +78,10 @@ namespace FwaEu.Modules.MasterData.WebApi
 			[FromServices]IMasterDataService masterDataService,
 			[FromServices]IUserContextLanguage userContextLanguage)
 		{
-			var models = await masterDataService.GetModelsByIdsAsync(
+            var rr = "dd";
+            if (parameters[0].MasterDataKey == "Patients")
+                rr = "deed";
+            var models = await masterDataService.GetModelsByIdsAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetModelsByIdsParameters>(
 						p.MasterDataKey, new MasterDataProviderGetModelsByIdsParameters(
 							ConvertIds(p.Ids, masterDataService.GetIdType(p.MasterDataKey)),
