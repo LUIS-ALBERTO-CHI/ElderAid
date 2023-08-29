@@ -22,7 +22,7 @@ namespace FwaEu.MediCare.Articles
         public int? SubstitutionsCount { get; set; }
         public int? LikesCount { get; set; }
         public bool IsGalenicDosageForm { get; set; }
-
+        public int IsDeleted { get; set; }
         public bool? IsFavorite { get; set; }
         public int PharmaCode { get; set; }
     }

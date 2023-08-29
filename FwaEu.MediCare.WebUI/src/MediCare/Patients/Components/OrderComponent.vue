@@ -11,14 +11,17 @@
             </div>
             <i @click="displayMoreQuantity()" class="fa fa-solid fa-plus add-icon" style="font-size: 20px;"></i>
         </div>
-        <div v-show="moreQuantityDisplayed">
+        <div v-show="moreQ9uantityDisplayed">
             <InputNumber ref="inputNumber" v-model="selectedQuantity" showButtons buttonLayout="horizontal"
                          style="width: 100%;" decrementButtonClassName="p-button-secondary"
                          incrementButtonClassName="p-button-secondary" incrementButtonIcon="fa fa-solid fa-plus"
                          decrementButtonIcon="fa fa-solid fa-minus" />
 
         </div>
-        <div class="confirmation-container" v-if="showConfirmationDisplayed">
+        <div v-if="article.isDeleted" style="text-align: center; color : darkorange;">
+            Cet article est supprimé
+        </div>
+        <div class="confirmation-container" v-else-if="showConfirmationDisplayed">
             <span>Etes vous sûr de commander ?</span>
             <div class="confirmaton-button-container">
                 <Button @click="submitOrder()" label="OUI" outlined class="button-confirmation" />

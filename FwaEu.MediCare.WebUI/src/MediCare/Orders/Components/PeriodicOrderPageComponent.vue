@@ -108,7 +108,6 @@
                     articles: periodicOrders,
                     patientId: this.patient.id,
                 }
-
                 try {
                     await OrderService.validatePeriodicOrderAsync(model).then(() => {
                         NotificationService.showConfirmation('Commandes périodiques validées')

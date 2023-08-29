@@ -44,6 +44,7 @@ namespace FwaEu.MediCare.Articles.WebApi
                     ArticleType = (ArticleType?)x.ArticleType,
                     Unit = x.Unit,
                     IsGalenicDosageForm = x.IsGalenicDosageForm,
+                    IsDeleted = x.IsDeleted == 1,
                     PharmaCode= x.PharmaCode
                 }));
             }
@@ -78,7 +79,7 @@ namespace FwaEu.MediCare.Articles.WebApi
                     Title = x.Title,
                     ArticleType = x.ArticleType,
                     Unit = x.Unit,
-
+                    IsDeleted = x.IsDeleted == 1,
                     IsGalenicDosageForm = x.IsGalenicDosageForm,
                     PharmaCode = x.PharmaCode
                 }));
