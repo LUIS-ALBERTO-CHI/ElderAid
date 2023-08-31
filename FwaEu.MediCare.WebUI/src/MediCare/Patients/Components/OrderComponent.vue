@@ -93,6 +93,7 @@
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
             async submitOrder() {
+
                 const modelOrder = [{
                     patientId: this.patientId,
                     articleId: this.article.id,

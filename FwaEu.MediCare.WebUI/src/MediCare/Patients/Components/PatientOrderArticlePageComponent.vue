@@ -101,6 +101,7 @@
             };
         },
         async created() {
+            debugger;
             this.patient = await this.patientLazy.getValueAsync();
             const articleId = this.$route.params.articleId;
             if (articleId) {

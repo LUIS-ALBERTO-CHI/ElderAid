@@ -5,7 +5,6 @@ using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
 using NHibernate.Transform;
 using FwaEu.Fwamework.Data.Database.Sessions;
@@ -17,7 +16,6 @@ using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Options;
-using FluentNHibernate.Data;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -74,6 +72,8 @@ namespace FwaEu.MediCare.Orders.Services
                 stockedProcedure.SetParameter("PatientId", order.PatientId);
                 stockedProcedure.SetParameter("ArticleId", order.ArticleId);
                 stockedProcedure.SetParameter("Quantity", order.Quantity);
+                stockedProcedure.SetParameter("IsGalenicForm", order.IsGalenicForm);
+                stockedProcedure.SetParameter("IsPeriodicOrder", databaseName != null);
                 stockedProcedure.SetParameter("UserLogin", currentUserLogin);
                 stockedProcedure.SetParameter("UserIp", currentUserIp);
 
@@ -113,7 +113,6 @@ namespace FwaEu.MediCare.Orders.Services
                             ValidatedBy = currentUser,
                             ValidatedOn = dateNow
                         };
-
                     }
                     await repository.SaveOrUpdateAsync(entity);
                     await repositorySession.Session.FlushAsync();
@@ -145,7 +144,8 @@ namespace FwaEu.MediCare.Orders.Services
                                                       {
                                                           ArticleId = x.Key,
                                                           PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
-                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity
+                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity,
+                                                          IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
                                                       .ToArray();
                 if (orders.Length > 0)
