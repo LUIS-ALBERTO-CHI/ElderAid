@@ -51,15 +51,13 @@
     import Dropdown from 'primevue/dropdown';
     import AccordionOrderComponent from './AccordionOrderComponent.vue';
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import OrderComponent from '@/MediCare/Patients/Components/OrderComponent.vue';
-
-
 
     export default {
         components: {
@@ -118,7 +116,7 @@
                 await OrderMasterDataService.clearCacheAsync();
                 this.orders = await OrderMasterDataService.getAllAsync();
                 const ordersArticleIds = this.orders.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
+                const articles = await RecentArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
 
                 this.orders.forEach(order => {
                     const article = articles.find(x => x.id == order.articleId);

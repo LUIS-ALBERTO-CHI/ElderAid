@@ -17,6 +17,7 @@ using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Options;
+using FluentNHibernate.Data;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -95,7 +96,7 @@ namespace FwaEu.MediCare.Orders.Services
                 var dateNow = _currentDateTime.Now;
                 foreach (var article in validatePeriodicOrder.Articles)
                 {
-                    var entity = repository.Query().FirstOrDefault(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.OrderedOn == null && x.UpdatedBy.Id == currentUser.Id);
+                    var entity = repository.Query().FirstOrDefault(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.OrderedOn == null && x.UpdatedBy.Id == currentUser.Id && x.CreatedOn > organization.LastPeriodicityOrder);
                     if (entity != null)
                     {
                         entity.Quantity = article.Quantity;
@@ -124,6 +125,7 @@ namespace FwaEu.MediCare.Orders.Services
                 throw;
             }
         }
+
 
         public async Task CreatePeriodicOrderAsync(int organizationId)
         {
@@ -166,17 +168,25 @@ namespace FwaEu.MediCare.Orders.Services
 
         public async Task CancelOrderAsync(int orderId)
         {
-            var query = "exec SP_MDC_RemoveOrder :OrderId, :UserLogin, :UserIp";
-            var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
+            try
+            {
+                var query = "exec SP_MDC_RemoveOrder :OrderId, :UserLogin, :UserIp";
+                var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
 
-            var currentUserLogin = ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login;
-            var currentUserIp = GetCurrentIpAddress();
+                var currentUserLogin = ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login;
+                var currentUserIp = GetCurrentIpAddress();
 
-            stockedProcedure.SetParameter("OrderId", orderId);
-            stockedProcedure.SetParameter("UserLogin", currentUserLogin);
-            stockedProcedure.SetParameter("UserIp", currentUserIp);
-            
-            await stockedProcedure.ExecuteUpdateAsync();
+                stockedProcedure.SetParameter("OrderId", orderId);
+                stockedProcedure.SetParameter("UserLogin", currentUserLogin);
+                stockedProcedure.SetParameter("UserIp", currentUserIp);
+
+                await stockedProcedure.ExecuteUpdateAsync();
+            }
+            catch (GenericADOException e)
+            {
+                DatabaseExceptionHelper.CheckForDbConstraints(e);
+                throw;
+            }
         }
 
 

@@ -36,7 +36,7 @@
     import InputNumber from 'primevue/inputnumber';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import OrderComponent from './OrderComponent.vue';
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
     import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
@@ -94,7 +94,7 @@
             async fillPatientTreatments() {
                 let treatmentArticleIds = this.patientTreatments.map(treatment => treatment.appliedArticleId)
                 treatmentArticleIds = treatmentArticleIds.concat(this.patientTreatments.map(treatment => treatment.prescribedArticleId))
-                const articles = await ArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
+                const articles = await RecentArticlesMasterDataService.getByIdsAsync(treatmentArticleIds)
                 this.patientTreatments.forEach(treatment => {
                     treatment.prescribedArticle = articles.find(article => article.id === treatment.prescribedArticleId)
                     if (treatment.appliedArticleId !== 0 || treatment.appliedArticleId !== null)

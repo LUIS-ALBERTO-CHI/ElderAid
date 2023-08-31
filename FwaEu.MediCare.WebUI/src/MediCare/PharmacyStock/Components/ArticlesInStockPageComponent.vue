@@ -40,7 +40,7 @@
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import ArticlesService from '@/MediCare/Articles/Services/articles-service';
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
 
     export default {
         components: {
@@ -99,7 +99,7 @@
             this.focusSearchBar();
             await this.getCurrentCabinetAsync();
             this.loadInitialArticles();
-            this.stockPharmacy = await ArticlesMasterDataService.getAllAsync();
+            this.stockPharmacy = await RecentArticlesMasterDataService.getAllAsync();
             const devices = await navigator.mediaDevices?.enumerateDevices();
             this.hasVideoInput = devices?.some(device => device.kind === 'videoinput');
         },

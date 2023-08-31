@@ -1,5 +1,5 @@
 import HttpService from "@/Fwamework/Core/Services/http-service";
-import ArticlesMasterDataService from "./articles-master-data-service";
+import RecentArticlesMasterDataService from "./recent-articles-master-data-service";
 
 const ArticlesService = {
     async getAllBySearchAsync(searchExpression, articleFamily, page, pageSize) {
@@ -14,7 +14,7 @@ const ArticlesService = {
     async fillArticlesAsync(filteredArticles) {
 
         let articleIds = filteredArticles.map(x => x.articleId);
-        const articlesFromMasterData = await ArticlesMasterDataService.getByIdsAsync(articleIds);
+        const articlesFromMasterData = await RecentArticlesMasterDataService.getByIdsAsync(articleIds);
         filteredArticles.forEach(item => {
             const article = articlesFromMasterData.find(article => article.id == item.articleId)
             item.article = article

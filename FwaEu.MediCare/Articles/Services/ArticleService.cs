@@ -1,12 +1,6 @@
-﻿using FwaEu.Fwamework.Data.Database.Sessions;
-using FwaEu.MediCare.GenericRepositorySession;
-using MySqlX.XDevAPI;
-using NHibernate;
-using NHibernate.Linq;
+﻿using FwaEu.MediCare.GenericRepositorySession;
 using NHibernate.Transform;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 

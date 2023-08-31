@@ -36,7 +36,7 @@
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
-    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import RecentArticlesMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
     import { protectionType } from '@/MediCare/Articles/article-filter-types';
     import ProgressSpinner from 'primevue/progressspinner';
     export default {
@@ -73,7 +73,7 @@
                 this.protectionDosages = await ProtectionDosagesMasterDataService.getAllAsync();
                 const protections = await ProtectionsMasterDataService.getAllAsync();
                 const protectionsArticleIds = protections.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getByIdsAsync(protectionsArticleIds);
+                const articles = await RecentArticlesMasterDataService.getByIdsAsync(protectionsArticleIds);
                 const protectionIds = protections.map(protection => protection.id)
                 const filteredProtectionDosages = this.protectionDosages.filter(x => protectionIds.includes(x.protectionId))
                 protections.forEach(protection => {

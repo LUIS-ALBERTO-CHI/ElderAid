@@ -48,7 +48,7 @@
 
     import Accordion from 'primevue/accordion';
     import AccordionTab from 'primevue/accordiontab';
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import PatientService from "@/MediCare/Patients/Services/patients-service";
 
@@ -74,7 +74,7 @@
         async created() {
             if (this.order.patientId != null && this.order.patientId > 0)
                 this.patient  = await PatientService.getPatientById(this.order.patientId);
-            const articles = await ArticlesMasterDataService.getAllAsync();
+            const articles = await RecentArticlesMasterDataService.getAllAsync();
             this.article = articles.find(x => x.id == this.order.articleId);
             this.organization = ViewContextService.get();
         },

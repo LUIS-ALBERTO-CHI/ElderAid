@@ -42,7 +42,7 @@
     import PatientInfoComponent from "@/MediCare/Patients/Components/PatientInfoComponent.vue";
     import ScannerComponent from "@/MediCare/Components/ScanCodeComponent.vue";
     import InputText from "primevue/inputtext";
-    import ArticlesMasterDataService from "../Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "../Services/recent-articles-master-data-service";
     import Dropdown from "primevue/dropdown";
     import { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import ArticlesService from "../Services/articles-service";
@@ -137,7 +137,7 @@
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.focusSearchBar();
-            this.articles = await ArticlesMasterDataService.getAllAsync();
+            this.articles = await RecentArticlesMasterDataService.getAllAsync();
             this.articlesType = [{ id: null, text: "Tous" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
             this.loadInitialArticles();
             if (this.$route.query.articleFilterType)

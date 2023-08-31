@@ -18,8 +18,8 @@
     import Button from 'primevue/button';
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import StockConsumptionMasterDataService from '@/MediCare/StockConsumption/Services/stock-consumption-master-data-service'
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
-    import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
+    import { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import StockConsumptionService from '@/MediCare/StockConsumption/Services/stock-consumption-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
@@ -57,7 +57,7 @@
         methods: {
             async fillStockConsumption() {
                 const stockConsumptionsArticleIds = this.stockConsumptions.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getByIdsAsync(stockConsumptionsArticleIds);
+                const articles = await RecentArticlesMasterDataService.getByIdsAsync(stockConsumptionsArticleIds);
                 this.stockConsumptions.forEach(stockConsumption => {
                     const article = articles.find(article => article.id === stockConsumption.articleId)
                     stockConsumption.article = article
