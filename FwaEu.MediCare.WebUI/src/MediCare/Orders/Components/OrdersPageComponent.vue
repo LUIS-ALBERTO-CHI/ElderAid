@@ -115,7 +115,6 @@
                 this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });
             },
             async fillOrders() {
-                await OrderMasterDataService.clearCacheAsync();
                 this.orders = await OrderMasterDataService.getAllAsync();
                 const ordersArticleIds = this.orders.map(x => x.articleId);
                 const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
@@ -141,6 +140,8 @@
                         this.isEndOfPagination = true;
                     this.orders = this.orders.concat(orders)
                     this.fillOrders();
+                    await OrderMasterDataService.clearCacheAsync();
+
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
