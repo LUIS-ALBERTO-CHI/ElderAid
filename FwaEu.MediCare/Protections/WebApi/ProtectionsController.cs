@@ -61,7 +61,8 @@ namespace FwaEu.MediCare.Protections.WebApi
                     StartDate= model.StartDate,
                     StopDate= model.StopDate,
                     ProtectionDosages = model.ProtectionDosages,
-                    ArticleUnit = model.ArticleUnit
+                    ArticleUnit = model.ArticleUnit,
+                    PatientId = model.PatientId
                 });
                 return Ok();
             }
@@ -84,7 +85,8 @@ namespace FwaEu.MediCare.Protections.WebApi
                 await protectionService.StopProtectionAsync(new StopProtectionModel
                 {
                     ProtectionId = model.ProtectionId,
-                    StopDate = model.StopDate
+                    StopDate = model.StopDate,
+                    PatientId = model.PatientId
                 });
                 return Ok();
             }

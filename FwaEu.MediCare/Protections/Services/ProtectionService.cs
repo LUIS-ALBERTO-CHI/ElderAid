@@ -5,27 +5,39 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using FwaEu.Fwamework.Data.Database.Sessions;
-using FwaEu.Fwamework.Temporal;
-using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
-using FwaEu.MediCare.Orders;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Text;
+using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.MediCare.Orders;
+using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.GenericSession;
+using FwaEu.Fwamework.Temporal;
+using NHibernate.Exceptions;
+using FwaEu.Modules.Data.Database;
+using NHibernate.Linq;
 
 namespace FwaEu.MediCare.Protections.Services
 {
     public class ProtectionService : IProtectionService
     {
         private readonly GenericSessionContext _genericsessionContext;
+        private readonly MainSessionContext _mainSessionContext;
+        private readonly ICurrentDateTime _currentDateTime;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IManageGenericDbService _manageGenericDbService;
         public ProtectionService(GenericSessionContext genericSessionContext,
-                                    ICurrentUserService currentUserService)
+                                    MainSessionContext mainSessionContext,
+                                        ICurrentUserService currentUserService,
+                                            ICurrentDateTime currentDateTime,
+                                                IManageGenericDbService manageGenericDbService)
         {
             _genericsessionContext = genericSessionContext;
+            _mainSessionContext = mainSessionContext;
             _currentUserService = currentUserService;
+            _currentDateTime = currentDateTime;
+            _manageGenericDbService = manageGenericDbService;
         }
 
         public async Task CreateProtectionAsync(CreateProtectionModel model)
@@ -77,6 +89,7 @@ namespace FwaEu.MediCare.Protections.Services
             stockedProcedure.SetParameter("UserIp", currentUserIp);
 
             await stockedProcedure.ExecuteUpdateAsync();
+            await CancelPeriodicOrderAsync(model.PatientId);
         }
 
         public async Task StopProtectionAsync(StopProtectionModel model)
@@ -93,6 +106,33 @@ namespace FwaEu.MediCare.Protections.Services
             stockedProcedure.SetParameter("UserIp", currentUserIp);
             
             await stockedProcedure.ExecuteUpdateAsync();
+            await CancelPeriodicOrderAsync(model.PatientId);
+        }
+
+        public async Task CancelPeriodicOrderAsync(int patientId)
+        {
+            try
+            {
+                var repositorySession = this._mainSessionContext.RepositorySession;
+                var repository = repositorySession.Create<PeriodicOrderValidationEntityRepository>();
+
+                var organizationRepository = repositorySession.Create<OrganizationEntityRepository>();
+                var currentDbId = _manageGenericDbService.GetGenericDbId();
+                var organization = await organizationRepository.GetAsync(currentDbId);
+
+                var dateNow = _currentDateTime.Now;
+                var periodicOrderValidations = repository.Query().Where(x => x.PatientId == patientId && x.OrderedOn == null && x.CreatedOn > organization.LastPeriodicityOrder);
+                foreach (var periodicOrderValidation in periodicOrderValidations)
+                {
+                    await repository.DeleteAsync(periodicOrderValidation);
+                    await repositorySession.Session.FlushAsync();
+                }
+            }
+            catch (GenericADOException e)
+            {
+                DatabaseExceptionHelper.CheckForDbConstraints(e);
+                throw;
+            }
         }
 
         static string BuildStringFromDictionary(string articleUnit, Dictionary<TimeSpan, int> protectionDosages)

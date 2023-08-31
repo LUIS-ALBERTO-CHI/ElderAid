@@ -36,7 +36,7 @@
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import ProtectionsMasterDataService from '@/MediCare/Patients/Services/protections-master-data-service';
     import ProtectionDosagesMasterDataService from '@/MediCare/Referencials/Services/protection-dosages-master-data-service'
-    import ArticleMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import ArticleMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
 
     export default {
         components: {

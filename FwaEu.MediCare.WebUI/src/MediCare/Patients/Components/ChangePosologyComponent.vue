@@ -86,7 +86,6 @@
             this.changeForm.startDate = new Date(this.protection.dateStart);
             this.changeForm.endDate = new Date(this.protection.dateEnd);
             this.fillPosology();
-
         },
         methods: {
             checkErrorQuantity(index) {
@@ -112,7 +111,8 @@
                     startDate: new Date(this.changeForm.startDate),
                     stopDate: this.changeForm.endDate ? new Date(this.changeForm.endDate) : null,
                     protectionDosages: this.posologyArrayToDictionnary(),
-                    articleUnit: this.protection.article.unit ? this.protection.article.unit : this.protection.article.invoicingUnit
+                    articleUnit: this.protection.article.unit ? this.protection.article.unit : this.protection.article.invoicingUnit,
+                    patientId: this.protection.patientId
                 }
                 try {
                     await ProtectionService.updateAsync(model).then(() => {

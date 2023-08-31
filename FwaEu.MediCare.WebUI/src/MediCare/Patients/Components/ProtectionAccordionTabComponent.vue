@@ -5,9 +5,13 @@
                 <div class="accordion-header">
                     <span class="header-title">{{protection.article.title}}</span>
                     <span class="header-subtitle">{{protection.dosageDescription }}</span>
-                    <span class="header-subtitle">{{isGoodEndDate(protection.dateEnd, protection.dateStart) ?
+                    <span class="header-subtitle">
+                        {{
+isGoodEndDate(protection.dateEnd, protection.dateStart) ?
                     `De ${$d(new Date(protection.dateStart))} à ${$d(new Date(protection.dateEnd))}`
-                    : $d(new Date(protection.dateStart))}}</span>
+                    : $d(new Date(protection.dateStart))
+                        }}
+                    </span>
                 </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
@@ -71,7 +75,6 @@
             }
         },
         async created() {
-
             this.stopEndDate = new Date(this.protection.dateEnd);
         },
         methods: {
@@ -93,6 +96,7 @@
                 const model = {
                     protectionId: this.protection.id,
                     stopDate: new Date(this.stopEndDate),
+                    patientId: this.protection.patientId
                 }
                 try {
                     await ProtectionService.stopAsync(model).then(() => {

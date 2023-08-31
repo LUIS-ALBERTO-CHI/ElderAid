@@ -26,14 +26,11 @@
     import InputNumber from 'primevue/inputnumber';
 
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
     import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
-    import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/periodic-orders-master-data-service';
-
-
 
     export default {
         components: {
@@ -67,7 +64,7 @@
         methods: {
             async fillPeriodicOrders() {
                 const periodicOrdersArticleIds = this.periodicOrders.map(x => x.articleId);
-                const articles = await ArticlesMasterDataService.getByIdsAsync(periodicOrdersArticleIds);
+                const articles = await RecentArticlesMasterDataService.getByIdsAsync(periodicOrdersArticleIds);
                 this.periodicOrders.forEach(periodicOrder => {
                     const article = articles.find(article => article.id === periodicOrder.articleId);
                     if (article != null) {

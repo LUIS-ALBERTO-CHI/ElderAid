@@ -69,7 +69,7 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import OrderComponent from './OrderComponent.vue';
     import Button from 'primevue/button';
-    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import RecentArticlesMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import Galleria from 'primevue/galleria';
     import AddPosologyComponent from '@/MediCare/Patients/Components/AddPosologyComponent.vue'
@@ -104,7 +104,7 @@
             this.patient = await this.patientLazy.getValueAsync();
             const articleId = this.$route.params.articleId;
             if (articleId) {
-                const [article] = await ArticlesMasterDataService.getByIdsAsync([articleId]);
+                const [article] = await RecentArticlesMasterDataService.getByIdsAsync([articleId]);
                 if (article != null)
                     this.article = article;
                 else {

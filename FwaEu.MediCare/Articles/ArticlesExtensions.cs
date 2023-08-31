@@ -16,7 +16,7 @@ namespace FwaEu.MediCare.Articles
             repositoryRegister.Add<ArticleEntityRepository>();
             services.AddTransient<IArticleService, ArticleService>();
 
-            services.AddMasterDataProvider<ArticleMasterDataProvider>("Articles");
+            services.AddMasterDataProvider<RecentArticlesMasterDataProvider>("RecentArticles");
             return services;
         }
     }

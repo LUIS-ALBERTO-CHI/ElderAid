@@ -62,7 +62,6 @@ export default {
 	watch: {
 
 		isOnline() {
-			console.log("here");
 		}
 
 	}

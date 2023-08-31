@@ -35,7 +35,7 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import AccordionOrderComponent from '@/MediCare/Orders/Components/AccordionOrderComponent.vue'
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
-    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
     import OrderComponent from './OrderComponent.vue';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import OrderService from '@/MediCare/Orders/Services/orders-service'
@@ -75,7 +75,7 @@
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-            this.articles = await ArticlesMasterDataService.getAllAsync()
+            this.articles = await RecentArticlesMasterDataService.getAllAsync()
         },
         methods: {
             isOrderPending(patientOrder) {

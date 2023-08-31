@@ -6,5 +6,6 @@ namespace FwaEu.MediCare.Protections.Services
     {
         public int ProtectionId { get; set; }
         public DateTime StopDate { get; set; }
+        public int PatientId { get; set; }
     }
 }

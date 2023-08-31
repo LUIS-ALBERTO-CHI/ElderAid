@@ -7,7 +7,7 @@ import PeriodicOrdersMasterDataService from "@/MediCare/Orders/Services/periodic
 import OrdersMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
 import BuildingsMasterDataService from "@/MediCare/Referencials/Services/buildings-master-data-service";
 import UserOrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-user-master-data-service";
-import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
+import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
 import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
 import OrganizationsMasterDataService from "@/MediCare/Organizations/Services/organizations-master-data-service";
 import ViewContextService, { ViewContextModel } from '@/MediCare/ViewContext/Services/view-context-service';
@@ -48,7 +48,7 @@ const CachePreloaderService = {
                 }
 
                 await Promise.all([
-                    ArticlesMasterDataService.getAllAsync(),
+                    RecentArticlesMasterDataService.getAllAsync(),
                     OrdersMasterDataService.getAllAsync(),
                     BuildingsMasterDataService.getAllAsync(),
                     UserOrganizationsMasterDataService.getAllAsync(),

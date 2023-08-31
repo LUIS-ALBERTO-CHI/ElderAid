@@ -64,11 +64,10 @@
     import Dropdown from 'primevue/dropdown';
     import InputNumber from 'primevue/inputnumber';
     import CabinetsMasterDataService from "@/MediCare/Referencials/Services/cabinets-master-data-service";
-    import ViewContextService from '@/MediCare/ViewContext/Services/view-context-service';
     import SearchPatientComponent from '@/MediCare/Patients/Components/SearchPatientPageComponent.vue';
     import NotificationService from "@/Fwamework/Notifications/Services/notification-service";
     import ArticlesService from '@/MediCare/Articles/Services/articles-service';
-    import ArticlesMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import RecentArticlesMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
     import PharmacyStockService from '@/MediCare/PharmacyStock/Services/pharmacy-stock-service';
     import BreadcrumbService from '@/Modules/BreadcrumbsCollapsed/Services/breadcrumbs-service';
     import ResolveContext from '@/Modules/BreadcrumbsCollapsed/Services/resolve-context'
@@ -101,7 +100,7 @@
             await this.getCurrentCabinetAsync();
             const articleId = this.$route.params.articleId;
             if (articleId) {
-                const article = await ArticlesMasterDataService.getAsync(articleId);
+                const article = await RecentArticlesMasterDataService.getAsync(articleId);
                 this.article = article;
 
                 if (!article) {

@@ -9,13 +9,12 @@ using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Fwamework.Data.Database.Sessions;
 using NHibernate.Linq;
 using FwaEu.MediCare.Referencials;
-using NHibernate.Util;
 
 namespace FwaEu.MediCare.Articles.MasterData
 {
-    public class ArticleMasterDataProvider : IMasterDataProvider
+    public class RecentArticlesMasterDataProvider : IMasterDataProvider
     {
-        public ArticleMasterDataProvider(ICurrentDateTime currentDateTime, GenericSessionContext sessionContext, MainSessionContext mainSessionContext)
+        public RecentArticlesMasterDataProvider(ICurrentDateTime currentDateTime, GenericSessionContext sessionContext, MainSessionContext mainSessionContext)
         {
             _sessionContext = sessionContext ?? throw new ArgumentNullException(nameof(sessionContext));
             if (!_dateTimeNow.HasValue)

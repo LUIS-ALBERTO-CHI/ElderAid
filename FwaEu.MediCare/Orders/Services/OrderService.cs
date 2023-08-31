@@ -5,7 +5,6 @@ using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
 using NHibernate.Transform;
 using FwaEu.Fwamework.Data.Database.Sessions;
@@ -58,7 +57,7 @@ namespace FwaEu.MediCare.Orders.Services
 
         public async Task CreateOrdersAsync(CreateOrdersPost[] orders, string databaseName = null)
         {
-            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :UserLogin, :UserIp";
+            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :IsGalenicForm, :IsPeriodicOrder, :UserLogin, :UserIp";
             if (databaseName != null)
                 _genericsessionContext.NhibernateSession.Connection.ChangeDatabase(databaseName);
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
@@ -73,6 +72,8 @@ namespace FwaEu.MediCare.Orders.Services
                 stockedProcedure.SetParameter("PatientId", order.PatientId);
                 stockedProcedure.SetParameter("ArticleId", order.ArticleId);
                 stockedProcedure.SetParameter("Quantity", order.Quantity);
+                stockedProcedure.SetParameter("IsGalenicForm", order.IsGalenicForm);
+                stockedProcedure.SetParameter("IsPeriodicOrder", databaseName != null);
                 stockedProcedure.SetParameter("UserLogin", currentUserLogin);
                 stockedProcedure.SetParameter("UserIp", currentUserIp);
 
@@ -95,7 +96,7 @@ namespace FwaEu.MediCare.Orders.Services
                 var dateNow = _currentDateTime.Now;
                 foreach (var article in validatePeriodicOrder.Articles)
                 {
-                    var entity = repository.Query().FirstOrDefault(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.OrderedOn == null && x.UpdatedBy.Id == currentUser.Id);
+                    var entity = repository.Query().FirstOrDefault(x => x.ArticleId == article.ArticleId && x.PatientId == validatePeriodicOrder.PatientId && x.OrderedOn == null && x.UpdatedBy.Id == currentUser.Id && x.CreatedOn > organization.LastPeriodicityOrder);
                     if (entity != null)
                     {
                         entity.Quantity = article.Quantity;
@@ -112,7 +113,6 @@ namespace FwaEu.MediCare.Orders.Services
                             ValidatedBy = currentUser,
                             ValidatedOn = dateNow
                         };
-
                     }
                     await repository.SaveOrUpdateAsync(entity);
                     await repositorySession.Session.FlushAsync();
@@ -124,6 +124,7 @@ namespace FwaEu.MediCare.Orders.Services
                 throw;
             }
         }
+
 
         public async Task CreatePeriodicOrderAsync(int organizationId)
         {
@@ -143,7 +144,8 @@ namespace FwaEu.MediCare.Orders.Services
                                                       {
                                                           ArticleId = x.Key,
                                                           PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
-                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity
+                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity,
+                                                          IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
                                                       .ToArray();
                 if (orders.Length > 0)
@@ -166,17 +168,25 @@ namespace FwaEu.MediCare.Orders.Services
 
         public async Task CancelOrderAsync(int orderId)
         {
-            var query = "exec SP_MDC_RemoveOrder :OrderId, :UserLogin, :UserIp";
-            var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
+            try
+            {
+                var query = "exec SP_MDC_RemoveOrder :OrderId, :UserLogin, :UserIp";
+                var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
 
-            var currentUserLogin = ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login;
-            var currentUserIp = GetCurrentIpAddress();
+                var currentUserLogin = ((IApplicationPartEntityPropertiesAccessor)this._currentUserService.User.Entity).Login;
+                var currentUserIp = GetCurrentIpAddress();
 
-            stockedProcedure.SetParameter("OrderId", orderId);
-            stockedProcedure.SetParameter("UserLogin", currentUserLogin);
-            stockedProcedure.SetParameter("UserIp", currentUserIp);
-            
-            await stockedProcedure.ExecuteUpdateAsync();
+                stockedProcedure.SetParameter("OrderId", orderId);
+                stockedProcedure.SetParameter("UserLogin", currentUserLogin);
+                stockedProcedure.SetParameter("UserIp", currentUserIp);
+
+                await stockedProcedure.ExecuteUpdateAsync();
+            }
+            catch (GenericADOException e)
+            {
+                DatabaseExceptionHelper.CheckForDbConstraints(e);
+                throw;
+            }
         }
 
 
