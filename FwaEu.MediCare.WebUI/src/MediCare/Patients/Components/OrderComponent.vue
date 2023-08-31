@@ -117,13 +117,11 @@
             },
             getQuantitySentance() {
                 let textToDisplay = "Commander"
-                const quantityType = this.article.countInBox > 1 ? 'boîte' : this.article.invoicingUnit;
-                if (this.selectedQuantity <= 1)
+                const quantityType = this.article.countInBox > 1 ? `boite de ${this.article.countInBox}` : this.article.invoicingUnit;
+                if (this.article.isGalenicDosageForm) {
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
+                } else {
                     textToDisplay += ` ${this.selectedQuantity} ${quantityType}`
-                else
-                    textToDisplay += ` ${this.selectedQuantity} ${quantityType}s`
-                if (this.article.isGalenicDosageForm && this.article.countInBox > 1) {
-                    textToDisplay += ` de ${this.article.countInBox}`
                 }
                 return textToDisplay;
             },

@@ -51,13 +51,15 @@
     import Dropdown from 'primevue/dropdown';
     import AccordionOrderComponent from './AccordionOrderComponent.vue';
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service";
-    import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
+    import ArticlesMasterDataService from "@/MediCare/Articles/Services/articles-master-data-service";
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
     import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import OrderComponent from '@/MediCare/Patients/Components/OrderComponent.vue';
+
+
 
     export default {
         components: {
@@ -85,6 +87,7 @@
         async created() {
             this.focusSearchBar();
             this.patients = await PatientsMasterDataService.getAllAsync();
+            this.orders = await OrderMasterDataService.getAllAsync();
             this.fillOrders();
         },
         methods: {
@@ -113,15 +116,16 @@
                 this.$router.push({ name: "OrderArticleFromOrder", params: { id: 0, articleId: articleId } });
             },
             async fillOrders() {
-                this.orders = await OrderMasterDataService.getAllAsync();
                 const ordersArticleIds = this.orders.map(x => x.articleId);
-                const articles = await RecentArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
-
+                const articles = await ArticlesMasterDataService.getByIdsAsync(ordersArticleIds);
                 this.orders.forEach(order => {
                     const article = articles.find(x => x.id == order.articleId);
                     order.article = article;
                     if (order.patientId != null || order.patientId > 0)
                         order.patient = this.patients.find(x => x.id == order.patientId);
+                });
+                this.orders.sort((a, b) => {
+                    return new Date(b.updatedOn) - new Date(a.updatedOn);
                 });
             },
             async getMoreOrders() {
@@ -137,8 +141,8 @@
                     if (orders.length < Configuration.paginationSize.orders)
                         this.isEndOfPagination = true;
                     this.orders = this.orders.concat(orders)
-                    this.fillOrders();
                     await OrderMasterDataService.clearCacheAsync();
+                    this.fillOrders();
 
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
@@ -149,9 +153,13 @@
                 if (isOrderForEms)
                     this.isOrderForEms = true;
             },
-            orderSubmitted() {
+            async orderSubmitted() {
                 this.orderComponentDisplayedIndex = -1;
                 this.isOrderForEms = false;
+                await OrderMasterDataService.clearCacheAsync();
+                await ArticlesMasterDataService.clearCacheAsync();
+                this.actualPage = 0;
+                this.$router.go(0)
             },
             getPatientOrders(patientId) {
                 if (this.isOrderForEms)
