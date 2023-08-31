@@ -74,13 +74,12 @@
                         periodicOrder.article = article
                         periodicOrder.periodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
                         periodicOrder.defaultPeriodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
-                        this.getPeriodicQuantity(periodicOrder, article)
                     }
                 })
             },
             quantityNeeded(periodicOrder) {
                 return `Besoin de ${periodicOrder.quantityPerDay * this.organization.periodicityOrderActivationDaysNumber} ${periodicOrder.article.invoicingUnit}
-                pour ${this.organization.periodicityOrderActivationDaysNumber} prochains jours`
+                pour ${this.organization.orderPeriodicityDays} prochains jours`
             },
             getPeriodicQuantity(periodicOrder, article) {
                 const filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
@@ -111,6 +110,8 @@
                 try {
                     await OrderService.validatePeriodicOrderAsync(model).then(() => {
                         NotificationService.showConfirmation('Commandes périodiques validées')
+                        PeriodicOrdersMasterDataService.clearCacheAsync();
+                        this.$router.push({ name: 'PeriodicOrders' })
                     })
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')

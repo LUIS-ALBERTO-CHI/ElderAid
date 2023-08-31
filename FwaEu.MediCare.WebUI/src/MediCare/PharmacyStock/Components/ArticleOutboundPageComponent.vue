@@ -5,6 +5,7 @@
             <div v-if="article">
                 <div class="text-left">
                     <span class="article-name">{{ article.title }}</span>
+                    <span>Quantité du stock : {{this.$route?.query?.stockQuantity}}</span>
                 </div>
             </div>
             <div class="info-container">
