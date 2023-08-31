@@ -57,7 +57,7 @@ namespace FwaEu.MediCare.Orders.Services
 
         public async Task CreateOrdersAsync(CreateOrdersPost[] orders, string databaseName = null)
         {
-            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :UserLogin, :UserIp";
+            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :IsGalenicForm, :IsPeriodicOrder, :UserLogin, :UserIp";
             if (databaseName != null)
                 _genericsessionContext.NhibernateSession.Connection.ChangeDatabase(databaseName);
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);

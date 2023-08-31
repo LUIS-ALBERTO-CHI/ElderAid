@@ -51,7 +51,7 @@
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service"
-    import ArticleMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
+    import ArticleMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
 
 
     export default {
@@ -93,11 +93,11 @@
                 this.showConfirmationDisplayed = !this.showConfirmationDisplayed;
             },
             async submitOrder() {
-
                 const modelOrder = [{
                     patientId: this.patientId,
                     articleId: this.article.id,
-                    quantity: this.selectedQuantity
+                    quantity: this.selectedQuantity,
+                    isGalenicForm: this.isGalenicDosageForm
                 }];
                 try {
                     await OrdersService.saveAsync(modelOrder).then(() => {
