@@ -1,29 +1,7 @@
 <template>
-	<div>
-		<a href="#" @click.prevent.stop="showReinitializePasswordPopup">{{$t('reinitializePasswordLink')}}</a>
-		<dx-popup v-if="popupVisible" v-model:visible="popupVisible"
-				  :close-on-outside-click="true"
-				  :width="380"
-				  height="auto"
-				  title-template="popupTitle"
-				  :show-title="true">
-			<template #popupTitle>
-				{{$t('reinitializePasswordLink')}}
-			</template>
-			<dx-validation-group>
-				<dx-text-box :placeholder="$t('email')" v-model:value="email">
-					<dx-validator>
-						<dx-required-rule/>
-						<dx-email-rule/>
-					</dx-validator>
-				</dx-text-box>
-				<div class="form-buttons">
-					<dx-button type="success"
-							   :text="$t('button')"
-							   @click="reinitializePasswordAsync" />
-				</div>
-			</dx-validation-group>
-		</dx-popup>
+	<div style="display: flex; flex-direction: column; row-gap: 5px;">
+		<a href="#" @click="test()">{{$t('reinitializePasswordLink')}}</a>
+		<span style="color: red" v-show="displayErrorMessage">{{$t('resetPasswordAlert')}}</span>
 	</div>
 </template>
 <script>
@@ -58,7 +36,8 @@
 		data() {
 			return {
 				popupVisible: false,
-				email: ""
+				email: "",
+				displayErrorMessage: false
 			};
 		},
 		methods: {
@@ -72,7 +51,10 @@
 				await PasswordRecoveryService.reinitializePasswordAsync(this.email);
 				NotificationService.showConfirmation(this.$t('mailSent'));
 				this.popupVisible = false;
-			})
+			}),
+			test() {
+				this.displayErrorMessage = true;
+			}
 		}
 	}
 </script>
