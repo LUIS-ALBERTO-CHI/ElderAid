@@ -31,11 +31,11 @@
         <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
-                    :label="article.alternativePackagingCount + ' ' + alternativePackagingLabel"
+                    label="Autres formats"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
                     @click="goToSearchFormats(article.groupName)" />
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
-                    :label="article.substitutionsCount + ' ' + substitutionLabel"
+                    label="Substitutions"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
                     @click="goToSearchSubstituts(article.groupName)" />
         </div>
@@ -50,6 +50,8 @@
     import OrdersService from '@/MediCare/Orders/Services/orders-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
+    import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service"
+    import ArticleMasterDataService from '@/MediCare/Articles/Services/articles-master-data-service';
 
 
     export default {
@@ -100,7 +102,9 @@
                     await OrdersService.saveAsync(modelOrder).then(() => {
                         NotificationService.showConfirmation('Votre commande a été passée avec succès')
                     })
-                    await MasterDataManagerService.clearCacheAsync();
+                    await OrderMasterDataService.clearCacheAsync();
+                    await ArticleMasterDataService.clearCacheAsync();
+
                     if (!(this.$route.name === "Orders")) {
                         this.$router.push("/Orders")
                     }
@@ -141,12 +145,6 @@
             isOrderAlreadyInProgress() {
                 return this.patientOrders.some(order => order.articleId === this.article.id && order.state === 'Pending');
             },
-            substitutionLabel() {
-                return this.article.substitutionsCount > 1 ? ' substitutions' : ' substitution';
-            },
-            alternativePackagingLabel() {
-                return this.article.alternativePackagingCount > 1 ? ' autres formats' : ' autre format';
-            }
         },
 
     }
