@@ -71,7 +71,6 @@
                         periodicOrder.article = article
                         periodicOrder.periodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
                         periodicOrder.defaultPeriodicQuantity = this.getPeriodicQuantity(periodicOrder, article)
-                        this.getPeriodicQuantity(periodicOrder, article)
                     }
                 })
             },
@@ -108,6 +107,8 @@
                 try {
                     await OrderService.validatePeriodicOrderAsync(model).then(() => {
                         NotificationService.showConfirmation('Commandes périodiques validées')
+                        PeriodicOrdersMasterDataService.clearCacheAsync();
+                        this.$router.push({ name: 'PeriodicOrders' })
                     })
                 } catch (error) {
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
