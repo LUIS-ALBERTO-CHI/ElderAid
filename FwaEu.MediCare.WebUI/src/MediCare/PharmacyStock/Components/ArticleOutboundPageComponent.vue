@@ -68,6 +68,8 @@
     import ArticlesService from '@/MediCare/Articles/Services/articles-service';
     import RecentArticlesMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
     import PharmacyStockService from '@/MediCare/PharmacyStock/Services/pharmacy-stock-service';
+    import BreadcrumbService from '@/Modules/BreadcrumbsCollapsed/Services/breadcrumbs-service';
+    import ResolveContext from '@/Modules/BreadcrumbsCollapsed/Services/resolve-context'
 
     export default {
         components: {
@@ -89,7 +91,8 @@
                 selectedPatient: null,
                 cabinetName: "",
                 isSwitchDisabled: false,
-                showConfirmationDisplayed: false
+                showConfirmationDisplayed: false,
+                isPatientSelected: false,
             };
         },
         async created() {
@@ -137,9 +140,11 @@
             async handleSelectedPatient(args) {
                 args.cancelNavigation = true
                 this.selectedPatient = args.selectedPatient;
+                this.isPatientSelected = true;
             },
             openSearchPatientComponent() {
                 this.selectedPatient = null;
+                this.isPatientSelected = false;
             },
             async confirmOrderAsync() {
                 if (this.showConfirmationDisplayed || (this.$route?.query?.stockQuantity !== null && this.$route?.query?.stockQuantity - this.quantity > 0)) {
@@ -159,9 +164,6 @@
             patientName() {
                 return this.selectedPatient ? this.selectedPatient.fullName : "";
             },
-            isPatientSelected() {
-                return !!this.selectedPatient;
-            }
         }
     };
 </script>
