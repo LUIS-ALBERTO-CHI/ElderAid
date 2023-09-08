@@ -142,25 +142,27 @@ namespace FwaEu.MediCare.Orders.Services
                                                 .ToListAsync();
                 var ordersValidated = periodicOrderValidations.GroupBy(x => x.ArticleId)
                                                       .Where(x => x.Count() > 0)
+                                                      .SelectMany(x => x.OrderByDescending(d => d.UpdatedOn))
                                                       .Select(x => new CreateOrdersPost()
                                                       {
-                                                          ArticleId = x.Key,
-                                                          PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
-                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity,
+                                                          ArticleId = x.ArticleId,
+                                                          PatientId = x.PatientId,
+                                                          Quantity = x.Quantity,
                                                           IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
                                                       .ToArray();
-                var  periodicOrdersUnvalidateds = await periodicOrderUnvalidatedRepository.Query()
-                                                  .Where(x => x.DateStart != null && x.DateEnd != null)
+                var  periodicOrdersUnvalidateds = await periodicOrderValidationRepository.Query()
+                                                  .Where(x => x.Organization.Id == organization.Id && x.OrderedOn != null)
                                                   .ToListAsync();
                 var unvalidatedOrders = periodicOrdersUnvalidateds.GroupBy(x => x.ArticleId)
                                                                     .Where(x => x.Count() > 0)
+                                                                    .SelectMany(x => x.OrderByDescending(d => d.UpdatedOn))
                                                                     .Select(x => new CreateOrdersPost()
                                                                         {
-                                                                            ArticleId = x.Key,
-                                                                            PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
-                                                                            Quantity = x.OrderByDescending(d => d.UpdatedOn).First().QuantityPerDay,
-                                                                            IsGalenicForm = false
+                                                                        ArticleId = x.ArticleId,
+                                                                        PatientId = x.PatientId,
+                                                                        Quantity = x.Quantity,
+                                                                        IsGalenicForm = false
                                                                          })
                                                                         .ToArray();
                 var orders = unvalidatedOrders.Concat(ordersValidated).ToArray();
