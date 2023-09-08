@@ -16,6 +16,7 @@ using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Options;
+using FwaEu.MediCare.Protections;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -131,6 +132,7 @@ namespace FwaEu.MediCare.Orders.Services
             var repositorySession = this._mainSessionContext.RepositorySession;
             var organizationRepository = repositorySession.Create<AdminOrganizationEntityRepository>();
             var periodicOrderValidationRepository = repositorySession.Create<PeriodicOrderValidationEntityRepository>();
+            var periodicOrderUnvalidatedRepository = repositorySession.Create<ProtectionEntityRepository>();
 
             var organization = await organizationRepository.GetNoPerimeterAsync(organizationId);
             if (organization != null)
@@ -138,7 +140,7 @@ namespace FwaEu.MediCare.Orders.Services
                 var periodicOrderValidations = await periodicOrderValidationRepository.Query()
                                                 .Where(x => x.Organization.Id == organization.Id && x.OrderedOn == null)
                                                 .ToListAsync();
-                var orders = periodicOrderValidations.GroupBy(x => x.ArticleId)
+                var ordersValidated = periodicOrderValidations.GroupBy(x => x.ArticleId)
                                                       .Where(x => x.Count() > 0)
                                                       .Select(x => new CreateOrdersPost()
                                                       {
@@ -148,6 +150,21 @@ namespace FwaEu.MediCare.Orders.Services
                                                           IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
                                                       .ToArray();
+                var  periodicOrdersUnvalidateds = await periodicOrderUnvalidatedRepository.Query()
+                                                  .Where(x => x.DateStart != null && x.DateEnd != null)
+                                                  .ToListAsync();
+                var unvalidatedOrders = periodicOrdersUnvalidateds.GroupBy(x => x.ArticleId)
+                                                                    .Where(x => x.Count() > 0)
+                                                                    .Select(x => new CreateOrdersPost()
+                                                                        {
+                                                                            ArticleId = x.Key,
+                                                                            PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
+                                                                            Quantity = x.OrderByDescending(d => d.UpdatedOn).First().QuantityPerDay,
+                                                                            IsGalenicForm = false
+                                                                         })
+                                                                        .ToArray();
+                var orders = unvalidatedOrders.Concat(ordersValidated).ToArray();
+
                 if (orders.Length > 0)
                 {
                     await CreateOrdersAsync(orders, organization.DatabaseName);

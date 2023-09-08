@@ -58,7 +58,9 @@
             this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
             this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+            console.log(this.periodicOrders);
             this.periodicOrderValidations = await PatientService.getMasterDataByPatientId(this.patient.id, 'PeriodicOrderValidations')
+            console.log(this.periodicOrderValidations);
             this.fillPeriodicOrders();
         },
         methods: {

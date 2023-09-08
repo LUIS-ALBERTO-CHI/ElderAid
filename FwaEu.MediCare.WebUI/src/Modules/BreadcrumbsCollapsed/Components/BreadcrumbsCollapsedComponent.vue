@@ -49,6 +49,7 @@
             },
             onRouteProcessed(resolved) {
                 this.resolvedNodes = resolved.breadcrumbNodes;
+                this.$emit('change', this.breadcrumbs);
             },
             notLastElement(index) {
                 return index < this.breadcrumbs.length - 1;
