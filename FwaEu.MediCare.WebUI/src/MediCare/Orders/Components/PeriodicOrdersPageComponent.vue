@@ -67,9 +67,9 @@
         async created() {            
             this.buildings = await BuildingsMasterDataService.getAllAsync();
             this.periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
-            this.protections = await ProtectionMasterDataService.getAllAsync();
+            this.protections = (await ProtectionMasterDataService.getAllAsync()).filter(x => new Date(x.dateEnd) > new Date())
             this.patients = await PatientsMasterDataService.getAllAsync().then((patients) => {
-                return patients.filter(patient => patient.isActive = true)
+                return patients.filter(patient => patient.isActive == true)
             });
             this.buildings = await BuildingsMasterDataService.getAllAsync();
             this.buildingOptions = this.buildingOptions.concat(this.buildings);

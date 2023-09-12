@@ -51,8 +51,16 @@ export default [
 		meta: {
 			title: 'Articles',
 			breadcrumb: {
-				titleKey: 'Articles',
-				parentName: 'Cabinet'
+				onNodeResolve(node, context) {
+					if (context.currentComponent.isPatientSelected) {
+						node.text = "Sortie du stock";
+					} else {
+						node.text = "Patients";
+					}
+					node.parentNode = 'Cabinet';
+					node.to = '';
+                    return node;
+				}
 			},
 		}
 	},

@@ -16,6 +16,13 @@ using FwaEu.MediCare.GenericSession;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Extensions.Options;
+using FwaEu.MediCare.Protections;
+using Microsoft.Extensions.DependencyInjection;
+using FluentNHibernate.Conventions.Helpers;
+using FwaEu.MediCare.Articles;
+using Serilog.Core;
+using Microsoft.Extensions.Logging;
+using FwaEu.MediCare.Patients;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -27,6 +34,7 @@ namespace FwaEu.MediCare.Orders.Services
         private readonly ICurrentDateTime _currentDateTime;
         private readonly IManageGenericDbService _manageGenericDbService;
         private readonly string _loginRobot;
+        private readonly ILogger _logger;
         public OrderService(GenericSessionContext genericSessionContext,
                                 MainSessionContext mainSessionContext,
                                     ICurrentUserService currentUserService,
@@ -135,22 +143,94 @@ namespace FwaEu.MediCare.Orders.Services
             var organization = await organizationRepository.GetNoPerimeterAsync(organizationId);
             if (organization != null)
             {
+                _genericsessionContext.NhibernateSession.Connection.ChangeDatabase(organization.DatabaseName);
+                var protectionRepository = _genericsessionContext.RepositorySession.Create<ProtectionEntityRepository>();
+                var articlesRepository = _genericsessionContext.RepositorySession.Create<ArticleEntityRepository>();
+                var patientsRepository = _genericsessionContext.RepositorySession.Create<PatientEntityRepository>();
+
                 var periodicOrderValidations = await periodicOrderValidationRepository.Query()
                                                 .Where(x => x.Organization.Id == organization.Id && x.OrderedOn == null)
                                                 .ToListAsync();
                 var orders = periodicOrderValidations.GroupBy(x => x.ArticleId)
-                                                      .Where(x => x.Count() > 0)
                                                       .Select(x => new CreateOrdersPost()
                                                       {
-                                                          ArticleId = x.Key,
-                                                          PatientId = x.OrderByDescending(d => d.UpdatedOn).First().PatientId,
-                                                          Quantity = x.OrderByDescending(d => d.UpdatedOn).First().Quantity,
+                                                          ArticleId = x.First().ArticleId,
+                                                          PatientId = x.First().PatientId,
+                                                          Quantity = x.Sum(b => b.Quantity),
                                                           IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
-                                                      .ToArray();
-                if (orders.Length > 0)
+                                                      .ToList();
+
+                var dateNow = _currentDateTime.Now;
+
+
+                var unvalidatedOrders = await protectionRepository.QueryNoPerimeter()
+                                                  .ToListAsync();
+                var protections = unvalidatedOrders.GroupBy(x => x.ArticleId)
+                                                                    .Select(x => new CreateOrdersPost()
+                                                                    {
+                                                                        ArticleId = x.First().ArticleId,
+                                                                        PatientId = x.First().PatientId,
+                                                                        Quantity = x.Sum(b => b.QuantityPerDay),
+                                                                        IsGalenicForm = false // NOTE: When is protection, we always have this value
+                                                                    })
+                                                                   .ToArray();
+                var listArticlesIds = unvalidatedOrders.Select(order => order.ArticleId).ToArray();
+                var listPatientIds = unvalidatedOrders.Select(order => order.PatientId).ToArray();
+
+                var articlesList = await articlesRepository.QueryNoPerimeter()
+                    .Where(x => listArticlesIds.Contains(x.Id))
+                    .Select(articles => new
+                    {
+                        articles.Id,
+                        articles.GroupName,
+                        articles.Title,
+                        articles.CountInBox,
+                    })
+                    .ToListAsync();
+
+                var patientsList = await patientsRepository.QueryNoPerimeter()
+                        .Where(x => listPatientIds.Contains(x.Id))
+                        .Select(patient => new
+                        {
+                            patient.Id,
+                            patient.IncontinenceLevel
+                        }
+                        )
+                        .ToListAsync();
+
+                foreach (var protection in protections)
                 {
-                    await CreateOrdersAsync(orders, organization.DatabaseName);
+                    var article = articlesList.FirstOrDefault(x => x.Id == protection.ArticleId);
+                    if (article == null)
+                    {
+                        _logger.LogError("An error ocurred while trying to find the article " + protection.ArticleId);
+                        continue;
+                    }
+                    var patient = patientsList.FirstOrDefault(x => x.Id == protection.PatientId);
+                    if (patient == null)
+                    {
+                        _logger.LogError("An error ocurred while trying to find the patient " + protection.PatientId);
+                        continue;
+                    }
+                    if (patient.IncontinenceLevel == IncontinenceLevel.None)
+                    {
+                        continue;
+                    }
+
+                    int quantity = (int)Math.Ceiling((organization.OrderPeriodicityDays * protection.Quantity) / article.CountInBox.Value);
+
+                    protection.Quantity = quantity;
+
+                    if (!orders.Any(x => x.ArticleId == protection.ArticleId && x.PatientId == protection.PatientId))
+                    {
+                        orders.Add(protection);
+                    }
+                }
+
+                if (orders.Count > 0)
+                {
+                    await CreateOrdersAsync(orders.ToArray(), organization.DatabaseName);
                     var dateTimeNow = _currentDateTime.Now;
                     foreach (var periodicOrderValidation in periodicOrderValidations)
                     {

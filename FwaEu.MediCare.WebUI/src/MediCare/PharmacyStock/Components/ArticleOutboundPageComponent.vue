@@ -142,10 +142,16 @@
                 args.cancelNavigation = true
                 this.selectedPatient = args.selectedPatient;
                 this.isPatientSelected = true;
+                const context = new ResolveContext(this.$router, this.$i18n);
+                context.currentComponent = this;
+                await BreadcrumbService.processRouteAsync(this.$route, context);
             },
-            openSearchPatientComponent() {
+            async openSearchPatientComponent() {
                 this.selectedPatient = null;
                 this.isPatientSelected = false;
+                const context = new ResolveContext(this.$router, this.$i18n);
+                context.currentComponent = this;
+                await BreadcrumbService.processRouteAsync(this.$route, context);
             },
             async confirmOrderAsync() {
                 if (this.showConfirmationDisplayed || (this.$route?.query?.stockQuantity !== null && this.$route?.query?.stockQuantity - this.quantity > 0)) {

@@ -57,7 +57,7 @@
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
-            this.periodicOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+            this.periodicOrders = (await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')).filter(x => new Date(x.dateEnd) > new Date())
             this.periodicOrderValidations = await PatientService.getMasterDataByPatientId(this.patient.id, 'PeriodicOrderValidations')
             this.fillPeriodicOrders();
         },
@@ -91,6 +91,7 @@
                     return Math.ceil((this.organization.orderPeriodicityDays * periodicOrder.quantityPerDay) / article.countInBox);
                 } 
             },
+
             async onSubmit() {
                 var periodicOrders = this.periodicOrders.map(x => {
                     return {
