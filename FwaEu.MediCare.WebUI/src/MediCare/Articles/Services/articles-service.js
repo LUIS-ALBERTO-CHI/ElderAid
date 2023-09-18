@@ -34,8 +34,13 @@ const ArticlesService = {
             ids
         );
         return response.data;
-    }
+    },
 
+    async getArticlesImageAsync(pharmaCode) {
+        const response = await HttpService.get(`/Articles/${pharmaCode}/Images`);
+
+        return response.data;
+    }
 }
 
 export default ArticlesService;

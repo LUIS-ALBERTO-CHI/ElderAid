@@ -72,3 +72,8 @@
 .gallery-return-back-container:hover {
     text-decoration: underline;
 }
+
+.galleria-container {
+    align-self: center;
+}
+

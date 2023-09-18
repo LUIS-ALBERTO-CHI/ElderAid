@@ -24,19 +24,21 @@
                     <span>{{ article.unit }} de {{ article.countInBox }} {{ article.invoicingUnit }}</span>
                 </div>
             </div>
-            <img @click="displayGallery" class="article-image" :src="article.imageURLs" />
+            <img v-if="images?.length" @click="displayGallery" class="article-image" :src="getImageUrl(this.images[0].imageType, true)" />
         </div>
         <div v-show="isGalleryDisplayed" class="gallery-area-container">
             <div @click="displayGallery" class="gallery-return-back-container">
                 <i class="fa-solid fa-arrow-left history-icon"></i>
                 <span>Revenir en arrière</span>
             </div>
-            <Galleria :value="gallery" :numVisible="5" containerStyle="max-width: 640px" :showThumbnails="false"
-                      :showIndicators="true" :showItemNavigators="true">
-                <template #item="slotProps">
-                    <img :src="slotProps.item.itemImageSrc" alt="Image" style="width: 100%; display: block" />
-                </template>
-            </Galleria>
+            <div class="galleria-container">
+                <Galleria :value="gallery" :numVisible="5" containerStyle="max-width: 640px" :showThumbnails="false"
+                          :showIndicators="true" :showItemNavigators="true">
+                    <template #item="slotProps">
+                        <img :src="slotProps.item.itemImageSrc" alt="Image" style="width: 100%; display: block" />
+                    </template>
+                </Galleria>
+            </div>
         </div>
         <AddPosologyComponent v-if="isAddPosologyPage && patient" :article="article" :patient="patient" />
         <div v-else>
@@ -97,16 +99,19 @@
                 isOrderSubmitted: false,
                 patientOrders: [],
                 gallery: [],
-                isGalleryDisplayed: false
+                isGalleryDisplayed: false,
+                images: null,
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
+
             const articleId = this.$route.params.articleId;
             if (articleId) {
                 const [article] = await RecentArticlesMasterDataService.getByIdsAsync([articleId]);
-                if (article != null)
+                if (article != null) {
                     this.article = article;
+                }
                 else {
                     [this.article] = await ArticleService.getByIdsAsync([this.$route.params.articleId])
                 }
@@ -115,16 +120,24 @@
                 this.patientOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders').then((orders) => {
                     return orders.filter(order => order.state != 'Cancelled');
                 });
+            this.images = await ArticleService.getArticlesImageAsync(this.article.pharmaCode);
             this.loadGallery();
         },
         methods: {
             loadGallery() {
-                var imagesParsed = this.article.imageURLs.split("|");
-                for (var i = 0; i != imagesParsed.length; i++) {
+                for (var i = 0; i != this.images.length; i++) {
                     this.gallery.push({
-                        itemImageSrc: imagesParsed[i],
+                        itemImageSrc: this.getImageUrl(this.images[i].imageType, false),
                     })
                 }
+            },
+            getImageUrl(imageType, thumbnail) {
+
+                const imageSize = thumbnail ? "T" : "F";
+
+                var urlImage = "https://documedis.hcisolutions.ch/2020-01/api/products/image/" + imageType + "/Pharmacode/" + this.article.pharmaCode + "/" + imageSize;
+
+                return urlImage;
             },
             displayGallery() {
                 this.isGalleryDisplayed = !this.isGalleryDisplayed;
@@ -136,9 +149,9 @@
                 const orders = this.patientOrders.filter(order => order.articleId == this.article.id)
                 const order = orders.sort((a, b) => new Date(b.updatedOn) - new Date(a.updatedOn));
                 if (order[0])
-                    return "Dernière commande le " +  new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
+                    return "Dernière commande le " + new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
                 else
-                    return "Pas de commande récente pour cette article" 
+                    return "Pas de commande récente pour cette article"
             }
         },
         computed: {

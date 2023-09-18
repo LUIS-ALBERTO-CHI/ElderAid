@@ -4,6 +4,7 @@ using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework;
 using FwaEu.MediCare.Articles.Services;
 using FwaEu.MediCare.Articles.MasterData;
+using FwaEu.MediCare.Orders;
 
 namespace FwaEu.MediCare.Articles
 {
@@ -17,6 +18,8 @@ namespace FwaEu.MediCare.Articles
             services.AddTransient<IArticleService, ArticleService>();
 
             services.AddMasterDataProvider<RecentArticlesMasterDataProvider>("RecentArticles");
+            var articleImagesSection = context.Configuration.GetSection("Application:Articles");
+            services.Configure<ArticleImagesOptions>(articleImagesSection);
             return services;
         }
     }
