@@ -15,9 +15,6 @@ namespace FwaEu.MediCare.Articles
         public string InvoicingUnit { get; set; }
         public bool? IsFavorite { get; set; }
         public string LeftAtChargeExplanation { get; set; }
-        public string ThumbnailURL { get; set; }
-
-        public string ImageURLs { get; set; }
         public string Packaging { get; set; }
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }

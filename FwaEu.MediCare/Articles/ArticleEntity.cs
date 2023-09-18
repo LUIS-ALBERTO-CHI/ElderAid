@@ -27,10 +27,6 @@ namespace FwaEu.MediCare.Articles
         public string InvoicingUnit { get; set; }
         public bool? IsFavorite { get; set; }
         public string LeftAtChargeExplanation { get; set; }
-        public string ThumbnailURL { get; set; }
-
-        public string ImageURLs { get; set; }
-
         public int? AlternativePackagingCount { get; set; }
         public int? SubstitutionsCount { get; set; }
         public bool? IsDeleted  { get; set; }
@@ -60,8 +56,6 @@ namespace FwaEu.MediCare.Articles
             Map(entity => entity.AmountRemains).Column("LeftAtCharge");
             Map(entity => entity.CountInBox).Column("CountInBox");          
 
-            Map(entity => entity.ThumbnailURL).Column("ThumbnailURL");
-            Map(entity => entity.ImageURLs).Column("ImageURLs");
             Map(entity => entity.AlternativePackagingCount).Column("AlternativePackagingCount");
             Map(entity => entity.SubstitutionsCount).Column("SubstitutionsCount");
 

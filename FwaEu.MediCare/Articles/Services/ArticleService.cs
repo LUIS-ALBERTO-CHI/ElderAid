@@ -48,7 +48,7 @@ namespace FwaEu.MediCare.Articles.Services
         }
         public async Task<List<GetArticleImagesByPharmaCodeResponse>> GetArticleImagesByPharmaCodeAsync(int pharmaCode)
         {
-            var query = "exec SP_MDC_GetArticlesImages :PharmaCode";
+            var query = "exec SP_MDC_GetArticleImages :PharmaCode";
             var options = _articleImageOptions;
 
             var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
