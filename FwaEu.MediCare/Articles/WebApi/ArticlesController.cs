@@ -10,6 +10,7 @@ namespace FwaEu.MediCare.Articles.WebApi
     [Authorize]
     [ApiController]
     [Route("[controller]")]
+   
     public class ArticlesController : Controller
     {
         // GET /Articles
@@ -82,6 +83,23 @@ namespace FwaEu.MediCare.Articles.WebApi
                     IsDeleted = x.IsDeleted == 1,
                     IsGalenicDosageForm = x.IsGalenicDosageForm,
                     PharmaCode = x.PharmaCode
+                }));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("{pharmaCode}/Images")]
+        public async Task<IActionResult> GetImagesByPharmaCodeAsync([FromRoute] int pharmaCode, [FromServices]IArticleService articleService)
+        {
+            try
+            {
+                var models = await articleService.GetArticleImagesByPharmaCodeAsync(pharmaCode);
+                return Ok(models.Select(x => new GetArticleImagesByPharmaCodeResponseApi()
+                {
+                    ImageType = x.ImageType
                 }));
             }
             catch (NotFoundException)
