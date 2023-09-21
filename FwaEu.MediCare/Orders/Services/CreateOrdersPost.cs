@@ -7,6 +7,6 @@ namespace FwaEu.MediCare.Orders.Services
         public int? PatientId { get; set; }
         public int ArticleId { get; set; }
         public int Quantity { get; set; }
-        public bool IsGalenicForm { get; set; }
+        public bool IsBox { get; set; }
     }
 }

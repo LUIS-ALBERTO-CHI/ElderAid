@@ -31,6 +31,7 @@ namespace FwaEu.MediCare.Orders.WebApi
                     PatientId = x.PatientId,
                     Quantity = x.Quantity,
                     State = x.State,
+                    IsBox = x.IsBox,
                     UpdatedBy = x.UpdatedBy,
                     UpdatedOn = x.UpdatedOn
                 }));
@@ -52,7 +53,8 @@ namespace FwaEu.MediCare.Orders.WebApi
                 {
                     Quantity = x.Quantity,
                     ArticleId = x.ArticleId,
-                    PatientId = x.PatientId
+                    PatientId = x.PatientId,
+                    IsBox = x.IsBox,
                 }).ToArray());
                 return Ok();
             }
@@ -74,7 +76,7 @@ namespace FwaEu.MediCare.Orders.WebApi
                      {
                          ArticleId= x.ArticleId,
                          DefaultQuantity= x.DefaultQuantity,
-                         Quantity= x.Quantity
+                         Quantity= x.Quantity,
                      }).ToArray()
                 };
                 await orderService.ValidatePeriodicOrderAsync(model);
