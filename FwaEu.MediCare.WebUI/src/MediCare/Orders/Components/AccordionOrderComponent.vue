@@ -24,7 +24,7 @@
                         <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
                     </div>
                     <div v-else>
-                        <span class="header-subtitle">{{order.quantity}} comprimés </span>
+                        <span class="header-subtitle">{{ getSubtitle() }}</span>
                     </div>
                     <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn))}}</span>
                     <div class="accordion-footer-area">
@@ -84,6 +84,12 @@
             this.organization = ViewContextService.get();
         },
         methods: {
+            getSubtitle() {
+              let subtitle = `${this.order.quantity } ${this.order.quantity > 1 ? 'comprimés' : 'comprimé'}`
+
+
+              return subtitle
+            }
         },
         computed: {
 
