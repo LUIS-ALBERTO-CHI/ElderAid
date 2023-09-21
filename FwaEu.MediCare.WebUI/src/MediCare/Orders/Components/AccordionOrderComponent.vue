@@ -20,7 +20,12 @@
                         </div>
                     </div>
                     <span style="width: 90%;">{{article.title}}</span>
-                    <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
+                    <div v-if="order.isBox">
+                        <span class="header-subtitle">{{order.quantity }} {{ article.invoicingUnit }}</span>
+                    </div>
+                    <div v-else>
+                        <span class="header-subtitle">{{order.quantity}} comprimés </span>
+                    </div>
                     <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn))}}</span>
                     <div class="accordion-footer-area">
                         <span>{{ order.updatedBy }}</span>

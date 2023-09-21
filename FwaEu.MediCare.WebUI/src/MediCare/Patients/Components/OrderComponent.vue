@@ -4,7 +4,18 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span> Commande déjà en cours de cet article pour ce patient</span>
         </div>
-        <span>Commander une quantité :</span>
+        <div class="type-quantity-container" v-if="isBox">
+            <span>Commander des boites complètes:</span>
+            <div class="icon-right-container">
+                <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+            </div>
+        </div>
+        <div class="type-quantity-container" v-else>
+            <span>Commander des comprimés:</span>
+            <div class="icon-right-container">
+                <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+            </div>
+        </div>
         <div v-show="!moreQuantityDisplayed" class="quantity-container">
             <div style="width: 75%;">
                 <SelectButton class="quantity-select-button" v-model="selectedQuantity" :options="quantityOptions" />
@@ -28,7 +39,8 @@
                 <Button @click="showConfirmation()" label="NON" outlined class="button-confirmation" />
             </div>
         </div>
-        <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
+        <Button v-if="isBox" @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
+        <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentanceIsBox()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
                     label="Autres formats"
@@ -53,13 +65,14 @@
     import MasterDataManagerService from "@/Fwamework/MasterData/Services/master-data-manager-service";
     import OrderMasterDataService from "@/MediCare/Orders/Services/orders-master-data-service"
     import ArticleMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
-
+    import InputSwitch from 'primevue/inputswitch';
 
     export default {
         components: {
             Button,
             SelectButton,
-            InputNumber
+            InputNumber,
+            InputSwitch
         },
         props: {
             article: {
@@ -81,10 +94,13 @@
                 quantityOptions: [1, 2, 3],
                 selectedQuantity: 1,
                 showConfirmationDisplayed: false,
+                isBox: true,
                 orderAlreadyInProgress: true,
+                isSwitchDisabled: false,
             };
         },
         async created() {
+
         },
         methods: {
             displayMoreQuantity() {
@@ -98,7 +114,8 @@
                     patientId: this.patientId,
                     articleId: this.article.id,
                     quantity: this.selectedQuantity,
-                    isGalenicForm: this.isGalenicDosageForm
+                    isGalenicForm: this.isGalenicDosageForm,
+                    isBox: this.isBox
                 }];
                 try {
                     await OrdersService.saveAsync(modelOrder).then(() => {
@@ -118,12 +135,23 @@
             },
             getQuantitySentance() {
                 let textToDisplay = "Commander"
+
                 const quantityType = this.article.countInBox > 1 ? `boite de ${this.article.countInBox}` : this.article.invoicingUnit;
-                if (this.article.isGalenicDosageForm) {
+                if (this.article.isBox) {
                     textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
                 } else {
                     textToDisplay += ` ${this.selectedQuantity} ${quantityType}`
                 }
+
+                return textToDisplay;
+            },
+            getQuantitySentanceIsBox() {
+                let textToDisplay = "Commander"
+
+                if (!this.isBox) {
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
+                }
+
                 return textToDisplay;
             },
             goToSearchSubstituts(articleTitle) {
@@ -189,5 +217,20 @@
         border: none !important;
         height: 30px !important;
         color: #7092be !important
+    }
+
+    .type-quantity-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .custom-switch .p-inputswitch-slider {
+        background-color: #FFFFFF;
+    }
+
+    .custom-switch .p-inputswitch-slider:before {
+        background-color: #7092be;
     }
 </style>

@@ -65,7 +65,7 @@ namespace FwaEu.MediCare.Orders.Services
 
         public async Task CreateOrdersAsync(CreateOrdersPost[] orders, string databaseName = null)
         {
-            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :IsGalenicForm, :IsPeriodicOrder, :UserLogin, :UserIp";
+            var query = "exec SP_MDC_AddOrder :PatientId, :ArticleId, :Quantity, :IsPeriodicOrder, :UserLogin, :UserIp, :IsBox";
             if (databaseName != null)
                 _genericsessionContext.NhibernateSession.Connection.ChangeDatabase(databaseName);
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
@@ -80,10 +80,10 @@ namespace FwaEu.MediCare.Orders.Services
                 stockedProcedure.SetParameter("PatientId", order.PatientId);
                 stockedProcedure.SetParameter("ArticleId", order.ArticleId);
                 stockedProcedure.SetParameter("Quantity", order.Quantity);
-                stockedProcedure.SetParameter("IsGalenicForm", order.IsGalenicForm);
                 stockedProcedure.SetParameter("IsPeriodicOrder", databaseName != null);
                 stockedProcedure.SetParameter("UserLogin", currentUserLogin);
                 stockedProcedure.SetParameter("UserIp", currentUserIp);
+                stockedProcedure.SetParameter("IsBox", order.IsBox);
 
                 await stockedProcedure.ExecuteUpdateAsync();
             }
@@ -157,7 +157,6 @@ namespace FwaEu.MediCare.Orders.Services
                                                           ArticleId = x.First().ArticleId,
                                                           PatientId = x.First().PatientId,
                                                           Quantity = x.Sum(b => b.Quantity),
-                                                          IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                       })
                                                       .ToList();
 
@@ -172,7 +171,6 @@ namespace FwaEu.MediCare.Orders.Services
                                                                         ArticleId = x.First().ArticleId,
                                                                         PatientId = x.First().PatientId,
                                                                         Quantity = x.Sum(b => b.QuantityPerDay),
-                                                                        IsGalenicForm = false // NOTE: When is protection, we always have this value
                                                                     })
                                                                    .ToArray();
                 var listArticlesIds = unvalidatedOrders.Select(order => order.ArticleId).ToArray();

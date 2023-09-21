@@ -4,6 +4,7 @@ using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.Referencials;
+using FwaEu.MediCare.Referencials.GenericAdmin;
 using FwaEu.MediCare.Users;
 using Microsoft.AspNetCore.Http;
 using NHibernate.Linq;
@@ -30,41 +31,62 @@ namespace FwaEu.MediCare.Patients.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+
+        private class GetIncontinenceLevelProcedureModel
+        {
+            public int Id { get; set; }
+            public int IncontinenceLevel { get; set; }
+            public double Consumed { get; set; }
+            public DateTime DateStart { get; set; }
+            public DateTime DateEnd { get; set; }
+        }
+
         public async Task<GetIncontinenceLevel> GetIncontinenceLevelAsync(int id)
         {
             var query = "exec SP_MDC_GetIncontinenceLevelByPatientId :PatientId";
             var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
             storedProcedure.SetParameter("PatientId", id);
 
-            var incontinenceLevelModel = (await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetIncontinenceLevel>()).ListAsync<GetIncontinenceLevel>()).FirstOrDefault();
+            var result = (await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetIncontinenceLevelProcedureModel>()).ListAsync<GetIncontinenceLevelProcedureModel>()).FirstOrDefault();
 
-            if (incontinenceLevelModel != null)
+            if (result != null)
             {
                 int currentYear = DateTime.Now.Year;
                 var repository = _mainSessionContext.RepositorySession.Create<IncontinenceLevelEntityRepository>();
-                var IncontinenceLevelEMS = await repository.Query().FirstOrDefaultAsync(x => x.Year == currentYear &&
-                                                                             (int)x.Level == incontinenceLevelModel.IncontinenceLevel);
-                int totalDaysInYear = (new DateTime(currentYear, 12, 31) - new DateTime(currentYear, 1, 1)).Days;
-                if (IncontinenceLevelEMS != null)
-                {
-                    incontinenceLevelModel.AnnualFixedPrice = IncontinenceLevelEMS.Amount;
-                    incontinenceLevelModel.DailyFixedPrice = incontinenceLevelModel.AnnualFixedPrice / totalDaysInYear;
-                }
-                int totalDaysFromFirstDayInYearToDateNow = (DateTime.Now - new DateTime(currentYear, 1, 1)).Days;
-                incontinenceLevelModel.FixedPrice = totalDaysFromFirstDayInYearToDateNow * incontinenceLevelModel.DailyFixedPrice;
-                incontinenceLevelModel.OverPassed = incontinenceLevelModel.Consumed - incontinenceLevelModel.FixedPrice;
-                incontinenceLevelModel.DailyProtocolEntered = incontinenceLevelModel.Consumed / totalDaysFromFirstDayInYearToDateNow;
+                var incontinenceLevelEMS = await repository.Query().FirstOrDefaultAsync(x => x.Year == currentYear &&
+                                                                             (int)x.Level == result.IncontinenceLevel);
 
-                // NOTE: We can remove this comment later
-                var virtualDateWithoutOverPassed = incontinenceLevelModel.OverPassed  / (incontinenceLevelModel.FixedPrice / totalDaysFromFirstDayInYearToDateNow);
-                incontinenceLevelModel.VirtualDateWithoutOverPassed = (new DateTime(currentYear, 12, 31)).AddDays(virtualDateWithoutOverPassed);
+                int totalDaysInYear = (new DateTime(currentYear, 12, 31) - new DateTime(currentYear, 1, 1)).Days;
+                int totalDaysFromFirstDayInYearToDateNow = (DateTime.Now - new DateTime(currentYear, 1, 1)).Days;
+                var annualFixedPrice = incontinenceLevelEMS?.Amount ?? 0;
+                var dailyFixedPrice = annualFixedPrice / totalDaysInYear;
+                var fixedPrice = totalDaysFromFirstDayInYearToDateNow * dailyFixedPrice;
+                var overPassed = result.Consumed - fixedPrice;
+                var virtualDateWithoutOverPassed = fixedPrice == 0 || totalDaysFromFirstDayInYearToDateNow == 0 ? 0
+                    : overPassed / (fixedPrice / totalDaysFromFirstDayInYearToDateNow);
+
+                var incontinenceLevelModel = new GetIncontinenceLevel
+                {
+                    Id = result.Id,
+                    DateEnd = result.DateEnd,
+                    DateStart = result.DateStart,
+                    IncontinenceLevel = result.IncontinenceLevel,
+                    AnnualFixedPrice = annualFixedPrice,
+                    DailyFixedPrice = annualFixedPrice / totalDaysInYear,
+                    Consumed = result.Consumed,
+                    FixedPrice = fixedPrice,
+                    OverPassed = result.Consumed - fixedPrice,
+                    DailyProtocolEntered = result.Consumed / totalDaysFromFirstDayInYearToDateNow,
+                    VirtualDateWithoutOverPassed = (new DateTime(currentYear, 12, 31)).AddDays(virtualDateWithoutOverPassed)
+                };
+                return incontinenceLevelModel;
             }
-            return incontinenceLevelModel;
+            return null;
         }
 
         public async Task SaveIncontinenceLevelAsync(SaveIncontinenceLevel model)
         {
-            if(model.DateStart > model.DateEnd)
+            if (model.DateStart > model.DateEnd)
                 throw new NotImplementedException();
             var query = "exec SP_MDC_SaveIncontinenceLevel :PatientId, :IncontinenceLevel, :StartDateSubscription, :StopDateSubscription, :UserLogin, :UserIp";
 

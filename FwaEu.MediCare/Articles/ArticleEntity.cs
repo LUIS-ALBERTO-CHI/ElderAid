@@ -20,8 +20,9 @@ namespace FwaEu.MediCare.Articles
         public ArticleType ArticleType { get; set; }
         public string Title { get; set; }
         public string GroupName { get; set; }
-        public double Price { get; set; }
-        public double? AmountRemains { get; set; }
+        public double? Price { get; set; }
+        public int? InsuranceCode { get; set; }
+        public double? LeftAtCharge { get; set; }
         public double? CountInBox { get; set; }
         public string Unit { get; set; }
         public string InvoicingUnit { get; set; }
@@ -52,8 +53,9 @@ namespace FwaEu.MediCare.Articles
             Map(entity => entity.Title).Column("Title");
             Map(entity => entity.LeftAtChargeExplanation).Column("LeftAtChargeExplanation");
             Map(entity => entity.Price).Column("Price");
+            Map(entity => entity.InsuranceCode).Column("InsuranceCode");
             Map(entity => entity.ArticleType).Column("ArticleType");
-            Map(entity => entity.AmountRemains).Column("LeftAtCharge");
+            Map(entity => entity.LeftAtCharge).Column("LeftAtCharge");
             Map(entity => entity.CountInBox).Column("CountInBox");          
 
             Map(entity => entity.AlternativePackagingCount).Column("AlternativePackagingCount");

@@ -11,5 +11,7 @@ namespace FwaEu.MediCare.Orders.WebApi
         public DateTime? UpdatedOn { get; set; }
         public string UpdatedBy { get; set; }
         public int? State { get; set; }
+        public bool IsBox { get; set; }
+
     }
 }
