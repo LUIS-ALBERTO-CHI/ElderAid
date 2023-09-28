@@ -18,7 +18,7 @@
                             <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd, treatment.dateStart) ? `De ${$d(new Date(treatment.dateStart))} à ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
                         </div>
                     </template>
-                    <OrderComponent v-if="treatment.prescribedArticle" :article="treatment.prescribedArticle" :patientOrders="patientOrders" :patientId="patient.id"/>
+                    <OrderComponent v-if="getArticleToOrder(treatment)" :article="getArticleToOrder(treatment)" :patientOrders="patientOrders" :patientId="patient.id" />
                 </AccordionTab>
             </template>
         </Accordion>
@@ -102,8 +102,7 @@
                 })
             },
             isArticleNotFound(treatment) {
-                if (treatment.appliedArticleId === 0 || treatment.appliedArticleId === null &&
-                    treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
+                if ( treatment.prescribedArticleId === 0 || treatment.prescribedArticleId === null) {
                     return true
                 } else {
                     return false
@@ -115,8 +114,11 @@
                 } else {
                     return true
                 }
+            },
+            getArticleToOrder(treatment) {
+                return treatment.appliedArticle && treatment.appliedArticle.pharmaCode != '9999999' ? treatment.appliedArticle : treatment.prescribedArticle;
             }
-        },
+        }
     }
 </script>
 <style type="text/css" scoped src="./Content/treatment-page.css">
