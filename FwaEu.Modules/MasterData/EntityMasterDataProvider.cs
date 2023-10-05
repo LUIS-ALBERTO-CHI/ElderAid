@@ -138,7 +138,7 @@ namespace FwaEu.Modules.MasterData
 			return query;
 		}
 
-		public async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+		public virtual async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
 		{
 			var query = this.GetBaseQuery();
 
