@@ -18,8 +18,6 @@ namespace FwaEu.MediCare.Articles
             services.AddTransient<IArticleService, ArticleService>();
 
             services.AddMasterDataProvider<RecentArticlesMasterDataProvider>("RecentArticles");
-            var articleImagesSection = context.Configuration.GetSection("Application:Articles");
-            services.Configure<ArticleImagesOptions>(articleImagesSection);
             return services;
         }
     }
