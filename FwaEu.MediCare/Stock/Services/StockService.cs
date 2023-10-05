@@ -58,7 +58,7 @@ namespace FwaEu.MediCare.Stock.Services
 
         public async Task UpdateAsync(UpdateStockPost model)
         {
-            var query = "exec SP_MDC_UpdateStockPharmacy :StockId, :Quantity, :UserLogin, :UserIp";
+            var query = "exec SP_MDC_UpdateStockPharmacy :StockId, :Quantity, :UserLogin, :UserIp, :PatientId";
 
             var stockedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
 
@@ -69,8 +69,9 @@ namespace FwaEu.MediCare.Stock.Services
             stockedProcedure.SetParameter("Quantity", model.Quantity);
             stockedProcedure.SetParameter("UserLogin", currentUserLogin);
             stockedProcedure.SetParameter("UserIp", currentUserIp);
+            stockedProcedure.SetParameter("PatientId", model.PatientId);
 
-            await stockedProcedure.ExecuteUpdateAsync();
+			await stockedProcedure.ExecuteUpdateAsync();
         }
 
         public static string GetCurrentIpAddress()

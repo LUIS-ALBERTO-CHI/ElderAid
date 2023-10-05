@@ -4,6 +4,10 @@ using FwaEu.Fwamework.Globalization;
 using FwaEu.MediCare.GenericRepositorySession;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.Linq;
+using System.Threading.Tasks;
+using FwaEu.Fwamework.Data.Database.Sessions;
+using NHibernate.Linq;
 
 namespace FwaEu.MediCare.Stock.MasterData
 {
@@ -24,7 +28,33 @@ namespace FwaEu.MediCare.Stock.MasterData
         {
             return entity => entity.Quantity.ToString().Contains(search);
         }
-    }
+
+		protected override IQueryable<StockConsumptionEntity> GetBaseQuery()
+		{
+            return base.GetBaseQuery().OrderByDescending(x => x.UpdatedOn);
+		}
+
+		protected override IQueryable<StockConsumptionEntity> GetBaseQueryByIds(int[] ids)
+		{
+			return base.GetBaseQueryByIds(ids).OrderByDescending(x => x.UpdatedOn);
+		}
+
+		public override async Task<MasterDataChangesInfo> GetChangesInfoAsync(MasterDataProviderGetChangesParameters parameters)
+		{
+            SessionContext.RepositorySession.Create<StockConsumptionEntityRepository>().Query();
+
+            var query = SessionContext.RepositorySession.Create<StockConsumptionEntityRepository>().Query();
+
+			var count = await query.CountAsync();
+			var maxUpdatedOn = count > 0 ? await query.MaxAsync(x => x.UpdatedOn) : default(DateTime?);
+			var info = new MasterDataChangesInfo(maxUpdatedOn, count);
+
+            return info;
+
+		}
+
+    
+	}
 
     public class StockConsumptionEntityMasterDataModel
     {

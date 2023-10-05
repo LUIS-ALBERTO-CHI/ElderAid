@@ -79,8 +79,9 @@ namespace FwaEu.MediCare.Stock.WebApi
                 await stockService.UpdateAsync(new UpdateStockPost
                 {
                     Quantity = model.Quantity,
-                    StockId = model.StockId
-                });
+                    StockId = model.StockId,
+					PatientId = model.PatientId
+				});
                 return Ok();
             }
             catch (NotFoundException)
