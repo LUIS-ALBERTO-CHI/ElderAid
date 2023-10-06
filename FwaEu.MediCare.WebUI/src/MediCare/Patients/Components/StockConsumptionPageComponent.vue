@@ -4,15 +4,18 @@
         <div v-if="stockConsumptions && stockConsumptions.some(stockConsumption => 'article' in stockConsumption)"
              v-for="(stock, index) in stockConsumptions" :key="index">
             <div class="stock-consumption-item">
-                <span class="stock-consumption-item-title">{{stock.article.title}}</span>
-                <span>{{stock.quantity}} {{ stock.article.invoicingUnit }}</span>
-                <span>{{$d(new Date(stock.updatedOn))}}  à {{new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(stock.updatedOn))}} par {{stock.updatedBy}}</span>
+                <span class="stock-consumption-item-title">{{ stock.article?.title }}</span>
+                <span>{{ stock.quantity }} {{ stock.article?.invoicingUnit }}</span>
+                <span>
+                    {{$d(new Date(stock.updatedOn))}}  à {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(stock.updatedOn)) }} par {{ stock.updatedBy }}
+                </span>
             </div>
         </div>
         <empty-list-component v-show="stockConsumptions != null && stockConsumptions.length < 1" />
         <span v-show="!isEndOfPagination" @click="getMoreStocks()" class="load-more-text">Charger plus</span>
     </div>
 </template>
+
 <script>
 
     import Button from 'primevue/button';
@@ -51,16 +54,18 @@
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
-            this.stockConsumptions = await StockConsumptionMasterDataService.getAllAsync();
+            this.stockConsumptions = (await StockConsumptionMasterDataService.getAllAsync()).filter(x => x.patientId === this.patient.id)
             this.fillStockConsumption();
         },
         methods: {
             async fillStockConsumption() {
-                const stockConsumptionsArticleIds = this.stockConsumptions.map(x => x.articleId);
+                const stockConsumptionsArticleIds = this.stockConsumptions.filter(x => !x.article).map(x => x.articleId);
                 const articles = await RecentArticlesMasterDataService.getByIdsAsync(stockConsumptionsArticleIds);
                 this.stockConsumptions.forEach(stockConsumption => {
-                    const article = articles.find(article => article.id === stockConsumption.articleId)
-                    stockConsumption.article = article
+                    if (!stockConsumption.article) {
+                        const article = articles.find(article => article.id === stockConsumption.articleId)
+                        stockConsumption.article = article
+                    }
                 })
             },
             async getMoreStocks() {
@@ -76,6 +81,8 @@
                         this.isEndOfPagination = true;
 
                     this.stockConsumptions = this.stockConsumptions.concat(stockConsumptions)
+                    this.fillStockConsumption();
+
                 } else {
                     NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
                 }
