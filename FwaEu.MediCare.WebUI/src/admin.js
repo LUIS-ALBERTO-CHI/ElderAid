@@ -38,12 +38,11 @@ import { ViewContextModule } from "@/MediCare/ViewContext/view-context-module";
 import Application from "@/Fwamework/Core/Services/application";
 import InMemoryStore from "@/Fwamework/Storage/Services/in-memory-store";
 import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
+import { HttpsRedirectionModule } from "@/Modules/HttpsRedirection/https-redirection-module";
 
 import { UserSettingsModule } from "@/Fwamework/UserSettings/user-settings-module";
 import DefaultAuthenticationHandler from "@/Modules/DefaultAuthentication/Services/default-authentication-handler";
 
-import BreadcrumbsService from "@/Fwamework/Breadcrumbs/Services/breadcrumbs-service";
-import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
 import AdminRoutes from "./admin-routes";
 
 import { ReferencialsModule } from "./MediCare/Referencials/referencials-module";
@@ -53,6 +52,7 @@ const application = new Application(App)
 		//NOTE: We currently use the same version as server because managing the version for both server and client will require unnecessary efforts
 		applicationInfoProvider: ServerApplicationInfoProvider
 	}))
+	.useModule(new HttpsRedirectionModule())
 	.useModule(new ServerMonitoringModule())
 	
 	.useModule(new DefaultAuthenticationModule())
