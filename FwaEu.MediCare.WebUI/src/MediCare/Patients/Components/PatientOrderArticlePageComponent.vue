@@ -151,7 +151,7 @@
                 if (order[0])
                     return "Dernière commande le " + new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
                 else
-                    return "Pas de commande récente pour cette article"
+                    return "Pas de commande récente pour cet article"
             }
         },
         computed: {
