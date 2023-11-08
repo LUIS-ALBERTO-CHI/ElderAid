@@ -108,13 +108,11 @@
                 }
                 try {
                     await OrderService.validatePeriodicOrderAsync(model).then(() => {
-                        debugger;
                         NotificationService.showConfirmation('Commandes périodiques validées')
                         PeriodicOrdersMasterDataService.clearCacheAsync();
                         this.$router.push({ name: 'PeriodicOrders' })
                     })
                 } catch (error) {
-                    debugger;
                     NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
                 }
             }
