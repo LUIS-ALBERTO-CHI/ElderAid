@@ -11,6 +11,7 @@
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
                         <div v-if="orderComponentDisplayedIndex !== index" class="accordion-content">
+
                             <div v-show="order.state == 'Pending'">
                                 <Button v-if="cancelOrderDisplayedIndex !== index" style="width: 100% !important;"
                                         @click="showCancelOrderDisplay(index)" label="Annuler la commande" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
@@ -22,9 +23,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <Button v-if="order.patientId != null" @click="displayOrderComponent(false, index)" :label="`Commander à nouveau pour ${order.patient?.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button @click="displayOrderComponent(true, index)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
+                            <Button v-if="order.patientId === null || !order.patient" @click="displayOrderComponent(true, index)" label="Commander pour EMS"
+                                    style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right" />
+                            <Button v-if="order.patientId !== null && order.patient" @click="displayOrderComponent(false, index)" :label="`Commander à nouveau pour ${order.patient.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId !== null && order.patient" @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId === null || !order.patient" @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                            <Button v-if="order.patientId !== null && order.patient" @click="displayOrderComponent(true, index)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
                             <Button @click="goToArticle(order.articleId)" label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
                                     iconPos="right" />
