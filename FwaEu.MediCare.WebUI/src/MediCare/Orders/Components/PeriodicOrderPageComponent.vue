@@ -31,6 +31,7 @@
     import OrderService from "@/MediCare/Orders/Services/orders-service";
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
+    import PeriodicOrdersMasterDataService from "@/MediCare/Orders/Services/periodic-orders-master-data-service";
 
     export default {
         components: {
