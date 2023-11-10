@@ -5,7 +5,7 @@
                 <div class="accordion-header">
                     <div class="accordion-top-area">
                         <div>
-                            <div v-if="order.patientId != null && order.patientId > 0" class="accordion-header-title-area">
+                            <div v-if="isPatientOrder" class="accordion-header-title-area">
                                 <i class="fa-solid fa-user" />
                                 <span>{{ patient.fullName }}</span>
                             </div>
@@ -14,7 +14,7 @@
                                 <span>{{ organization.name }}</span>
                             </div>
                         </div>
-                        <div v-if="order.patientId != null && order.patientId > 0" class="accordion-header-title-area">
+                        <div v-if="isPatientOrder" class="accordion-header-title-area">
                             <i class="fa-solid fa-bed" />
                             <span>{{ patient.roomName }}</span>
                         </div>
@@ -92,7 +92,9 @@
             }
         },
         computed: {
-
+            isPatientOrder() {
+                return this.order.patientId != null && this.order.patientId > 0;
+            },
         },
 
     }
