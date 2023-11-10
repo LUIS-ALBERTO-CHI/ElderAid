@@ -84,9 +84,11 @@
         },
         async created() {
             this.changeForm.startDate = new Date(this.protection.dateStart);
-            this.changeForm.endDate = new Date(this.protection.dateEnd);
+            this.changeForm.endDate = this.protection.dateEnd ? new Date(this.protection.dateEnd) : null;
+
             this.fillPosology();
         },
+
         methods: {
             checkErrorQuantity(index) {
                 return this.validationErrors?.posology?.some(x => x.index == index && x.hour !== null);
@@ -109,7 +111,7 @@
                 const model = {
                     protectionId: this.protection.id,
                     startDate: new Date(this.changeForm.startDate),
-                    stopDate: this.changeForm.endDate ? new Date(this.changeForm.endDate) : null,
+                    stopDate: this.changeForm.endDate !== null ? new Date(this.changeForm.endDate) : "",
                     protectionDosages: this.posologyArrayToDictionnary(),
                     articleUnit: this.protection.article.unit ? this.protection.article.unit : this.protection.article.invoicingUnit,
                     patientId: this.protection.patientId

@@ -75,22 +75,24 @@
                     stopDate: this.changeForm.endDate ? new Date(this.changeForm.endDate) : null,
                     protectionDosages: this.posologyArrayToDictionnary(),
                     articleUnit: this.article.unit ? this.article.unit : this.article.invoicingUnit
-                }
+                };
+
                 try {
-                    await ProtectionService.createAsync(model).then(async() => {
+                    await ProtectionService.createAsync(model).then(async () => {
                         NotificationService.showConfirmation("La posologie a bien été créée");
                         if (this.$route.name !== 'Protection') {
-                            this.$router.push({ name: 'Protection' })
+                            this.$router.push({ name: 'Protection' });
                         }
                         await ProtectionsMasterDataService.clearCacheAsync();
                         await ProtectionDosagesMasterDataService.clearCacheAsync();
                         await ArticleMasterDataService.clearCacheAsync();
-
-                    })
+                    });
                 } catch {
                     NotificationService.showError("Une erreur est survenue lors de la création de la posologie");
                 }
             },
+
+
             addPosology() {
                 this.changeForm.posology.push({
                     quantity: 0,
