@@ -5,13 +5,13 @@
             <span> Commande déjà en cours de cet article pour ce patient</span>
         </div>
         <div class="type-quantity-container" v-if="isBox">
-            <span>Commander des boites complètes:</span>
+            <span>Commander des boites complètes :</span>
             <div class="icon-right-container">
                 <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
             </div>
         </div>
         <div class="type-quantity-container" v-else>
-            <span>Commander des comprimés:</span>
+            <span>Commander des comprimés :</span>
             <div class="icon-right-container">
                 <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
             </div>
