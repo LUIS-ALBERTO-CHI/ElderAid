@@ -21,7 +21,7 @@
                 </div>
                 <div class="article-label-container">
                     <i class="fa-regular fa-box"></i>
-                    <span>{{ article.unit }} de {{ article.countInBox }} {{ article.invoicingUnit }}</span>
+                    <span>{{ article.invoicingUnit }} de {{ article.countInBox }} {{ article.unit }}</span>
                 </div>
             </div>
             <img v-if="images?.length" @click="displayGallery" class="article-image" :src="getImageUrl(this.images[0].imageType, true)" />

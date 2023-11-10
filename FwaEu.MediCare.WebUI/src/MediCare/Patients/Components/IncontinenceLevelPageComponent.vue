@@ -16,7 +16,7 @@
     <Button v-if="isUserCanToChangeIncontinence && !isIncontinenceLevelChange" @click="changeIncontinenceLevel"
             label="Changer de niveau d'incontinence" />
     <div v-else-if="isUserCanToChangeIncontinence" class="incontinence-change-container">
-        <span>A partir de <Calendar v-model="startDate" style="width: 30% !important" dateOnly /></span>
+        <span>A partir de <Calendar v-model="startDate" style="width: 34% !important" dateOnly /></span>
         <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
         <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" optionValue="id" optionLabel="text" placeholder="Légère" />
         <Button @click="saveIncontinenceLevelAsync"
