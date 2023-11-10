@@ -23,15 +23,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <Button v-if="order.patientId === null || !order.patient" @click="displayOrderComponent(true, index)" label="Commander pour EMS"
-                                    style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right" />
-                            <Button v-if="order.patientId !== null && order.patient" @click="displayOrderComponent(false, index)" :label="`Commander à nouveau pour ${order.patient.fullName}`" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button v-if="order.patientId !== null && order.patient" @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un autre patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button v-if="order.patientId === null || !order.patient" @click="goToSearchPatientWithArticleId(order.articleId)" label="Commander pour un patient" style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
-                            <Button v-if="order.patientId !== null && order.patient" @click="displayOrderComponent(true, index)" label="Commander pour EMS" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
-                                    iconPos="right" />
-                            <Button @click="goToArticle(order.articleId)" label="Consulter la fiche article" style="height: 45px !important;" icon="fa fa-solid fa-angle-right"
-                                    iconPos="right" />
+                                <Button v-for="(button, buttonIndex) in buttonConfig(order, index)" :key="buttonIndex" @click="button.action()" :label="button.label" 
+                                        style="height: 45px !important;" icon="fa fa-solid fa-angle-right" iconPos="right" />
                         </div>
                         <OrderComponent v-else :article="order.article" :patientOrders="getPatientOrders(order.patientId)"
                                         @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)" />
@@ -206,6 +199,42 @@
                             (this.selectedOrdersType == "EMS" && order.patientId == null))
                     );
                 });
+            },
+            buttonConfig() {
+                return (order, index) => {
+                    const buttons = [];
+
+                    if (order.patientId === null || !order.patient) {
+                        buttons.push({
+                            label: 'Commander pour EMS',
+                            action: () => this.displayOrderComponent(true, index),
+                        });
+                        buttons.push({
+                            label: 'Commander pour un patient',
+                            action: () => this.goToSearchPatientWithArticleId(order.articleId),
+                        });
+                    } else {
+                        buttons.push({
+                            label: `Commander à nouveau pour ${order.patient.fullName}`,
+                            action: () => this.displayOrderComponent(false, index),
+                        });
+                        buttons.push({
+                            label: 'Commander pour un autre patient',
+                            action: () => this.goToSearchPatientWithArticleId(order.articleId),
+                        });
+                        buttons.push({
+                            label: 'Commander pour EMS',
+                            action: () => this.displayOrderComponent(true, index),
+                        });
+                    }
+
+                    buttons.push({
+                        label: 'Consulter la fiche article',
+                        action: () => this.goToArticle(order.articleId),
+                    });
+
+                    return buttons;
+                };
             },
         },
 
