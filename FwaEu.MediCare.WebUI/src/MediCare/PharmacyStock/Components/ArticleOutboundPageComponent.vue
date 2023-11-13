@@ -160,7 +160,7 @@
 
                 if (this.showConfirmationDisplayed || (this.$route?.query?.stockQuantity !== null && this.$route?.query?.stockQuantity - this.quantity > 0)) {
                     if (this.fullBox) {
-                        this.quantity = this.quantity * this.article.countInBox;
+                        this.quantity = this.quantity * this.selectedBoite;
                     }
                     await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity, patientId}).then(async () => {
                         NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
