@@ -5,7 +5,9 @@
             <div v-if="article">
                 <div class="text-left">
                     <span class="article-name">{{ article.title }}</span>
-                    <span>Quantité du stock : {{this.$route?.query?.stockQuantity}}</span>
+                </div>
+                <div class="text-left">
+                    <span>Quantité en stock&nbsp;: {{this.$route?.query?.stockQuantity}}</span>
                 </div>
             </div>
             <div class="info-container">
@@ -34,7 +36,7 @@
             </div>
             <div class="info-container" v-if="!fullBox">
                 <div class="text-left">
-                    <span>Quantité sortie (comprimés)</span>
+                    <span>Quantité à sortir (comprimés)</span>
                 </div>
                 <div class="icon-right-container">
                     <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" showButtons buttonLayout="horizontal"
@@ -157,6 +159,9 @@
                 const patientId = this.selectedPatient ? this.selectedPatient.id : null;
 
                 if (this.showConfirmationDisplayed || (this.$route?.query?.stockQuantity !== null && this.$route?.query?.stockQuantity - this.quantity > 0)) {
+                    if (this.fullBox) {
+                        this.quantity = this.quantity * this.selectedBoite;
+                    }
                     await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity, patientId}).then(async () => {
                         NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
                         this.$router.push({ name: "Cabinet" });
