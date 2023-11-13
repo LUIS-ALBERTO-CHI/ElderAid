@@ -104,8 +104,7 @@
                 showConfirmationDisplayed: false,
                 isBox: true,
                 orderAlreadyInProgress: true,
-                isSwitchDisabled: false,
-                isOtherBox: this.article.countInBox == 1
+                isSwitchDisabled: false
             };
         },
         async created() {
