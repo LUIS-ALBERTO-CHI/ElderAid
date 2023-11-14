@@ -143,11 +143,12 @@
             getQuantitySentance() {
                 let textToDisplay = "Commander"
 
-                const quantityType = this.article.countInBox > 1 ? `boite de ${this.article.countInBox}` : this.article.invoicingUnit;
+                const quantityType = this.article.countInBox > 1 ? `boite de ${this.article.countInBox}` :"";
+                if (this.article.invoicingUnit) {
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'boites' : 'boite'}`
+                }
                 if (this.article.isBox) {
                     textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
-                } else {
-                    textToDisplay += ` ${this.selectedQuantity} ${quantityType}`
                 }
 
                 return textToDisplay;

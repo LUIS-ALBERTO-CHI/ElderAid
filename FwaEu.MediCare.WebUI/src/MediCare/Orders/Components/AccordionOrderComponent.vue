@@ -21,7 +21,7 @@
                     </div>
                     <span style="width: 90%;">{{ article.title }}</span>
                     <div v-if="order.isBox">
-                        <span class="header-subtitle">{{ order.quantity }} {{ article.invoicingUnit }}</span>
+                        <span class="header-subtitle">{{ order.quantity }} {{ getBox() }}</span>
                     </div>
                     <div v-else>
                         <span class="header-subtitle">{{ getSubtitle() }}</span>
@@ -89,6 +89,12 @@
 
 
                 return subtitle
+            },
+            getBox() {
+                let box = ` ${this.order.quantity > 1 ? 'Boites' : 'boite'}`
+
+
+                return box
             }
         },
         computed: {
