@@ -14,7 +14,7 @@
                 <div class="article-label-container">
                     <span style="font-weight: bold;">CHF</span>
                     <span>{{ article.price }} </span>
-                </div>F
+                </div>
                 <div v-show="article.leftAtChargeExplanation" class="article-label-container">
                     <i class="fa-solid fa-money-bill-1"></i>
                     <span>{{ article.leftAtChargeExplanation }}, reste à charge</span>
