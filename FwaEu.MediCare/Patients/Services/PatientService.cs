@@ -57,13 +57,13 @@ namespace FwaEu.MediCare.Patients.Services
                                                                              (int)x.Level == result.IncontinenceLevel);
 
                 int totalDaysInYear = (new DateTime(currentYear, 12, 31) - new DateTime(currentYear, 1, 1)).Days;
-                int totalDaysFromFirstDayInYearToDateNow = (DateTime.Now - new DateTime(currentYear, 1, 1)).Days;
+                int totalDaysFromStartDateToEndDate = (result.DateEnd - result.DateStart).Days;
                 var annualFixedPrice = incontinenceLevelEMS?.Amount ?? 0;
                 var dailyFixedPrice = annualFixedPrice / totalDaysInYear;
-                var fixedPrice = totalDaysFromFirstDayInYearToDateNow * dailyFixedPrice;
-                var overPassed = result.Consumed - fixedPrice;
-                var virtualDateWithoutOverPassed = fixedPrice == 0 || totalDaysFromFirstDayInYearToDateNow == 0 ? 0
-                    : overPassed / (fixedPrice / totalDaysFromFirstDayInYearToDateNow);
+                var fixedPrice = totalDaysFromStartDateToEndDate * dailyFixedPrice;
+                var overPassed = result.Consumed < fixedPrice ? 0 : result.Consumed - fixedPrice;
+                var virtualDateWithoutOverPassed = fixedPrice == 0 || totalDaysFromStartDateToEndDate == 0 ? 0
+                    : overPassed / (fixedPrice / totalDaysFromStartDateToEndDate);
 
                 var incontinenceLevelModel = new GetIncontinenceLevel
                 {
@@ -75,8 +75,8 @@ namespace FwaEu.MediCare.Patients.Services
                     DailyFixedPrice = annualFixedPrice / totalDaysInYear,
                     Consumed = result.Consumed,
                     FixedPrice = fixedPrice,
-                    OverPassed = result.Consumed - fixedPrice,
-                    DailyProtocolEntered = result.Consumed / totalDaysFromFirstDayInYearToDateNow,
+                    OverPassed = overPassed,
+                    DailyProtocolEntered = result.Consumed / totalDaysFromStartDateToEndDate,
                     VirtualDateWithoutOverPassed = (new DateTime(currentYear, 12, 31)).AddDays(virtualDateWithoutOverPassed)
                 };
                 return incontinenceLevelModel;
