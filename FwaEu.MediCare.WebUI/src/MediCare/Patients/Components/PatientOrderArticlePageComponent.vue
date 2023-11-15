@@ -130,10 +130,8 @@
                 });
             this.images = await ArticleService.getArticlesImageAsync(this.article.pharmaCode);
             this.loadGallery();
-            setTimeout(() => {
-                this.pageLoaded = true;
-                this.isLoading = false;
-            }, 4000);
+            this.pageLoaded = true;
+            this.isLoading = false;
         },
         methods: {
             loadGallery() {
