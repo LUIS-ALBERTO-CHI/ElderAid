@@ -17,6 +17,6 @@ namespace FwaEu.MediCare.Patients.WebApi
         public double Consumed { get; set; }
         public double OverPassed { get; set; }
 
-        public DateTime VirtualDateWithoutOverPassed { get; set; }
+        public DateTime? VirtualDateWithoutOverPassed { get; set; }
     }
 }

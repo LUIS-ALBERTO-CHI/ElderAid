@@ -1,12 +1,16 @@
 ﻿using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.Fwamework.Users;
+using FwaEu.MediCare.Articles.Services;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.Protections;
 using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.Referencials.GenericAdmin;
 using FwaEu.MediCare.Users;
+using FwaEu.Modules.BackgroundTasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
 using NHibernate.Transform;
 using System;
@@ -22,13 +26,22 @@ namespace FwaEu.MediCare.Patients.Services
         private readonly MainSessionContext _mainSessionContext;
         private readonly ICurrentUserService _currentUserService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IArticleService _articleService;
+        private readonly ILogger<BackgroundTasksBackgroundService> _logger;
 
-        public PatientService(GenericSessionContext sessionContext, MainSessionContext mainSessionContext, ICurrentUserService currentUserService, IHttpContextAccessor httpContextAccessor)
+        public PatientService(GenericSessionContext sessionContext,
+            MainSessionContext mainSessionContext,
+            ICurrentUserService currentUserService,
+            IHttpContextAccessor httpContextAccessor,
+            IArticleService articleService,
+            ILogger<BackgroundTasksBackgroundService> logger)
         {
             _sessionContext = sessionContext;
             _mainSessionContext = mainSessionContext;
             _currentUserService = currentUserService;
             _httpContextAccessor = httpContextAccessor;
+            _articleService = articleService;
+            _logger = logger;
         }
 
 
@@ -51,6 +64,8 @@ namespace FwaEu.MediCare.Patients.Services
 
             if (result != null)
             {
+                double dailyProtocolConsumed = await CalculDailyProtocolConsumed(id);
+
                 int currentYear = DateTime.Now.Year;
                 var repository = _mainSessionContext.RepositorySession.Create<IncontinenceLevelEntityRepository>();
                 var incontinenceLevelEMS = await repository.Query().FirstOrDefaultAsync(x => x.Year == currentYear &&
@@ -62,8 +77,29 @@ namespace FwaEu.MediCare.Patients.Services
                 var dailyFixedPrice = annualFixedPrice / totalDaysInYear;
                 var fixedPrice = totalDaysFromStartDateToEndDate * dailyFixedPrice;
                 var overPassed = result.Consumed < fixedPrice ? 0 : result.Consumed - fixedPrice;
-                var virtualDateWithoutOverPassed = fixedPrice == 0 || totalDaysFromStartDateToEndDate == 0 ? 0
-                    : overPassed / (fixedPrice / totalDaysFromStartDateToEndDate);
+
+                if (result.DateStart < DateTime.Now && result.Consumed == 0)
+                {
+                    _logger.LogWarning($"TO CHECK: Patient id {id} has no consume but the start date is {result.DateStart.ToString()} ");
+                }
+
+                //forfait à date du jour : dailyFixedPrice
+                //dépense à date du jour : result.Consumed
+                //dépenses de protocole journalier: protocol * prixUnitaire (prixUnitaire = prixBoite/nbrCouche)
+                //forfait du jour: dailyFixedPrice
+                //date virtuelle de dépassement
+                //date du jour + (forfait à date du jour -dépense à date du jour) / (dépenses de protocole journalier - forfait du jour)
+
+
+                DateTime? virtualDateWithoutOverPassedFinal = null;
+
+                if (overPassed == 0)
+                {
+                    var dailyProtocolEntered = result.Consumed / totalDaysFromStartDateToEndDate;
+
+                    var virtualDateWithoutOverPassed = (dailyFixedPrice - result.Consumed) / (dailyProtocolConsumed - dailyFixedPrice);
+                    virtualDateWithoutOverPassedFinal = DateTime.Now.AddDays(virtualDateWithoutOverPassed);
+                }
 
                 var incontinenceLevelModel = new GetIncontinenceLevel
                 {
@@ -72,16 +108,46 @@ namespace FwaEu.MediCare.Patients.Services
                     DateStart = result.DateStart,
                     IncontinenceLevel = result.IncontinenceLevel,
                     AnnualFixedPrice = annualFixedPrice,
-                    DailyFixedPrice = annualFixedPrice / totalDaysInYear,
+                    DailyFixedPrice = dailyFixedPrice,
                     Consumed = result.Consumed,
                     FixedPrice = fixedPrice,
                     OverPassed = overPassed,
                     DailyProtocolEntered = result.Consumed / totalDaysFromStartDateToEndDate,
-                    VirtualDateWithoutOverPassed = (new DateTime(currentYear, 12, 31)).AddDays(virtualDateWithoutOverPassed)
+                    VirtualDateWithoutOverPassed = virtualDateWithoutOverPassedFinal
                 };
                 return incontinenceLevelModel;
             }
             return null;
+        }
+
+        private async Task<double> CalculDailyProtocolConsumed(int id)
+        {
+            var protectionRepository = _sessionContext.RepositorySession.Create<ProtectionEntityRepository>();
+            var protections = await protectionRepository.QueryNoPerimeter().Where(x => x.PatientId == id).ToListAsync();
+            var articleIds = protections.Select(x => x.ArticleId).ToArray();
+            var articles = await _articleService.GetAllByIdsAsync(articleIds);
+            var articlesGroup = articles.GroupBy(x => x.Id)
+                               .Select(x => new
+                               {
+                                   x.First().Id,
+                                   x.First().Price,
+                                   x.First().CountInBox
+                               });
+            double protocoleJournalierArticleComsumed = 0;
+
+            foreach (var article in articlesGroup)
+            {
+                if (!article.Price.HasValue)
+                {
+                    _logger.LogWarning($"Article id {article.Id} has no price ");
+                }
+                var proctection = protections.FirstOrDefault(x => x.ArticleId == article.Id);
+                var proctectionQuantity = proctection.QuantityPerDay;
+                var protocoleJournalierArticle = (article.Price.HasValue && article.CountInBox.HasValue) ? proctectionQuantity * (article.Price.Value / article.CountInBox.Value) : 0;
+                protocoleJournalierArticleComsumed = protocoleJournalierArticleComsumed + protocoleJournalierArticle;
+            }
+
+            return protocoleJournalierArticleComsumed;
         }
 
         public async Task SaveIncontinenceLevelAsync(SaveIncontinenceLevel model)
