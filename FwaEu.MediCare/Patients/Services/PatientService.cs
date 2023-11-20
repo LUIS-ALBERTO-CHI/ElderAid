@@ -2,11 +2,8 @@
 using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.Articles.Services;
 using FwaEu.MediCare.GenericRepositorySession;
-using FwaEu.MediCare.Orders;
-using FwaEu.MediCare.Organizations;
 using FwaEu.MediCare.Protections;
 using FwaEu.MediCare.Referencials;
-using FwaEu.MediCare.Referencials.GenericAdmin;
 using FwaEu.MediCare.Users;
 using FwaEu.Modules.BackgroundTasks;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +13,6 @@ using NHibernate.Transform;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FwaEu.MediCare.Patients.Services
 {
@@ -83,13 +79,8 @@ namespace FwaEu.MediCare.Patients.Services
                     _logger.LogWarning($"TO CHECK: Patient id {id} has no consume but the start date is {result.DateStart.ToString()} ");
                 }
 
-                //forfait à date du jour : dailyFixedPrice
-                //dépense à date du jour : result.Consumed
-                //dépenses de protocole journalier: protocol * prixUnitaire (prixUnitaire = prixBoite/nbrCouche)
-                //forfait du jour: dailyFixedPrice
                 //date virtuelle de dépassement
                 //date du jour + (forfait à date du jour -dépense à date du jour) / (dépenses de protocole journalier - forfait du jour)
-
 
                 DateTime? virtualDateWithoutOverPassedFinal = null;
 
