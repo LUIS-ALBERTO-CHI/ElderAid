@@ -13,7 +13,9 @@
             </div>
         </div>
         <div v-if="periodicOrders && periodicOrders.some(periodicOrders => 'article' in periodicOrders)" class="periodic-orders-validation-container">
-            <span>Dernière validation par Alexandre DUPONT le 16/06/23 à 14:23</span>
+            <div v-if="validatedById">
+                <span>{{showPeriodicOrderValidationUser(validatedById, validatedOn)}}</span>
+            </div>
             <Button @click="onSubmit" label="Valider" style="height: 40px !important;"></Button>
         </div>
         <empty-list-component v-show="periodicOrders != null && periodicOrders.length < 1" />
@@ -32,6 +34,8 @@
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import PeriodicOrdersMasterDataService from "@/MediCare/Orders/Services/periodic-orders-master-data-service";
+    import UserFormatterService from "@/Fwamework/Users/Services/user-formatter-service";
+    import UserService from '@/Fwamework/Users/Services/user-service';
 
     export default {
         components: {
@@ -53,9 +57,14 @@
                 patient: null,
                 organization: {},
                 periodicOrderValidations: null,
+                validatedById: null,
+                validatedOn: null,
+                periodicOrderValidationUserDate: null,
+                users: null
             };
         },
         async created() {
+            this.users = await UserService.getAllAsync();
             this.patient = await this.patientLazy.getValueAsync();
             this.organization = ViewContextService.get();
             this.periodicOrders = (await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')).filter(x => new Date(x.dateEnd) > new Date())
@@ -76,23 +85,31 @@
                 })
             },
             quantityNeeded(periodicOrder) {
-                return `Besoin de ${periodicOrder.quantityPerDay * this.organization.periodicityOrderActivationDaysNumber} ${periodicOrder.article.invoicingUnit}
+                return `Besoin de ${periodicOrder.quantityPerDay * this.organization.orderPeriodicityDays} ${periodicOrder.article.invoicingUnit}
                 pour ${this.organization.orderPeriodicityDays} prochains jours`
             },
             getPeriodicQuantity(periodicOrder, article) {
                 const filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
                 let periodicQuantity = null;
+
                 for (var i = 0; i < filteredPeriodicOrderValidations.length; i++) {
                     if (filteredPeriodicOrderValidations[i].orderedOn == null) {
                         periodicQuantity = filteredPeriodicOrderValidations[i].quantity;
+                        this.validatedById = filteredPeriodicOrderValidations[i].validatedById;
+                        this.validatedOn = filteredPeriodicOrderValidations[i].validatedOn;
                         return periodicQuantity;
                     }
                 }
                 if (periodicQuantity == null) {
                     return Math.ceil((this.organization.orderPeriodicityDays * periodicOrder.quantityPerDay) / article.countInBox);
-                } 
+                }
             },
 
+            showPeriodicOrderValidationUser(userId, date) {
+                const user = this.users.find(u => u.id === userId);
+                const userName = UserFormatterService.getUserFullName(user);
+                return `Dernière validation par ${userName} le ${new Date(date).toLocaleDateString() } à ${new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(date))}`;
+            },
             async onSubmit() {
                 var periodicOrders = this.periodicOrders.map(x => {
                     return {
