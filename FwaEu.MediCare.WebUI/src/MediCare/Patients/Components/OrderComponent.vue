@@ -1,19 +1,27 @@
 <template>
-    <div class="order-container">
+    <div class="order-container" v-if="article">
         <div v-show="isOrderAlreadyInProgress" class="alert-container">
             <i class="fa-solid fa-triangle-exclamation"></i>
             <span> Commande déjà en cours de cet article pour ce patient</span>
         </div>
-        <div class="type-quantity-container" v-if="isBox">
+        <div class="type-quantity-container" v-if="article.countInBox == 1">
             <span>Commander des boites complètes :</span>
             <div class="icon-right-container">
-                <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+                <InputSwitch :disabled="true" v-model="isBox" class="custom-switch" />
             </div>
         </div>
-        <div class="type-quantity-container" v-else>
-            <span>Commander des comprimés :</span>
-            <div class="icon-right-container">
-                <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+        <div v-else>
+            <div class="type-quantity-container" v-if="isBox">
+                <span>Commander des boites complètes :</span>
+                <div class="icon-right-container">
+                    <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+                </div>
+            </div>
+            <div class="type-quantity-container" v-else>
+                <span>Commander des comprimés :</span>
+                <div class="icon-right-container">
+                    <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
+                </div>
             </div>
         </div>
         <div v-show="!moreQuantityDisplayed" class="quantity-container">
@@ -96,11 +104,10 @@
                 showConfirmationDisplayed: false,
                 isBox: true,
                 orderAlreadyInProgress: true,
-                isSwitchDisabled: false,
+                isSwitchDisabled: false
             };
         },
         async created() {
-
         },
         methods: {
             displayMoreQuantity() {
@@ -231,7 +238,7 @@
         background-color: #FFFFFF;
     }
 
-    .custom-switch .p-inputswitch-slider:before {
-        background-color: #7092be;
-    }
+        .custom-switch .p-inputswitch-slider:before {
+            background-color: #7092be;
+        }
 </style>
