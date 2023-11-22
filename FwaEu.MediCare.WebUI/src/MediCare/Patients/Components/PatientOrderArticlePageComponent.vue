@@ -1,5 +1,5 @@
 <template>
-    <div class="order-article-page-container" v-if="article">
+    <div v-if="!isLoading" class="order-article-page-container">
         <patient-info-component v-if="patient != undefined" :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
@@ -42,7 +42,7 @@
         </div>
         <AddPosologyComponent v-if="isAddPosologyPage && patient" :article="article" :patient="patient" />
         <div v-else>
-            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" :patientId="getPatientId()"/>
+            <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" :patientId="getPatientId()" />
             <div v-else class="order-submitted-container">
                 <span>Commande réalisée avec succès !</span>
                 <span>Votre prochaine action : </span>
@@ -65,6 +65,10 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <ProgressSpinner v-if="isLoading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
+        <span v-if="isLoading" style="position: absolute; top: 60%; left: 50%; transform: translateX(-50%); font-size: 16px;">Chargement...</span>
+    </div>
 </template>
 <script>
 
@@ -76,6 +80,7 @@
     import Galleria from 'primevue/galleria';
     import AddPosologyComponent from '@/MediCare/Patients/Components/AddPosologyComponent.vue'
     import ArticleService from '@/MediCare/Articles/Services/articles-service'
+    import ProgressSpinner from 'primevue/progressspinner';
 
     export default {
         components: {
@@ -83,7 +88,8 @@
             OrderComponent,
             Button,
             Galleria,
-            AddPosologyComponent
+            AddPosologyComponent,
+            ProgressSpinner,
         },
         setup() {
             const { patientLazy, getCurrentPatientAsync } = usePatient();
@@ -95,12 +101,13 @@
         data() {
             return {
                 patient: null,
-                article: null,
+                article: {},
                 isOrderSubmitted: false,
                 patientOrders: [],
                 gallery: [],
                 isGalleryDisplayed: false,
                 images: null,
+                isLoading: true
             };
         },
         async created() {
@@ -122,6 +129,7 @@
                 });
             this.images = await ArticleService.getArticlesImageAsync(this.article.pharmaCode);
             this.loadGallery();
+            this.isLoading = false;
         },
         methods: {
             loadGallery() {
