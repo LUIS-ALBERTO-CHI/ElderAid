@@ -1,5 +1,5 @@
 <template>
-    <div v-if="pageLoaded" class="order-article-page-container">
+    <div v-if="!isLoading" class="order-article-page-container">
         <patient-info-component v-if="patient != undefined" :patient="patient" />
         <div class="article-title-container">
             <span style="width: 90%;" class="command-title">{{ article.title }}</span>
@@ -107,7 +107,6 @@
                 gallery: [],
                 isGalleryDisplayed: false,
                 images: null,
-                pageLoaded: false,
                 isLoading: true
             };
         },
@@ -130,7 +129,6 @@
                 });
             this.images = await ArticleService.getArticlesImageAsync(this.article.pharmaCode);
             this.loadGallery();
-            this.pageLoaded = true;
             this.isLoading = false;
         },
         methods: {
