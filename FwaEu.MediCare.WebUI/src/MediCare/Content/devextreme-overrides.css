@@ -1,77 +1,132 @@
 
-#app .dx-field-item-label-text
-{
-	color: #0078D4;
-}
-
-
-#app .dx-field-item-label-location-top
-{
+body .dx-field-item-label-location-top {
 	margin-bottom: 5px;
 }
 
-
-#app .dx-fileuploader-wrapper,
-#app .dx-fileuploader-input-wrapper
-{
-	padding: 0px;
-	border: none;
-}
-
-
-#app .dx-fileuploader-dragover .dx-fileuploader-input-label
-{
-	font-weight: bold;
-}
-
-#app .dx-fileuploader-dragover .dx-fileuploader-input-container
-{
-	border: 2px dashed #0078D4;
-	background-color: #FAFAFA;
-}
-
-#app .dx-fileuploader-dragover .dx-fileuploader-input
-{
-	padding: 10px 3px;
-	margin-bottom: 0px;
-}
-
-#app .dx-fileuploader-dragover .dx-fileuploader-input-label
-{
-	padding: 10px 9px;
-}
-
-
-#app .dx-fileuploader-files-container
-{
-	padding: 5px 10px;
-	margin-top: 10px;
-	border: 1px solid #DDDDDD;
+body .dx-fileuploader-input-wrapper {
+	padding: 20px 10px;
+	border: 2px dashed silver;
 	border-radius: 4px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-#app .dx-fileuploader-empty .dx-fileuploader-files-container
-{
-	padding: 0px;
-	margin: 0px;
+body .dx-fileuploader-dragover .dx-fileuploader-input-wrapper {
+	border: 2px dashed var(--primary-text-color);
+}
+
+body .dx-fileuploader-dragover .dx-fileuploader-input-container {
 	border: none;
 }
 
-#app .dx-fileuploader-content
-{
-	text-align: center; /* To center the button */
+body .dx-fileuploader-input-label {
+	text-align: center;
 }
 
+body .dx-fileuploader-input {
+	padding: 0;
+}
 
-	#app .dx-fileuploader-content .dx-fileuploader-input-wrapper,
-	#app .dx-fileuploader-content .dx-fileuploader-files-container
-	{
-		text-align: left; /* Reset */
+body .dx-fileuploader-dragover .dx-fileuploader-input {
+	padding: 22.5px 3px;
+}
+
+body .dx-fileuploader-dragover .dx-fileuploader-input-label {
+	padding: 26px 0;
+}
+
+body .dx-layout-manager .dx-field-item:not(.dx-first-col) {
+	padding-left: 4px;
+}
+
+body .dx-layout-manager .dx-field-item:not(.dx-last-col) {
+	padding-right: 4px;
+}
+
+body .dx-datagrid {
+	line-height: 16px;
+}
+
+	body .dx-datagrid .dx-row > td {
+		padding: 6px 4px;
 	}
 
-#app .dx-button.dx-fileuploader-upload-button
-{
-	background-color: #5cb85c; /* Sucess */
-	border-color: transparent;
-	color: #fff;
+body .dx-datagrid-content .dx-datagrid-table .dx-row > td {
+	vertical-align: middle;
+}
+
+body .dx-widget,
+body .dx-widget .dx-datagrid td {
+	font-size: 14px;
+}
+
+body .dx-datagrid-headers {
+	position: sticky;
+	top: 0px;
+	background-color: #FFFFFF;
+	z-index: 1;
+	color: var(--primary-text-color);
+	font-weight: 500;
+}
+
+body .dx-datagrid-borders > .dx-datagrid-headers,
+body .dx-datagrid-borders > .dx-datagrid-rowsview,
+body .dx-datagrid-borders > .dx-datagrid-total-footer {
+	border-left: none;
+	border-right: none;
+}
+
+body .dx-datagrid-rowsview .dx-row:not(.dx-freespace-row) {
+	border-bottom: 1px solid silver;
+}
+
+.dx-show-clear-button .dx-icon-clear {
+	color: var(--secondary-text-color);
+}
+
+.dx-texteditor.dx-state-active.dx-editor-filled,
+.dx-texteditor.dx-state-active.dx-editor-outlined,
+.dx-texteditor.dx-state-active.dx-editor-underlined,
+.dx-texteditor.dx-state-focused.dx-editor-filled,
+.dx-texteditor.dx-state-focused.dx-editor-outlined,
+.dx-texteditor.dx-state-focused.dx-editor-underlined {
+	border-color: var(--primary-text-color);
+}
+
+.dx-toolbar .dx-toolbar-label {
+	font-size: 18px;
+}
+
+body .dx-datagrid-container.dx-filter-menu .dx-menu-item-has-icon .dx-icon, 
+body .dx-datagrid.dx-filter-menu .dx-menu-item-has-icon .dx-icon,
+body .dx-dropdowneditor-icon::before,
+body .dx-pager .dx-pages,
+body .dx-pager .dx-pages .dx-selection {
+	color: var(--secondary-text-color);
+}
+
+	body .dx-pager .dx-pages .dx-selection {
+		font-weight: bold;
+	}
+
+body .header-component {
+	z-index: 1601;
+}
+
+body .filters-container .dx-item-content.dx-box-flex.dx-collection {
+	align-items: flex-end !important;
+}
+
+body .dx-popup-wrapper > .dx-overlay-content {
+	border-radius: 20px;
+}
+
+.dx-widget.dx-state-readonly,
+.dx-widget.dx-state-readonly.dx-state-focused:before {
+	opacity: .6;
+}
+
+body .dx-switch-handle::before {
+	background-color: var(--secondary-text-color);
 }

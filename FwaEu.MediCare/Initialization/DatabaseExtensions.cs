@@ -16,79 +16,104 @@ using FwameworkDataBaseExtensions = FwaEu.Fwamework.Data.Database.DatabaseExtens
 
 namespace FwaEu.MediCare.Initialization
 {
-    public static class DatabaseExtensions
-    {
-        private static IEnumerable<Type> GetTypesInWhichSearchForMappings(IAuthenticationFeatures authenticationFeatures)
-        {
-            return authenticationFeatures.CustomizeTypesInWhichSearchForMappings(
-                                            typeof(FwameworkDataBaseExtensions).Assembly.GetExportedTypes()
-                                                .Concat(typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures).Assembly.GetExportedTypes()
-                                                    .Concat(typeof(DatabaseExtensions).Assembly.GetExportedTypes())));
-        }
+	public static class DatabaseExtensions
+	{
+		private static IEnumerable<Type> GetTypesInWhichSearchForMappings(IAuthenticationFeatures authenticationFeatures)
+		{
+			return authenticationFeatures.CustomizeTypesInWhichSearchForMappings(
+											typeof(FwameworkDataBaseExtensions).Assembly.GetExportedTypes()
+												.Concat(typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures).Assembly.GetExportedTypes()
+													.Concat(typeof(DatabaseExtensions).Assembly.GetExportedTypes())));
+		}
 
-        private static IEnumerable<INhibernateConfigurationLoader> GetLoaders(
-            IServiceProvider serviceProvider,
-            IAuthenticationFeatures authenticationFeatures, 
-            NhibernateConfigurationOptions configurationOptions)
-        {
-            var sectionConnectionStrings = serviceProvider.GetService<IConfiguration>().GetSection("ConnectionStrings");
-            var settingsConnectionStrings = sectionConnectionStrings.Get<Dictionary<string, string>>();
+		private static IEnumerable<INhibernateConfigurationLoader> GetLoaders(
+			IServiceProvider serviceProvider,
+			IAuthenticationFeatures authenticationFeatures)
+		{
+			var section = serviceProvider.GetService<IConfiguration>().GetSection("Application:Nhibernate");
+			var settings = section.Get<SimpleNhibernateOptions>() ?? new SimpleNhibernateOptions();
 
-            //NOTE: Get all types from all projects (Fwamwork + Modules + Current assembly)
-            var typesFromAllAssemblies = GetTypesInWhichSearchForMappings(authenticationFeatures);
+			//NOTE: If you want to load the configuration from appSettings, you can use the following syntax
+			//("configurationOptions" can be loaded using the NhibernateConfigurationOptions class)
 
-            foreach (var connectionString in settingsConnectionStrings)
-            {
-                var keyofConnectionString = connectionString.Key;
-                var specificTypesForMappings = typesFromAllAssemblies
-                                                .Where(x => (!x.IsDefined(typeof(ConnectionStringAttribute))
-                                                                && keyofConnectionString == "Default")
-                                                            || (x.IsDefined(typeof(ConnectionStringAttribute))
-                                                                && ((ConnectionStringAttribute)Attribute.GetCustomAttribute(x,
-                                                                    typeof(ConnectionStringAttribute)))?.Name == keyofConnectionString));
-                yield return new CodeBasedNhibernateConfigurationLoader(
-                    serviceProvider: serviceProvider,
-                    connectionStringName: keyofConnectionString,
-                    databaseFeaturesType: typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures),
-                    typesInWhichSearchForMappings: specificTypesForMappings,
-                    configureDatabaseProperties: (properties) =>
-                    {
-                        properties.Dialect<MsSql2012Dialect>();
-                        properties.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                    },
-                    finalizeConfiguration: (configuration) =>
-                    {
-                        configuration.Properties[NHibernate.Cfg.Environment.DefaultFlushMode] = NHibernate.FlushMode.Manual.ToString();
-                    }
-                );
-            }
+			//yield return new OptionsBasedNhibernateConfigurationLoader(
+			//   serviceProvider: serviceProvider,
+			//   options: configurationOptions,
+			//   typesInWhichSearchForMappings: GetTypesInWhichSearchForMappings(authenticationFeatures));
 
-        }
+			//NOTE: For most cases, the CodeBasedNhibernateConfigurationLoader will be enough
 
+			var sectionConnectionStrings = serviceProvider.GetService<IConfiguration>().GetSection("ConnectionStrings");
+			var settingsConnectionStrings = sectionConnectionStrings.Get<Dictionary<string, string>>();
 
+			//NOTE: Get all types from all projects (Fwamwork + Modules + Current assembly)
+			var typesFromAllAssemblies = GetTypesInWhichSearchForMappings(authenticationFeatures);
 
-        private static void AddDatabaseFeatures(this IServiceCollection services, NhibernateConfigurationOptions configurationOptions)
-        {
-            services.AddTransient<IDatabaseFeaturesProvider>(sp => 
-                    new DatabaseFeaturesProvider(configurationOptions.DatabaseFeaturesTypeFullName));
-        }
+			foreach (var connectionString in settingsConnectionStrings)
+			{
+				var keyofConnectionString = connectionString.Key;
+				var specificTypesForMappings = typesFromAllAssemblies
+												.Where(x => (!x.IsDefined(typeof(ConnectionStringAttribute))
+																&& keyofConnectionString.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
+															|| (x.IsDefined(typeof(ConnectionStringAttribute))
+																&& ((ConnectionStringAttribute)Attribute.GetCustomAttribute(x,
+																	typeof(ConnectionStringAttribute)))?.Name == keyofConnectionString));
+				yield return new CodeBasedNhibernateConfigurationLoader(
+					serviceProvider: serviceProvider,
+					connectionStringName: keyofConnectionString,
+					databaseFeaturesType: typeof(FwaEu.Modules.Data.Database.MsSql.MsSqlDatabaseFeatures),
+					typesInWhichSearchForMappings: specificTypesForMappings,
+					configureDatabaseProperties: (properties) =>
+					{
+						properties.Dialect<MsSql2012Dialect>();
+						properties.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+						properties.LogFormattedSql = settings.LogFormattedSql;
+						properties.LogSqlInConsole = settings.LogSqlInConsole;
+					},
+					finalizeConfiguration: (configuration) =>
+					{
+						configuration.Properties[NHibernate.Cfg.Environment.DefaultFlushMode] = NHibernate.FlushMode.Manual.ToString();
+					}
+				);
+			}
+		}
 
-        public static IServiceCollection AddApplicationDatabase(
-            this IServiceCollection services,
-            ApplicationInitializationContext context,
-            IAuthenticationFeatures authenticationFeatures)
-        {
-            var repositories = context.ServiceStore.Get<IRepositoryRegister>();
-            repositories.Add<UserEntity, ApplicationUserEntity, IUserEntityRepository, ApplicationUserEntityRepository>();
+		private static void AddDatabaseFeatures(this IServiceCollection services)
+		{
+			//NOTE: If you want to dynamically register your>s< database>s< features, you can use the following syntax
+			//that allows you to load the "databaseFeaturesFullTypeName" variable value from appSettings for example
 
-            var section = context.Configuration.GetRequiredSection("Application:Nhibernate");
-            var configurationOptions = section.Get<NhibernateConfigurationOptions>();
+			//services.AddTransient<IDatabaseFeaturesProvider>(sp =>
+			//	new DatabaseFeaturesProvider(databaseFeaturesFullTypeName));
 
-            services.AddSingleton(repositories);
-            services.AddDatabaseFeatures(configurationOptions);
-            services.AddTransient((serviceProvider) => GetLoaders(serviceProvider, authenticationFeatures, configurationOptions));
+			//NOTE: You can also enable the database>s< you need to use in your application as follows
 
-            return services;
-        }
-    }
+			services.AddTransient<IDatabaseFeaturesProvider>(sp =>
+				new DatabaseFeaturesProvider<Modules.Data.Database.MsSql.MsSqlDatabaseFeatures>());
+
+			//services.AddTransient<IDatabaseFeaturesProvider>(sp =>
+			//	new DatabaseFeaturesProvider<Modules.Data.Database.MySql.MySqlDatabaseFeatures>());
+
+			//services.AddTransient<IDatabaseFeaturesProvider>(sp =>
+			//	new DatabaseFeaturesProvider<Modules.Data.Database.Oracle.OracleDatabaseFeatures>());
+
+			//services.AddTransient<IDatabaseFeaturesProvider>(sp =>
+			//	new DatabaseFeaturesProvider<Modules.Data.Database.SQLite.SQLiteDatabaseFeatures>());
+		}
+
+		public static IServiceCollection AddApplicationDatabase(
+			this IServiceCollection services,
+			ApplicationInitializationContext context,
+			IAuthenticationFeatures authenticationFeatures)
+		{
+			var repositories = context.ServiceStore.Get<IRepositoryRegister>();
+			repositories.Add<UserEntity, ApplicationUserEntity, IUserEntityRepository, ApplicationUserEntityRepository>();
+
+			services.AddSingleton(repositories);
+			services.AddDatabaseFeatures();
+			services.AddTransient((serviceProvider) => GetLoaders(serviceProvider, authenticationFeatures));
+
+			return services;
+		}
+	}
 }

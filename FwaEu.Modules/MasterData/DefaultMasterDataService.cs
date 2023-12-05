@@ -38,59 +38,45 @@ namespace FwaEu.Modules.MasterData
 		public async Task<RelatedMasterDataChangesInfo[]> GetChangesInfosAsync(
 			RelatedParameters<MasterDataProviderGetChangesParameters>[] parameters)
 		{
-			var changesInfos = new List<RelatedMasterDataChangesInfo>();
-
-			////NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
-			foreach (var parameter in parameters)
+			//NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
+			var changeInfos = new RelatedMasterDataChangesInfo[parameters.Length];
+			for (int i = 0; i < parameters.Length; i++)
 			{
-				var result = await this.CreateProvider(parameter.Key)
-					.GetChangesInfoAsync(parameter.Parameters);
-				changesInfos.Add(new RelatedMasterDataChangesInfo(parameter.Key, result));
+				var parameter = parameters[i];
+				var result = await this.CreateProvider(parameter.Key).GetChangesInfoAsync(parameter.Parameters);
+				changeInfos[i] = new RelatedMasterDataChangesInfo(parameter.Key, result);
 			}
-			return changesInfos.ToArray();
+
+			return changeInfos;
 		}
 
 		public async Task<RelatedMasterDataGetModelsResult[]> GetModelsAsync(
 			RelatedParameters<MasterDataProviderGetModelsParameters>[] parameters)
 		{
-			var tasks = parameters.Select(p =>
-				new
-				{
-					p.Key,
-					Task = this.CreateProvider(p.Key)
-						.GetModelsAsync(p.Parameters)
-				})
-				.ToArray();
-
 			//NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
-			foreach (var task in tasks)
+			var changeInfos = new RelatedMasterDataGetModelsResult[parameters.Length];
+			for (int i = 0; i < parameters.Length; i++)
 			{
-				await task.Task;
+				var parameter = parameters[i];
+				var result = await this.CreateProvider(parameter.Key).GetModelsAsync(parameter.Parameters);
+				changeInfos[i] = new RelatedMasterDataGetModelsResult(parameter.Key, result);
 			}
 
-			return tasks.Select(t => new RelatedMasterDataGetModelsResult(t.Key, t.Task.Result))
-				.ToArray();
+			return changeInfos;
 		}
 
 		public async Task<RelatedMasterDataGetModelsResult[]> GetModelsByIdsAsync(RelatedParameters<MasterDataProviderGetModelsByIdsParameters>[] parameters)
 		{
-			var tasks = parameters.Select(p =>
-				new
-				{
-					p.Key,
-					Task = this.CreateProvider(p.Key)
-						.GetModelsByIdsAsync(p.Parameters)
-				})
-				.ToArray();
-
 			//NOTE: Do not run in parallel because NHibernate cannot handle it https://github.com/nhibernate/nhibernate-core/issues/1642
-			foreach (var task in tasks)
+			var changeInfos = new RelatedMasterDataGetModelsResult[parameters.Length];
+			for (int i = 0; i < parameters.Length; i++)
 			{
-				await task.Task;
+				var parameter = parameters[i];
+				var result = await this.CreateProvider(parameter.Key).GetModelsByIdsAsync(parameter.Parameters);
+				changeInfos[i] = new RelatedMasterDataGetModelsResult(parameter.Key, result);
 			}
 
-			return tasks.Select(t => new RelatedMasterDataGetModelsResult(t.Key, t.Task.Result))
-				.ToArray();
+			return changeInfos;
 		}
 	}
 }

@@ -1,7 +1,29 @@
 <template>
-	<div style="display: flex; flex-direction: column; row-gap: 5px;">
-		<a href="#" @click="test()">{{$t('reinitializePasswordLink')}}</a>
-		<span style="color: red" v-show="displayErrorMessage">{{$t('resetPasswordAlert')}}</span>
+	<div>
+		<a href="#" @click.prevent.stop="showReinitializePasswordPopup">{{$t('reinitializePasswordLink')}}</a>
+		<dx-popup v-if="popupVisible" v-model:visible="popupVisible"
+				  :close-on-outside-click="true"
+				  :width="380"
+				  height="auto"
+				  title-template="popupTitle"
+				  :show-title="true">
+			<template #popupTitle>
+				{{$t('reinitializePasswordLink')}}
+			</template>
+			<dx-validation-group>
+				<dx-text-box :placeholder="$t('email')" v-model:value="email">
+					<dx-validator>
+						<dx-required-rule/>
+						<dx-email-rule/>
+					</dx-validator>
+				</dx-text-box>
+				<div class="form-buttons">
+					<dx-button type="success"
+							   :text="$t('button')"
+							   @click="reinitializePasswordAsync" />
+				</div>
+			</dx-validation-group>
+		</dx-popup>
 	</div>
 </template>
 <script>
@@ -13,7 +35,7 @@
 	import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
 	import { showLoadingPanel } from "@/Fwamework/LoadingPanel/Services/loading-panel-service";
 	import PasswordRecoveryService from '../Services/password-recovery-service';
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 
 	export default {
 		components: {
@@ -25,20 +47,15 @@
 			DxEmailRule,
 			DxValidationGroup
 		},
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/password-recovery-request-messages.${locale}.json`);
-				}
-			}
-		},
 		data() {
 			return {
 				popupVisible: false,
-				email: "",
-				displayErrorMessage: false
+				email: ""
 			};
+		},
+
+		async created() {
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/PasswordRecovery/Components/Content/password-recovery-request-messages.*.json'));
 		},
 		methods: {
 			showReinitializePasswordPopup() {
@@ -51,10 +68,7 @@
 				await PasswordRecoveryService.reinitializePasswordAsync(this.email);
 				NotificationService.showConfirmation(this.$t('mailSent'));
 				this.popupVisible = false;
-			}),
-			test() {
-				this.displayErrorMessage = true;
-			}
+			})
 		}
 	}
 </script>

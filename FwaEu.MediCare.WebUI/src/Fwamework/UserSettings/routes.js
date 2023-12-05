@@ -1,4 +1,4 @@
-const UserSettingsPageComponent = () => import('@/Fwamework/UserSettings/Components/UserSettingsPageComponent.vue');
+const UserSettingsPageComponent = () => import('@UILibrary/Fwamework/UserSettings/Components/UserSettingsPageComponent.vue');
 
 export default [
 	{

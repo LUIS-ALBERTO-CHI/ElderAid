@@ -1,6 +1,6 @@
 import { CanAdministrateUsers } from '@/Fwamework/Users/users-permissions';
-const UsersPageComponent = () => import('@/Fwamework/Users/Components/UsersPageComponent.vue');
-const UserDetailsPageComponent = () => import('@/Fwamework/Users/Components/UserDetailsPageComponent.vue');
+const UsersPageComponent = () => import('@UILibrary/Fwamework/Users/Components/UsersPageComponent.vue');
+const UserDetailsPageComponent = () => import('@UILibrary/Fwamework/Users/Components/UserDetailsPageComponent.vue');
 
 export default [
 	{

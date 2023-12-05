@@ -5,20 +5,10 @@
 </template>
 <script>
 	import Timeline from '@/Fwamework/Users/Components/TimelineComponent.vue';
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 	export default {
 		components: {
 			Timeline
-		},
-
-		mixins: [LocalizationMixin],
-		i18n: {
-
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/user-history-part-messages.${locale}.json`);
-				}
-			}
 		},
 		props: {
 			modelValue: {
@@ -26,7 +16,9 @@
 				default: () => { }
 			}
 		},
-
+		async created() {
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/UserHistory/Components/Content/user-history-part-messages.*.json'));
+		},
 		methods: {
 			getHistoryEntries() {
 				let historyEntries = [];

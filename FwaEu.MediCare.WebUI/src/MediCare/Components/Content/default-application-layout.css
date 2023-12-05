@@ -4,7 +4,7 @@
 }
 
 #app .dx-drawer-opened .dx-drawer-wrapper .dx-drawer-panel-content,
-#app .dx-drawer-opened .dx-drawer-wrapper .dx-overlay-content.dx-resizable {
+#app .dx-drawer-opened .dx-drawer-wrapper .dx-overlay-content {
 	width: 260px !important;
 }
 
@@ -20,6 +20,13 @@
 	min-height: 0;
 }
 
-.content {
+
+.content-footer-container {
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
+}
+
+.progress-bar-break {
+	height: 4px;
 }

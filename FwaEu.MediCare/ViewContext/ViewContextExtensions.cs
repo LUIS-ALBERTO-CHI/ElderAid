@@ -1,4 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FwaEu.MediCare.ViewContext
 {
@@ -7,7 +11,8 @@ namespace FwaEu.MediCare.ViewContext
 		public static IServiceCollection AddApplicationViewContext(this IServiceCollection services)
 		{
 			services.AddScoped<IViewContextService, HttpHeaderViewContextService>();
-            return services;
+
+			return services;
 		}
 	}
 }

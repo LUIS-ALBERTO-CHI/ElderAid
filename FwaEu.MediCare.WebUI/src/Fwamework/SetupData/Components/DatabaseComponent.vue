@@ -23,24 +23,16 @@
 	</box>
 </template>
 <script>
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 	import SetupService from '@/Fwamework/Setup/Services/setup-service';
 	import { showLoadingPanel } from "@/Fwamework/LoadingPanel/Services/loading-panel-service";
-	import ProcessResult from '@/Fwamework/ProcessResults/Components/ProcessResultComponent.vue';
+	import ProcessResult from '@UILibrary/Fwamework/ProcessResults/Components/ProcessResultComponent.vue';
 	import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
 
 	export default {
 		components: {
 			ProcessResult,
 			Box
-		},
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/database-messages.${locale}.json`);
-				}
-			}
 		},
 		props: {
 			setupTask: Object
@@ -53,6 +45,8 @@
 		},
 		created: showLoadingPanel(async function () {
 			await this.loadConnectionStringsAsync();
+
+			await loadMessagesAsync(this, import.meta.glob('@/Fwamework/SetupData/Components/Content/database-messages.*.json'));
 		}),
 		methods: {
 			executeBeforeUpdateSchemaAsync: showLoadingPanel(async function () {

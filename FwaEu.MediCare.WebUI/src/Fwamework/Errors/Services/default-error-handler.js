@@ -26,7 +26,7 @@ async function handleAjaxErrorAsync(response, errorMessage) {
 		notificationService.showError(message);
 	}
 	else {
-		const dialogService = (await import('@/Fwamework/DevExtreme/Services/dialog-service')).default;
+		const dialogService = (await import('@UILibrary/Modules/Dialog/Services/dialog-service')).default;
 		dialogService.alertAsync(i18n.t('errorMessage5xx'), i18n.t('unknownErrorMessage'));
 	}
 }

@@ -36,7 +36,7 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 
 			if (loaders.Count > 0)
 			{
-				var firstLoader = loaders.First();
+				var firstLoader = loaders.FirstOrDefault(x => x.ConnectionStringName.Equals("Default", StringComparison.InvariantCultureIgnoreCase)) ?? loaders.First();
 				this.DefaultConnectionInfo = new DefaultConnectionInfo(firstLoader.ConnectionStringName, firstLoader.DatabaseFeaturesType);
 			}
 

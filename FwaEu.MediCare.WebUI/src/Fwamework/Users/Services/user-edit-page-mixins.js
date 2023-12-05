@@ -115,8 +115,8 @@ export default {
 					handlerModel: model
 				});
 
-				let component = this.$refs[model.ref];
-
+				let component = Array.isArray(this.$refs[model.ref]) ? this.$refs[model.ref][0] : this.$refs[model.ref];
+				
 				//the component instance is not a required element of user parts, so it can be missing
 				if (component
 					&& typeof component.validateAsync !== 'undefined'

@@ -29,18 +29,3 @@
 		{
 			filter: grayscale(0%);
 		}
-
-		.footer .logos .logo-company
-		{
-			padding-bottom: 0px;
-			height: 70px;
-			vertical-align: baseline;
-			filter: grayscale(100%);
-			transition: filter linear 0.25s;
-			font-size: 2rem;
-		}
-
-		.footer .logos:hover .logo-company
-		{
-			filter: grayscale(0%);
-		}

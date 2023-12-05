@@ -5,9 +5,6 @@ import { OnBeforeMount, OnBeforeUnmount, OnBeforeUpdate, OnCreated, OnMounted, O
 
 export class CoreModule extends AbstractModule {
 
-	/**
-	 * @param { {applicationInfoProvider:import("@/Fwamework/Core/Services/application-info-service").ApplicationInfoProvider}} options
-	 */
 	constructor(options) {
 		super();
 		if (!options?.applicationInfoProvider)

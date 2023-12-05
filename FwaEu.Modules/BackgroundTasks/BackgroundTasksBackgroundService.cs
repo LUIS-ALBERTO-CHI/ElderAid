@@ -3,8 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +11,10 @@ namespace FwaEu.Modules.BackgroundTasks
 	public class BackgroundTasksBackgroundService : BackgroundService
 	{
 		private readonly IServiceProvider _serviceProvider;
-        private readonly AsyncLocalScopedServiceProviderAccessor _asyncLocalScopedServiceProviderAccessor;
+		private readonly AsyncLocalScopedServiceProviderAccessor _asyncLocalScopedServiceProviderAccessor;
 		private readonly ILogger<BackgroundTasksBackgroundService> _logger;
 
-        public BackgroundTasksBackgroundService(IServiceProvider serviceProvider,
+		public BackgroundTasksBackgroundService(IServiceProvider serviceProvider,
 			AsyncLocalScopedServiceProviderAccessor asyncLocalScopedServiceProviderAccessor,
 			ILogger<BackgroundTasksBackgroundService> logger)
 		{
@@ -28,7 +26,7 @@ namespace FwaEu.Modules.BackgroundTasks
 
 			this._logger = logger
 			?? throw new ArgumentNullException(nameof(logger));
-        }
+		}
 
 		protected async override Task ExecuteAsync(CancellationToken cancellationToken)
 		{
@@ -44,8 +42,8 @@ namespace FwaEu.Modules.BackgroundTasks
 				delayCancellationToken = null;
 			});
 			using (var scope = _serviceProvider.CreateScope())
-            using (_asyncLocalScopedServiceProviderAccessor.BeginScope(scope.ServiceProvider))
-            {
+			using (_asyncLocalScopedServiceProviderAccessor.BeginScope(scope.ServiceProvider))
+			{
 				var backgroundTasksService = scope.ServiceProvider.GetService<IBackgroundTasksService>();
 
 				backgroundTasksService.OnQueueItemAdded(tsp =>

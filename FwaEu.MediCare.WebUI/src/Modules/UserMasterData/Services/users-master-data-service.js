@@ -1,6 +1,6 @@
 import MasterDataService from "@/Fwamework/MasterData/Services/master-data-service";
 import UserFormatterService from "@/Fwamework/Users/Services/user-formatter-service";
-import DataSourceOptionsFactory from "@/Modules/MasterDataDevExtreme/Services/data-source-options-factory";
+import DataSourceOptionsFactory from "@UILibrary/Modules/MasterData/Services/data-source-options-factory";
 
 class UsersMasterDataService extends MasterDataService {
 	constructor() {

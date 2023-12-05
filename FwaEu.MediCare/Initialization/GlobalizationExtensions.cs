@@ -16,6 +16,7 @@ namespace FwaEu.MediCare.Initialization
 		/// <returns></returns>
 		private static IEnumerable<CultureInfo> GetCultures()
 		{
+			yield return new CultureInfo("en-US");
 			yield return new CultureInfo("fr-FR");
 		}
 

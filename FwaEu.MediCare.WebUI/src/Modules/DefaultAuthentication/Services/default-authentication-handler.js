@@ -15,8 +15,8 @@ export class DefaultAuthenticationHandler extends AuthenticationHandler {
 		this.currentUserTokenCacheKey = currentUserTokenCacheKey;
 	}
 
-	createLoginComponentAsync = async function () {
-		return defineAsyncComponent(() => import('../UserParts/Credentials/Components/LoginFormComponent.vue'));
+	createLoginComponentAsync = async function() {
+		return defineAsyncComponent(() => import('@UILibrary/Modules/DefaultAuthentication/Components/LoginFormComponent.vue'));
 	}
 
 	async configureAsync() {

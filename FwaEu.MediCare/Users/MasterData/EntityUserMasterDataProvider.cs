@@ -27,7 +27,7 @@ namespace FwaEu.MediCare.Users.MasterData
 			CreateSelectExpression(CultureInfo userCulture, CultureInfo defaultCulture)
 		{
 			return entity => new EntityUserMasterDataModel(entity.Id,
-				entity.FirstName, entity.LastName, entity.Email, entity.Login);
+				entity.FirstName, entity.LastName, entity.Email);
 		}
 
 		protected override Expression<Func<ApplicationUserEntity, bool>> CreateSearchExpression(string search,

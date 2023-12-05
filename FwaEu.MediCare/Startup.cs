@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +14,12 @@ using FwaEu.Fwamework.Users;
 using FwaEu.Fwamework.Data.Database.Nhibernate;
 using FwaEu.MediCare.Initialization;
 using FwaEu.Fwamework.Data.Database;
+using FwaEu.Fwamework.Swagger;
 using FwaEu.Fwamework.Temporal;
+using Microsoft.Extensions.Hosting;
 using FwaEu.Fwamework.DependencyInjection;
 using FwaEu.Fwamework.Permissions;
+using FwaEu.Modules.Permissions.ByRole;
 using FwaEu.Fwamework;
 using FwaEu.Fwamework.Setup;
 using FwaEu.Fwamework.Imports;
@@ -25,6 +32,7 @@ using Serilog;
 using FwaEu.Modules.Logging;
 using FwaEu.Modules.Users.CultureSettings;
 using FwaEu.Modules.MasterData;
+using FwaEu.Modules.Users.UserPerimeter;
 using FwaEu.Fwamework.Globalization;
 using FwaEu.Modules.Users.AvatarsGravatar;
 using FwaEu.Modules.Monitoring;
@@ -35,8 +43,10 @@ using FwaEu.Modules.GenericAdmin;
 using FwaEu.Modules.PasswordRecovery;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using FwaEu.Modules.Permissions.MasterData;
+using FwaEu.Modules.BackgroundTasks;
 using FwaEu.MediCare.Application;
 using FwaEu.Modules.Users.AdminState;
+using FwaEu.Modules.BackgroundTasksInDatabase;
 using FwaEu.Fwamework.Application;
 using FwaEu.MediCare.Html;
 using FwaEu.Fwamework.Data.Database.Sessions;
@@ -44,209 +54,215 @@ using FwaEu.Modules.NHibernateLogging;
 using FwaEu.Modules.Aspose;
 using FwaEu.Fwamework.Text;
 using FwaEu.Fwamework.Data;
-using FwaEu.MediCare.MasterDataPermission;
+using FwaEu.Modules.Permissions.ByUser;
 using Microsoft.AspNetCore.Http;
+using FwaEu.Modules.UserTasks;
+using FwaEu.Modules.UserNotifications;
+using FwaEu.Modules.SignalR;
+using FwaEu.Modules.UserTasksUserNotifications;
+using FwaEu.Modules.SearchEngine;
+using FwaEu.MediCare.Users;
+using FwaEu.MediCare.ViewContext;
 using FwaEu.Modules.EnumValues;
 using FwaEu.Modules.AssemblyProvider;
 using FwaEu.MediCare.AssemblyProvider;
-using FwaEu.Modules.Authentication.Impersonate;
+using Microsoft.AspNetCore.Authorization;
 using FwaEu.Modules.Authentication.JsonWebToken;
-
+using FwaEu.Modules.Authentication.Impersonate;
 using FwaEu.Fwamework.Mail;
-using FwaEu.MediCare.Users;
-using FwaEu.MediCare.Patients;
-using FwaEu.MediCare.Orders;
-using FwaEu.MediCare.Referencials;
-using FwaEu.MediCare.Organizations;
-using FwaEu.MediCare.ViewContext;
-using FwaEu.MediCare.GenericSession;
-using FwaEu.Modules.Permissions.ByRole;
-using FwaEu.MediCare.Authentication;
-using FwaEu.MediCare.Stock;
-using FwaEu.MediCare.Articles;
-using FwaEu.MediCare.Treatments;
-using FwaEu.Modules.BackgroundTasks;
-using FwaEu.MediCare.Protections;
+using FwaEu.Modules.Authentication.MicrosoftIdentityPlatform;
+using FwaEu.Modules.MasterDataUserNotifications;
+using FwaEu.Modules.MasterDataImporter;
 
 namespace FwaEu.MediCare
 {
-    public class Startup
-    {
-        public Startup(IWebHostEnvironment environment)
-        {
+	public class Startup
+	{
+		public Startup(IWebHostEnvironment environment)
+		{
+			var builder = new ConfigurationBuilder()
+				 .SetBasePath(environment.ContentRootPath)
+				 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+				 .AddJsonFile($"appsettings.Local.json", optional: true, reloadOnChange: true);
 
-            var builder = new ConfigurationBuilder()
-                 .SetBasePath(environment.ContentRootPath)
-                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                 .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+			if (environment.EnvironmentName.Contains('.'))
+			{
+				//NOTE: This code allow us to have composed environments names
+				//// ex: for "Production.VilliersLeBel" environment name, it will try to load appSettings.Production.json and appSettings.VilliersLebBel.json
+				foreach (var environmentNamePart in environment.EnvironmentName.Split(".", StringSplitOptions.RemoveEmptyEntries))
+				{
+					builder = builder.AddJsonFile($"appsettings.{environmentNamePart}.json", optional: true, reloadOnChange: true);
+					builder = builder.AddJsonFile($"appsettings.{environmentNamePart}.Local.json", optional: true, reloadOnChange: true);
+				} 
+			}
 
-            //NOTE: This code allow us to have composed environments names
-            //// ex: for "Production.VilliersLeBel" environment name, it will try to load appSettings.Production.json and appSettings.VilliersLebBel.json
-            foreach (var environmentNamePart in environment.EnvironmentName.Split("."))
-            {
-                builder = builder.AddJsonFile($"appsettings.{environmentNamePart}.json", optional: true, reloadOnChange: true);
-                builder = builder.AddJsonFile($"appsettings.{environmentNamePart}.Local.json", optional: true, reloadOnChange: true);
-            }
+			builder = builder.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{environment.EnvironmentName}.Local.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables();
 
-            builder = builder.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{environment.EnvironmentName}.Local.json", optional: true, reloadOnChange: true)
-            
-            .AddEnvironmentVariables();
+			this._configuration = builder.Build();
+			this._environment = environment;
 
-            this._configuration = builder.Build();
-            this._environment = environment;
+			Log.Logger = new LoggerConfiguration()
+				.ReadFrom.Configuration(this._configuration)
+				.CreateLogger();
+		}
 
-            Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(this._configuration)
-                .CreateLogger();
-        }
+		private readonly IConfigurationRoot _configuration;
+		private readonly IWebHostEnvironment _environment;
 
-        private readonly IConfigurationRoot _configuration;
-        private readonly IWebHostEnvironment _environment;
+		public void ConfigureServices(IServiceCollection services)
+		{
+			using (var context = new ApplicationInitializationContext(this._configuration, this._environment))
+			{
+				context.ServiceStore.Add<IRepositoryRegister>(new RepositoryRegister());
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            using (var context = new ApplicationInitializationContext(this._configuration, this._environment))
-            {
-                context.ServiceStore.Add<IRepositoryRegister>(new RepositoryRegister());
+				services.RemoveAll<IConfiguration>();
+				services.RemoveAll<IConfigurationRoot>();
+				services.AddSingleton<IConfiguration>(this._configuration);
+				services.AddSingleton<IConfigurationRoot>(this._configuration);
 
-                services.RemoveAll<IConfiguration>();
-                services.RemoveAll<IConfigurationRoot>();
-                services.AddSingleton<IConfiguration>(this._configuration);
-                services.AddSingleton<IConfigurationRoot>(this._configuration);
+				services.AddCors();
+				services.AddMemoryCache();
+				services.AddResponseCompression();
+				services.AddHttpContextAccessor();
 
-                services.AddCors();
-                services.AddMemoryCache();
-                services.AddResponseCompression();
-                services.AddHttpContextAccessor();
+				services.AddFwameworkDependencyInjection();
+				services.AddFwameworkStaticFilesServices();
+				services.AddFwameworkTemporal();
+				services.AddFwameworkTextServices();
+				services.AddFwameworkMvc(context);
+				services.AddJsonWebTokenServices(context);
+				var authenticationFeatures = services.AddFwameworkAuthentication(context);
+				
+				services.AddImpersonateServices(context, authenticationFeatures);
+					
+				services.AddAuthorization(options =>
+				{
+					options.DefaultPolicy = new AuthorizationPolicyBuilder()
+					   .RequireAuthenticatedUser()
+					   .AddAuthenticationSchemes(authenticationFeatures.AuthenticationSchemes.ToArray())
+					   .Build();
+				}); 
+				
 
-                services.AddFwameworkDependencyInjection();
-                services.AddFwameworkStaticFilesServices();
-                services.AddFwameworkTemporal();
-                services.AddFwameworkTextServices();
-                services.AddFwameworkMvc(context);
-                services.AddJsonWebTokenServices(context);
-                var authenticationFeatures = services.AddFwameworkAuthentication(context);
-                services.AddImpersonateServices(context, authenticationFeatures);
-                services.AddFwameworkWebApiAllower(context);
-                services.AddFwameworkSessionsServices();
-                services.AddFwameworkNhibernate();
-                services.AddFwameworkDatabase();
-                services.AddFwameworkPermissions(context);
-                services.AddFwameworkSetup(context);
-                services.AddFwameworkImportServices();
-                services.AddFwameworkValueConverters();
-                services.AddFwameworkConfigurations();
-                services.AddFwameworkUsersServices();
-                services.AddFwameworkApplicationAllower(context);
-                services.AddFwameworkGlobalization();
-                services.AddFwameworkDataFileServices();
-                services.AddFwameworkFormatting();
-                services.AddFwameworkModelValidation();
+				services.AddFwameworkWebApiAllower(context);
+				services.AddFwameworkSessionsServices();
+				services.AddFwameworkNhibernate();
+				services.AddFwameworkDatabase();
+				services.AddFwameworkPermissions(context);
+				services.AddFwameworkSetup(context);
+				services.AddFwameworkImportServices();
+				services.AddFwameworkValueConverters();
+				services.AddFwameworkConfigurations();
+				services.AddFwameworkUsersServices();
+				services.AddFwameworkApplicationAllower(context);
+				services.AddFwameworkGlobalization();
+				services.AddFwameworkDataFileServices();
+				services.AddFwameworkFormatting();
+				services.AddFwameworkModelValidation();
 
-                services.AddFwameworkModuleBackgroundTasksServices();
+				services.AddFwameworkModuleBackgroundTasksServices();
+				services.AddFwameworkModuleBackgroundTasksInDatabaseServices(context);
+				services.AddFwameworkModuleMasterDataImporter();
+				services.AddFwameworkModuleDataImport();
+				services.AddFwameworkModuleGenericImporter();
+				services.AddFwameworkModuleSqlImportServices();
+				services.AddFwameworkModuleExcelImportServices();
+				services.AddFwameworkModuleExcelGenericImporter();
+				services.AddFwameworkModuleCultureSettings(context);
+				services.AddFwameworkModuleSerilog(context);
+				services.AddFwameworkModuleAdminState(context);
+				services.AddFwameworkModuleMasterDataServices();
+				services.AddFwameworkModuleUserPerimeterServices();
+				services.AddFwameworkModuleGravatar(context);
+				services.AddFwameworkModuleMonitoring();
+				services.AddFwameworkModuleAllowApplicationEnabler(context);
+				services.AddFwameworkModuleGenericAdmin();
+				services.AddFwameworkModuleUserPasswordRecovery(context);
+				services.AddFwameworkModulePermissionsMasterData();
 
-                services.AddFwameworkModuleDataImport();
-                services.AddFwameworkModuleGenericImporter();
-                services.AddFwameworkModuleSqlImportServices();
-                services.AddFwameworkModuleExcelImportServices();
-                services.AddFwameworkModuleExcelGenericImporter();
-                services.AddFwameworkModuleCultureSettings(context);
-                services.AddFwameworkModuleSerilog(context);
-                services.AddFwameworkModuleAdminState(context);
-                services.AddFwameworkModuleMasterDataServices();
-                services.AddFwameworkModuleGravatar(context);
-                services.AddFwameworkModuleMonitoring();
-                services.AddFwameworkModuleAllowApplicationEnabler(context);
-                services.AddFwameworkModuleGenericAdmin();
-                services.AddFwameworkModuleUserPasswordRecovery(context);
-                services.AddFwameworkModulePermissionsMasterData();
+				services.AddFwameworkModuleNHibernateLogging(context);
+				services.AddFwameworkModuleUserTasks();
+				services.AddFwameworkModuleSignalR();
+				services.AddFwameworkModuleUserNotifications(context);
+				services.AddFwameworkModuleUserTasksUserNotifications();
+				services.AddFwameworkModuleSearchEngine();
+				services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
 				services.AddFwameworkModuleEnumValues();
 				services.AddFwameworkModuleAssemblyProvider();
 
+				services.AddFwameworkModulePermissionsByUser(context); //TODO: Choose between ByUser and others implementations
+				services.AddFwameworkModulePermissionsByRole(context); //TODO: Choose between ByRole and others implementations
 
-				services.AddFwameworkModuleNHibernateLogging(context);
-                services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
-
-                services.AddFwameworkModulePermissionsByRole(context);
-                services.AddMasterDataPermissions();
-
-                services.AddApplicationInformation(context);
-                services.AddRelativePathProviders(this._environment);
-                services.AddApplicationDatabase(context, authenticationFeatures);
-                services.AddApplicationUserServices(context);
-                services.AddApplicationMailServices(context);
+				services.AddApplicationInformation(context);
+				services.AddRelativePathProviders(this._environment);
+				services.AddApplicationAssemblyProvider();
+				services.AddApplicationDatabase(context, authenticationFeatures);
+				services.AddApplicationUserServices(context);
+				services.AddApplicationMailServices(context);
 				services.AddMailListenersServices();
 				services.AddApplicationGlobalization();
-                services.AddApplicationSwagger(authenticationFeatures, context);
-                services.AddFwaEuMediCareAssemblyProviderExtension();
+				services.AddApplicationSwagger(authenticationFeatures, context);
+				services.AddApplicationHtml(context);
+				services.AddApplicationViewContext();
+				services.AddFwameworkModuleMasterDataUserNotifications();
 
-                services.AddApplicationOrganizations(context);
-                services.AddApplicationGenericSession();
-                services.AddApplicationArticles(context);
-                services.AddApplicationTreatments(context);
-                services.AddApplicationReferencials(context);
-                services.AddApplicationPatients(context);
-                services.AddApplicationOrders(context);
-                services.AddApplicationStock(context);
-                services.AddApplicationProtections(context);
+				services.AddProblemDetails();
+			}
+		}
 
-                services.AddApplicationHtml();
+		public void Configure(IApplicationBuilder application, IApplicationInfo applicationInfo,
+			ILoggerFactory loggerFactory, INHibernateLoggingInfo nHibernateLoggingInfo)
+		{
+			bool IsNotSetupRoute(HttpContext context)
+			{
+				return !context.Request.Path.StartsWithSegments("/Setup");
+			}
 
-                services.AddApplicationViewContext();
-                services.AddApplicationAuthentication();
-            }
-        }
+			ApplicationServices.Initialize(application.ApplicationServices);
 
-        public void Configure(IApplicationBuilder application, IApplicationInfo applicationInfo,
-            ILoggerFactory loggerFactory, INHibernateLoggingInfo nHibernateLoggingInfo)
-        {
-            bool IsNotSetupRoute(HttpContext context)
-            {
-                return !context.Request.Path.StartsWithSegments("/Setup");
-            }
+			application.ConfigureFwameworkSerilog(this._configuration, this._environment, applicationInfo);
+			application.ConfigureNHibernateLogging(loggerFactory, nHibernateLoggingInfo);
 
-            ApplicationServices.Initialize(application.ApplicationServices);
+			application.UseResponseCompression();
 
-            application.ConfigureFwameworkSerilog(this._configuration, this._environment, applicationInfo);
-            application.ConfigureNHibernateLogging(loggerFactory, nHibernateLoggingInfo);
+			if (this._environment.IsDevelopment())
+			{
+				application.UseDeveloperExceptionPage();
+			}
+			else if (this._configuration.GetSection("Application:UseHttpsRedirection").Get<bool>())
+			{
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				application.UseHsts();
+				application.UseHttpsRedirection();
+			}
 
-            application.UseResponseCompression();
+			application.UseApplicationSwagger(this._configuration);
+			application.UseFwameworkModuleLog();
 
-            if (this._environment.IsLikeDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-            }
-            else if (this._configuration.GetSection("Application:UseHttpsRedirection").Get<bool>())
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                application.UseHsts();
-                application.UseHttpsRedirection();
-            }
+			application.UseCors(options => options
+				.SetIsOriginAllowed(_ => true) // NOTE: AllowAnyOrigin() not usable with AllowCredentials()
+				.AllowAnyMethod()
+				.AllowAnyHeader()
+				.AllowCredentials());
 
-            application.UseApplicationSwagger(this._configuration);
-            application.UseFwameworkModuleLog();
+			application.UseAuthentication();
+			application.UseRouting();
+			application.UseAuthorization();
 
-            application.UseCors(options => options
-                .SetIsOriginAllowed(_ => true) // NOTE: AllowAnyOrigin() not usable with AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+			application.UseWhen(IsNotSetupRoute, application => application
+				.UseFwameworkCurrentUser()
+				.UseFwameworkCurrentUserPerimeter()
+			);
 
-            application.UseAuthentication();
-            application.UseRouting();
-            application.UseAuthorization();
+			//application.UseApplicationViewContext();
 
-            application.UseWhen(IsNotSetupRoute, application => application
-                    .UseFwameworkCurrentUser()
-            );
-
-            application.UseApplicationViewContext();
-
-            application.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			application.UseEndpoints(endpoints =>
+			{
+				endpoints.MapHub<UserNotificationHub>("/UserNotifications"); // TODO: Register routes from modules https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/6956
+				endpoints.MapControllers();
+			});
+		}
+	}
 }

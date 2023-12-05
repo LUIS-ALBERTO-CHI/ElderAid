@@ -1,7 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace FwaEu.MediCare.ViewContext.WebApi
 {
 	public class ViewContextApiModel
 	{
-		public int Id { get; set; }
+		//NOTE: No [Required] here because the UI will accept to select no region ("All regions")
+		public int? RegionId { get; set; }
 	}
 }

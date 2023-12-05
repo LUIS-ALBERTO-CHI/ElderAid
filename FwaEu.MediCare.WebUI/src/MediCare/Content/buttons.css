@@ -34,6 +34,11 @@ body td .dx-button-has-text .dx-button-content {
 	padding: 0;
 }
 
+body .dx-toolbar-item-auto-hide .dx-button-has-icon, 
+body .dx-toolbar-item-auto-hide .dx-button {
+	height: auto;
+}
+
 body .dx-button.dx-button-has-icon {
 	border: none;
 }

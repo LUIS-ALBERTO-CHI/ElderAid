@@ -86,7 +86,7 @@ export default {
 		return this.getSupportedLanguages().map(x => x.code);
 	},
 
-	getSupportedLanguages() {
+	getSupportedLanguages() {		
 		return CultureConfigurationProvider.getCultureConfiguration().getAllCultures();
 	},
 

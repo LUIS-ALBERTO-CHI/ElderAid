@@ -5,7 +5,7 @@
 		</div>
 		<div v-if="details">
 			<div :key="index" v-for="(detail, index) in details" class="process-result-entry-detail">
-				<i class="dx-icon-spinright" />
+				<i class="fa-solid fa-caret-right"></i>
 				{{detail}}
 			</div>
 		</div>

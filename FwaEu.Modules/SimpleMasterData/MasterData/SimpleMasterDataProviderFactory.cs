@@ -1,3 +1,4 @@
+using FwaEu.Fwamework.Data.Database;
 using FwaEu.Modules.MasterData;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,7 +11,7 @@ namespace FwaEu.Modules.SimpleMasterData.MasterData
 		where TEntity : SimpleMasterDataEntityBase
 		where TProvider : IMasterDataProvider
 	{
-		public SimpleMasterDataProviderFactory(ISimpleMasterDataKeyResolver<TEntity> keyResolver)
+		public SimpleMasterDataProviderFactory(IEntityKeyResolver<TEntity> keyResolver)
 		{
 			_ = keyResolver ?? throw new ArgumentNullException(nameof(keyResolver));
 			this._keyLazy = new Lazy<string>(keyResolver.ResolveKey);

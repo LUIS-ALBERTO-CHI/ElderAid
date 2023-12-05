@@ -31,7 +31,7 @@ namespace FwaEu.MediCare.Initialization
 
 					options.EnableAnnotations();
 
-					options.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Cite Educative v1.0", Version = "v1.0" });
+					options.SwaggerDoc("v1.0", new OpenApiInfo { Title = "MediCare v1.0", Version = "v1.0" });
 
 					if (authenticationFeatures.UseBearer)
 					{
@@ -74,6 +74,18 @@ namespace FwaEu.MediCare.Initialization
 				{
 					options.SwaggerEndpoint("v1.0/swagger.json", "Versioned API v1.0");
 					options.DocExpansion(DocExpansion.None);
+				});
+
+				//NOTE: Register a Middleware to redirect the root path to Swagger page
+				application.Use(async (context, next) =>
+				{
+					if (context.Request.Path == "/")
+					{
+						context.Response.Redirect("./swagger/index.html", permanent: true);
+						return;
+					}
+
+					await next();
 				});
 			}
 

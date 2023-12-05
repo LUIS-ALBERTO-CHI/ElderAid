@@ -21,7 +21,7 @@ class AzureADAuthenticationHandler extends AuthenticationHandler {
 	}
 
 	createLoginComponentAsync = async function () {
-		return defineAsyncComponent(() => import('@/Modules/AzureADAuthentication/Components/LoginFormComponent.vue'));
+		return defineAsyncComponent(() => import('@UILibrary/Modules/AzureADAuthentication/Components/LoginFormComponent.vue'));
 	}
 
 	/**@type {PublicClientApplication} */

@@ -136,7 +136,7 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 		}
 
 		private string GetPropertyColumnName(IPropertyInstance propertyInstance)
-			=> this.GetPropertyColumnName(propertyInstance.Columns.First().Name);
+			=> propertyInstance.Columns.Any() ? this.GetPropertyColumnName(propertyInstance.Columns.First().Name) : null;
 
 		private string GetPropertyColumnName(IManyToOneInstance manyToOneInstance)
 			=> this.GetPropertyColumnName(manyToOneInstance.Columns.First().Name);
@@ -204,8 +204,13 @@ namespace FwaEu.Fwamework.Data.Database.Nhibernate
 			{
 				instance.Not.Nullable();
 			}
-			instance.Column(this.GetPropertyColumnName(instance));
-			instance.CustomType(instance.Property.PropertyType);
+			//NOTE: ColumnName could be empty if the we are using a Formula
+			var columnName = this.GetPropertyColumnName(instance);
+			if (!string.IsNullOrEmpty(columnName))
+			{
+				instance.Column(columnName);
+				instance.CustomType(instance.Property.PropertyType);
+			}
 		}
 
 		/// <summary>

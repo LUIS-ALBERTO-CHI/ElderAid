@@ -12,6 +12,10 @@
 			</component>
 		</div>
 	</div>
+
+	<!--PrimeVue's singleton global components, If you use DevExtreme, you can remove it-->
+	<ConfirmDialog/>
+	<DynamicDialog/>
 </template>
 
 <script>
@@ -23,16 +27,20 @@
 	import BreadcrumbService from '@/Fwamework/Breadcrumbs/Services/breadcrumbs-service';
 	import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
 	import { useScreenSizeInfo } from '@/Fwamework/Utils/Services/screen-size-info';
+	import ConfirmDialog from 'primevue/confirmdialog';
+	import DynamicDialog from 'primevue/dynamicdialog';
 
 	export default {
 		name: 'app',
 		components: {
-			Breadcrumbs
+			Breadcrumbs,
+			ConfirmDialog,
+			DynamicDialog
 		},
 		setup() {
 			const { cssClasses } = useScreenSizeInfo();
 			const appCssClasses = computed(() => {
-				return ["app admin"].concat(cssClasses.value);
+				return ["app"].concat(cssClasses.value);
 			});
 			return { appCssClasses };
 		},
@@ -44,6 +52,7 @@
 				onRouteProcessedOff: BreadcrumbService.onRouteProcessed(this.onRouteProcessed)
 			};
 		},
+
 		watch: {
 			'$route': {
 				inmediate: true,
@@ -59,6 +68,7 @@
 			loadCurrentRouteSetup(to, from) {
 				if (!to.matched.length)
 					return;
+
 				if (!this.pageLayout || to.meta?.layout || (from.meta?.layout && !to.meta?.layout)) {
 					this.pageLayout = shallowRef(to.meta?.layout ?? DefaultPageLayout);
 				}

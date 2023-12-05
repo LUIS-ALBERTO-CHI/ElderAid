@@ -12,8 +12,8 @@
 <script type="text/javascript">
 	import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
 	import PageContainer from "@/Fwamework/PageContainer/Components/PageContainerComponent.vue";
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
-	import GenericAdminGrid from '@/Modules/GenericAdmin/Components/GenericAdminGridComponent.vue';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
+	import GenericAdminGrid from '@UILibrary/Modules/GenericAdmin/Components/GenericAdminGridComponent.vue';
 	import GenericAdminConfigurationService from '@/Modules/GenericAdmin/Services/generic-admin-configuration-service';
 
 	export default {
@@ -22,22 +22,16 @@
 			PageContainer,
 			GenericAdminGrid
 		},
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`@/Modules/GenericAdmin/Content/generic-admin-common.${locale}.json`);
-				}
-			}
-		},
 		computed: {
 			pageContainerCustomClass() {
 				return this.genericAdminConfiguration ? this.genericAdminConfiguration.getPageContainerCustomClass() : '';
 			},
 		},
-		created() {
+		async created() {
 			this.configurationKey = this.$route.params.configurationKey;
 			this.genericAdminConfiguration = GenericAdminConfigurationService.get(this.configurationKey).getConfiguration();
+
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/GenericAdmin/Content/generic-admin-common.*.json'));
 		},
 		data() {
 			return {

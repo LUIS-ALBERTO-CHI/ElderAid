@@ -24,7 +24,7 @@
 <script>
 	import PageContainer from "@/Fwamework/PageContainer/Components/PageContainerComponent.vue";
 	import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 	import { showLoadingPanel } from "@/Fwamework/LoadingPanel/Services/loading-panel-service";
 	import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 	import { shallowRef } from "vue";
@@ -32,14 +32,6 @@
 	import UserPartsRegistry from '@/Fwamework/Users/Services/users-parts-registry';
 
 	export default {
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/login-messages.${locale}.json`);
-				}
-			}
-		},
 		data() {
 			return {
 				loginComponents: null,
@@ -61,6 +53,8 @@
 				}));
 
 			this.userPartsComponents = shallowRef(userPartsComponents);
+
+			await loadMessagesAsync(this, import.meta.glob('@/Fwamework/Authentication/Components/Content/login-messages.*.json'));
 		}),
 		components: {
 			Box,

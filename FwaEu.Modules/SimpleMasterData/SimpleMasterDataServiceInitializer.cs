@@ -54,9 +54,9 @@ namespace FwaEu.Modules.SimpleMasterData
 		public Type EntityType => typeof(TEntity);
 
 		public ConstructSimpleMasterDataServiceInitializer<TEntity> AddCustomKeyResolver<TKeyResolver>()
-			where TKeyResolver : class, ISimpleMasterDataKeyResolver<TEntity>
+			where TKeyResolver : class, IEntityKeyResolver<TEntity>
 		{
-			this.ServiceCollection.AddTransient<ISimpleMasterDataKeyResolver<TEntity>, TKeyResolver>();
+			this.ServiceCollection.AddTransient<IEntityKeyResolver<TEntity>, TKeyResolver>();
 			return this;
 		}
 

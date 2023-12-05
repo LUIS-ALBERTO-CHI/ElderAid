@@ -1,6 +1,6 @@
 import { defineAsyncComponent } from 'vue';
-const PasswordRecoveryPageComponent = () => import('./Components/PasswordRecoveryPageComponent.vue');
-const AnonymousPageLayoutComponent = defineAsyncComponent(() => import('@/Fwamework/Authentication/Components/DefaultAnonymousPageLayoutComponent.vue'));
+const PasswordRecoveryPageComponent = () => import('@UILibrary/Modules/PasswordRecovery/Components/PasswordRecoveryPageComponent.vue');
+const AnonymousPageLayoutComponent = defineAsyncComponent(() => import('@UILibrary/Fwamework/Authentication/Components/DefaultAnonymousPageLayoutComponent.vue'));
 
 export default [
 	{

@@ -7,8 +7,8 @@ using FwaEu.Fwamework.Users.WebApi;
 using FwaEu.Modules.Users.HistoryPart;
 using FwaEu.Modules.Users.HistoryPart.Services;
 using FwaEu.Modules.Users.UserPerimeter;
-using FwaEu.MediCare.Users;
 using FwaEu.MediCare.Users.MasterData;
+using FwaEu.MediCare.Users.UserGroups;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,8 @@ using FwaEu.MediCare.Users.Import;
 using FwaEu.Modules.SimpleMasterData;
 using FwaEu.Modules.SimpleMasterData.MasterData;
 using FwaEu.Modules.SimpleMasterData.GenericAdmin;
+using FwaEu.Modules.SearchEngine;
+using FwaEu.MediCare.Users.SearchEngine;
 
 namespace FwaEu.MediCare.Users
 {
@@ -30,7 +32,7 @@ namespace FwaEu.MediCare.Users
 		{
 			services.Configure<UserEntityClassMapOptions>(options =>
 			{
-				options.IdentityColumnName = ApplicationUserEntityClassMap.EmailColumnName;
+				options.IdentityColumnName = ApplicationUserEntityClassMap.IdentityColumnName;
 			});
 
 			services.AddTransient<IUserService, ApplicationUserService>();
@@ -39,18 +41,31 @@ namespace FwaEu.MediCare.Users
 			services.AddTransient<IModelImporter<ApplicationUserImportModel>, ApplicationUserImporter>();
 
 			services.AddTransient<EntityUserMasterDataProvider>();
-			services.AddMasterDataProvider<ApplicationUserMasterDataProvider>("Users");
+
+			services.AddMasterDataProvider<ApplicationUserMasterDataProvider>("Users")
+		    .AddRelatedEntity<UserEntity>()
+			.AddRelatedEntity<ApplicationUserEntity>();
 
 			var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
+			repositoryRegister.Add<UserGroupPerimeterEntityRepository>();
 			repositoryRegister.Add<ApplicationUserEntityRepository>();
 
+			services.For<UserGroupEntity>(context)
+				.AddRepository<UserGroupEntityRepository>()
+					.AddMasterDataProviderFactory()
+					.AddGenericAdminModelConfiguration();
+
+			services.AddUserPerimeterProvider<UserGroupUserPerimeterProvider>(UserGroupPerimeterEntity.ProviderKey);
+
+			services.AddTransient<IPermissionProviderFactory, DefaultPermissionProviderFactory<UserGroupPermissionProvider>>();
 			services.AddTransient<IUserDetailsService, ApplicationUserDetailsService>();
 
 			services.AddTransient<IListPartHandler, ApplicationUserModelListPartHandler>();
 			services.AddTransient<IPartHandler, ApplicationUserModelPartHandler>();
 
-			services.AddTransient<IUserSynchronizationService, UserSynchronizationService>();
-			
+			services.AddSearchEngineResultProvider<UserSearchEngineResultProvider>("User");
+			services.AddSearchEngineResultProvider<UserIdSearchEngineResultProvider>("UserId");
+
 			return services;
 		}
 	}

@@ -1,23 +1,33 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import vueI18n from '@intlify/vite-plugin-vue-i18n';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import appSettingsJson from '@fwaeu/vite-plugin-app-settings-json';
+import uiLibrarySwitch from '@fwaeu/vite-plugin-uilibrary-switch';
 import { resolve } from "path";
 import { VitePWA } from 'vite-plugin-pwa';
+import checker from 'vite-plugin-checker'
 
 const rootPath = __dirname;
 const srcPath = resolve(rootPath, "./src");
+const uiLibraryPath = resolve(rootPath, "./src/PrimeVue"); // Change if another UILibrary is used
+const fallbackUiLibrary = resolve(rootPath, "./src/DevExtreme"); // Fallback or default option
+
 export default defineConfig({
-	plugins: [
+	plugins: [		
 		appSettingsJson({
 			rootPath,
 			externalize: false//NOTE: Set to true if you want to externalize the settings into an appSettings.js file
 		}),
 		vue(),
-		vueI18n({
+		VueI18nPlugin({
 			fullInstall: false,
 			runtimeOnly: false,
 			include: resolve(srcPath, '/**/HACK-UNEXISTING_PATH.json')
+		}),
+		checker({
+			// e.g. use TypeScript check
+			typescript: true,
+			vueTsc: true
 		}),
 		VitePWA({
 			registerType: 'autoUpdate',
@@ -49,6 +59,8 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"@": srcPath,
+			...uiLibrarySwitch(uiLibraryPath, fallbackUiLibrary),
+			"@UILibrary": uiLibraryPath,			
 			'vue-i18n': 'vue-i18n/dist/vue-i18n.esm-bundler.js',
 			"devextreme/ui": 'devextreme/esm/ui' // Hack: Bug devextreme fails in production due to the different behavior of vite (than that of webpack) to import the compiled modules
 			//https://supportcenter.devexpress.com/ticket/details/t1054272/vue3-react-vite-rollup-devextreme-fails-in-production-because-some-modules-do-not-pass
@@ -64,5 +76,9 @@ export default defineConfig({
 				admin: resolve(rootPath, 'admin.html')
 			}
 		}
+	},
+	test: {
+		dir: resolve(srcPath, 'test'),
+		setupFiles: [resolve(srcPath, 'test/setup/setup.js')]
 	}
 });

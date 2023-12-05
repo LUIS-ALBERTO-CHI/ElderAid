@@ -1,11 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
 /.vs
-*.exemple
+**/*.user
+/FwaEu.TemplateCore.WebUI/Properties/PublishProfiles/FolderProfile.pubxml
+/FwaEu.TemplateCore/Properties/PublishProfiles/FolderProfile.pubxml
+/FwaEu.TemplateCore/.config/dotnet-tools.json
 .DS_STORE
-tasks.json
-launch.json
-package-lock.json
-appsettings.Development.json
+.vscode/tasks.json
+.vscode/launch.json

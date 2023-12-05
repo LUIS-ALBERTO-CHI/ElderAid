@@ -12,8 +12,8 @@ namespace FwaEu.MediCare.Users
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
-        public string Login { get; set; }
-    }
+		public UserState State { get; set; }
+	}
 
 	public class ApplicationUserModelListPartHandler : ListPartHandler<ApplicationUserModelListModel>
 	{
@@ -28,8 +28,8 @@ namespace FwaEu.MediCare.Users
 				FirstName = accessor.FirstName,
 				LastName = accessor.LastName,
 				Email = accessor.Email,
-                Login =  accessor.Login
-            };
+				State = accessor.State
+			};
 
 			return Task.FromResult(part);
 		}

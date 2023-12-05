@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import Search from "./SearchComponent.vue";
+	import Search from "@UILibrary/Modules/Search/Components/SearchComponent.vue";
 
 	export default {
 		components: {

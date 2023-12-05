@@ -7,7 +7,7 @@ export class ServerMonitoringModule extends AbstractModule {
 
 
 	/** @param {{checkForUpdates: boolean }} options */
-	constructor(options) {
+	constructor(options = null) {
 		super();
 		this.options = options ?? { checkForUpdates: true };
 	}

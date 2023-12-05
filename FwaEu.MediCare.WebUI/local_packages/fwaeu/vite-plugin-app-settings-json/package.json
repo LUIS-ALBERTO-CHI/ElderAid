@@ -2,9 +2,8 @@
 	"name": "@fwaeu/vite-plugin-app-settings-json",
 	"version": "1.0.3",
 	"main": "index.js",
-	"admin": "admin.js",
 	"dependencies": {
-		"json5": "2.2.0",
-		"lodash.merge": "4.6.2"
+		"lodash.merge": "4.6.2",
+		"json5": "2.2.3"
 	}
 }

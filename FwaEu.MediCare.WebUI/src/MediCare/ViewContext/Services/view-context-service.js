@@ -8,19 +8,13 @@ const viewContextChangedEmitter = new AsyncEventEmitter();
 
 export class ViewContextModel {
 
-	constructor(organization) {
-		this.id = organization.id;
-		this.name = organization.name;
-		this.orderPeriodicityDays = organization.orderPeriodicityDays;
-		this.orderPeriodicityDayOfWeek = organization.orderPeriodicityDayOfWeek;
-		this.lastPeriodicityOrder = new Date(organization.lastPeriodicityOrder);
-		this.nextPeriodicityOrder = new Date(organization.nextPeriodicityOrder);
-		this.periodicityOrderActivationDaysNumber = organization.periodicityOrderActivationDaysNumber;
-		this.isStockPharmacyPerBox = organization.isStockPharmacyPerBox;
-		this.updatedOn = new Date(organization.updatedOn);
+	/** @param {Number|null} regionId */
+	constructor(regionId) {
+		this.regionId = regionId;
 	}
 
-	databaseName = null
+	/** @type Number|null*/
+	regionId = null
 }
 
 export default {

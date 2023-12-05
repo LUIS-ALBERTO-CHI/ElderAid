@@ -32,7 +32,7 @@
 
 <script>
 	import Timeline from "@/Fwamework/Users/Components/TimelineComponent.vue";
-	import ActionMenu from "@/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
+	import ActionMenu from "@UILibrary/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
 	export default {
 		components: {
 			Timeline,

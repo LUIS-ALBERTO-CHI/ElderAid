@@ -30,13 +30,8 @@ namespace FwaEu.Modules.SimpleMasterData.GenericAdmin
 		public SimpleMasterDataEntityToModelGenericAdminModelConfiguration(
 			IServiceProvider serviceProvider)
 			: base(serviceProvider)
-		{
-			var keyResolver = serviceProvider.GetRequiredService<ISimpleMasterDataKeyResolver<TEntity>>();
-			this._keyLazy = new Lazy<string>(keyResolver.ResolveKey);
+		{			
 		}
-
-		private readonly Lazy<string> _keyLazy;
-		public override string Key => this._keyLazy.Value;
 
 		public override async Task<bool> IsAccessibleAsync()
 		{

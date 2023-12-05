@@ -1,6 +1,6 @@
 import { CanImport } from '@/Modules/DataImport/data-import-permissions';
 
-const ImportComponent = () => import('@/Modules/DataImport/Components/ImportPageComponent.vue');
+const ImportComponent = () => import('@UILibrary/Modules/DataImport/Components/ImportPageComponent.vue');
 
 export default [
 	{

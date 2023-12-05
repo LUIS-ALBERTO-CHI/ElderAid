@@ -122,6 +122,6 @@ async function createNodeAsync(route, context) {
 
 //Gets the route's information by its name.
 function getRouteByName(routeName, context) {
-	let node = context.router.getRoutes().find(x => x.name === routeName);
+	let node = context.router.resolve({ name: routeName }, context.router.currentRoute.value);
 	return node;
 }

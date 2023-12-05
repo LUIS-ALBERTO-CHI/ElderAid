@@ -16,7 +16,7 @@ namespace FwaEu.MediCare.Users
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
-        public string Login { get; set; }
+
 		public int? CreatedById { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public int? UpdatedById { get; set; }

@@ -4,155 +4,49 @@
 @import "buttons";
 @import "header-toolbar";
 
-// Modifiez la couleur de base des boutons
-$button-primary-color: #ff0000;
-
-
 :root {
-	--primary-bg-color: #7092be;
+	--primary-bg-color: #F7F9FA;
 	--secondary-bg-color: #B7CBD3;
-	--primary-text-color: #3f6767;
-	--secondary-text-color: #7092be;
-	--alt-secondary-text-color: #333333;
-  	--button-background-color: #7092be;
+	--primary-text-color: #374649;
+	--secondary-text-color: #0078D4;
+	--alt-secondary-text-color: #7098a7;
 }
 
 html,
 body {
-  margin: 0px;
-  min-height: 100%;
-  height: 100%;
+	margin: 0px;
+	min-height: 100%;
+	height: 100%;
+	font-size: 12px;
 }
 
 #app {
-  height: 100%;
+	height: 100%;
 }
 
 * {
-  font-family: 'Roboto', sans-serif;
-  box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+	box-sizing: border-box;
 }
 
 .app {
-  @import "@/Fwamework/DevExtreme/Themes/generated/variables.base";
-  background-color: #F8F8F8;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  font-size: 1.0rem;
-  line-height: 1.5rem;
+	@import "@UILibrary/Extensions/Themes/generated/variables.base";
+	background-color: var(--primary-bg-color);
+	display: flex;
+	height: 100%;
+	width: 100%;
+	font-size: 1.0rem;
 }
 
 p,
 .block {
-  margin: 10px 0px 0px 0px;
+	margin: 10px 0px 0px 0px;
 }
-
-// #app:not(.admin) {
-//   a {
-//     color: #ff5a5f;
-//     cursor: pointer;
-//   }
-
-//   a:hover {
-//     text-decoration: underline;
-//   }
-
-//   input[type=text] {
-//     height: 50px;
-//     border-radius: 25px;
-//   }
-
-//   input[type=button] {
-//     height: 50px;
-//     border: 1px solid var(--main-bg-color);
-//   }
-
-//   input[type=number] {
-//     height: 30px;
-//     border-radius: 4px;
-//     border: 1px solid var(--main-bg-color);
-//     width: 60px;
-//   }
-
-//   input[type=checkbox] {
-//     margin: 0px 6px;
-//   }
-
-//   textarea {
-//     width: 100%;
-//   }
-
-//   .input-icons {
-//     width: 100%;
-//     position: relative;
-//     cursor: pointer;
-//   }
-
-//   .input-icons .action-button {
-//     padding: 12px 16px;
-//     color: #FFFFFF;
-//     min-width: 60px;
-//     position: absolute;
-//     font-size: 26px;
-//     background-color: var(--secondary-color);
-//     right: 0px;
-//     height: 100%;
-//     border-radius: 0 25px 25px 0;
-//   }
-
-//   select {
-//     width: 100%;
-//     border-radius: 4px;
-//     background-color: var(--secondary-bg-color);
-//     height: 50px;
-//   }
-
-//   button {
-//     cursor: pointer;
-//   }
-
-//   button:hover {
-//     opacity: 0.7;
-//   }
-
-//   button.secondary-color {
-//     background-color: var(--secondary-color);
-//     color: #FFFFFF;
-//   }
-
-//   button.primary-color {
-//     background-color: var(--primary-color);
-//     color: #FFFFFF;
-//   }
-
-//   button.btn-rounded {
-//     border-radius: 25px;
-//     cursor: pointer;
-//     height: 50px;
-//     border: none;
-//     text-transform: uppercase;
-//     padding: 0 20px;
-//     display: flex;
-//     align-items: center;
-//   }
-
-//   button.btn-rounded i {
-//     font-size: 24px;
-//     padding-right: 10px;
-//   }
-
-//   .horizontal-rule {
-//     height: 1px;
-//     background-color: var(--secondary-bg-color);
-//     width: 100%;
-//     margin: 10px 0;
-//   }
-// }
 
 a {
 	color: var(--secondary-text-color);
 	text-decoration: none;
+	cursor: pointer;
 }
 
 a:hover {
@@ -199,7 +93,7 @@ body .application-name {
 
 
 body #nprogress .bar {
-	z-index: 1600;
+	z-index: 1601;
 	background-color: var(--secondary-text-color) !important;
 }
 
@@ -241,21 +135,6 @@ body .page-container {
 	margin-top: 10px;
 }
 
-.item-counter {
-	height: 18px;
-	line-height: 18px;
-	width: 18px;
-	color: white;
-	position: absolute;
-	z-index: 10;
-	left: 34px;
-	top: 5px;
-	text-align: center;
-	font-size: 9px;
-	font-weight: bold;
-	background-color: #ED0000;
-	border-radius: 100%;
-}
 
 /* VUE TRANSITIONS */
 .fade-enter-active, .fade-leave-active {
@@ -270,11 +149,4 @@ body .page-container {
 	body #nprogress .spinner .spinner-icon {
 		display: none;
 	}
-}
-
-.load-more-text {
-	margin-top: 5px;
-	color: #1A0DAB;
-	text-decoration: underline;
-	align-self: center;
 }

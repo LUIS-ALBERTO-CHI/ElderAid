@@ -9,9 +9,9 @@
 </template>
 
 <script>
-	import UserTooltip from "@/Fwamework/Users/Components/UserTooltipComponent.vue";
+	import UserTooltip from "@UILibrary/Fwamework/Users/Components/UserTooltipComponent.vue";
 	import UserAvatar from "@/Fwamework/Users/Components/UserAvatarComponent.vue";
-	import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+	import DateLiteral from '@UILibrary/Fwamework/Utils/Components/DateLiteralComponent.vue';
 	import UsersMasterDataService from "@/Modules/UserMasterData/Services/users-master-data-service";
 
 	const everywhereDisplayMode = "everywhere";

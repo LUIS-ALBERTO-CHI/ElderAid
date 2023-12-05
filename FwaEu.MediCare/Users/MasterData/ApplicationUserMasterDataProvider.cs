@@ -53,7 +53,7 @@ namespace FwaEu.MediCare.Users.MasterData
 			}
 
 			return models.Select(m =>
-				new UserMasterDataModel(m.Id, m.FirstName, m.LastName, m.AvatarUrl, m.Login));
+				new UserMasterDataModel(m.Id, m.FirstName, m.LastName, m.AvatarUrl));
 		}
 
 		public async Task<IEnumerable> GetModelsAsync(MasterDataProviderGetModelsParameters parameters)

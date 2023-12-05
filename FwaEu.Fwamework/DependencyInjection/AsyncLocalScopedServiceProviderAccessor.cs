@@ -12,41 +12,17 @@ namespace FwaEu.Fwamework.DependencyInjection
             return ScopedServiceProvider;
         }
 
-        private static readonly AsyncLocal<ServiceProviderHolder> _scopedServiceProviderCurrent = new AsyncLocal<ServiceProviderHolder>();
+        private static readonly AsyncLocal<IServiceProvider> _scopedServiceProviderCurrent = new AsyncLocal<IServiceProvider>();
 
         private IServiceProvider ScopedServiceProvider
         {
-            get
-            {
-                return _scopedServiceProviderCurrent.Value?.ServiceProvider;
-            }
-
-            set
-            {
-                var holder = _scopedServiceProviderCurrent.Value;
-                if (holder != null)
-                {
-                    // Clear current ScopedServiceProvider trapped in the AsyncLocals, as its done.
-                    holder.ServiceProvider = null;
-                }
-
-                if (value != null)
-                {
-                    // Use an object indirection to hold the ScopedServiceProvider in the AsyncLocal,
-                    // so it can be cleared in all ExecutionContexts when its cleared.
-                    _scopedServiceProviderCurrent.Value = new ServiceProviderHolder { ServiceProvider = value };
-                }
-            }
+            get => _scopedServiceProviderCurrent.Value;
+            set => _scopedServiceProviderCurrent.Value = value;
         }
 
         public IDisposable BeginScope(IServiceProvider scopedServiceProvider)
         {
             return new ScopedServiceProviderDisposer(this, scopedServiceProvider);
-        }
-
-        private class ServiceProviderHolder
-        {
-            public IServiceProvider ServiceProvider;
         }
 
         private class ScopedServiceProviderDisposer : IDisposable

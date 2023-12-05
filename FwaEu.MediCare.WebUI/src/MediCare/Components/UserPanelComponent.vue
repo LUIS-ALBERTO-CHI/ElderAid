@@ -26,7 +26,7 @@
 <script>
 	import DxContextMenu from "devextreme-vue/context-menu";
 	import DxList from "devextreme-vue/list";
-	import UserAvatar from '@/Fwamework/Users/Components/UserAvatarComponent.vue'
+	import UserAvatar from '@UILibrary/Fwamework/Users/Components/UserAvatarComponent.vue'
 
 	export default {
 		props: {
@@ -59,7 +59,7 @@
 
 <style lang="scss">
 
-	@import "@/Fwamework/DevExtreme/Themes/generated/variables.base.scss";
+	@import "@UILibrary/Extensions/Themes/generated/variables.base.scss";
 
 	.user-info {
 		display: flex;
