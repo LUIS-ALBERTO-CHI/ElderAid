@@ -1,0 +1,46 @@
+.breadcrumbs
+{
+	padding: 10px;
+	color: white;
+}
+
+	.breadcrumbs,
+	.breadcrumbs i {
+		font-size: 14px;
+		color: white;
+	}
+
+		.breadcrumbs i {
+			position: relative;
+			top: 1px;
+			vertical-align: baseline;
+			color: var(--secondary-text-color);
+		}
+
+
+		.breadcrumbs .breadcrumb-node-text,
+		.breadcrumbs .breadcrumb-node a
+		{
+			display: inline-block;
+			padding: 3px 5px;
+			margin: 0px 2px;
+			border-radius: 20px;
+			color: white;
+			text-decoration: none;
+		}
+
+		.breadcrumbs .breadcrumb-last-node {
+			color: white;
+			opacity: 0.6;
+		}
+
+		.breadcrumbs .breadcrumb-node a:hover,
+		.breadcrumbs .breadcrumb-node a:focus {
+			background-color: #E9E9E9;
+			color: white; 
+		}
+
+		.breadcrumbs .breadcrumb-node a:active
+		{
+			background-color: #C6C6C6;
+		}

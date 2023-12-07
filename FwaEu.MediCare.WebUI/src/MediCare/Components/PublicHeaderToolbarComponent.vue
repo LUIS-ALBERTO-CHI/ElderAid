@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Breadcrumbs from "@/Fwamework/Breadcrumbs/Components/BreadcrumbsComponent.vue";
+import Breadcrumbs from "@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedComponent.vue";
 
 import VueUseOnline from "@/Fwamework/OnlineStatus/Components/OnlineStatusIndicator.vue";
 import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';

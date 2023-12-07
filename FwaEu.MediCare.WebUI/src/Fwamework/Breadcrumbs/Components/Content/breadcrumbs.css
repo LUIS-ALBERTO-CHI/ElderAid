@@ -2,6 +2,8 @@
 .breadcrumbs {
 	padding: 10px;
 	color: #707070;
+	position: relative;
+	color: var(--primary-bg-color);
 }
 
 .crumb-container-hidden {
@@ -23,8 +25,10 @@
 
 
 .crumb {
+	color: var(--primary-bg-color);
 	text-decoration: none;
 	font-family: sans-serif;
+	font-size: 16px;
 }
 
 .crumb-link {
@@ -41,8 +45,10 @@
 }
 
 .crumb-no-link {
-	color: var(--secondary-text-color);
-	font-weight: bold;
+	color: var(--primary-bg-color);
+}
+.crumb-separator {
+	padding-left: 5px;
 }
 
 .dropdown {

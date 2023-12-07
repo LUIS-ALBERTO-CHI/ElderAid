@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@azure/msal-browser": "2.38.0",
+		"@dotlottie/player-component": "^2.7.2",
 		"@fontsource/nunito": "5.0.5",
 		"@fontsource/roboto": "5.0.5",
 		"@fwaeu/fontawesome-pro": "file:./local_packages/fwaeu/fontawesome-pro",
@@ -43,9 +44,9 @@
 		"vue-content-loader": "2.0.1",
 		"vue-i18n": "9.2.2",
 		"vue-router": "4.2.4",
+		"vue-select": "4.0.0-beta.6",
 		"vue-wait": "1.5.3",
 		"vue-word-highlighter": "1.2.3",
-		"vue-select": "4.0.0-beta.6",
 		"vue3-markdown-it": "^1.0.10",
 		"vue3-qr-reader": "^1.0.0",
 		"yup": "^1.2.0"

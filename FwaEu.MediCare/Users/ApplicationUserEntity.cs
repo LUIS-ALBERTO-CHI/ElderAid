@@ -21,17 +21,8 @@ namespace FwaEu.MediCare.Users
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
-		//private string _email;
 		public string Email { get; set; }
-		//public string Email
-		//{
-		//	get { return _email; }
-		//	set
-		//	{
-		//		_email = value;
-		//		Identity = value;
-		//	}
-		//}
+	
 		public string Login { get; set; }
 		public UserEntity CreatedBy { get; set; }
 		public DateTime CreatedOn { get; set; }

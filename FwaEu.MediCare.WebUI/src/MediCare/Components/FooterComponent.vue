@@ -1,13 +1,20 @@
 <template>
 	<footer class="footer">
-		{{ getVersionLabel() }}
-		-
-		Copyright © 2023, <a href="https://www.fwa.eu" target="_blank">FWA</a>
-		<div class="logos">
-			<a href="https://www.fwa.eu" target="_blank">
+		<div>
+			<div class="logout-container">
+				<a v-if="!showLogoutLink" @click="goToLoginFront">Se connecter</a>
+				<a v-else @click="logoutAsync">Se déconnecter</a>
+			</div>
+
+			{{ getVersionLabel() }}
+			-
+			Copyright © 2023, <a href="https://www.fwa.eu" target="_blank">FWA</a>
+			<div class="logos">
+				<a href="https://www.fwa.eu" target="_blank">
+					<img class="logo" alt="" src="../Content/logo-fwa.png" />
+				</a>
 				<img class="logo" alt="" src="../Content/logo.png" />
-			</a>
-			<img class="logo" alt="" src="../Content/logo.png" />
+			</div>
 		</div>
 	</footer>
 </template>
