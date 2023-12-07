@@ -7,7 +7,6 @@ namespace FwaEu.MediCare.ViewContext.WebApi
 {
 	public class ViewContextApiModel
 	{
-		//NOTE: No [Required] here because the UI will accept to select no region ("All regions")
-		public int? RegionId { get; set; }
+		public int Id { get; set; }
 	}
 }

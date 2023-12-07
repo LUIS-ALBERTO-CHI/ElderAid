@@ -21,6 +21,7 @@ namespace FwaEu.MediCare.Users
 		[Required]
 		[EmailAddress]
 		public string Email { get; set; }
+		public string Login { get; set; }
 
 	}
 
@@ -69,6 +70,7 @@ namespace FwaEu.MediCare.Users
 				FirstName = loadingModel.FirstName,
 				LastName = loadingModel.LastName,
 				Email = loadingModel.Email,
+				Login = loadingModel.Login
 			});
 		}
 
@@ -95,6 +97,7 @@ namespace FwaEu.MediCare.Users
 			entity.FirstName = model.FirstName;
 			entity.LastName = model.LastName;
 			entity.Email = model.Email;
+			entity.Login = model.Login;
 
 			return Task.FromResult<IPartSaveResult>(
 				emailChanged//NOTE: Email change date is just tracked as an information, because on the next load of the current user, it will fail because the identity will not be found in the database

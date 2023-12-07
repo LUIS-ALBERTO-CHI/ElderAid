@@ -73,6 +73,15 @@ using FwaEu.Fwamework.Mail;
 using FwaEu.Modules.Authentication.MicrosoftIdentityPlatform;
 using FwaEu.Modules.MasterDataUserNotifications;
 using FwaEu.Modules.MasterDataImporter;
+using FwaEu.MediCare.Articles;
+using FwaEu.MediCare.GenericSession;
+using FwaEu.MediCare.Orders;
+using FwaEu.MediCare.Organizations;
+using FwaEu.MediCare.Patients;
+using FwaEu.MediCare.Protections;
+using FwaEu.MediCare.Referencials;
+using FwaEu.MediCare.Stock;
+using FwaEu.MediCare.Treatments;
 
 namespace FwaEu.MediCare
 {
@@ -208,6 +217,18 @@ namespace FwaEu.MediCare
 				services.AddApplicationViewContext();
 				services.AddFwameworkModuleMasterDataUserNotifications();
 
+
+				services.AddApplicationOrganizations(context);
+				services.AddApplicationGenericSession();
+				services.AddApplicationArticles(context);
+				services.AddApplicationTreatments(context);
+				services.AddApplicationReferencials(context);
+				services.AddApplicationPatients(context);
+				services.AddApplicationOrders(context);
+				services.AddApplicationStock(context);
+				services.AddApplicationProtections(context);
+
+
 				services.AddProblemDetails();
 			}
 		}
@@ -256,7 +277,7 @@ namespace FwaEu.MediCare
 				.UseFwameworkCurrentUserPerimeter()
 			);
 
-			//application.UseApplicationViewContext();
+			application.UseApplicationViewContext();
 
 			application.UseEndpoints(endpoints =>
 			{

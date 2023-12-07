@@ -17,5 +17,6 @@ namespace FwaEu.MediCare.Users
 		public UserState State { get; set; }
 		public int? UpdatedById { get; set; }
 		public DateTime UpdatedOn { get; set; }
+		public string Login { get; set; }
 	}
 }

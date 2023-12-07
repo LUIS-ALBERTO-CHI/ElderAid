@@ -29,7 +29,7 @@
 			}
 		},
 		async created() {
-			await loadMessagesAsync(this, (locale) => import(`/src/Modules/DefaultAuthentication/UserParts/Credentials/Components/Content/user-settings-password-part-messages.${locale}.json`));
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/DefaultAuthentication/UserParts/Credentials/Components/Content/user-settings-password-part-messages.*.json'));
 		},
 		methods: {
 			async validateAsync() {

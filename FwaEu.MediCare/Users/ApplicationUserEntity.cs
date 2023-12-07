@@ -21,17 +21,18 @@ namespace FwaEu.MediCare.Users
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
-		private string _email;
-		public string Email
-		{
-			get { return _email; }
-			set
-			{
-				_email = value;
-				Identity = value;
-			}
-		}
-
+		//private string _email;
+		public string Email { get; set; }
+		//public string Email
+		//{
+		//	get { return _email; }
+		//	set
+		//	{
+		//		_email = value;
+		//		Identity = value;
+		//	}
+		//}
+		public string Login { get; set; }
 		public UserEntity CreatedBy { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public UserEntity UpdatedBy { get; set; }
@@ -51,19 +52,19 @@ namespace FwaEu.MediCare.Users
 			return this.Query().Where(entity => ids.Contains(entity.Id));
 		}
 
-		public override IQueryable<ApplicationUserEntity> QueryForUsersAdmin()
-		{
-			var contextService = this.ServiceProvider.GetRequiredService<IViewContextService>();
-			var currentUserService = this.ServiceProvider.GetRequiredService<ICurrentUserService>();
+		//public override IQueryable<ApplicationUserEntity> QueryForUsersAdmin()
+		//{
+		//	var contextService = this.ServiceProvider.GetRequiredService<IViewContextService>();
+		//	var currentUserService = this.ServiceProvider.GetRequiredService<ICurrentUserService>();
 
-			if (currentUserService.User == null || currentUserService.User.Entity.IsAdmin)
-			{
-				return this.Query();
-			}
+		//	if (currentUserService.User == null || currentUserService.User.Entity.IsAdmin)
+		//	{
+		//		return this.Query();
+		//	}
 
-			return this.Query().Where(user => user == currentUserService.User.Entity
-				|| !user.IsAdmin);
-		}
+		//	return this.Query().Where(user => user == currentUserService.User.Entity
+		//		|| !user.IsAdmin);
+		//}
 	}
 
 	/// <summary>
@@ -91,11 +92,11 @@ namespace FwaEu.MediCare.Users
 		/// <summary>
 		/// This name will be shared with UserEntity.Identity, this identity property is used for login/password authentication
 		/// </summary>
-		public const string IdentityColumnName = "email";
+		public const string IdentityColumnName = "login";
 
 		public ApplicationUserEntityClassMap()
 		{
-			Map(entity => entity.Email)
+			Map(entity => entity.Login)
 				.Column(IdentityColumnName)
 				.Not.Nullable()
 				.Unique();
@@ -105,6 +106,7 @@ namespace FwaEu.MediCare.Users
 
 			Map(entity => entity.LastName)
 			   .Not.Nullable();
+			Map(entity => entity.Email);
 
 			this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
 		}

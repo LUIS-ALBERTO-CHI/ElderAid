@@ -1,0 +1,271 @@
+/* Header / Footer */
+.app-header {
+  position: fixed;
+  top: 0;
+  z-index: 9;
+  margin: 0 auto; /* Will not center vertically and won't work in IE6/7. */
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  /* padding: 6px 32px; */
+}
+
+.main-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 10px;
+}
+
+/* .app-header .container-logo {
+  max-width: 100%;
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-header .container-logo .cites-educatives {
+  max-width: 50%;
+  max-height: 180px;
+}
+.app-header .container-logo .logo {
+  max-width: 50%;
+  max-height: 100px;
+} */
+
+
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 9;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-top: 1px solid var(--primary-bg-color);
+    padding: 12px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+    .app-footer .logo-fix {
+        max-width: 100%;
+        max-height: 100px;
+    }
+
+    .app-footer .logo {
+        max-width: 100%;
+        max-height: 100px;
+    }
+
+/* Home Page */
+.page-home {
+  height: 100%;
+  margin: 0px !important;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.home-content {
+  padding: 120px 20px 20px 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.panel-title {
+  max-width: 500px;
+  margin: auto;
+}
+
+.panel-description {
+  max-width: 900px;
+  margin: auto;
+  text-align: left;
+  padding: 5px;
+  justify-content: space-between;
+  text-align: justify;
+}
+
+
+
+.text-align-center {
+  text-align: center;
+}
+
+.flex-section {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.justify-content-center {
+  justify-content: center
+}
+
+
+.connexion-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.logout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  margin-top: 40px;
+}
+
+.logout-container > a {
+  cursor: pointer;
+}
+
+.vignette-list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.vignette-item {
+  border-radius: 16px;
+  box-shadow: 0px 0px 5px 0px var(--primary-text-color);
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 0px 10px;
+}
+.vignette-item:hover {
+  background-color: #e4e1e1;
+  cursor: pointer;
+}
+
+.vignette-icon {
+  font-size: 30px;
+}
+
+.vignette-main-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.vignette-text {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+.vignette-text-subtitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+.organization-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+}
+
+.chevron-icon {
+  font-size: 25px;
+  color: var(--primary-text-color);
+}
+
+
+.change-organization-container {
+	display: flex;
+  justify-content: center;
+  column-gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-text-color);
+
+}
+
+.change-organization-icon {
+  font-size: 25px;
+  color: var(--secondary-text-color);
+  cursor: pointer;
+}
+
+/* TODO: Trouver un moyen de faire fonctionner les selecteur css dans les scoped css*/
+/* Ne fonctionne pas dans les autres fichier css ... */
+.p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
+  width: 25px;
+  height: 25px;
+  bottom: 2;
+  right: 10px;
+  position: absolute;
+}
+
+.custom-select-button .p-button {
+  height: 35px;
+}
+
+.p-inputtext.p-component.p-inputnumber-input {
+  width: 100%;
+  text-align: center;
+}
+
+.quantity-select-button .p-button {
+  height: 35px;
+  width: 33%;
+}
+.p-accordion-header-link {
+  text-decoration: none !important;
+  border-radius: 6px;
+  box-shadow: 0px 0px 5px 0px var(--primary-text-color);
+}
+
+.p-accordion .p-accordion-tab {
+  margin-bottom: 10px;
+}
+
+.p-button {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+
+}
+
+.p-button:enabled:hover {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}
+
+.p-selectbutton .p-button.p-highlight:hover {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}
+.p-selectbutton .p-button.p-highlight {
+  color: #ffffff;
+  background: var(--button-background-color);
+  border: var(--button-background-color);
+}
+
+.p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
+  background-color:  var(--button-background-color);
+}

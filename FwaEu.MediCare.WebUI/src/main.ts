@@ -3,7 +3,7 @@ import "@/Modules/FontAwesome/font-awesome-module";
 import '@UILibrary/Extensions/Themes/generated/theme.base.css';
 
 
-import App from './App.vue';
+import IndexApp from './IndexApp.vue';
 import { SentryModule } from "@/Modules/Sentry/sentry-module";
 import { RoutingModule } from '@/Fwamework/Routing/routing-module';
 import { CoreModule } from '@/Fwamework/Core/core-module';
@@ -52,7 +52,6 @@ import { UserTasksUserNotificationsModule } from "@/Modules/UserTasksUserNotific
 import { UserTasksListModule } from "@/Modules/UserTasksList/user-tasks-list-module";
 import { MasterDataNotificationsModule } from "@/Modules/MasterDataNotification/master-data-notifications-module";
 import { ContextViewModule } from "@/MediCare/ViewContext/view-context-module";
-import AzureAdAuthenticationHandler from "@/Modules/AzureADAuthentication/Services/azure-ad-authentication-handler";
 
 import { ImpersonateAuthenticationModule } from "@/Modules/ImpersonateAuthentication/impersonate-authentication-module";
 import SetupImpersonateAuthenticationHandler from "@/Modules/ImpersonateAuthentication/Setup/setup-impersonate-authentication-handler";
@@ -64,10 +63,17 @@ import { DevExtremeCompatibilityModule } from "@/PrimeVue/Modules/DevExremeCompa
 
 import { VeeValidateModule } from "@/Modules/VeeValidation/vee-validate-module";
 
+import { ReferencialsModule } from "@/MediCare/Referencials/referencials-module";
+import { PatientsModule } from "@/MediCare/Patients/patients-module";
+import { OrdersModule } from "@/MediCare/Orders/orders-module";
+import { CabinetsModule } from "@/MediCare/PharmacyStock/cabinets-module";
+import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consumption-module";
+import { ArticlesModule } from "./MediCare/Articles/articles-module";
+import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
+import { CachePreloaderModule } from '@/MediCare/Cache/cache-module';
 
 
-
-const application = new Application(App)
+const application = new Application(IndexApp)
 	.useModule(new CoreModule({
 		//NOTE: We currently use the same version as server because managing the version for both server and client will require unnecessary efforts			
 		applicationInfoProvider: ServerApplicationInfoProvider
@@ -81,7 +87,7 @@ const application = new Application(App)
 		authenticationHandlers: [
 			SetupImpersonateAuthenticationHandler,
 			DefaultAuthenticationHandler,
-			AzureAdAuthenticationHandler
+			//AzureAdAuthenticationHandler
 		]
 	}))
 	.useModule(new UsersModule())
@@ -128,13 +134,21 @@ const application = new Application(App)
 	.useModule(new UserTasksListModule())
 	.useModule(new MasterDataNotificationsModule())
 	.useModule(new RoutingModule({
-			routerOptions: {
-				routes: AppRoutes
-			}
+		routerOptions: {
+			routes: AppRoutes
 		}
+	}
 	))
 	.useModule(new OnlineStatusModule())
 	.useModule(new UtilsModule())
-	.useModule(new VeeValidateModule());
+	.useModule(new VeeValidateModule())
+	.useModule(new OrganizationsModule())
+	.useModule(new ReferencialsModule())
+	.useModule(new PatientsModule())
+	.useModule(new OrdersModule())
+	.useModule(new CabinetsModule())
+	.useModule(new StockConsumptionModule())
+	.useModule(new CachePreloaderModule())
+	.useModule(new ArticlesModule());
 
 application.mountAsync("#app");

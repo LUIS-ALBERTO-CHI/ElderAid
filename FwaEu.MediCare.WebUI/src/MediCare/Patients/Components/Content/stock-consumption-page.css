@@ -1,0 +1,21 @@
+.stock-consumption-page-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.stock-consumption-item {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding: 1.25rem;
+    border: 1px solid #dee2e6;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px 0px var(--primary-text-color);
+}
+
+.stock-consumption-item-title {
+    color: var(--alt-secondary-text-color);
+    font-weight: bold;
+}

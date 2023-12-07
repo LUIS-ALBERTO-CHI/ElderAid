@@ -44,7 +44,7 @@
 			}
 		},
 		async created() {
-			await loadMessagesAsync(this, import.meta.glob('@/Modules/DefaultAuthentication/Components/Content/user-settings-password-part-messages.*.json'));
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/DefaultAuthentication/UserParts/Credentials/Components/Content/user-settings-password-part-messages.*.json'));
 		},
 		methods: {
 			passwordComparison() {

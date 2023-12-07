@@ -7,14 +7,19 @@ const viewContextKey = 'View-Context';
 const viewContextChangedEmitter = new AsyncEventEmitter();
 
 export class ViewContextModel {
-
-	/** @param {Number|null} regionId */
-	constructor(regionId) {
-		this.regionId = regionId;
+	constructor(organization) {
+		this.id = organization.id;
+		this.name = organization.name;
+		this.orderPeriodicityDays = organization.orderPeriodicityDays;
+		this.orderPeriodicityDayOfWeek = organization.orderPeriodicityDayOfWeek;
+		this.lastPeriodicityOrder = new Date(organization.lastPeriodicityOrder);
+		this.nextPeriodicityOrder = new Date(organization.nextPeriodicityOrder);
+		this.periodicityOrderActivationDaysNumber = organization.periodicityOrderActivationDaysNumber;
+		this.isStockPharmacyPerBox = organization.isStockPharmacyPerBox;
+		this.updatedOn = new Date(organization.updatedOn);
 	}
 
-	/** @type Number|null*/
-	regionId = null
+	databaseName = null
 }
 
 export default {

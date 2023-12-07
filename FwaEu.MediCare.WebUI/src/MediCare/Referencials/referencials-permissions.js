@@ -1,0 +1,1 @@
+export const CanAdministrateDosageFormMasterData = 'CanAdministrateDosageFormMasterData';

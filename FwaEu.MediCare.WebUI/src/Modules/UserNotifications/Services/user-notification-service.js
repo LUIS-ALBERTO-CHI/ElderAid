@@ -14,7 +14,7 @@ import AsyncEventEmitter from "@/Fwamework/Core/Services/event-emitter-class";
 class UserNotificationService {
 
 	/** @param {SignalRAdapter} signalRAdapter */
-	async initAsync(signalRAdapter) {		
+	async initAsync(signalRAdapter) {	
 		this._signalRAdapter = signalRAdapter;
 		this._connectionStartEventEmitter = new AsyncEventEmitter(true);
 		this._connectionErrorEventEmitter = new AsyncEventEmitter(true);

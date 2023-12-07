@@ -1,0 +1,27 @@
+.periodic-orders-page-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.periodic-order-item {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    padding: 1.25rem;
+    border: 1px solid #dee2e6;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0px 0px 5px 0px var(--primary-text-color);
+}
+
+.periodic-order-item-title {
+    color: var(--alt-secondary-text-color);
+    font-weight: bold;
+}
+
+.periodic-orders-validation-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}

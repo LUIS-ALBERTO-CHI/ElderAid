@@ -5,9 +5,9 @@
 		Copyright © 2023, <a href="https://www.fwa.eu" target="_blank">FWA</a>
 		<div class="logos">
 			<a href="https://www.fwa.eu" target="_blank">
-				<img class="logo" alt="" src="../Content/logo-fwa.png" />
+				<img class="logo" alt="" src="../Content/logo.png" />
 			</a>
-			<img class="logo" alt="" src="../Content/logo-company.png" />
+			<img class="logo" alt="" src="../Content/logo.png" />
 		</div>
 	</footer>
 </template>
