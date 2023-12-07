@@ -1,6 +1,6 @@
 import AbstractModule from '@/Fwamework/Core/Services/abstract-module-class';
 import PrimeVue from 'primevue/config';
-import 'primevue/resources/themes/bootstrap4-light-blue/theme.css';
+import 'primevue/resources/themes/lara-light-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeflex/primeflex.scss';
 import 'primeicons/primeicons.css';

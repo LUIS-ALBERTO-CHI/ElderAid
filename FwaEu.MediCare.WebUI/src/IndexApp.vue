@@ -26,7 +26,8 @@
 	const DefaultPageLayout = defineAsyncComponent(() => import('@/MediCare/Components/Layouts/PublicApplicationLayoutComponent.vue'));
     import { sizes, subscribe, unsubscribe } from "@UILibrary/Extensions/Content/utils/media-query";
     import ApplicationZoneService from "@/Fwamework/ApplicationZones/application-zone-service";
-
+	import "primevue/resources/themes/lara-light-indigo/theme.css";
+	import "primevue/resources/primevue.min.css";
 
     import DynamicDialog from 'primevue/dynamicdialog';
     
