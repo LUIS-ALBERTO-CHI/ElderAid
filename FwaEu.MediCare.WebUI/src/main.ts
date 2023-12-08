@@ -71,7 +71,7 @@ import { StockConsumptionModule } from "./MediCare/StockConsumption/stock-consum
 import { ArticlesModule } from "./MediCare/Articles/articles-module";
 import { OrganizationsModule } from "@/MediCare/Organizations/organizations-module";
 import { CachePreloaderModule } from '@/MediCare/Cache/cache-module';
-
+import PrimeVue from 'primevue/config';
 
 const application = new Application(IndexApp)
 	.useModule(new CoreModule({
@@ -150,7 +150,7 @@ const application = new Application(IndexApp)
 	.useModule(new StockConsumptionModule())
 	.useModule(new CachePreloaderModule())
 	.useModule(new ArticlesModule());
-
+application.vueApp.use(PrimeVue);
 
 //NOTE: To make works chartjs-plugin-datalabels you need to register it globally i didn't find a better way to do it
 import ChartDataLabels from 'chartjs-plugin-datalabels';
