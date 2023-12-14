@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Users;
+using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Users;
 using NHibernate.Linq;
@@ -23,6 +23,10 @@ using FwaEu.MediCare.Articles;
 using Serilog.Core;
 using Microsoft.Extensions.Logging;
 using FwaEu.MediCare.Patients;
+using FwaEu.Modules.UserNotifications;
+using Microsoft.AspNetCore.SignalR;
+using FwaEu.Fwamework.DependencyInjection;
+using FwaEu.Modules.MasterData;
 
 namespace FwaEu.MediCare.Orders.Services
 {
@@ -35,8 +39,10 @@ namespace FwaEu.MediCare.Orders.Services
         private readonly IManageGenericDbService _manageGenericDbService;
         private readonly string _loginRobot;
         private readonly ILogger _logger;
-        public OrderService(GenericSessionContext genericSessionContext,
-                                MainSessionContext mainSessionContext,
+		private readonly IScopedServiceProvider _scopedServiceProvider;
+		public OrderService(GenericSessionContext genericSessionContext,
+							IScopedServiceProvider scopedServiceProvider,
+								MainSessionContext mainSessionContext,
                                     ICurrentUserService currentUserService,
                                         ICurrentDateTime currentDateTime,
                                             IOptions<PeriodicOrderOptions> orderOptions,
@@ -48,7 +54,9 @@ namespace FwaEu.MediCare.Orders.Services
             _currentDateTime = currentDateTime;
             _loginRobot = orderOptions.Value.RobotEmail;
             _manageGenericDbService = manageGenericDbService;
-        }
+			this._scopedServiceProvider = scopedServiceProvider
+				?? throw new ArgumentNullException(nameof(scopedServiceProvider));
+		}
 
         public async Task<List<GetAllOrdersResponse>> GetAllAsync(GetAllOrdersPost model)
         {
@@ -86,8 +94,18 @@ namespace FwaEu.MediCare.Orders.Services
                 stockedProcedure.SetParameter("IsBox", order.IsBox);
 
                 await stockedProcedure.ExecuteUpdateAsync();
-            }
-        }
+
+				var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+				var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+				var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+				var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+				var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+				var clients = hubService.Clients.All;
+				await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "PeriodicOrders", "Orders" }));
+
+			}
+		}
 
         public async Task ValidatePeriodicOrderAsync(ValidatePeriodicOrderPost validatePeriodicOrder)
         {
@@ -240,8 +258,8 @@ namespace FwaEu.MediCare.Orders.Services
                     await organizationRepository.SaveOrUpdateAsync(organization);
                     await repositorySession.Session.FlushAsync();
                 }
-            }
-        }
+			}
+		}
 
 
         public async Task CancelOrderAsync(int orderId)
@@ -259,8 +277,18 @@ namespace FwaEu.MediCare.Orders.Services
                 stockedProcedure.SetParameter("UserIp", currentUserIp);
 
                 await stockedProcedure.ExecuteUpdateAsync();
-            }
-            catch (GenericADOException e)
+
+				var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+				var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+				var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+				var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+				var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+				var clients = hubService.Clients.All;
+				await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "Orders" }));
+
+			}
+			catch (GenericADOException e)
             {
                 DatabaseExceptionHelper.CheckForDbConstraints(e);
                 throw;
