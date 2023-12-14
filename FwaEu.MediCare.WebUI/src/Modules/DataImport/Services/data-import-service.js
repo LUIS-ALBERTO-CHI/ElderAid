@@ -10,7 +10,7 @@ export default
 			for (var i = 0; i < files.length; i++)
 			{
 				let file = files[i];
-				formData.append('files[' + i + ']', file.value);
+				formData.append('files[' + i + ']', file);
 			}
 
 			var response = await HttpService.post("DataImport/Import",

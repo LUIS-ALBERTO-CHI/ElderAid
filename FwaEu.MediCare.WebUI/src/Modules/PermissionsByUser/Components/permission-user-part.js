@@ -7,7 +7,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
 
 export default {
 	partName: "permissions",
-	component: defineAsyncComponent(() => import("@/Modules/PermissionsByUser/Components/PermissionUserPartComponent.vue")),
+	component: defineAsyncComponent(() => import("@UILibrary/Modules/PermissionsByUser/Components/PermissionUserPartComponent.vue")),
 	initializeAsync: function (user, context) {
 
 		let userPart = user.parts[this.partName];

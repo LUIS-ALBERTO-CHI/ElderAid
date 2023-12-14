@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.MediCare.Referencials.WebApi;
 using FwaEu.MediCare.Treatments.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +15,7 @@ namespace FwaEu.MediCare.Treatments.WebApi
     {
         // GET /GetAllTreatmentsByPatientAsync
         [HttpPost("GetAllTreatmentsByPatientAsync")]
-        public async Task<IActionResult> GetAllTreatmentsByPatientAsync(GetTreatmentsByPatientPostApi modelApi, ITreatmentService treatmentService)
+        public async Task<IActionResult> GetAllTreatmentsByPatientAsync(GetTreatmentsByPatientPostApi modelApi,[FromServices] ITreatmentService treatmentService)
         {
             try
             {

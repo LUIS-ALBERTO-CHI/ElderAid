@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.Fwamework.Permissions.WebApi;
 using FwaEu.MediCare.Patients.Services;
 using FwaEu.TemplateCore.FarmManager;
@@ -48,7 +48,7 @@ namespace FwaEu.MediCare.Patients.WebApi
 
         [HttpPost("SaveIncontinenceLevel")]
         [RequirePermissions(nameof(PatientPermissionProvider.CanChangeIncontinenceLevel))]
-        public async Task<IActionResult> SaveIncontinenceLevelAsync(SaveIncontinenceLevelApi model, IPatientService patientService)
+        public async Task<IActionResult> SaveIncontinenceLevelAsync(SaveIncontinenceLevelApi model, [FromServices] IPatientService patientService)
         {
             try
             {

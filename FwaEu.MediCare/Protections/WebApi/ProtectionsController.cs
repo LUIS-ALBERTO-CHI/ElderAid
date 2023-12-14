@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.MediCare.Protections.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ namespace FwaEu.MediCare.Protections.WebApi
     {
         // POST /Protections/Create
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateAsync(CreateProtectionModelApi model, IProtectionService protectionService)
+        public async Task<IActionResult> CreateAsync(CreateProtectionModelApi model, [FromServices] IProtectionService protectionService)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace FwaEu.MediCare.Protections.WebApi
 
         // POST /Protections/Update
         [HttpPost("Update")]
-        public async Task<IActionResult> UpdateAsync(UpdateProtectionModelApi model, IProtectionService protectionService)
+        public async Task<IActionResult> UpdateAsync(UpdateProtectionModelApi model, [FromServices] IProtectionService protectionService)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace FwaEu.MediCare.Protections.WebApi
 
         // POST /Protections/Stop
         [HttpPost("Stop")]
-        public async Task<IActionResult> StopAsync(StopProtectionModelApi model, IProtectionService protectionService)
+        public async Task<IActionResult> StopAsync(StopProtectionModelApi model, [FromServices] IProtectionService protectionService)
         {
             try
             {

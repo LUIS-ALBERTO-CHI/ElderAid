@@ -1,5 +1,5 @@
 import EnumMasterDataService from "@/Fwamework/EnumMasterData/Services/enum-master-data-service";
-import dataSourceOptionsFactory from "@/Modules/MasterDataDevExtreme/Services/data-source-options-factory";
+import dataSourceOptionsFactory from "@UILibrary/Modules/MasterData/Services/data-source-options-factory";
 
 const incontinenceLevelMasterDataService = new EnumMasterDataService('FwaEu.MediCare.Patients.IncontinenceLevel');
 

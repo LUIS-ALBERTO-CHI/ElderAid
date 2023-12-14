@@ -5,9 +5,17 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FwaEu.MediCare", "FwaEu.MediCare\FwaEu.MediCare.csproj", "{1ECB98BF-942B-4A3C-B80C-70ED6ED8467F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FwaEu.MediCare.Tests", "FwaEu.MediCare.Tests\FwaEu.MediCare.Tests.csproj", "{14B02294-14A1-4626-8CE1-8FEDCF423B4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FwaEu.Fwamework.Tests", "FwaEu.Fwamework.Tests\FwaEu.Fwamework.Tests.csproj", "{0AEB82A7-8D4C-41B3-9E56-640ADFA5A02F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FwaEu.Fwamework", "FwaEu.Fwamework\FwaEu.Fwamework.csproj", "{1DEFC845-A392-4A34-8270-FCF1B88A6393}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FwaEu.Modules", "FwaEu.Modules\FwaEu.Modules.csproj", "{38C12EB2-3086-4BAE-859D-1397B8078F67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FwaEu.Modules.Tests", "FwaEu.Modules.Tests\FwaEu.Modules.Tests.csproj", "{2A7C52DA-F60F-4032-8CD9-1B33D3C728F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FwaEu.TestTools.InMemoryDatabase.Sqlite", "FwaEu.TestTools.InMemoryDatabase.Sqlite\FwaEu.TestTools.InMemoryDatabase.Sqlite.csproj", "{19BD159A-4D21-4A8C-981B-6914A7FBCB23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

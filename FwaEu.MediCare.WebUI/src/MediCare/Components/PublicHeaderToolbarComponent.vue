@@ -11,7 +11,7 @@
 import Breadcrumbs from "@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedComponent.vue";
 
 import VueUseOnline from "@/Fwamework/OnlineStatus/Components/OnlineStatusIndicator.vue";
-import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';
 import OfflineDataSynchronizationService from "@/MediCare/OfflineDataSynchronization/Services/indexed-db-service";
 
 import OrdersService from '@/MediCare/Orders/Services/orders-service';

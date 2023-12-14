@@ -3,7 +3,7 @@
 </template>
 
 <script>
-	import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';	
+	import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';	
 
 	export default {
 		computed: {

@@ -1,5 +1,5 @@
 import AbstractCustomColumnCustomizer from '@/Modules/GenericAdmin/Services/abstract-custom-column-customizer';
-import DataSourceOptionsFactory from "@/Modules/MasterDataDevExtreme/Services/data-source-options-factory";
+import DataSourceOptionsFactory from "@UILibrary/Modules/MasterData/Services/data-source-options-factory";
 import StringHelperService from '@/Modules/GenericAdmin/Services/string-helper-service';
 import MasterDataManagerService from '@/Fwamework/MasterData/Services/master-data-manager-service';
 

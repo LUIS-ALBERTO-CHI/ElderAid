@@ -14,20 +14,9 @@ namespace FwaEu.Modules.SimpleMasterData
 				where TEntity : SimpleMasterDataEntityBase
 		{
 			
-			var state = context.ServiceStore.GetOrAdd<SimpleMasterDataInitializationState>();
-
-			if (!state.DefaultKeyResolverInitialized)
-			{
-				serviceCollection.AddTransient(typeof(ISimpleMasterDataKeyResolver<>), typeof(PluralizationSimpleMasterDataKeyResolver<>));
-				state.DefaultKeyResolverInitialized = true;
-			}
-
 			return new ConstructSimpleMasterDataServiceInitializer<TEntity>(serviceCollection, context);
 		}
 	}
 
-	public class SimpleMasterDataInitializationState
-	{
-		public bool DefaultKeyResolverInitialized { get; set; } = false;
-	}
+	
 }

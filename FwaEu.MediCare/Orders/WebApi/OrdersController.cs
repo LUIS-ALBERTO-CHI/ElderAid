@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.MediCare.Orders.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ namespace FwaEu.MediCare.Orders.WebApi
     {
         // GET /Orders/GetAll
         [HttpPost("GetAll")]
-        public async Task<IActionResult> GetAllAsync(GetAllOrdersPostApi modelApi, IOrderService orderService)
+        public async Task<IActionResult> GetAllAsync(GetAllOrdersPostApi modelApi, [FromServices] IOrderService orderService)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace FwaEu.MediCare.Orders.WebApi
 
         // POST /Orders/Create
         [HttpPost("Create")]
-        public async Task<IActionResult> CreateAsync(CreateOrdersPostApi[] orders, IOrderService orderService)
+        public async Task<IActionResult> CreateAsync(CreateOrdersPostApi[] orders, [FromServices] IOrderService orderService)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace FwaEu.MediCare.Orders.WebApi
 
         // POST /Orders/ValidatePeriodicOrder
         [HttpPost("ValidatePeriodicOrder")]
-        public async Task<IActionResult> ValidatePeriodicOrderAsync([FromBody] ValidatePeriodicOrderPostApi validatePeriodicOrder, IOrderService orderService)
+        public async Task<IActionResult> ValidatePeriodicOrderAsync([FromBody] ValidatePeriodicOrderPostApi validatePeriodicOrder, [FromServices] IOrderService orderService)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace FwaEu.MediCare.Orders.WebApi
 
         // POST /Orders/Cancel
         [HttpPost("Cancel/{orderId}")]
-        public async Task<IActionResult> CancelAsync([FromRoute] int orderId, IOrderService orderService)
+        public async Task<IActionResult> CancelAsync([FromRoute] int orderId, [FromServices] IOrderService orderService)
         {
             try
             {

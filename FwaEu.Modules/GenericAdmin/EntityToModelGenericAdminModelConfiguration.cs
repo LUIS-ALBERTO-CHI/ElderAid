@@ -28,8 +28,13 @@ namespace FwaEu.Modules.GenericAdmin
 		{
 			this._sessionContext = new Lazy<TSessionContext>(
 				() => serviceProvider.GetRequiredService<TSessionContext>());
+
+			var keyResolver = serviceProvider.GetRequiredService<IEntityKeyResolver<TEntity>>();
+			this._keyLazy = new Lazy<string>(keyResolver.ResolveKey);
 		}
 
+		private readonly Lazy<string> _keyLazy;
+		public override string Key => this._keyLazy.Value;
 		protected RepositorySession<IStatefulSessionAdapter> RepositorySession => this._sessionContext.Value.RepositorySession;
 
 		protected virtual IRepository<TEntity, TIdentifier> GetRepository()

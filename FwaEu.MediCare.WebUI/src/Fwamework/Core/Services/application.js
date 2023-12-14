@@ -21,9 +21,6 @@ export default class Application {
 			});
 		};
 		this.vueApp = createApp(this.vueConfig);
-
-		//TODO: Remove when updating to Vue 3.3 https://vuejs.org/guide/components/provide-inject.html#working-with-reactivity
-		this.vueApp.config.unwrapInjectedRef = true;
 	}
 
 	/** @type {import('vue').App} */
@@ -34,9 +31,6 @@ export default class Application {
 
 	initialized = false
 
-	/**
-	 * @param { import('./abstract-module-class').default } module
-	 */
 	useModule(module) {
 
 		ModuleRegistry.add(module);

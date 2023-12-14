@@ -2,8 +2,8 @@ import { defineAsyncComponent } from 'vue';
 
 export default {
 	key: "CurrentUserHeaderItem",
-	component: defineAsyncComponent(() => import('@/Modules/UserHeader/Components/UserHeaderComponent.vue')),
-	smallModeContentComponent: defineAsyncComponent(() => import('@/Modules/UserHeader/Components/UserHeaderSmallModeContentComponent.vue')),
+	component: defineAsyncComponent(() => import('@UILibrary/Modules/UserHeader/Components/UserHeaderComponent.vue')),
+	smallModeContentComponent: defineAsyncComponent(() => import('@UILibrary/Modules/UserHeader/Components/UserHeaderSmallModeContentComponent.vue')),
 
 	async fetchDataAsync() {
 		const currentUserService = (await import('@/Fwamework/Users/Services/current-user-service')).default;

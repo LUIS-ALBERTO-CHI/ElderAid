@@ -17,7 +17,7 @@ namespace FwaEu.MediCare.Application
 			services.AddTransient<IRelativePathProvider>(sp =>
 				new CodeBasedRelativePathProvider("IntegrationDirectory", "Integration"));
 
-			if (hostEnvironment.IsLikeDevelopment())
+			if (hostEnvironment.IsDevelopment())
 			{
 				services.AddTransient<IRelativePathProvider>(sp =>
 					new CodeBasedRelativePathProvider("DevelopmentDataDirectory", "DevelopmentData"));

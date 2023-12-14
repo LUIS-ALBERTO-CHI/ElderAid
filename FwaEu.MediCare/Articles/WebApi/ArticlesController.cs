@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.MediCare.Articles.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,7 @@ namespace FwaEu.MediCare.Articles.WebApi
     {
         // GET /Articles
         [HttpPost("GetAllBySearchAsync")]
-        public async Task<IActionResult> GetAllBySearchAsync(GetArticlesBySearchPostApi modelApi, IArticleService articleService)
+        public async Task<IActionResult> GetAllBySearchAsync(GetArticlesBySearchPostApi modelApi, [FromServices] IArticleService articleService)
         {
             try
             {

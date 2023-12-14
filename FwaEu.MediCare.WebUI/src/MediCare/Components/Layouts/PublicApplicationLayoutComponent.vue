@@ -16,7 +16,7 @@
 
 <script>
 	import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
-    import LoadingPanel from '@/Fwamework/LoadingPanel/Components/LoadingPanelComponent.vue';
+    import LoadingPanel from '@UILibrary/Fwamework/LoadingPanel/Components/LoadingPanelComponent.vue';
 	
 	export default {
 		components: {

@@ -1,3 +1,4 @@
+using FwaEu.Fwamework.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace FwaEu.MediCare.Users
 		string FirstName { get; }
 		string LastName { get; }
 		string Email { get; }
+		public UserState State { get; set; }
 		string Login { get; }
 	}
 

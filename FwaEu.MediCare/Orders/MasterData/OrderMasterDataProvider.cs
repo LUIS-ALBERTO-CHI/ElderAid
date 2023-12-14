@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Globalization;
+using FwaEu.Fwamework.Globalization;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.Modules.MasterData;
 using System;

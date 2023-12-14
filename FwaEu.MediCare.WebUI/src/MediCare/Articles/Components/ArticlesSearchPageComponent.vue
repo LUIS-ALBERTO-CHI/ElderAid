@@ -50,7 +50,7 @@
     import { useRoute } from 'vue-router';
     import { ref, watch } from "vue";
     import { watchDebounced } from '@vueuse/core'
-    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import ProgressSpinner from 'primevue/progressspinner';
 

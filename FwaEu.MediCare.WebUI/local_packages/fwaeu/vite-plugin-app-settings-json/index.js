@@ -64,7 +64,6 @@ module.exports = function (options) {
 	return {
 		name: 'app-settings-json',
 		config(config, { mode }) {
-
 			config.loadedAppSettingFiles = [];
 			console.log('Loading app settings for mode: ' + mode);
 

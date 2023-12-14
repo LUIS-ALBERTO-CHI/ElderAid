@@ -1,9 +1,11 @@
-import '@/Fwamework/DevExtreme/Themes/generated/theme.base.css';
+import '@UILibrary/Extensions/Themes/generated/theme.base.css';
 
 import App from '@/Fwamework/Setup/Components/SetupAppComponent.vue';
 import { SetupModule } from '@/Fwamework/Setup/setup-module';
+import { DialogModule } from '@/Modules/Dialog/dialog-module';
 import { LoadingPanelModule } from '@/Fwamework/LoadingPanel/loading-panel-module';
-import { DevextremeModule } from '@/Fwamework/DevExtreme/devextreme-module';
+import { UILibraryModule as DevExtremeModule } from '@/DevExtreme/module';
+import { UILibraryModule } from '@UILibrary/module';
 import { ErrorModule } from '@/Fwamework/Errors/error-module';
 import Application from "@/Fwamework/Core/Services/application";
 import { AuthenticationModule } from '@/Fwamework/Authentication/authentication-module';
@@ -17,13 +19,15 @@ import AppRoutes from '@/Fwamework/Setup/setup-app-routes';
 
 const application = new Application(App)
 	.useModule(new SetupModule())
+	.useModule(new DialogModule())
 	.useModule(new ImpersonateAuthenticationModule())
 	.useModule(new AuthenticationModule({
 		authenticationHandlers: [
 			SetupImpersonateAuthenticationHandler,
 		]
-	}))
-	.useModule(new DevextremeModule())
+	}) )
+	.useModule(new DevExtremeModule())
+	.useModule(new UILibraryModule())
 	.useModule(new LoadingPanelModule())
 	.useModule(new ErrorModule())
 	.useModule(new RoutingModule({

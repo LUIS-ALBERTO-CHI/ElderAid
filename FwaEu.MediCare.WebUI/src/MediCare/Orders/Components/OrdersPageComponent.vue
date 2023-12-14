@@ -52,7 +52,7 @@
     import PatientsMasterDataService from "@/MediCare/Patients/Services/patients-master-data-service";
     import OrderService from '@/MediCare/Orders/Services/orders-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
-    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
     import OrderComponent from '@/MediCare/Patients/Components/OrderComponent.vue';
 

@@ -6,9 +6,6 @@ import ErrorHandlerService from '@/Fwamework/Errors/Services/error-handler-servi
 
 export class RoutingModule extends AbstractModule {
 
-	/**
-	 * @param {{routerOptions:import('vue-router').RouterOptions}} options ;
-	 * */
 	constructor(options) {
 		super();
 

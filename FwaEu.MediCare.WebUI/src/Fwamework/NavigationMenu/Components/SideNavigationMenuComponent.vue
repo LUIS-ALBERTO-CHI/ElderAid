@@ -62,7 +62,7 @@
 	import NavigationMenuHelper from '@/Fwamework/NavigationMenu/Services/navigation-menu-helper-service';
 	import BreadcrumbsService from "@/Fwamework/Breadcrumbs/Services/breadcrumbs-service";
 	import ResolveContext from "@/Fwamework/Breadcrumbs/Services/resolve-context";
-	import ActionMenu from "@/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
+	import ActionMenu from "@UILibrary/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
 	import NotificationCounterBadge from "@/Fwamework/NotificationCounterBadge/Components/NotificationCounterBadgeComponent.vue";
 
 	export default {
@@ -115,7 +115,7 @@
 					: path;
 			},
 			getShowMenuIcon(menuActionOptions) {
-				return menuActionOptions.showMenuIcon ?? 'plus';
+				return menuActionOptions.showMenuIcon ?? 'fa-solid fa-plus';
 			},
 			getShowMenuCounter(menuItem) {
 				const $this = this;

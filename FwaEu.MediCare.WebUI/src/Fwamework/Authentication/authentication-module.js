@@ -3,7 +3,6 @@ import { CurrentUserMenuType } from '@/Fwamework/CurrentUserMenu/Services/curren
 
 export class AuthenticationModule extends AbstractModule {
 
-	/** @param {{authenticationHandlers:Array<import('./Services/authentication-service').AuthenticationHandler>}} options*/
 	constructor(options) {
 		super();
 		if (!options?.authenticationHandlers)

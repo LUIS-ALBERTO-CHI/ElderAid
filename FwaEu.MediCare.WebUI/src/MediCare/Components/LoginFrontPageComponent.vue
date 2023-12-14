@@ -26,7 +26,7 @@
 <script>
 import PageContainer from "@/Fwamework/PageContainer/Components/PageContainerComponent.vue";
 import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
-import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 import { showLoadingPanel } from "@/Fwamework/LoadingPanel/Services/loading-panel-service";
 import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 import { shallowRef } from "vue";
@@ -34,14 +34,6 @@ import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
 import UserPartsRegistry from '@/Fwamework/Users/Services/users-parts-registry';
 
 export default {
-	mixins: [LocalizationMixin],
-	i18n: {
-		messages: {
-			getMessagesAsync(locale) {
-				return import(`./Content/login-front-page-messages.${locale}.json`);
-			}
-		}
-	},
 	data() {
 		return {
 			loginComponents: null,
@@ -50,6 +42,8 @@ export default {
 		};
 	},
 	created: showLoadingPanel(async function () {
+
+				await loadMessagesAsync(this, import.meta.glob('./Content/login-front-page-messages.*.json'));
 		this.loginComponents = shallowRef(await AuthenticationService.createLoginComponentAsync());
 		const userPartsComponents = [];
 		await Promise.all(UserPartsRegistry.getAll()
@@ -78,7 +72,7 @@ export default {
 .login-page .box {
 	max-width: 730px;
 	margin: 0px auto;
-	width: 100%;
+	/*width: 100%;*/
 }
 
 .login-box-container {

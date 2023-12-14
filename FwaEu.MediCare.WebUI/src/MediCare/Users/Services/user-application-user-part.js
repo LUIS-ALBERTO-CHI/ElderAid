@@ -63,7 +63,7 @@ function createFormItemsAsync(user, initializeContext) {
 			editorOptions: {
 				inputAttr: { autocomplete: "nofill" }
 			}
-		},
+		}
 	];
 }
 function createNewUserPart() {

@@ -7,7 +7,7 @@ import NotificationService from '@/Fwamework/Notifications/Services/notification
 
 export default {
 	partName: "roles",
-	component: defineAsyncComponent(() => import("@/Modules/Roles/Components/RoleUserPartComponent.vue")),
+	component: defineAsyncComponent(() => import("@UILibrary/Modules/Roles/Components/RoleUserPartComponent.vue")),
 
 	initializeAsync: function (user, context) {
 

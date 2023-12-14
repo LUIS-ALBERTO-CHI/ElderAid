@@ -18,13 +18,11 @@ namespace FwaEu.Modules.MasterData.WebApi
 		[HttpPost(nameof(GetChangeInfos))]
 		[ProducesResponseType(typeof(MasterDataGetChangeInfosResponseModel), StatusCodes.Status200OK)]
 		public async Task<ActionResult<object>> GetChangeInfos(
-			[FromBody]GetChangeInfosParametersModel[] parameters,
-			[FromServices]IMasterDataService masterDataService)
+			[FromBody] GetChangeInfosParametersModel[] parameters,
+			[FromServices] IMasterDataService masterDataService)
 		{
-            var rr = "dd";
-            if (parameters[0].MasterDataKey == "Patients")
-                rr = "deed";
-            var changesInfos = await masterDataService.GetChangesInfosAsync(
+
+			var changesInfos = await masterDataService.GetChangesInfosAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetChangesParameters>(
 						p.MasterDataKey, new MasterDataProviderGetChangesParameters()))
 					.ToArray());
@@ -40,14 +38,12 @@ namespace FwaEu.Modules.MasterData.WebApi
 		[HttpPost(nameof(GetModels))]
 		[ProducesResponseType(typeof(MasterDataGetModelsResponseModel), StatusCodes.Status200OK)]
 		public async Task<ActionResult<object>> GetModels(
-			[FromBody]GetModelsParametersModel[] parameters,
-			[FromServices]IMasterDataService masterDataService,
-			[FromServices]IUserContextLanguage userContextLanguage)
+			[FromBody] GetModelsParametersModel[] parameters,
+			[FromServices] IMasterDataService masterDataService,
+			[FromServices] IUserContextLanguage userContextLanguage)
 		{
-            var rr = "dd";
-			if (parameters[0].MasterDataKey == "Patients")
-				rr = "deed";
-            var models = await masterDataService.GetModelsAsync(
+
+			var models = await masterDataService.GetModelsAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetModelsParameters>(
 						p.MasterDataKey, new MasterDataProviderGetModelsParameters(
 							p.Pagination == null ? null
@@ -74,14 +70,11 @@ namespace FwaEu.Modules.MasterData.WebApi
 		[HttpPost(nameof(GetModelsByIds))]
 		[ProducesResponseType(typeof(MasterDataGetModelsResponseModel), StatusCodes.Status200OK)]
 		public async Task<ActionResult<object>> GetModelsByIds(
-			[FromBody]GetModelsByIdsParametersModel[] parameters,
-			[FromServices]IMasterDataService masterDataService,
-			[FromServices]IUserContextLanguage userContextLanguage)
+			[FromBody] GetModelsByIdsParametersModel[] parameters,
+			[FromServices] IMasterDataService masterDataService,
+			[FromServices] IUserContextLanguage userContextLanguage)
 		{
-            var rr = "dd";
-            if (parameters[0].MasterDataKey == "Patients")
-                rr = "deed";
-            var models = await masterDataService.GetModelsByIdsAsync(
+			var models = await masterDataService.GetModelsByIdsAsync(
 				parameters.Select(p => new RelatedParameters<MasterDataProviderGetModelsByIdsParameters>(
 						p.MasterDataKey, new MasterDataProviderGetModelsByIdsParameters(
 							ConvertIds(p.Ids, masterDataService.GetIdType(p.MasterDataKey)),

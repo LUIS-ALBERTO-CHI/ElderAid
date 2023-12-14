@@ -37,7 +37,7 @@
     import PatientInfoComponent from './PatientInfoComponent.vue';
     import OrderComponent from './OrderComponent.vue';
     import RecentArticlesMasterDataService from "@/MediCare/Articles/Services/recent-articles-master-data-service";
-    import DateLiteral from '@/Fwamework/Utils/Components/DateLiteralComponent.vue';
+	import DateLiteral from '@UILibrary/Fwamework/Utils/Components/DateLiteralComponent.vue';
     import PatientService, { usePatient } from "@/MediCare/Patients/Services/patients-service";
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
 

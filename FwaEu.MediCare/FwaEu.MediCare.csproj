@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
+	<CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
     <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>FwaEu.MediCare</RootNamespace>
@@ -16,42 +16,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DbManager\**" />
-    <Compile Remove="Patients\GenericAdmin\**" />
-    <Compile Remove="Referencials\Services\**" />
-    <Content Remove="DbManager\**" />
-    <Content Remove="Patients\GenericAdmin\**" />
-    <Content Remove="Referencials\Services\**" />
-    <EmbeddedResource Remove="DbManager\**" />
-    <EmbeddedResource Remove="Patients\GenericAdmin\**" />
-    <EmbeddedResource Remove="Referencials\Services\**" />
-    <None Remove="DbManager\**" />
-    <None Remove="Patients\GenericAdmin\**" />
-    <None Remove="Referencials\Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Html\Mail\_Layout.cshtml" />
-  </ItemGroup>
-
-	
-  <ItemGroup>
-    <EmbeddedResource Include="Html\Mail\_Layout.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
 
     <PackageReference Include="Aspose.Cells" Version="21.4.0" />
-
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="FluentNHibernate" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.27" />
     <PackageReference Include="NHibernate" Version="5.3.8" />
     <PackageReference Include="NHibernate.Caches.CoreMemoryCache" Version="5.7.0" />
     <PackageReference Include="Pluralize.NET.Core" Version="1.0.0" />
@@ -69,6 +42,8 @@
 
   <ItemGroup>
     <Folder Include="DevelopmentData\Users\" />
+    <Folder Include="Html\Mail\" />
+    <Folder Include="Html\Content\" />
     <Folder Include="Integration\AfterUpdateSchema\" />
     <Folder Include="Integration\BeforeUpdateSchema\" />
   </ItemGroup>
@@ -77,4 +52,11 @@
     <ProjectReference Include="..\FwaEu.Fwamework\FwaEu.Fwamework.csproj" />
     <ProjectReference Include="..\FwaEu.Modules\FwaEu.Modules.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Html\Mail\_Layout.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

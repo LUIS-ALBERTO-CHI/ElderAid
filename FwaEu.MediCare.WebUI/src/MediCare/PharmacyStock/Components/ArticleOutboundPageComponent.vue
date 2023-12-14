@@ -71,8 +71,8 @@
     import ArticlesService from '@/MediCare/Articles/Services/articles-service';
     import RecentArticlesMasterDataService from '@/MediCare/Articles/Services/recent-articles-master-data-service';
     import PharmacyStockService from '@/MediCare/PharmacyStock/Services/pharmacy-stock-service';
-    import BreadcrumbService from '@/Modules/BreadcrumbsCollapsed/Services/breadcrumbs-service';
-    import ResolveContext from '@/Modules/BreadcrumbsCollapsed/Services/resolve-context'
+	import BreadcrumbService from '@/Fwamework/Breadcrumbs/Services/breadcrumbs-service';
+	import ResolveContext from '@/Fwamework/Breadcrumbs/Services/resolve-context'
 
     export default {
         components: {

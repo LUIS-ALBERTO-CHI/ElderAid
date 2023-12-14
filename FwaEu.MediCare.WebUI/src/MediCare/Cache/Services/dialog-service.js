@@ -1,6 +1,12 @@
 import { PrimeIcons } from "primevue/api";
+import ConfirmationService from 'primevue/confirmationservice';
+import DialogService from 'primevue/dialogservice';
 
 export default {
+	initialize(vueApp) {
+		vueApp.use(DialogService);
+		vueApp.use(ConfirmationService);
+	},
     configure(vueApp) {
         this.vueApp = vueApp;
     },

@@ -4,5 +4,7 @@
 	"lastName": "Last name",
 	"email": "Email",
 	"name": "Name",
-	"login": "Login"
+	"state": "Etat",
+	"Disabled": "Disabled",
+	"Active": "Active"
 }

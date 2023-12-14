@@ -5,6 +5,7 @@ export default {
 	getAllCultures() {
 		return [
 			{ code: "fr", imageSrc: imageFr},
+			{ code: "en", imageSrc: imageEn }
 		];
 	},
 	getDefaultCulture() {

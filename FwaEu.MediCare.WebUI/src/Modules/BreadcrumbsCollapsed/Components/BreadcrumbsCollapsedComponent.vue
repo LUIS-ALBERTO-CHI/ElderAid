@@ -10,7 +10,7 @@
 <script>
     import BreadcrumbService from '../Services/breadcrumbs-service'
     import ResolveContext from '../Services/resolve-context'
-    import BreadcrumbsCollapsedReduce from '@/Modules/BreadcrumbsCollapsed/Components/BreadcrumbsCollapsedReduceComponent.vue';
+	import BreadcrumbsCollapsedReduce from '@/Fwamework/Breadcrumbs/Components/BreadcrumbsCollapsedReduceComponent.vue';
 
     export default {
         components: {

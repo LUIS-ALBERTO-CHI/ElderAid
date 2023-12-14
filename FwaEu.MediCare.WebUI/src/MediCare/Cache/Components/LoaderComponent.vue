@@ -11,6 +11,9 @@
         </div>
     </div>
 </template>
+<script>
+	import '@dotlottie/player-component';
+</script>
 
 <style scoped>
  .icon-container {

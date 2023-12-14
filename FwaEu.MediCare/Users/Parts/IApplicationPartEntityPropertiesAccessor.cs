@@ -11,6 +11,6 @@ namespace FwaEu.MediCare.Users
 		string FirstName { set; }
 		string LastName { set; }
 		string Email { get; set; }
-        string Login { get; set; }
-    }
+		public string Login { get; set; }
+	}
 }

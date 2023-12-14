@@ -5,7 +5,7 @@ import { defineAsyncComponent } from "vue";
 
 export default {
 	partName: "credentials",
-	component: defineAsyncComponent(() => import("./Components/UserSettingsPasswordPartComponent.vue")),
+	component: defineAsyncComponent(() => import("@UILibrary/Modules/DefaultAuthentication/Components/UserSettingsPasswordPartComponent.vue")),
 
 	initializeAsync: function (user, context) {
 		const userSettingsPart = createNewUserSettingsPart();

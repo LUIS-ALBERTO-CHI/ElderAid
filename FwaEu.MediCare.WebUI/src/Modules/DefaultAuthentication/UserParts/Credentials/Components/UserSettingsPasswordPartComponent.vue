@@ -28,7 +28,7 @@
 </template>
 <script>
 	import { DxForm, DxItem, DxRequiredRule, DxCompareRule } from 'devextreme-vue/form';
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 
 	export default {
 		components: {
@@ -36,14 +36,6 @@
 			DxItem,
 			DxRequiredRule,
 			DxCompareRule
-		},
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/user-settings-password-part-messages.${locale}.json`);
-				}
-			}
 		},
 		props: {
 			modelValue: {
@@ -57,6 +49,9 @@
 					mode: 'password',
 				}
 			}
+		},
+		async created() {
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/DefaultAuthentication/Components/Content/user-settings-password-part-messages.*.json'));
 		},
 		methods: {
 			passwordComparison() {

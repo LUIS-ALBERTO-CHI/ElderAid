@@ -45,7 +45,8 @@ namespace FwaEu.Fwamework.Setup
 			{
 				var provider = this._databaseFeaturesProviders.First(x => x.DatabaseFeaturesType == loader.DatabaseFeaturesType);
 
-				using (var session = (INhibernateStatefulSessionAdapter)_sessionAdapterFactory.CreateStatefulSession())
+				using (var session = (INhibernateStatefulSessionAdapter)_sessionAdapterFactory
+					.CreateStatefulSession(new CreateSessionOptions { ConnectionStringName = loader.ConnectionStringName }))
 				{
 					var tablesList = await session.NhibernateSession
 						.CreateSQLQuery(provider.GetDatabaseFeatures().GetAllTablesSql)

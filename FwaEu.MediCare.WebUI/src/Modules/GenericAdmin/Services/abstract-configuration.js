@@ -2,8 +2,8 @@ import HttpService from '@/Fwamework/Core/Services/http-service';
 import ColumnsCustomizerService from '@/Modules/GenericAdmin/Services/columns-customizer-service';
 import ResourcesService from '@/Modules/GenericAdmin/Services/resources-service';
 import StringHelperService from '@/Modules/GenericAdmin/Services/string-helper-service';
-import DataGridHelperService from '@/Modules/GenericAdmin/Services/data-grid-helper-service';
-import DotNetTypesToDevExtremeConverterService from '@/Fwamework/DevExtreme/Services/dot-net-types-to-devextreme-converter-service.js';
+import DataGridHelperService from '@UILibrary/Modules/GenericAdmin/Services/data-grid-helper-service';
+import DotNetTypesToDevExtremeConverterService from '@UILibrary/Extensions/Services/dot-net-types-to-devextreme-converter-service.js';
 import LocalizationService from '@/Fwamework/Culture/Services/localization-service';
 import merge from 'lodash/merge';
 

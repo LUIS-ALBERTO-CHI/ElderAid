@@ -1,4 +1,3 @@
-﻿using AutoMapper;
 using FluentNHibernate.Mapping;
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;

@@ -3,6 +3,7 @@
 		<box>
 			<dx-form :form-data="user">
 				<dx-item data-field="password" :editor-options="passwordOptions">
+					<dx-label :text="$t('password')"></dx-label>
 					<dx-required-rule :message="$t('requiredConfirmPassword')" />
 				</dx-item>
 				<dx-item :editor-options="passwordOptions"
@@ -27,7 +28,7 @@
 	import DxButton from "devextreme-vue/button";
 	import PageContainer from "@/Fwamework/PageContainer/Components/PageContainerComponent.vue";
 	import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 	import { showLoadingPanel } from "@/Fwamework/LoadingPanel/Services/loading-panel-service";
 	import PasswordRecoveryService from "../Services/password-recovery-service";
 	import { Configuration } from "@/Fwamework/Core/Services/configuration-service";
@@ -44,14 +45,6 @@
 			Box,
 			DxButton
 		},
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/password-recovery-messages.${locale}.json`);
-				}
-			}
-		},
 		props: {
 			userId: Number,
 			guid: String
@@ -66,8 +59,9 @@
 				}
 			}
 		},
-		created: showLoadingPanel(async function () {
-		}),
+		async created() {
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/PasswordRecovery/Components/Content/password-recovery-messages.*.json'));
+		},
 		methods: {
 			onPasswordEntered() {
 				this.$refs.updatePasswordButton.$el.click();

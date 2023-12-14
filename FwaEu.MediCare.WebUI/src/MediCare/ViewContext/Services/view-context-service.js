@@ -7,7 +7,6 @@ const viewContextKey = 'View-Context';
 const viewContextChangedEmitter = new AsyncEventEmitter();
 
 export class ViewContextModel {
-
 	constructor(organization) {
 		this.id = organization.id;
 		this.name = organization.name;

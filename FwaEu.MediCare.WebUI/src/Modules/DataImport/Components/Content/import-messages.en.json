@@ -1,8 +1,8 @@
 {
-	"importResult": "Result",
-	"selectButtonText": "Browse...",
-	"labelText": "or Drop files here",
-	"uploadButtonText": "Import",
+	"chooseFileButton": "Browse...",
+	"errorImport": "Error importing files",
+	"uploadFileButton": "Import",
 	"uploadOtherFiles": "Upload other files",
-	"errorImport": "Error importing files"
+	"dragFileText": "Drag and drop files here to upload",
+	"importResult": "Result"
 }

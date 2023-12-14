@@ -10,7 +10,7 @@
 	</div>
 </template>
 <script>
-	import ActionMenu from "@/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
+	import ActionMenu from "@UILibrary/Fwamework/ActionMenu/Components/ActionMenuComponent.vue";
 
 	export default {
 		components: {

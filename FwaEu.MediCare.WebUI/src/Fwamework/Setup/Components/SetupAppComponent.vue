@@ -14,10 +14,10 @@
 </template>
 <script>
 	import SetupTaskProviderService from "@/Fwamework/Setup/Services/setup-tasks-provider-service";
-	import LoadingPanel from "@/Fwamework/LoadingPanel/Components/LoadingPanelComponent.vue";
+	import LoadingPanel from "@UILibrary/Fwamework/LoadingPanel/Components/LoadingPanelComponent.vue";
 	import PageContainer from "@/Fwamework/PageContainer/Components/PageContainerComponent.vue";
 	import SetupAuthenticationService from '@/Fwamework/Setup/Services/setup-authentication-service';
-	import SetupLogin from '@/Fwamework/Setup/Components/SetupLoginPageComponent.vue'
+	import SetupLogin from '@UILibrary/Fwamework/Setup/Components/SetupLoginPageComponent.vue'
 
 
 	export default {
@@ -66,6 +66,7 @@
 		min-height: 100%;
 		background-color: #F8F8F8;
 		height: 100%;
+		overflow-y: auto !important;
 	}
 
 	#app {
@@ -77,7 +78,7 @@
 	}
 
 	.app {
-		@import "@/Fwamework/DevExtreme/Themes/generated/variables.base";
+		@import "@UILibrary/Extensions/Themes/generated/variables.base";
 		background-color: #F8F8F8;
 		display: flex;
 		height: 100%;

@@ -19,32 +19,45 @@ namespace FwaEu.Modules.MasterData
 			return services;
 		}
 
-		public static IMasterDataProviderInitializer AddMasterDataProvider<TProvider>(this IServiceCollection services, string key)
+		public static IMasterDataProviderInitializer AddMasterDataProvider<TProvider>(this IServiceCollection services, string key = null)
 			where TProvider : class, IMasterDataProvider
 		{
-			services.AddTransient<IMasterDataProviderFactory>(sp => new InjectedMasterDataProviderFactory<TProvider>(key));
-			services.AddTransient<TProvider>();
 			var typeEntity = typeof(IEntity);
-			var masterdataEntityType = typeof(TProvider).BaseType.GenericTypeArguments.FirstOrDefault(x =>typeEntity.IsAssignableFrom(x));
+			var masterdataEntityType = typeof(TProvider).BaseType.GenericTypeArguments.FirstOrDefault(x => typeEntity.IsAssignableFrom(x));
+			if (key == null)
+			{
+				var keyProviderType = typeof(IEntityKeyResolver<>).MakeGenericType(masterdataEntityType);
+				services.AddTransient<IMasterDataProviderFactory>
+				(
+					sp => new InjectedMasterDataProviderFactory<TProvider>
+					(
+						((IEntityKeyResolver)sp.GetService(keyProviderType)).ResolveKey()
+					)
+				);
+			}
+			else
+				services.AddTransient<IMasterDataProviderFactory>(sp => new InjectedMasterDataProviderFactory<TProvider>(key));
+
+			services.AddTransient<TProvider>();
 			var initializer = new MasterDataProviderInitializer(key, services);
 			if (masterdataEntityType != null)
 			{
-				initializer.AddRealtedEntity(masterdataEntityType);
+				initializer.AddRelatedEntity(masterdataEntityType);
 			}
 			return initializer;
 		}
 
-		
-		public static IMasterDataProviderInitializer AddRealtedEntity<TEntity>(this IMasterDataProviderInitializer initializer)
+		public static IMasterDataProviderInitializer AddRelatedEntity<TEntity>(this IMasterDataProviderInitializer initializer)
 		{
-			initializer.AddRealtedEntity(typeof(TEntity));
+			initializer.AddRelatedEntity(typeof(TEntity));
 			return initializer;
 		}
-		public static IMasterDataProviderInitializer AddRealtedEntity(this IMasterDataProviderInitializer initializer, Type entityType)
+		public static IMasterDataProviderInitializer AddRelatedEntity(this IMasterDataProviderInitializer initializer, Type entityType)
 		{
 			initializer.ServiceCollection.AddTransient<IMasterDataRelatedEntity>(provider =>
-			new MasterDataRelatedEntity(initializer.Key, entityType));
+				new MasterDataRelatedEntity(initializer.Key, entityType));
 			return initializer;
 		}
 	}
+
 }

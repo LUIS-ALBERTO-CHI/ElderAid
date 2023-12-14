@@ -11,7 +11,7 @@
 	import Box from "@/Fwamework/Box/Components/BoxComponent.vue";
 	import { showLoadingPanel } from '@/Fwamework/LoadingPanel/Services/loading-panel-service';
 	import AdministrationMenuService from '@/Fwamework/AdministrationMenu/Services/administration-menu-service';
-	import MenuList from '@/Fwamework/Menu/Components/MenuListComponent.vue';
+	import MenuList from '@UILibrary/Fwamework/Menu/Components/MenuListComponent.vue';
 
 	export default {
 

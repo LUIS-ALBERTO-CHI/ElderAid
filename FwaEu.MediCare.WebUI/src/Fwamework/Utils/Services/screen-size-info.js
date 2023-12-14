@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted, ref } from "vue";
-import { sizes, subscribe, unsubscribe } from "@/Fwamework/DevExtreme/Content/utils/media-query";
+import { sizes, subscribe, unsubscribe } from "@UILibrary/Extensions/Content/utils/media-query";
 
 
 export const useScreenSizeInfo = function () {

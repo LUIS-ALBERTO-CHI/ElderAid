@@ -36,25 +36,20 @@
 	import DxValidationGroup from "devextreme-vue/validation-group";
 	import DxValidator, { DxRequiredRule } from "devextreme-vue/validator";
 	import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-	import LocalizationMixin from '@/Fwamework/Culture/Services/single-file-component-localization-mixin';
+	import { loadMessagesAsync } from "@/Fwamework/Culture/Services/single-file-component-localization";
 	import AuthenticationService from '@/Fwamework/Authentication/Services/authentication-service';
 	import { AuthenticationHandlerKey } from '../../../Services/default-authentication-handler';
 
 	export default {
-		mixins: [LocalizationMixin],
-		i18n: {
-			messages: {
-				getMessagesAsync(locale) {
-					return import(`./Content/login-messages.${locale}.json`);
-				}
-			}
-		},
 		data() {
 			return {
 				identity: "",
 				password: "",
 				
 			};
+		},
+		async created() {
+			await loadMessagesAsync(this, import.meta.glob('@/Modules/DefaultAuthentication/UserParts/Credentials/Components/Content/login-messages.*.json'));
 		},
 		methods: {
 			onFormItemEntered() {

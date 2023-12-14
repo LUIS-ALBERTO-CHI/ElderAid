@@ -42,7 +42,7 @@ namespace FwaEu.Modules.BackgroundTasks
 		private readonly IBackgroundTaskFactory[] _backgroundTaskFactories;
 		private readonly IScheduledBackgroundTaskFactory[] _scheduledBackgroundTaskFactories;
 
-		protected readonly IServiceProvider _serviceProvider;
+		private readonly IServiceProvider _serviceProvider;
 		private readonly ICurrentDateTime _currentDateTime;
 		private Action<ITaskStartParameters> _onQueueItemAddedCallback;
 
@@ -214,6 +214,7 @@ namespace FwaEu.Modules.BackgroundTasks
 		{
 			using (var taskLocalScope = _serviceProvider.CreateScope())
 			{
+				// Has to run a Task so that AsyncLocalScopedServiceProviderAccessor._scopedServiceProviderCurrent is set in the children tasks.
 				return await Task.Run(async () =>
 				{
 					using (taskLocalScope.ServiceProvider.GetService<AsyncLocalScopedServiceProviderAccessor>().BeginScope(taskLocalScope.ServiceProvider))

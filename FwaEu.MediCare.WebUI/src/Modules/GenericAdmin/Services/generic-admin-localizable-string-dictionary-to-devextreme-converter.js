@@ -1,6 +1,6 @@
-import AbstractDotNetTypeToDevExtremeConverter from '@/Fwamework/DevExtreme/Services/abstract-dot-net-type-to-devextreme-converter';
+import AbstractDotNetTypeToDevExtremeConverter from '@UILibrary/Extensions/Services/abstract-dot-net-type-to-devextreme-converter';
 import GenericAdminLocalizableStringDictionaryConverter from "@/Modules/GenericAdmin/Services/generic-admin-localizable-string-dictionary-converter";
-import ColumnHelper from '@/Fwamework/DevExtreme/Services/column-helper';
+import ColumnHelper from '@UILibrary/Extensions/Services/column-helper';
 import LocalizationService from "@/Fwamework/Culture/Services/localization-service";
 
 class GenericAdminLocalizableStringDictionaryToDevExtremeConverter extends AbstractDotNetTypeToDevExtremeConverter {

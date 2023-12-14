@@ -1,6 +1,8 @@
 using FwaEu.Fwamework.Data.Database;
 using FwaEu.Fwamework.Data.Database.Tracking;
 using FwaEu.Fwamework.Users;
+using FwaEu.MediCare.ViewContext;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +20,17 @@ namespace FwaEu.MediCare.Users
 
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
+
 		public string Email { get; set; }
-
-
+	
+		public string Login { get; set; }
 		public UserEntity CreatedBy { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public UserEntity UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
 
-        public string Login { get; set; }
 
-        public override string ToString()
+		public override string ToString()
 		{
 			return this.ToFullNameString();
 		}
@@ -40,6 +42,20 @@ namespace FwaEu.MediCare.Users
 		{
 			return this.Query().Where(entity => ids.Contains(entity.Id));
 		}
+
+		//public override IQueryable<ApplicationUserEntity> QueryForUsersAdmin()
+		//{
+		//	var contextService = this.ServiceProvider.GetRequiredService<IViewContextService>();
+		//	var currentUserService = this.ServiceProvider.GetRequiredService<ICurrentUserService>();
+
+		//	if (currentUserService.User == null || currentUserService.User.Entity.IsAdmin)
+		//	{
+		//		return this.Query();
+		//	}
+
+		//	return this.Query().Where(user => user == currentUserService.User.Entity
+		//		|| !user.IsAdmin);
+		//}
 	}
 
 	/// <summary>
@@ -64,12 +80,15 @@ namespace FwaEu.MediCare.Users
 	/// </summary>
 	public class ApplicationUserEntityClassMap : ApplicationUserEntityClassMap<ApplicationUserEntity>
 	{
-		public const string EmailColumnName = "login";
+		/// <summary>
+		/// This name will be shared with UserEntity.Identity, this identity property is used for login/password authentication
+		/// </summary>
+		public const string IdentityColumnName = "login";
 
 		public ApplicationUserEntityClassMap()
 		{
 			Map(entity => entity.Login)
-				.Column(EmailColumnName)
+				.Column(IdentityColumnName)
 				.Not.Nullable()
 				.Unique();
 
@@ -78,10 +97,9 @@ namespace FwaEu.MediCare.Users
 
 			Map(entity => entity.LastName)
 			   .Not.Nullable();
+			Map(entity => entity.Email);
 
-            Map(entity => entity.Email);
-
-            this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
+			this.AddCreationAndUpdateTrackedPropertiesIntoMapping();
 		}
 	}
 }

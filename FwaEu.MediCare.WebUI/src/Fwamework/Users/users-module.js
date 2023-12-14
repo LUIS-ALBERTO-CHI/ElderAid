@@ -1,7 +1,7 @@
 import AbstractModule from "@/Fwamework/Core/Services/abstract-module-class";
 import { CanAdministrateUsers } from '@/Fwamework/Users/users-permissions';
 import { hasPermissionAsync } from "@/Fwamework/Permissions/Services/current-user-permissions-service";
-import CustomFieldTypeService from "@/Fwamework/DevExtreme/CellTemplate/Services/custom-field-type-service";
+import CustomFieldTypeService from "@UILibrary/Extensions/CellTemplate/Services/custom-field-type-service";
 import CustomFieldAvatarType from "@/Fwamework/Users/Components/custom-field-avatar-type";
 import { I18n } from "@/Fwamework/Culture/Services/localization-service";
 

@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Data;
+using FwaEu.Fwamework.Data;
 using FwaEu.MediCare.Stock.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ namespace FwaEu.MediCare.Stock.WebApi
     {
         // POST /Stock/StockConsumptionPatient
         [HttpPost("StockConsumptionPatient")]
-        public async Task<IActionResult> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPostApi modelApi, IStockService stockService)
+        public async Task<IActionResult> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPostApi modelApi,[FromServices] IStockService stockService)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace FwaEu.MediCare.Stock.WebApi
         // POST /Stock/SearchPharmacyArticles
         [HttpPost("SearchPharmacyArticles")]
 
-        public async Task<IActionResult> GetAllArticlesCabinets(GetAllArticlesInStockPostApi modelApi, IStockService stockService)
+        public async Task<IActionResult> GetAllArticlesCabinets(GetAllArticlesInStockPostApi modelApi, [FromServices] IStockService stockService)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace FwaEu.MediCare.Stock.WebApi
 
         // POST /Stock/Update
         [HttpPost("Update")]
-        public async Task<IActionResult> CreateAsync(UpdateStockPostApi model, IStockService stockService)
+        public async Task<IActionResult> CreateAsync(UpdateStockPostApi model, [FromServices] IStockService stockService)
         {
             try
             {

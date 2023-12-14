@@ -26,10 +26,8 @@
     import EmptyListComponent from '@/MediCare/Components/EmptyListComponent.vue'
     import StockConsumptionService from '@/MediCare/StockConsumption/Services/stock-consumption-service'
     import { Configuration } from '@/Fwamework/Core/Services/configuration-service';
-    import OnlineService from '@/fwamework/OnlineStatus/Services/online-service';
+    import OnlineService from '@/Fwamework/OnlineStatus/Services/online-service';
     import NotificationService from '@/Fwamework/Notifications/Services/notification-service';
-
-
 
     export default {
         components: {
@@ -90,7 +88,6 @@
         },
         computed: {
         },
-
     }
 </script>
 <style type="text/css" scoped src="./Content/stock-consumption-page.css">

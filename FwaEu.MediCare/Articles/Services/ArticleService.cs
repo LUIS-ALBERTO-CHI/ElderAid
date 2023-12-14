@@ -1,7 +1,4 @@
-﻿using FwaEu.MediCare.GenericRepositorySession;
-using FwaEu.MediCare.Orders;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.Extensions.Options;
+using FwaEu.MediCare.GenericRepositorySession;
 using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
