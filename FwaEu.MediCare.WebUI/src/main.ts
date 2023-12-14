@@ -30,7 +30,6 @@ import { UserGroupsModule } from "@/Modules/UserGroups/user-groups-module";
 import { UserPerimeterPartsModule } from "@/Modules/UserPerimeter/user-perimeter-part-module";
 import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
 import { UserAmdinStatePartModule } from "@/Modules/UserAdminState/user-admin-state-part-module";
-import { NavigationIndicatorModule } from '@/Modules/NavigationIndicator/navigation-indicator-module';
 import { AdministrationMenuModule } from "@/Fwamework/AdministrationMenu/administration-menu-module";
 import { MasterDataModule } from "@/Fwamework/MasterData/master-data-module";
 import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot-net-type-conversion-module";
@@ -114,7 +113,6 @@ const application = new Application(IndexApp)
 	.useModule(new UserSettingsModule())
 	.useModule(new PermissionsByRoleModule())
 	//.useModule(new PermissionsByUserModule())
-	.useModule(new NavigationIndicatorModule())
 	.useModule(new AdministrationMenuModule())
 	.useModule(new MasterDataModule({
 		//NOTE: You can use another store like IndexedDbMasterDataStore or create your own store implementation
