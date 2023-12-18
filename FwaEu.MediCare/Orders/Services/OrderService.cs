@@ -142,8 +142,17 @@ namespace FwaEu.MediCare.Orders.Services
                     }
                     await repository.SaveOrUpdateAsync(entity);
                     await repositorySession.Session.FlushAsync();
-                }
-            }
+
+					var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+					var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+					var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+					var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+					var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+					var clients = hubService.Clients.All;
+					await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "PeriodicOrders", "PeriodicOrderValidations" }));
+				}
+			}
             catch (GenericADOException e)
             {
                 DatabaseExceptionHelper.CheckForDbConstraints(e);
@@ -257,7 +266,17 @@ namespace FwaEu.MediCare.Orders.Services
                     organization.LastPeriodicityOrder = dateTimeNow;
                     await organizationRepository.SaveOrUpdateAsync(organization);
                     await repositorySession.Session.FlushAsync();
-                }
+
+					var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+					var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+					var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+					var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+					var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+					var clients = hubService.Clients.All;
+					await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "PeriodicOrders" }));
+
+				}
 			}
 		}
 
