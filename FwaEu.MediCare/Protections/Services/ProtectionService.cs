@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Users;
+using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Users;
 using System;
@@ -12,11 +12,16 @@ using System.Text;
 using FwaEu.Fwamework.Data.Database.Sessions;
 using FwaEu.MediCare.Orders;
 using FwaEu.MediCare.Organizations;
+using Microsoft.Extensions.DependencyInjection;
 using FwaEu.MediCare.GenericSession;
 using FwaEu.Fwamework.Temporal;
 using NHibernate.Exceptions;
 using FwaEu.Modules.Data.Database;
 using NHibernate.Linq;
+using FwaEu.Modules.MasterData;
+using FwaEu.Modules.UserNotifications;
+using Microsoft.AspNetCore.SignalR;
+using FwaEu.Fwamework.DependencyInjection;
 
 namespace FwaEu.MediCare.Protections.Services
 {
@@ -27,8 +32,10 @@ namespace FwaEu.MediCare.Protections.Services
         private readonly ICurrentDateTime _currentDateTime;
         private readonly ICurrentUserService _currentUserService;
         private readonly IManageGenericDbService _manageGenericDbService;
-        public ProtectionService(GenericSessionContext genericSessionContext,
-                                    MainSessionContext mainSessionContext,
+		private readonly IScopedServiceProvider _scopedServiceProvider;
+		public ProtectionService(GenericSessionContext genericSessionContext,
+								IScopedServiceProvider scopedServiceProvider,
+									MainSessionContext mainSessionContext,
                                         ICurrentUserService currentUserService,
                                             ICurrentDateTime currentDateTime,
                                                 IManageGenericDbService manageGenericDbService)
@@ -38,9 +45,11 @@ namespace FwaEu.MediCare.Protections.Services
             _currentUserService = currentUserService;
             _currentDateTime = currentDateTime;
             _manageGenericDbService = manageGenericDbService;
-        }
+			this._scopedServiceProvider = scopedServiceProvider
+			?? throw new ArgumentNullException(nameof(scopedServiceProvider));
+		}
 
-        public async Task CreateProtectionAsync(CreateProtectionModel model)
+		public async Task CreateProtectionAsync(CreateProtectionModel model)
         {
             var query = "exec SP_MDC_CreateProtection :PatientId, :ArticleId, :StartDate, :StopDate, :PosologyExpression, :PosologyJSONDetails, :UserLogin, :UserIp";
 
@@ -64,9 +73,18 @@ namespace FwaEu.MediCare.Protections.Services
             stockedProcedure.SetParameter("UserIp", currentUserIp);
 
             await stockedProcedure.ExecuteUpdateAsync();
-        }
 
-        public async Task UpdateProtectionAsync(UpdateProtectionModel model)
+			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+			var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+			var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+			var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+			var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+			var clients = hubService.Clients.All;
+			await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "Protections" }));
+		}
+
+		public async Task UpdateProtectionAsync(UpdateProtectionModel model)
         {
             var query = "exec SP_MDC_UpdateProtection :PrescriptionId, :StartDate, :StopDate, :PosologyExpression, :PosologyJSONDetails, :UserLogin, :UserIp";
 
@@ -90,9 +108,19 @@ namespace FwaEu.MediCare.Protections.Services
 
             await stockedProcedure.ExecuteUpdateAsync();
             await CancelPeriodicOrderAsync(model.PatientId);
-        }
 
-        public async Task StopProtectionAsync(StopProtectionModel model)
+			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+			var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+			var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+			var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+			var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+			var clients = hubService.Clients.All;
+			await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "Protections" }));
+
+		}
+
+		public async Task StopProtectionAsync(StopProtectionModel model)
         {
             var query = "exec SP_MDC_StopProtection :PrescriptionId, :StopDate, :UserLogin, :UserIp";
             var stockedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
@@ -107,9 +135,19 @@ namespace FwaEu.MediCare.Protections.Services
             
             await stockedProcedure.ExecuteUpdateAsync();
             await CancelPeriodicOrderAsync(model.PatientId);
-        }
 
-        public async Task CancelPeriodicOrderAsync(int patientId)
+			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+			var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+			var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+			var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+			var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+			var clients = hubService.Clients.All;
+			await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "Protections" }));
+
+		}
+
+		public async Task CancelPeriodicOrderAsync(int patientId)
         {
             try
             {
@@ -126,8 +164,18 @@ namespace FwaEu.MediCare.Protections.Services
                 {
                     await repository.DeleteAsync(periodicOrderValidation);
                     await repositorySession.Session.FlushAsync();
-                }
-            }
+
+					var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+					var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+					var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+					var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+					var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+					var clients = hubService.Clients.All;
+					await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "PeriodicOrders" }));
+
+				}
+			}
             catch (GenericADOException e)
             {
                 DatabaseExceptionHelper.CheckForDbConstraints(e);

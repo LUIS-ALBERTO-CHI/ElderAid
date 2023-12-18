@@ -1,4 +1,4 @@
-﻿using FwaEu.Fwamework.Users;
+using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.GenericRepositorySession;
 using FwaEu.MediCare.Users;
 using System;
@@ -8,6 +8,12 @@ using System.Linq;
 using NHibernate.Transform;
 using System.Net.Sockets;
 using System.Net;
+using FwaEu.Fwamework.Temporal;
+using FwaEu.Modules.MasterData;
+using FwaEu.Modules.UserNotifications;
+using Microsoft.AspNetCore.SignalR;
+using FwaEu.Fwamework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FwaEu.MediCare.Stock.Services
 {
@@ -15,13 +21,18 @@ namespace FwaEu.MediCare.Stock.Services
     {
         private readonly GenericSessionContext _sessionContext;
         private readonly ICurrentUserService _currentUserService;
-        public StockService(GenericSessionContext sessionContext, ICurrentUserService currentUserService)
+		private readonly IScopedServiceProvider _scopedServiceProvider;
+		public StockService(GenericSessionContext sessionContext, 
+			ICurrentUserService currentUserService,
+			IScopedServiceProvider scopedServiceProvider)
         {
             _sessionContext = sessionContext;
             _currentUserService = currentUserService;
-        }
+			this._scopedServiceProvider = scopedServiceProvider
+			?? throw new ArgumentNullException(nameof(scopedServiceProvider));
+		}
 
-        public async Task<List<GetAllStockConsumptionPatientResponse>> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPost model)
+		public async Task<List<GetAllStockConsumptionPatientResponse>> GetAllStockConsumptionPatient(GetAllStockConsumptionPatientPost model)
         {
             var query = "exec SP_MDC_StockConsumptionPatient :PatientId, :Page, :PageSize";
 
@@ -72,9 +83,19 @@ namespace FwaEu.MediCare.Stock.Services
             stockedProcedure.SetParameter("PatientId", model.PatientId);
 
 			await stockedProcedure.ExecuteUpdateAsync();
-        }
 
-        public static string GetCurrentIpAddress()
+
+			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+			var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+			var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+			var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+			var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+			var clients = hubService.Clients.All;
+			await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "StockConsumptions" }));
+		}
+
+		public static string GetCurrentIpAddress()
         {
             IPAddress[] localIPAddresses = Dns.GetHostAddresses(Dns.GetHostName());
 

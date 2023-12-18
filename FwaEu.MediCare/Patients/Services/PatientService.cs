@@ -1,4 +1,6 @@
-﻿using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.Fwamework.Data.Database.Sessions;
+using FwaEu.Fwamework.DependencyInjection;
+using FwaEu.Fwamework.Temporal;
 using FwaEu.Fwamework.Users;
 using FwaEu.MediCare.Articles.Services;
 using FwaEu.MediCare.GenericRepositorySession;
@@ -6,7 +8,11 @@ using FwaEu.MediCare.Protections;
 using FwaEu.MediCare.Referencials;
 using FwaEu.MediCare.Users;
 using FwaEu.Modules.BackgroundTasks;
+using FwaEu.Modules.MasterData;
+using FwaEu.Modules.UserNotifications;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NHibernate.Linq;
 using NHibernate.Transform;
@@ -24,9 +30,11 @@ namespace FwaEu.MediCare.Patients.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IArticleService _articleService;
         private readonly ILogger<BackgroundTasksBackgroundService> _logger;
+		private readonly IScopedServiceProvider _scopedServiceProvider;
 
-        public PatientService(GenericSessionContext sessionContext,
-            MainSessionContext mainSessionContext,
+		public PatientService(GenericSessionContext sessionContext,
+			IScopedServiceProvider scopedServiceProvider,
+			MainSessionContext mainSessionContext,
             ICurrentUserService currentUserService,
             IHttpContextAccessor httpContextAccessor,
             IArticleService articleService,
@@ -38,10 +46,12 @@ namespace FwaEu.MediCare.Patients.Services
             _httpContextAccessor = httpContextAccessor;
             _articleService = articleService;
             _logger = logger;
-        }
+			this._scopedServiceProvider = scopedServiceProvider
+			?? throw new ArgumentNullException(nameof(scopedServiceProvider));
+		}
 
 
-        private class GetIncontinenceLevelProcedureModel
+		private class GetIncontinenceLevelProcedureModel
         {
             public int Id { get; set; }
             public int IncontinenceLevel { get; set; }
@@ -159,6 +169,16 @@ namespace FwaEu.MediCare.Patients.Services
             stockedProcedure.SetParameter("UserIp", currentUserIp);
 
             await stockedProcedure.ExecuteUpdateAsync();
-        }
-    }
+
+			var serviceProvider = this._scopedServiceProvider.GetScopeServiceProvider();
+			var relatedMasterDataServices = serviceProvider.GetServices<IMasterDataRelatedEntity>();
+
+			var hubService = serviceProvider.GetService<IHubContext<UserNotificationHub, IUserNotificationClient>>();
+			var masterDataKeys = relatedMasterDataServices.Select(x => x.MasterDataKey).Distinct().ToArray();
+			var now = serviceProvider.GetService<ICurrentDateTime>().Now;
+			var clients = hubService.Clients.All;
+			await clients.SendAsync("MasterDataChanged", new NotificationSignalRModel(Guid.NewGuid(), now, new string[] { "Patients" }));
+
+		}
+	}
 }
