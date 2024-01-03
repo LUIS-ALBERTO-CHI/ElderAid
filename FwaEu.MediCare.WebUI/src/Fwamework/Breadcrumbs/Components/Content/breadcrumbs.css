@@ -3,6 +3,8 @@
 	padding: 10px;
 	position: relative;
 	color: var(--primary-text-color);
+	width: 80%;
+	min-width: 320px;
 }
 
 .crumb-container-hidden {
@@ -20,6 +22,7 @@
 	white-space: nowrap;
 	font-size: 14px;
 	padding-right: 10px;
+	width: 80%;
 }
 
 
