@@ -12,11 +12,12 @@
         <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ $d(patientData.dateStart, 'short') }} et {{ $d(patientData.dateEnd, 'short') }}</span>
         <Chart type="bar" :data="chartData" :options="chartOptions" />
         <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ $d(patientData.virtualDateWithoutOverPassed, 'short') }} </span>
+        <span v-else>Date virtuelle sans dépassement : Aucune</span>
     </div>
     <Button v-if="isUserCanToChangeIncontinence && !isIncontinenceLevelChange" @click="changeIncontinenceLevel"
             label="Changer de niveau d'incontinence" />
     <div v-else-if="isUserCanToChangeIncontinence" class="incontinence-change-container">
-        <span>A partir de <Calendar v-model="startDate" style="width: 34% !important" dateOnly /></span>
+        <span>A partir de <Calendar v-model="startDate" dateFormat="dd/mm/yy" style="width: 34% !important" dateOnly /></span>
         <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
         <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" optionValue="id" optionLabel="text" placeholder="Légère" />
         <Button @click="saveIncontinenceLevelAsync"
