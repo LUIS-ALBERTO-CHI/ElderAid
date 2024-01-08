@@ -126,7 +126,9 @@ namespace FwaEu.MediCare.Orders.Services
                     if (entity != null)
                     {
                         entity.Quantity = article.Quantity;
-                    }
+						entity.ValidatedBy = currentUser;
+						entity.ValidatedOn = dateNow;
+					}
                     else
                     {
                         entity = new()
