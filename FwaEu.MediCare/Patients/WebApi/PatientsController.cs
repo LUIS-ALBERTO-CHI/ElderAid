@@ -33,7 +33,7 @@ namespace FwaEu.MediCare.Patients.WebApi
                                                 DailyProtocolEntered = Math.Round(model.DailyProtocolEntered, 2),
                                                 DateEnd = model.DateEnd,
                                                 DateStart = model.DateStart,
-                                                FixedPrice = Math.Round(model.FixedPrice, 2),
+												FixedPrice = Math.Round(model.FixedPrice, 2),
                                                 IncontinenceLevel = (IncontinenceLevel)model.IncontinenceLevel,
                                                 OverPassed = Math.Round(model.OverPassed,2),
                                                 VirtualDateWithoutOverPassed = model.VirtualDateWithoutOverPassed
