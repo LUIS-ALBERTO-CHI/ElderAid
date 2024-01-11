@@ -10,7 +10,7 @@
     <div v-if="new Date(patientData.dateStart) >= new Date(new Date().getFullYear(), 0, 1)"  class="incontinence-info-container">
         <span class="incontinence-info-label-title">Analyse de consommation à date</span>
         <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ $d(patientData.dateStart, 'short') }} et {{ $d(patientData.dateEnd, 'short') }}</span>
-        <Chart type="bar" :data="chartData" :options="chartOptions" />
+        <Chart type="bar" :data="chartData" :options="chartOptions"   />
         <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ $d(patientData.virtualDateWithoutOverPassed, 'short') }} </span>
         <span v-else>Date virtuelle sans dépassement : Aucune</span>
     </div>
@@ -75,7 +75,6 @@ import { CanChangeIncontinenceLevel } from "../patients-permissions";
                             color: '#000',
                             display: true,
                             align: 'end',
-                            anchor: 'end'
                         }
                     }
                 }

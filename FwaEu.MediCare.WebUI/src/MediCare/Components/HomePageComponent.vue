@@ -76,6 +76,8 @@
 
 	import PatientsMasterDataService from '@/MediCare/Patients/Services/patients-master-data-service';
 	import ViewContextService from "@/MediCare/ViewContext/Services/view-context-service";
+	import ProtectionMasterDataService from "@/MediCare/Patients/Services/protections-master-data-service"
+	import PeriodicOrdersMasterDataService from '@/MediCare/Orders/Services/periodic-orders-master-data-service';
 
 	export default {
 		inject: ["deviceInfo"],
@@ -92,6 +94,8 @@
 				startLoadTime: 0,
 				cabinets: [],
 				organization: null,
+				protections: [],
+				periodicOrders: null,
 			};
 		},
 		created: showLoadingPanel(async function () {
@@ -106,6 +110,8 @@
 			}
 			this.organization = ViewContextService.get();
 			this.patientsActive = patients.filter(x => x.isActive);
+			this.protections = (await ProtectionMasterDataService.getAllAsync()).filter(x => new Date(x.dateEnd) > new Date());
+			this.periodicOrders = await PeriodicOrdersMasterDataService.getAllAsync();
 		}),
 		methods: {
 			goToLoginFront() {
@@ -141,9 +147,23 @@
 				this.$router.push("/OrganizationSelection")
 			},
 			getNumberOfPatientToValidate() {
-				const patientsToValidate = this.patientsActive.filter(patient => patient.incontinenceLevel != 'None').length;
-				return `${patientsToValidate} ${patientsToValidate > 1 ? 'patients' : 'patient'} à valider`
+				if (!this.protections || !this.periodicOrders) {
+					return '0 patients à valider';
+				}
+
+				const patientsToValidate = this.protections
+					.map(patient => patient.patientId)
+					.filter((patientId, index, array) =>
+						patientId && !this.isPatientInPeriodicOrders(patientId) && array.indexOf(patientId) === index
+					)
+					.length;
+
+				return `${patientsToValidate} ${patientsToValidate !== 1 ? 'patients' : 'patient'} à valider`;
+			},
+			isPatientInPeriodicOrders(patientId) {
+				return this.periodicOrders.some(order => order.patientId === patientId);
 			}
 		}
 	}
 </script>
+

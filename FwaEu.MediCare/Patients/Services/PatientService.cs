@@ -56,11 +56,14 @@ namespace FwaEu.MediCare.Patients.Services
             public int Id { get; set; }
             public int IncontinenceLevel { get; set; }
             public double Consumed { get; set; }
-            public DateTime DateStart { get; set; }
-            public DateTime DateEnd { get; set; }
-        }
+			public double DailyProtocolEntered { get; set; }
 
-        public async Task<GetIncontinenceLevel> GetIncontinenceLevelAsync(int id)
+			public DateTime DateStart { get; set; }
+            public DateTime DateEnd { get; set; }
+
+		}
+
+		public async Task<GetIncontinenceLevel> GetIncontinenceLevelAsync(int id)
         {
             var query = "exec SP_MDC_GetIncontinenceLevelByPatientId :PatientId";
             var storedProcedure = _sessionContext.NhibernateSession.CreateSQLQuery(query);
@@ -112,8 +115,8 @@ namespace FwaEu.MediCare.Patients.Services
                     DailyFixedPrice = dailyFixedPrice,
                     Consumed = result.Consumed,
                     FixedPrice = fixedPrice,
-                    OverPassed = overPassed,
-                    DailyProtocolEntered = result.Consumed / totalDaysFromStartDateToEndDate,
+					OverPassed = overPassed,
+                    DailyProtocolEntered = result.DailyProtocolEntered,
                     VirtualDateWithoutOverPassed = virtualDateWithoutOverPassedFinal
                 };
                 return incontinenceLevelModel;

@@ -178,6 +178,7 @@
 			flex: 0 0 auto;
 			padding: 0.5rem;
 			width: 100%;
+
 		}
 
 		.p-component.p-inputwrapper {
@@ -188,4 +189,8 @@
 			width: 3rem;
 		}
 	}
+
+    .grid {
+        width: 100%;
+    }
 </style>
