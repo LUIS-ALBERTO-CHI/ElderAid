@@ -1,7 +1,7 @@
 <template>
     <div class="empty-list-container">
         <i class="fa-solid fa-heart-pulse icon-not-found"></i>
-        <span>Aucun élément récent trouvé</span>
+        <span>No se encontraron elementos recientes</span>
     </div>
 
 </template>

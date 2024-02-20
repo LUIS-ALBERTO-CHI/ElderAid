@@ -7,14 +7,14 @@
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                    :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
                 <InputText ref="searchInput" v-model="searchValue" class="search-input"
-                           placeholder="Rechercher un article" />
+                           placeholder="Buscar un articulo" />
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
                       placeholder="Tous" />
             <div v-show="!isSearchActive" class="article-not-found">
                 <i class="fa-solid fa-heart-pulse icon-not-found"></i>
-                <span>Saisir un mot dans le champ de recherche pour afficher les articles</span>
+                <span>Ingrese una palabra en el campo de busqueda para mostrar articulos</span>
             </div>
             <ProgressSpinner v-show="isLoading" />
             <div v-if="!isSearchResultEmpty" class="article-list">

@@ -5,7 +5,7 @@
 				<i @click="removeSearch" class="fa fa-solid fa-close"
 				   :style="searchOrders.length == 0 ? 'opacity: 0.5;' : ''" />
 				<InputText ref="searchInput" v-model="searchOrders" class="search-input"
-						   placeholder="Rechercher une commande" />
+						   placeholder="Buscar un pedido" />
 			</span>
 			<Dropdown v-show="buildings.length > 1" v-model="selectedBuilding" :options="buildingOptions" class="select-sector" />
 
@@ -52,14 +52,14 @@
 		},
 		data() {
 			return {
-				ordersTypeOptions: ["Tous les états des commandes", "Patients validés", "Patients à valider"],
-				selectedOrderType: "Patients à valider",
+				ordersTypeOptions: ["Todos los pedidos", "Pacientes validados", "Pacientes a validar"],
+				selectedOrderType: "Pacientes a validar",
 				periodicOrders: null,
 				patients: [],
 				searchOrders: "",
 				filteredPatients: [],
-				buildingOptions: ["Tous les secteurs"],
-				selectedBuilding: "Tous les secteurs",
+				buildingOptions: ["Todos los sectores"],
+				selectedBuilding: "Todos los sectores",
 				buildings: [],
 				protections: [],
 			};

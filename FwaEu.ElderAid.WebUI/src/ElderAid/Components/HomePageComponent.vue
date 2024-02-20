@@ -13,49 +13,49 @@
 					<i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
 					<span v-show="patientsActive.length > 0" class="vignette-text">
 						{{ patientsActive.length }}
-						patients
+						Pacientes
 					</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
 			</div>
-			<div @click="goToOrdersPage" class="vignette-item">
+			<!-- <div @click="goToOrdersPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;" />
-					<span class="vignette-text">Commandes unitaires</span>
+					<span class="vignette-text">Pedidos unitarios</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>
+			</div> -->
 			<div @click="goToPeriodicPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-repeat vignette-icon fa-fw" style="color: #d8b291;" />
 					<div style="display: flex; flex-direction: column;">
-						<span class="vignette-text">Commandes périodiques</span>
-						<span class="vignette-text-subtitle">{{ getNumberOfPatientToValidate() }}</span>
+						<span class="vignette-text">Pedidos periodicos</span>
+						<!-- <span class="vignette-text-subtitle">{{ getNumberOfPatientToValidate() }}</span> -->
 					</div>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
 			</div>
-			<div @click="goToCabinetsPage" class="vignette-item">
+			<!-- <div @click="goToCabinetsPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-inbox vignette-icon fa-fw" style="color: #d9c4b3;" />
-					<span class="vignette-text">Stock pharmacie</span>
+					<span class="vignette-text">Stock de farmacia</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>
-			<div class="vignette-item" style="opacity: 0.4;">
+			</div> -->
+			<!-- <div class="vignette-item" style="opacity: 0.4;">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-truck vignette-icon fa-fw" style="color: #a5ae9d;" />
 					<span class="vignette-text">Livraison (en cours de développement)</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>
-			<div @click="goToProfilPage" class="vignette-item">
+			</div> -->
+			<!-- <div @click="goToProfilPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-gear vignette-icon fa-fw" style="color: #bb8a7c;" />
-					<span class="vignette-text">Mon profil</span>
+					<span class="vignette-text">Ajustes</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>
+			</div> -->
 		</div>
 		<footer>
 			<application-footer-component />

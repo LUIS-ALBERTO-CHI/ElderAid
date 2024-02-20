@@ -3,7 +3,7 @@
         <div v-if="!isNewOrder" class="orders-container ">
             <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close" :style="searchOrders.length == 0 ? 'opacity: 0.5;' : ''" />
-                <InputText ref="searchInput" v-model="searchOrders" class="search-input" placeholder="Rechercher une commande" />
+                <InputText ref="searchInput" v-model="searchOrders" class="search-input" placeholder="Buscar un pedido" />
             </span>
             <Dropdown v-model="selectedOrdersType" :options="ordersTypeOptions" class="select-sector" />
             <Button style="width: 100%;" @click="displayNewOrder" label="Nouvelle commande" />
@@ -69,8 +69,8 @@
         data() {
             return {
                 searchOrders: "",
-                ordersTypeOptions: ["Toutes", "Patients", "EMS"],
-                selectedOrdersType: "Toutes",
+                ordersTypeOptions: ["Todos", "Pacientes", "EMS"],
+                selectedOrdersType: "Todos",
                 isNewOrder: false,
                 orders: [],
                 patients: [],

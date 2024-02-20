@@ -2,10 +2,10 @@
     <div class="search-patient-container ">
         <span class="p-input-icon-right">
             <i @click="removeSearch" class="fa fa-solid fa-close" :style="searchPatient.length == 0 ? 'opacity: 0.5;' : ''" />
-            <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Rechercher un patient" />
+            <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Buscar un paciente" />
         </span>
         <Dropdown v-show="buildings.length > 1" v-model="selectedBuilding" :options="buildingOptions" />
-        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Exclure les patients inactifs' : 'Inclure les patients inactifs'}}</span>
+        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Excluir pacientes inactivos' : 'Incluir pacientes inactivos'}}</span>
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="onPatientClick(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
@@ -20,7 +20,7 @@
         <div v-show="filteredPatients.length == 0" class="patient-not-found">
             <i class="fa-solid fa-heart-pulse icon-not-found"></i>
             <span>Aucun patient trouvé</span>
-            <span>{{ selectedBuilding == "Tous les secteurs" ? 'Contactez la pharmacie': 'Vérifiez votre filtre de secteur ou contactez la pharmacie'}}</span>
+            <span>{{ selectedBuilding == "Todos los sectores" ? 'Contactez la pharmacie': 'Vérifiez votre filtre de secteur ou contactez la pharmacie'}}</span>
         </div>
     </div>
 </template>
@@ -42,8 +42,8 @@
             return {
                 patients: [],
                 searchPatient: "",
-                buildingOptions: ["Tous les secteurs"],
-                selectedBuilding: "Tous les secteurs",
+                buildingOptions: ["Todos los sectores"],
+                selectedBuilding: "Todos los sectores",
                 displayInactivePatients: false,
                 buildings: [],
             };

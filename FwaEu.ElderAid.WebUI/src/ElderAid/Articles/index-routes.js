@@ -19,7 +19,7 @@ export default [
         name: 'SearchArticleFromProtection',
         component: ArticlesSearchPageComponent,
         meta: {
-            title: 'Rechercher un article',
+            title: 'Buscar un articulo',
             breadcrumb: {
                 titleKey: 'Rechercher un article',
                 parentName: 'Protection'
@@ -31,7 +31,7 @@ export default [
         name: 'SearchArticleFromOrder',
         component: ArticlesSearchPageComponent,
         meta: {
-            title: 'Rechercher un article',
+            title: 'Buscar un articulo',
             breadcrumb: {
                 titleKey: 'Rechercher un article',
                 parentName: 'SearchPatientFromOrder'
@@ -43,7 +43,7 @@ export default [
         name: 'SearchArticleForEMSFromOrder',
         component: ArticlesSearchPageComponent,
         meta: {
-            title: 'Rechercher un article',
+            title: 'Buscar un articulo',
             breadcrumb: {
                 titleKey: 'Rechercher un article',
                 parentName: 'Orders'

@@ -8,7 +8,7 @@ export default [
 		name: 'stockPharmacy',
 		component: CabinetsListPageComponent,
 		meta: {
-			title: 'Stock pharmarcie',
+			title: 'Stock de farmacia',
 			breadcrumb: {
 				titleKey: 'stockPharmacy',
 				parentName: 'default'
@@ -20,7 +20,7 @@ export default [
 		name: 'Cabinet',
 		component: ArticlesInStockPageComponent,
 		meta: {
-			title: 'Cabinet',
+			title: 'Gabinete',
 			breadcrumb: {
 				parentName: "stockPharmacy",
 				async onNodeResolve(node, context) {
@@ -29,7 +29,7 @@ export default [
 						"function"
 					) {
 						throw new Error(
-							"Children pages of cabinet details must implement a getCurrentCabinetAsync method"
+							"Las páginas secundarias de detalles del gabinete deben implementar el método getCurrentCabinetAsync"
 						);
 					}
 					const cabinet =
@@ -53,11 +53,11 @@ export default [
 			breadcrumb: {
 				onNodeResolve(node, context) {
 					if (context.currentComponent.isPatientSelected) {
-						node.text = "Sortie du stock";
+						node.text = "Agotado";
 					} else {
-						node.text = "Patients";
+						node.text = "Pacientes";
 					}
-					node.parentNode = 'Cabinet';
+					node.parentNode = 'Gabinete';
 					node.to = '';
                     return node;
 				}
