@@ -1,113 +1,115 @@
-const ArticlesSearchPageComponent = () => import('@/ElderAid/Articles/Components/ArticlesSearchPageComponent.vue');
-const PatientOrderArticlePageComponent = () => import('@/ElderAid/Patients/Components/PatientOrderArticlePageComponent.vue');
+const ArticlesSearchPageComponent = () =>
+	import("@/ElderAid/Articles/Components/ArticlesSearchPageComponent.vue");
+const PatientOrderArticlePageComponent = () =>
+	import("@/ElderAid/Patients/Components/PatientOrderArticlePageComponent.vue");
 
 export default [
-    {
-        path: '/Patient/:id/SearchArticle/',
-        name: 'SearchArticle',
-        component: ArticlesSearchPageComponent,
-        meta: {
-            title: 'Commander un autre produit',
-            breadcrumb: {
-                titleKey: 'Commander un autre produit',
-                parentName: 'Patient'
-            },
-        }
-    },
 	{
-        path: '/Patient/:id/Protection/SearchArticle/',
-        name: 'SearchArticleFromProtection',
-        component: ArticlesSearchPageComponent,
-        meta: {
-            title: 'Buscar un articulo',
-            breadcrumb: {
-                titleKey: 'Rechercher un article',
-                parentName: 'Protection'
-            },
-        }
-    },
-	{
-        path: '/Orders/SearchPatient/Patient/:id/SearchArticle/',
-        name: 'SearchArticleFromOrder',
-        component: ArticlesSearchPageComponent,
-        meta: {
-            title: 'Buscar un articulo',
-            breadcrumb: {
-                titleKey: 'Rechercher un article',
-                parentName: 'SearchPatientFromOrder'
-            },
-        }
-    },
-	{
-        path: '/Orders/Patient/:id/SearchArticleForEms/',
-        name: 'SearchArticleForEMSFromOrder',
-        component: ArticlesSearchPageComponent,
-        meta: {
-            title: 'Buscar un articulo',
-            breadcrumb: {
-                titleKey: 'Rechercher un article',
-                parentName: 'Orders'
-            },
-        }
-    },
-	{
-		path: '/Patient/:id/Protection/SearchArticle/AddPosology/:articleId',
-		name: 'AddPosology',
-		component: PatientOrderArticlePageComponent,
+		path: "/Patient/:id/SearchArticle/",
+		name: "SearchArticle",
+		component: ArticlesSearchPageComponent,
 		meta: {
-			title: 'Ajout d\'une protection, posologie',
+			title: "Pedir otro producto",
 			breadcrumb: {
-				titleKey: 'Ajout d\'une protection, posologie',
-				parentName: 'SearchArticleFromProtection'
+				titleKey: "Pedir otro producto",
+				parentName: "Patient",
 			},
-		}
-	},
-    {
-		path: '/Patient/:id/OrderArticle/:articleId',
-		name: 'OrderArticle',
-		component: PatientOrderArticlePageComponent,
-		meta: {
-			title: 'Commander un article',
-			breadcrumb: {
-				titleKey: 'Commander un article',
-				parentName: 'SearchArticle'
-			},
-		}
-	},
-    {
-		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
-		name: 'OrderArticleFromOrder',
-		component: PatientOrderArticlePageComponent,
-		meta: {
-			title: 'Commander un article',
-			breadcrumb: {
-				titleKey: 'Commander un article',
-				parentName: 'Orders'
-			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/OrderArticleFromOrder/:articleId',
-		name: 'OrderArticleFromOrderWithArticleId',
-		component: PatientOrderArticlePageComponent,
+		path: "/Patient/:id/Protection/SearchArticle/",
+		name: "SearchArticleFromProtection",
+		component: ArticlesSearchPageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: "Buscar un articulo",
 			breadcrumb: {
-				titleKey: 'Commander un article',
-				parentName: 'SearchPatientFromOrderWithArticleId'
+				titleKey: "Buscar un articulo",
+				parentName: "Protection",
 			},
-		}
+		},
 	},
 	{
-		path: '/Orders/Patient/:id/SearchArticleForEms/:articleId',
-		name: 'OrderArticleForEmsFromOrder',
+		path: "/Orders/SearchPatient/Patient/:id/SearchArticle/",
+		name: "SearchArticleFromOrder",
+		component: ArticlesSearchPageComponent,
+		meta: {
+			title: "Buscar un articulo",
+			breadcrumb: {
+				titleKey: "Buscar un articulo",
+				parentName: "SearchPatientFromOrder",
+			},
+		},
+	},
+	{
+		path: "/Orders/Patient/:id/SearchArticleForEms/",
+		name: "SearchArticleForEMSFromOrder",
+		component: ArticlesSearchPageComponent,
+		meta: {
+			title: "Buscar un articulo",
+			breadcrumb: {
+				titleKey: "Buscar un articulo",
+				parentName: "Orders",
+			},
+		},
+	},
+	{
+		path: "/Patient/:id/Protection/SearchArticle/AddPosology/:articleId",
+		name: "AddPosology",
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: "Añadir protección, dosificar",
 			breadcrumb: {
-				titleKey: 'Commander un article',
-				parentName: 'SearchArticleForEMSFromOrder'
+				titleKey: "Añadir protección, dosificar",
+				parentName: "SearchArticleFromProtection",
 			},
-		}
+		},
 	},
-]
+	{
+		path: "/Patient/:id/OrderArticle/:articleId",
+		name: "OrderArticle",
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: "Pedir un artículo",
+			breadcrumb: {
+				titleKey: "Pedir un artículo",
+				parentName: "SearchArticle",
+			},
+		},
+	},
+	{
+		path: "/Patient/:id/OrderArticleFromOrder/:articleId",
+		name: "OrderArticleFromOrder",
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: "Pedir un artículo",
+			breadcrumb: {
+				titleKey: "Pedir un artículo",
+				parentName: "Orders",
+			},
+		},
+	},
+	{
+		path: "/Patient/:id/OrderArticleFromOrder/:articleId",
+		name: "OrderArticleFromOrderWithArticleId",
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: "Pedir un artículo",
+			breadcrumb: {
+				titleKey: "Pedir un artículo",
+				parentName: "SearchPatientFromOrderWithArticleId",
+			},
+		},
+	},
+	{
+		path: "/Orders/Patient/:id/SearchArticleForEms/:articleId",
+		name: "OrderArticleForEmsFromOrder",
+		component: PatientOrderArticlePageComponent,
+		meta: {
+			title: "Pedir un artículo",
+			breadcrumb: {
+				titleKey: "Pedir un artículo",
+				parentName: "SearchArticleForEMSFromOrder",
+			},
+		},
+	},
+];

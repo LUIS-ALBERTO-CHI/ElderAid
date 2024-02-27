@@ -1,26 +1,33 @@
-const CabinetsListPageComponent = () => import('@/ElderAid/PharmacyStock/Components/CabinetsListPageComponent.vue');
-const ArticlesInStockPageComponent = () => import('@/ElderAid/PharmacyStock/Components/ArticlesInStockPageComponent.vue');
-const ArticleOutboundPageComponent = () => import('@/ElderAid/PharmacyStock/Components/ArticleOutboundPageComponent.vue');
+const CabinetsListPageComponent = () =>
+	import("@/ElderAid/PharmacyStock/Components/CabinetsListPageComponent.vue");
+const ArticlesInStockPageComponent = () =>
+	import(
+		"@/ElderAid/PharmacyStock/Components/ArticlesInStockPageComponent.vue"
+	);
+const ArticleOutboundPageComponent = () =>
+	import(
+		"@/ElderAid/PharmacyStock/Components/ArticleOutboundPageComponent.vue"
+	);
 
 export default [
 	{
-		path: '/stockPharmacy',
-		name: 'stockPharmacy',
+		path: "/stockPharmacy",
+		name: "stockPharmacy",
 		component: CabinetsListPageComponent,
 		meta: {
-			title: 'Stock de farmacia',
+			title: "Stock de farmacia",
 			breadcrumb: {
-				titleKey: 'stockPharmacy',
-				parentName: 'default'
+				titleKey: "Stock de farmacia",
+				parentName: "default",
 			},
-		}
+		},
 	},
 	{
-		path: '/Cabinet/:id',
-		name: 'Cabinet',
+		path: "/Cabinet/:id",
+		name: "Cabinet",
 		component: ArticlesInStockPageComponent,
 		meta: {
-			title: 'Gabinete',
+			title: "Gabinete",
 			breadcrumb: {
 				parentName: "stockPharmacy",
 				async onNodeResolve(node, context) {
@@ -42,14 +49,14 @@ export default [
 					return node;
 				},
 			},
-		}
+		},
 	},
 	{
-		path: '/Cabinet/:id/Articles/:articleId/Stock/:stockId',
-		name: 'Articles',
+		path: "/Cabinet/:id/Articles/:articleId/Stock/:stockId",
+		name: "Articles",
 		component: ArticleOutboundPageComponent,
 		meta: {
-			title: 'Articles',
+			title: "Articles",
 			breadcrumb: {
 				onNodeResolve(node, context) {
 					if (context.currentComponent.isPatientSelected) {
@@ -57,11 +64,11 @@ export default [
 					} else {
 						node.text = "Pacientes";
 					}
-					node.parentNode = 'Gabinete';
-					node.to = '';
-                    return node;
-				}
+					node.parentNode = "Gabinete";
+					node.to = "";
+					return node;
+				},
 			},
-		}
+		},
 	},
 ];

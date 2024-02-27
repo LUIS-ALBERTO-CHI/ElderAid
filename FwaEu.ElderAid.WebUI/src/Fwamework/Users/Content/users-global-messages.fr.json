@@ -1,11 +1,11 @@
 {
-	"loginPageTitle": "Connexion",
-	"usersTitle": "Utilisateurs",
-	"usersMenuItemText": "Utilisateurs",
-	"usersMenuItemDescription": "Gérer les utilisateurs, leurs droits d'accès et leurs périmètres",
-	"newUser": "Création",
-	"active": "Activé",
-	"disabled": "Désactivé",
-	"usersAndPermissions": "Utilisateurs et droits",
-	"CanAdministrateUsers": "Peut gérer les utilisateurs"
+	"loginPageTitle": "Inicio de sesión",
+	"usersTitle": "Usuarios",
+	"usersMenuItemText": "Usuarios",
+	"usersMenuItemDescription": "Administrar usuarios, sus permisos de acceso y sus alcances",
+	"newUser": "Nuevo usuario",
+	"active": "Activo",
+	"disabled": "Desactivado",
+	"usersAndPermissions": "Usuarios y permisos",
+	"CanAdministrateUsers": "Puede administrar usuarios"
 }

@@ -1,180 +1,194 @@
-const SearchPatientPageComponent = () => import('@/ElderAid/Patients/Components/SearchPatientPageComponent.vue');
-const PatientPageComponent = () => import('@/ElderAid/Patients/Components/PatientPageComponent.vue');
-const TreatmentPageComponent = () => import('@/ElderAid/Patients/Components/TreatmentPageComponent.vue');
-const PatientOrdersPageComponent = () => import('@/ElderAid/Patients/Components/PatientOrdersPageComponent.vue');
-const StockConsumptionPageComponent = () => import('@/ElderAid/Patients/Components/StockConsumptionPageComponent.vue');
-const PatientMedicationsPageComponent = () => import('@/ElderAid/Patients/Components/PatientMedicationsPageComponent.vue');
-const ProtectionPageComponent = () => import('@/ElderAid/Patients/Components/ProtectionPageComponent.vue');
-const IncontinenceLevelPageComponent = () => import('@/ElderAid/Patients/Components/IncontinenceLevelPageComponent.vue');
+const SearchPatientPageComponent = () =>
+	import("@/ElderAid/Patients/Components/SearchPatientPageComponent.vue");
+const PatientPageComponent = () =>
+	import("@/ElderAid/Patients/Components/PatientPageComponent.vue");
+const TreatmentPageComponent = () =>
+	import("@/ElderAid/Patients/Components/TreatmentPageComponent.vue");
+const PatientOrdersPageComponent = () =>
+	import("@/ElderAid/Patients/Components/PatientOrdersPageComponent.vue");
+const StockConsumptionPageComponent = () =>
+	import("@/ElderAid/Patients/Components/StockConsumptionPageComponent.vue");
+const PatientMedicationsPageComponent = () =>
+	import("@/ElderAid/Patients/Components/PatientMedicationsPageComponent.vue");
+const ProtectionPageComponent = () =>
+	import("@/ElderAid/Patients/Components/ProtectionPageComponent.vue");
+const IncontinenceLevelPageComponent = () =>
+	import("@/ElderAid/Patients/Components/IncontinenceLevelPageComponent.vue");
 
 export default [
 	{
-		path: '/SearchPatient',
-		name: 'SearchPatient',
+		path: "/SearchPatient",
+		name: "SearchPatient",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: 'Patients',
+			title: "Pacientes",
 			breadcrumb: {
-				titleKey: 'Patients',
-				parentName: 'default'
+				titleKey: "Pacientes",
+				parentName: "default",
 			},
 		},
 	},
 	{
-		path: '/Orders/SearchPatient/',
-		name: 'SearchPatientFromOrder',
+		path: "/Orders/SearchPatient/",
+		name: "SearchPatientFromOrder",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: 'Patients',
+			title: "Pacientes",
 			breadcrumb: {
-				titleKey: 'Patients',
-				parentName: 'Orders'
+				titleKey: "Pacientes",
+				parentName: "Órdenes",
 			},
 		},
 	},
 	{
-		path: '/Orders/SearchPatient/:articleId',
-		name: 'SearchPatientFromOrderWithArticleId',
+		path: "/Orders/SearchPatient/:articleId",
+		name: "SearchPatientFromOrderWithArticleId",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: 'Patients',
+			title: "Pacientes",
 			breadcrumb: {
-				titleKey: 'Patients',
-				parentName: 'Orders'
+				titleKey: "Pacientes",
+				parentName: "Orders",
 			},
 		},
 	},
 	{
-		path: '/Patient/:id',
-		name: 'Patient',
+		path: "/Patient/:id",
+		name: "Paciente",
 		component: PatientPageComponent,
 		meta: {
-			title: 'Patient',
+			title: "Pacientes",
 			breadcrumb: {
-				parentName: 'SearchPatient',
+				parentName: "SearchPatient",
 				async onNodeResolve(node, context) {
-                    if (typeof context.currentComponent.getCurrentPatientAsync !== "function") {
-						throw new Error("Children pages of search patient page must implement a getCurrentPatientAsync method");
+					if (
+						typeof context.currentComponent.getCurrentPatientAsync !==
+						"function"
+					) {
+						throw new Error(
+							"Children pages of search patient page must implement a getCurrentPatientAsync method"
+						);
 					}
-                    const currentPatient = await context.currentComponent.getCurrentPatientAsync();
+					const currentPatient =
+						await context.currentComponent.getCurrentPatientAsync();
 					node.text = currentPatient.fullName;
 					node.to = {
-						name: 'Patient',
-						params: { id: currentPatient.id }
+						name: "Patient",
+						params: { id: currentPatient.id },
 					};
 					return node;
-                }
+				},
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/Medications',
-		name: 'PatientMedications',
+		path: "/Patient/:id/Medications",
+		name: "PatientMedications",
 		component: PatientMedicationsPageComponent,
 		meta: {
-			title: 'Médicaments',
+			title: "Medicamentos",
 			breadcrumb: {
-				titleKey: 'Médicaments',
-				parentName: 'Patient'
+				titleKey: "Medicamentos",
+				parentName: "Patient",
 			},
-		}
+		},
 	},
 
 	//NOTE: Move all treatment route to a seperate file when module treatment is created
 	{
-		path: '/Patient/:id/Medications/Treatment/',
-		name: 'Treatments',
+		path: "/Patient/:id/Medications/Treatment/",
+		name: "Treatments",
 		component: TreatmentPageComponent,
 		meta: {
-			title: 'Traitements',
+			title: "Tratamientos",
 			breadcrumb: {
-				titleKey: 'Traitements',
-				parentName: 'Patient'
+				titleKey: "Tratamientos",
+				parentName: "Patient",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
-		name: 'TreatmentsReserve',
+		path: "/Patient/:id/Medications/Treatment/:treatmentType?",
+		name: "TreatmentsReserve",
 		component: TreatmentPageComponent,
 		meta: {
-			title: 'Traitements de réserve',
+			title: "Tratamientos de reserva",
 			breadcrumb: {
-				titleKey: 'Traitements de réserve',
-				parentName: 'PatientMedications'
+				titleKey: "Tratamientos de reserva",
+				parentName: "PatientMedications",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
-		name: 'TreatmentsFixe',
+		path: "/Patient/:id/Medications/Treatment/:treatmentType?",
+		name: "TreatmentsFixe",
 		component: TreatmentPageComponent,
 		meta: {
-			title: 'Traitements fixes',
+			title: "Tratamientos fijos",
 			breadcrumb: {
-				titleKey: 'Traitements fixes',
-				parentName: 'PatientMedications'
+				titleKey: "Tratamientos fijos",
+				parentName: "PatientMedications",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/Medications/Treatment/:treatmentType?',
-		name: 'TreatmentsErased',
+		path: "/Patient/:id/Medications/Treatment/:treatmentType?",
+		name: "TreatmentsErased",
 		component: TreatmentPageComponent,
 		meta: {
-			title: 'Traitements effacés',
+			title: "Tratamientos suprimidos",
 			breadcrumb: {
-				titleKey: 'Traitements effacés',
-				parentName: 'PatientMedications'
+				titleKey: "Tratamientos suprimidos",
+				parentName: "PatientMedications",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/PatientOrders/',
-		name: 'PatientOrders',
+		path: "/Patient/:id/PatientOrders/",
+		name: "PatientOrders",
 		component: PatientOrdersPageComponent,
 		meta: {
-			title: 'Commandes du patient',
+			title: "Controles de pacientes",
 			breadcrumb: {
-				titleKey: 'Commandes',
-				parentName: 'Patient'
+				titleKey: "Controles",
+				parentName: "Paciente",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/StockConsumption',
-		name: 'StockConsumption',
+		path: "/Patient/:id/StockConsumption",
+		name: "StockConsumption",
 		component: StockConsumptionPageComponent,
 		meta: {
-			title: 'Stock de consommation',
+			title: "Stock de consommation",
 			breadcrumb: {
-				titleKey: 'Stock de consommation',
-				parentName: 'Patient'
+				titleKey: "Stock de consommation",
+				parentName: "Patient",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/Protection',
-		name: 'Protection',
+		path: "/Patient/:id/Protection",
+		name: "Protection",
 		component: ProtectionPageComponent,
 		meta: {
-			title: 'Protections',
+			title: "Protections",
 			breadcrumb: {
-				titleKey: 'Protections',
-				parentName: 'Patient'
+				titleKey: "Protections",
+				parentName: "Patient",
 			},
-		}
+		},
 	},
 	{
-		path: '/Patient/:id/IncontinenceLevel',
-		name: 'IncontinenceLevel',
+		path: "/Patient/:id/IncontinenceLevel",
+		name: "IncontinenceLevel",
 		component: IncontinenceLevelPageComponent,
 		meta: {
-			title: 'Niveau d\'incontinence',
+			title: "Niveau d'incontinence",
 			breadcrumb: {
-				titleKey: 'Niveau d\'incontinence',
-				parentName: 'Protection'
+				titleKey: "Niveau d'incontinence",
+				parentName: "Protection",
 			},
-		}
-	}
+		},
+	},
 ];
