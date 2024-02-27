@@ -2,7 +2,7 @@
     <div>
         <div v-show="showPage" class="articles-search-page">
             <patient-info-component v-if="patient" :patient="patient" />
-            <span class="command-title">Commander un article :</span>
+            <span class="command-title">Ordenar un artículo :</span>
             <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                    :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
@@ -11,7 +11,7 @@
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
             <Dropdown v-model="selectedArticleType" :options="articlesType" optionValue="id" optionLabel="text"
-                      placeholder="Tous" />
+                      placeholder="Todo" />
             <div v-show="!isSearchActive" class="article-not-found">
                 <i class="fa-solid fa-heart-pulse icon-not-found"></i>
                 <span>Ingrese una palabra en el campo de busqueda para mostrar articulos</span>
@@ -30,7 +30,7 @@
             </div>
             <div v-else class="article-not-found">
                 <i class="fa-solid fa-heart-pulse icon-not-found"></i>
-                <span>Aucun article trouvé</span>
+                <span>No se han encontrado artículos</span>
             </div>
         </div>
         <div v-if="showScanner">
@@ -138,7 +138,7 @@
             this.patient = await this.patientLazy.getValueAsync();
             this.focusSearchBar();
             this.articles = await RecentArticlesMasterDataService.getAllAsync();
-            this.articlesType = [{ id: null, text: "Tous" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
+            this.articlesType = [{ id: null, text: "Todo" }, ...(await ArticlesTypeMasterDataService.getAllAsync()),];
             this.loadInitialArticles();
             if (this.$route.query.articleFilterType)
                 this.selectedArticleType = this.articlesType.find(x => x.id == this.$route.query.articleFilterType).id;

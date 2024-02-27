@@ -21,7 +21,7 @@
                 </div>
                 <div class="article-label-container">
                     <i class="fa-regular fa-box"></i>
-                    <span>{{ article.invoicingUnit }} de {{ article.countInBox }} {{ article.unit }}</span> <!--Unidades que se deben de tomar o aplicar-->
+                    <span>{{ article.countInBox }} {{ article.invoicingUnit }} <!--{{ article.unit }}--></span> <!--Unidades que se deben de tomar o aplicar-->
                 </div>
             </div>
             <img v-if="images?.length" @click="displayGallery" class="article-image" :src="getImageUrl(this.images[0].imageType, true)" />

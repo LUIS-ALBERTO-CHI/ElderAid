@@ -20,7 +20,7 @@
             </div>
             <div v-show="filteredArticles.length === 0" class="article-not-found">
                 <i class="fa-solid fa-box-open icon-not-found"></i>
-                <span>Aucun article trouvé</span>
+                <span>No se han encontrado artículos</span>
             </div>
         </div>
         <div v-if="showScanner">

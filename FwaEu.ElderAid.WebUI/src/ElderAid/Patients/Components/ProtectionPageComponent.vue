@@ -4,15 +4,15 @@
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
                 <span>
-                    Niveau d'incontience : {{ $t(''+patient.incontinenceLevel) }}
+                    Nivel de incontinencia : {{ $t(''+patient.incontinenceLevel) }}
                 </span>
                 <div v-if="patient.isIncontinenceLevelOverPassed" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
-                    <span>Le forfait d'incontinence est dépassé</span>
+                    <span>Se supera el paquete de incontinencia</span>
                 </div>
                 <div v-else :style="{ color: '#00b300' }" class="alert-container">
                     <i class="fa-solid fa-circle-check alert-icon"></i>
-                    <span>Le forfait d'incontinence est respecté</span>
+                    <span>Se respeta el paquete de incontinencia</span>
                 </div>
             </div>
             <i style="font-size: 30px;" class="fa-regular fa-angle-right chevron-icon"></i>
@@ -25,7 +25,7 @@
             </div>
         </div>
         <ProgressSpinner v-else />
-        <Button @click="goToSearchArticle" label="Ajouter une protection"></Button>
+        <Button @click="goToSearchArticle" label="Añadir protección"></Button>
     </div>
 </template>
 <script>

@@ -9,7 +9,7 @@ export default [
         meta: {
             title: 'Commander un autre produit',
             breadcrumb: {
-                titleKey: 'Commander un autre produit',
+                titleKey: 'Pedir otro producto',
                 parentName: 'Patient'
             },
         }

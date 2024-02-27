@@ -141,20 +141,20 @@
                 this.$emit('order-done');
             },
             getQuantitySentance() {
-                let textToDisplay = "Commander"
+                let textToDisplay = "Ordenar"
 
                 const quantityType = this.article.countInBox > 1 ? `boite de ${this.article.countInBox}` :"";
                 if (this.article.invoicingUnit) {
-                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'boites' : 'boite'}`
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'cajas' : 'caja'}`
                 }
                 if (this.article.isBox) {
-                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'tabletas' : 'tableta'}`
                 }
 
                 return textToDisplay;
             },
             getQuantitySentanceIsBox() {
-                let textToDisplay = "Commander"
+                let textToDisplay = "Ordenar"
 
                 if (!this.isBox) {
                     textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`

@@ -68,7 +68,7 @@
                 return x.filter(x => x.articleType == "CareEquipment")
             })
             this.patientsOrders = await PatientService.getMasterDataByPatientId(this.patient.id, 'Orders')
-            this.protections = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
+			this.protections = await PatientService.getMasterDataByPatientId(this.patient.id, 'Protections')
             this.organization = ViewContextService.get();
 
             if (this.patientTreatments != null && this.patientsOrders != null && this.protections != null) {
