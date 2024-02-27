@@ -37,7 +37,7 @@ export default [
 		meta: {
 			title: "Commandes périodiques à valider",
 			breadcrumb: {
-				titleKey: "Commandes périodiques à valider",
+				titleKey: "Pedidos periódicos a validar",
 				parentName: "Patient",
 			},
 		},

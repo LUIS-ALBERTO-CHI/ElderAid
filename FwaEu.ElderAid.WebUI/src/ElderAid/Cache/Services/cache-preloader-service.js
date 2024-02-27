@@ -28,7 +28,7 @@ const CachePreloaderService = {
 			this.startLoadTime = new Date().getTime();
 			dialog = DialogService.open(LoaderComponent, {
 				props: {
-					header: "Cargando datos, por favor espere...",
+					header: "Cargando datos...",
 					style: {
 						width: "380px",
 						height: "430px",

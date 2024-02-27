@@ -21,7 +21,7 @@ export default [
 		name: "SearchPatient",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: "Pacientes",
+			title: "Patients",
 			breadcrumb: {
 				titleKey: "Pacientes",
 				parentName: "default",
@@ -33,10 +33,10 @@ export default [
 		name: "SearchPatientFromOrder",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: "Pacientes",
+			title: "Patients",
 			breadcrumb: {
 				titleKey: "Pacientes",
-				parentName: "Órdenes",
+				parentName: "Orders",
 			},
 		},
 	},
@@ -45,7 +45,7 @@ export default [
 		name: "SearchPatientFromOrderWithArticleId",
 		component: SearchPatientPageComponent,
 		meta: {
-			title: "Pacientes",
+			title: "Patients",
 			breadcrumb: {
 				titleKey: "Pacientes",
 				parentName: "Orders",
@@ -54,10 +54,10 @@ export default [
 	},
 	{
 		path: "/Patient/:id",
-		name: "Paciente",
+		name: "Patient",
 		component: PatientPageComponent,
 		meta: {
-			title: "Pacientes",
+			title: "Patient",
 			breadcrumb: {
 				parentName: "SearchPatient",
 				async onNodeResolve(node, context) {
@@ -86,7 +86,7 @@ export default [
 		name: "PatientMedications",
 		component: PatientMedicationsPageComponent,
 		meta: {
-			title: "Medicamentos",
+			title: "Médicaments",
 			breadcrumb: {
 				titleKey: "Medicamentos",
 				parentName: "Patient",
@@ -100,7 +100,7 @@ export default [
 		name: "Treatments",
 		component: TreatmentPageComponent,
 		meta: {
-			title: "Tratamientos",
+			title: "Traitements",
 			breadcrumb: {
 				titleKey: "Tratamientos",
 				parentName: "Patient",
@@ -112,7 +112,7 @@ export default [
 		name: "TreatmentsReserve",
 		component: TreatmentPageComponent,
 		meta: {
-			title: "Tratamientos de reserva",
+			title: "Traitements de réserve",
 			breadcrumb: {
 				titleKey: "Tratamientos de reserva",
 				parentName: "PatientMedications",
@@ -124,7 +124,7 @@ export default [
 		name: "TreatmentsFixe",
 		component: TreatmentPageComponent,
 		meta: {
-			title: "Tratamientos fijos",
+			title: "Traitements fixes",
 			breadcrumb: {
 				titleKey: "Tratamientos fijos",
 				parentName: "PatientMedications",
@@ -136,7 +136,7 @@ export default [
 		name: "TreatmentsErased",
 		component: TreatmentPageComponent,
 		meta: {
-			title: "Tratamientos suprimidos",
+			title: "Traitements effacés",
 			breadcrumb: {
 				titleKey: "Tratamientos suprimidos",
 				parentName: "PatientMedications",
@@ -148,10 +148,10 @@ export default [
 		name: "PatientOrders",
 		component: PatientOrdersPageComponent,
 		meta: {
-			title: "Controles de pacientes",
+			title: "Commandes du patient",
 			breadcrumb: {
-				titleKey: "Controles",
-				parentName: "Paciente",
+				titleKey: "Pedidos",
+				parentName: "Patient",
 			},
 		},
 	},
@@ -162,7 +162,7 @@ export default [
 		meta: {
 			title: "Stock de consommation",
 			breadcrumb: {
-				titleKey: "Stock de consommation",
+				titleKey: "Existencias de consumo",
 				parentName: "Patient",
 			},
 		},
@@ -174,7 +174,7 @@ export default [
 		meta: {
 			title: "Protections",
 			breadcrumb: {
-				titleKey: "Protections",
+				titleKey: "Protecciones",
 				parentName: "Patient",
 			},
 		},
@@ -186,7 +186,7 @@ export default [
 		meta: {
 			title: "Niveau d'incontinence",
 			breadcrumb: {
-				titleKey: "Niveau d'incontinence",
+				titleKey: "Grado de incontinencia",
 				parentName: "Protection",
 			},
 		},
