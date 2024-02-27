@@ -12,16 +12,16 @@
         <div v-show="!isGalleryDisplayed" class="article-container">
             <div class="article-info-container">
                 <div class="article-label-container">
-                    <span style="font-weight: bold;">CHF</span>
+                    <span style="font-weight: bold;">$</span> <!--PRECIO DEL PRODUCTO --> 
                     <span>{{ article.price }} </span>
                 </div>
                 <div v-show="article.leftAtChargeExplanation" class="article-label-container">
                     <i class="fa-solid fa-money-bill-1"></i>
-                    <span>{{ article.leftAtChargeExplanation }}, reste à charge</span>
+                    <span><!--{{ article.leftAtChargeExplanation }},--> Gastos de bolsillo</span>
                 </div>
                 <div class="article-label-container">
                     <i class="fa-regular fa-box"></i>
-                    <span>{{ article.invoicingUnit }} de {{ article.countInBox }} {{ article.unit }}</span>
+                    <span>{{ article.invoicingUnit }} de {{ article.countInBox }} {{ article.unit }}</span> <!--Unidades que se deben de tomar o aplicar-->
                 </div>
             </div>
             <img v-if="images?.length" @click="displayGallery" class="article-image" :src="getImageUrl(this.images[0].imageType, true)" />
@@ -29,7 +29,7 @@
         <div v-show="isGalleryDisplayed" class="gallery-area-container">
             <div @click="displayGallery" class="gallery-return-back-container">
                 <i class="fa-solid fa-arrow-left history-icon"></i>
-                <span>Revenir en arrière</span>
+                <span>Regresar</span>
             </div>
             <div class="galleria-container">
                 <Galleria :value="gallery" :numVisible="5" containerStyle="max-width: 640px" :showThumbnails="false"
@@ -44,22 +44,22 @@
         <div v-else>
             <OrderComponent v-if="!isOrderSubmitted" :article="article" :patientOrders="patientOrders" :patientId="getPatientId()" />
             <div v-else class="order-submitted-container">
-                <span>Commande réalisée avec succès !</span>
-                <span>Votre prochaine action : </span>
+                <span>¡Pedido completado con éxito!</span>
+                <span>Próxima acción : </span>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="text-align: center;">Voir les commandes en cours pour {{ patient.fullName }}</span>
+                    <span style="text-align: center;">Ver órdenes abiertas para {{ patient.fullName }}</span>
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="text-align: center;">Commander un autre article pour {{ patient.fullName }}</span>
+                    <span style="text-align: center;">Pedir otro artúcilo por {{ patient.fullName }}</span>
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="text-align: center;">Consulter la fiche du patient {{ patient.fullName }}</span>
+                    <span style="text-align: center;">Consultar ficha del paciente {{ patient.fullName }}</span>
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="text-align: center;">Revenir à l'accueil {{ patient.fullName }}</span>
+                    <span style="text-align: center;">Regresar al inicio{{ patient.fullName }}</span>
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
             </div>
@@ -67,7 +67,7 @@
     </div>
     <div v-else>
         <ProgressSpinner v-if="isLoading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
-        <span v-if="isLoading" style="position: absolute; top: 60%; left: 50%; transform: translateX(-50%); font-size: 16px;">Chargement...</span>
+        <span v-if="isLoading" style="position: absolute; top: 60%; left: 50%; transform: translateX(-50%); font-size: 16px;">Carga...</span>
     </div>
 </template>
 <script>
@@ -157,9 +157,9 @@
                 const orders = this.patientOrders.filter(order => order.articleId == this.article.id)
                 const order = orders.sort((a, b) => new Date(b.updatedOn) - new Date(a.updatedOn));
                 if (order[0])
-                    return "Dernière commande le " + new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
+                    return "Último pedido " + new Date(order[0].updatedOn).toLocaleDateString('fr-FR');
                 else
-                    return "Pas de commande récente pour cet article"
+					return "No hay pedidos recientes de este artículo"
             }
         },
         computed: {

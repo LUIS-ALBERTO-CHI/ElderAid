@@ -13,7 +13,7 @@
             </div>
             <span v-for="(link, index) in crumbsVisible" :key="getNodeKey(link)" class="crumb">
                 <router-link v-if="crumbsVisible.length -1 != index" :to="link.to" @click="nodeClicked(link)" class="crumb-link">{{link.text}}</router-link>
-                <span v-else class="crumb-no-link">{{link.text}}</span>
+                <span v-else class="crumb-no-link">{{link.text}}</span> <!--este es el apartado superior en el que aparece al lado del regresar en el header-->
                 <span v-if="crumbsVisible.length -1 != index" :key="index" class="crumb-separator">&nbsp;></span>
             </span>
         </div>

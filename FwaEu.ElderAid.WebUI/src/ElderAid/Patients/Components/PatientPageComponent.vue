@@ -2,11 +2,11 @@
     <div v-if="contentLoaded" class="patient-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToMedicationsPage" class="patient-info-item">
-            <span>Médicaments</span>
+            <span>Medicamentos</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToTreatmentPage" class="patient-info-item">
-            <span>{{ patientTreatments.length }} matériels de soin</span>
+            <span>{{ patientTreatments.length }} tratamientos</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToProtectionPage" class="patient-info-item">
@@ -14,21 +14,21 @@
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToPatientOrdersPage" class="patient-info-item">
-            <span>{{ patientsOrders.length }} commandes, dont {{ patientsOrders.filter(x => x.state == "Pending").length }} en cours</span>
+            <span>{{ patientsOrders.length }} pedidos, {{ patientsOrders.filter(x => x.state == "Pending").length }} en curso</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToStockConsumptionPage" class="patient-info-item">
-            <span>Consommation du stock pharmacie</span>
+            <span>Consumo de stock de farmacia</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToPeriodicOrdersPage" class="patient-info-item">
             <div class="periodic-container">
                 <i v-if="isPeriodicAlertEnabled()" class="fa-sharp fa-solid fa-circle-exclamation alert-periodic-icon"></i>
-                <span>Commandes périodiques à valider</span>
+                <span>Pedidos periódicos a validar</span>
             </div>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button @click="goToSearchArticlePage" style="margin-top: 20px; width: 100%;" label="Commander un autre produit" />
+        <Button @click="goToSearchArticlePage" style="margin-top: 20px; width: 100%;" label="Pedir otro producto" />
     </div>
 </template>
 

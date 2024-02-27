@@ -11,7 +11,7 @@
                                     {{ treatment.prescribedArticle.title }}
                                 </span>
                                 <span v-show="treatment.prescribedArticle.isGalenicDosageForm" 
-                                >Sachet</span>
+                                >Bolsa</span>
                             </div>
                             <span v-show="treatment.appliedArticle != null" class="header-subtitle">{{treatment.appliedArticle?.title }}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>

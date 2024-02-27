@@ -2,18 +2,18 @@
     <div class="patient-page-container">
         <patient-info-component v-if="patient" :patient="patient" />
         <div @click="goToTreatmentPage('Fixe')" class="patient-info-item">
-            <span>{{ patientTreatments.filter(x => x.treatmentType == "Fixe").length }} traitements fixes en cours</span>
+            <span>{{ patientTreatments.filter(x => x.treatmentType == "Fixe").length }} tratamiento(s) fijo(s) en curso</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToTreatmentPage('Reserve')" class="patient-info-item">
-            <span>{{ patientTreatments.filter(x => x.treatmentType == "Reserve").length }} traitements de réserve en cours</span>
+            <span>{{ patientTreatments.filter(x => x.treatmentType == "Reserve").length }} tratamientos de reserva en curso</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToTreatmentPage('Erased')" class="patient-info-item">
-            <span>{{ patientTreatments.filter(x => x.treatmentType == "Erased").length }} traitements effacés</span>
+            <span>{{ patientTreatments.filter(x => x.treatmentType == "Erased").length }} tratamientos borrados</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
-        <Button @click="goToSearchArticlePage()" style="margin-top: 20px;" label="Commander un autre produit" />
+        <Button @click="goToSearchArticlePage()" style="margin-top: 20px;" label="Pedir otro producto" />
     </div>
 </template>
 

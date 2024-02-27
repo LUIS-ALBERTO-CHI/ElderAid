@@ -2,23 +2,23 @@
     <div class="order-container" v-if="article">
         <div v-show="isOrderAlreadyInProgress" class="alert-container">
             <i class="fa-solid fa-triangle-exclamation"></i>
-            <span> Commande déjà en cours de cet article pour ce patient</span>
+            <span> Este artículo ya está en orden para este paciente</span>
         </div>
         <div class="type-quantity-container" v-if="article.countInBox == 1">
-            <span>Commander des boites complètes :</span>
+            <span>Ordenar cajas :</span>
             <div class="icon-right-container">
                 <InputSwitch :disabled="true" v-model="isBox" class="custom-switch" />
             </div>
         </div>
         <div v-else>
             <div class="type-quantity-container" v-if="isBox">
-                <span>Commander des boites complètes :</span>
+                <span>Pedir cajas completas :</span>
                 <div class="icon-right-container">
                     <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
                 </div>
             </div>
             <div class="type-quantity-container" v-else>
-                <span>Commander des comprimés :</span>
+                <span>Pedir tabletas :</span>
                 <div class="icon-right-container">
                     <InputSwitch :disabled="isSwitchDisabled" v-model="isBox" class="custom-switch" />
                 </div>
@@ -51,11 +51,11 @@
         <Button v-else @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentanceIsBox()" />
         <div v-show="!showConfirmationDisplayed" class="footer-button-container">
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
-                    label="Autres formats"
+                    label="Otros formatos"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
                     @click="goToSearchFormats(article.groupName)" />
             <Button style="height: 40px !important; width: 50%; font-size: 14px;"
-                    label="Substitutions"
+                    label="Sustituciones"
                     icon="fa fa-solid fa-angle-right" iconPos="right"
                     @click="goToSearchSubstituts(article.groupName)"
                     :disabled="article.substitutionsCount < 1" />

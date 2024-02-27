@@ -1,7 +1,7 @@
 <template>
     <div class="incontinence-level-page-container" />
     <patient-info-component v-if="patient" :patient="patient" />
-    <span class="incontinence-info-label-title">Niveau d'incontinence : {{ $t(''+patientData.incontinenceLevel) }}</span>
+    <span class="incontinence-info-label-title">Nivel de incontinencia : {{ $t(''+patientData.incontinenceLevel) }}</span>
     <div class="incontinence-info-container">
         <span>Forfait annuel : {{ patientData.annualFixedPrice }} CHF</span>
         <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
