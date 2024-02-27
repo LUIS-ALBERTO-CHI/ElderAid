@@ -41,10 +41,10 @@
             Cet article est supprimé
         </div>
         <div class="confirmation-container" v-else-if="showConfirmationDisplayed">
-            <span>Etes vous sûr de commander ?</span>
+            <span>¿Está seguro de hacer un pedido??</span>
             <div class="confirmaton-button-container">
-                <Button @click="submitOrder()" label="OUI" outlined class="button-confirmation" />
-                <Button @click="showConfirmation()" label="NON" outlined class="button-confirmation" />
+                <Button @click="submitOrder()" label="Si" outlined class="button-confirmation" />
+                <Button @click="showConfirmation()" label="No" outlined class="button-confirmation" />
             </div>
         </div>
         <Button v-if="isBox" @click="showConfirmation()" style="height: 35px !important;" :label="getQuantitySentance()" />
