@@ -21,7 +21,7 @@
         <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
         <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" optionValue="id" optionLabel="text" placeholder="Légère" />
         <Button @click="saveIncontinenceLevelAsync"
-                label="Confirmer" />
+                label="Confirmar" />
     </div>
 </template>
 

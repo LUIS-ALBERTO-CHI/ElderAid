@@ -126,7 +126,7 @@
                 }];
                 try {
                     await OrdersService.saveAsync(modelOrder).then(() => {
-                        NotificationService.showConfirmation('Votre commande a été passée avec succès')
+						NotificationService.showConfirmation('Su pedido se ha realizado con éxito')
                     })
                     await OrderMasterDataService.clearCacheAsync();
                     await ArticleMasterDataService.clearCacheAsync();

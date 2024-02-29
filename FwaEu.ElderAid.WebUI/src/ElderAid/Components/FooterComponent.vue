@@ -1,6 +1,6 @@
 <template>
 	<footer class="footer">
-		<!-- <div>
+		 <!--<div>
 			<div class="logout-container">
 				<a v-if="!showLogoutLink" @click="goToLoginFront">Se connecter</a>
 				<a v-else @click="logoutAsync">Se déconnecter</a>
@@ -15,7 +15,7 @@
 				</a>
 				<img class="logo" alt="" src="../Content/logo.png" />
 			</div>
-		</div> -->
+		</div>--> 
 	</footer>
 </template>
 

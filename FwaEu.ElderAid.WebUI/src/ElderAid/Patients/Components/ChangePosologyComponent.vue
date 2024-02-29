@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="error-message" v-if="formError">{{ formError }}</div>
-        <Button @click="checkValidation" style="height: 40px !important;" label="Confirmer" />
+        <Button @click="checkValidation" style="height: 40px !important;" label="Confirmar" />
     </div>
 </template>
 
@@ -118,7 +118,7 @@
                 }
                 try {
                     await ProtectionService.updateAsync(model).then(() => {
-                        NotificationService.showConfirmation("La posologie a bien été modifiée");
+						NotificationService.showConfirmation("Se ha cambiado la dosis");
                         this.$emit('changePosologySubmitted');
                     })
                 } catch {

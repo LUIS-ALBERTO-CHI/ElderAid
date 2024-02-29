@@ -10,7 +10,7 @@
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToProtectionPage" class="patient-info-item">
-            <span>{{ protections.length }} protections</span>
+            <span>{{ protections.length }} cuidados</span>
             <i class="fa-regular fa-angle-right chevron-icon"></i>
         </div>
         <div @click="goToPatientOrdersPage" class="patient-info-item">

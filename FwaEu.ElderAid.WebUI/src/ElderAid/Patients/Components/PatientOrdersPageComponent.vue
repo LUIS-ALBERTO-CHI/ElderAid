@@ -7,14 +7,14 @@
                     <div v-if="isOrderingIndex != index">
                         <div v-if="!isCancelConfirmationDisplayed" class="button-order-item-container">
                             <Button v-show="isOrderPending(order)" @click="showConfirmation" severity="danger" style="height: 50px !important;"
-                                    label="Annuler la commande" />
-                            <Button style="height: 50px !important;" label="Commander à nouveau" @click="showOrderComponent(index)" />
+                                    label="Cancelar pedido" />
+                            <Button style="height: 50px !important;" label="Ordenar de nuevo" @click="showOrderComponent(index)" />
                         </div>
                         <div v-else class="cancel-confirmation-container">
-                            <span>Etes vous sûr d'annuler la commande ?</span>
+                            <span>¿Está seguro de cancelar el pedido??</span>
                             <div class="confirmaton-button-container">
-                                <Button @click="cancelOrder(order.id)" label="OUI" outlined class="button-confirmation " />
-                                <Button @click="showConfirmation()" label="NON" outlined class="button-confirmation" />
+                                <Button @click="cancelOrder(order.id)" label="Si" outlined class="button-confirmation " />
+                                <Button @click="showConfirmation()" label="No" outlined class="button-confirmation" />
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <empty-list-component v-show="patientOrders != null && patientOrders.length < 1" />
-        <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Charger d'autres commandes</span>
+        <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Cargar más pedidos</span>
     </div>
 </template>
 <script>
@@ -109,7 +109,7 @@
             async cancelOrder(id) {
                 try {
                     await OrderService.cancelOrderAsync(id).then(() => {
-                        NotificationService.showConfirmation("La commande a bien été annulée")
+						NotificationService.showConfirmation("El pedido ha sido cancelado")
                         this.fillPatientOrders()
                     })
                 } catch (error) {

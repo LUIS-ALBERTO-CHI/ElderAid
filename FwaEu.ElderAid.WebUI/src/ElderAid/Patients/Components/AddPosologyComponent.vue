@@ -2,15 +2,15 @@
     <div class="accordion-content">
         <span style="font-weight: bold;">Ajouter la posologie</span>
         <div class="label-container">
-            <span>Date de début :</span>
+            <span>Fecha de inicio :</span>
             <Calendar v-model="changeForm.startDate" style="width: 50% !important" showIcon />
         </div>
         <div class="label-container">
-            <span>Date de fin :</span>
+            <span>Fecha de fin :</span>
             <Calendar v-model="changeForm.endDate" style="width: 50% !important" showIcon />
         </div>
         <div class="label-container">
-            <span>Posologie :</span>
+            <span>Dosificación :</span>
             <i @click="addPosology" style="font-size: 26px;" class="fa fa-solid fa-add"></i>
         </div>
         <div class="posology-container">
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <Button @click="submitPosology" style="height: 40px !important;" label="Confirmer" />
+        <Button @click="submitPosology" style="height: 40px !important;" label="Confirmar" />
     </div>
 </template>
 
@@ -79,7 +79,7 @@
 
                 try {
                     await ProtectionService.createAsync(model).then(async () => {
-                        NotificationService.showConfirmation("La posologie a bien été créée");
+						NotificationService.showConfirmation("La dosificación ha sido creada");
                         if (this.$route.name !== 'Protection') {
                             this.$router.push({ name: 'Protection' });
                         }
@@ -88,7 +88,7 @@
                         await ArticleMasterDataService.clearCacheAsync();
                     });
                 } catch {
-                    NotificationService.showError("Une erreur est survenue lors de la création de la posologie");
+                    NotificationService.showError("Sucedió un error en la creación de la dosificación");
                 }
             },
 

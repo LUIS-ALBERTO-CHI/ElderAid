@@ -15,7 +15,7 @@ isGoodEndDate(protection.dateEnd, protection.dateStart) ?
                 </div>
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
-                <Button @click="changePosology" label="Changer la posologie" style="height: 40px !important;"></Button>
+                <Button @click="changePosology" label="Cambiar la dosis" style="height: 40px !important;"></Button>
                 <Button v-show="isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
             </div>
             <div v-else-if="protectionState == ProtectionState.Change">
@@ -27,7 +27,7 @@ isGoodEndDate(protection.dateEnd, protection.dateStart) ?
                     <span>Date de fin :</span>
                     <Calendar v-model="stopEndDate" style="width: 50% !important" showIcon />
                 </div>
-                <Button @click="submitStoppedPosology" style="height: 40px !important;" label="Confirmer" />
+                <Button @click="submitStoppedPosology" style="height: 40px !important;" label="Confirmar" />
             </div>
         </AccordionTab>
     </Accordion>

@@ -35,11 +35,11 @@
                         </div>
                         <div v-else-if="order.state == 'Pending'" style="opacity: 0.8;" class="accordion-header-title-area">
                             <i class="fa-solid fa-hourglass"></i>
-                            <span>En attente</span>
+                            <span>Pendiente</span>
                         </div>
                         <div v-else style="color: red;" class="accordion-header-title-area">
                             <i class="fa-solid fa-xmark"></i>
-                            <span>Annulée</span>
+                            <span>Cancelado</span>
                         </div>
                     </div>
                 </div>
@@ -85,13 +85,13 @@
         },
         methods: {
             getSubtitle() {
-                let subtitle = `${this.order.quantity} ${this.order.quantity > 1 ? 'comprimés' : 'comprimé'}`
+                let subtitle = `${this.order.quantity} ${this.order.quantity > 1 ? 'tabletas' : 'tableta'}`
 
 
                 return subtitle
             },
             getBox() {
-                let box = ` ${this.order.quantity > 1 ? 'Boites' : 'boite'}`
+                let box = ` ${this.order.quantity > 1 ? 'cajas' : 'caja'}`
 
 
                 return box

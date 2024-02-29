@@ -6,7 +6,7 @@
                 <InputText ref="searchInput" v-model="searchOrders" class="search-input" placeholder="Buscar un pedido" />
             </span>
             <Dropdown v-model="selectedOrdersType" :options="ordersTypeOptions" class="select-sector" />
-            <Button style="width: 100%;" @click="displayNewOrder" label="Nouvelle commande" />
+            <Button style="width: 100%;" @click="displayNewOrder" label="Nuevo pedido" />
             <div style="display: flex; flex-direction: column;">
                 <div v-if="orders.some(orders => 'article' in orders)" v-for="(order, index) in filteredOrders" :key="index">
                     <AccordionOrderComponent :order="order">
@@ -30,14 +30,14 @@
                                         @order-done="orderSubmitted" :patientId="getPatientId(order.patientId)" />
                     </AccordionOrderComponent>
                 </div>
-                <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Plus de commandes</span>
+                <span v-show="!isEndOfPagination" @click="getMoreOrders()" class="load-more-text">Más pedidos</span>
             </div>
         </div>
         <div v-else class="new-order-container">
             <span style="font-weight: bold; font-size: 18px;">Nouvelle commande :</span>
-            <Button @click="goToSearchPatient" label="Pour un patient" icon="fa fa-solid fa-angle-right" iconPos="right" />
-            <Button @click="goToSearchArticleForEms" label="Pour EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
-            <Button @click="displayNewOrder" label="Retour" />
+            <Button @click="goToSearchPatient" label="Por un paciente" icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button @click="goToSearchArticleForEms" label="Por EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
+            <Button @click="displayNewOrder" label="Regresar" />
         </div>
     </div>
 
@@ -176,7 +176,7 @@
             async cancelOrder(id) {
                 try {
                     await OrderService.cancelOrderAsync(id).then(() => {
-                        NotificationService.showConfirmation("La commande a bien été annulée")
+						NotificationService.showConfirmation("El pedido ha sido cancelado")
                         this.fillOrders();
                         this.hideCancelOrderDisplay();
                     })
