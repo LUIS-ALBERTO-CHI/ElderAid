@@ -19,8 +19,8 @@
         </div>
         <div v-show="filteredPatients.length == 0" class="patient-not-found">
             <i class="fa-solid fa-heart-pulse icon-not-found"></i>
-            <span>Aucun patient trouvé</span>
-            <span>{{ selectedBuilding == "Todos los sectores" ? 'Contactez la pharmacie': 'Vérifiez votre filtre de secteur ou contactez la pharmacie'}}</span>
+            <span>No se encontraron pacientes</span>
+            <span>{{ selectedBuilding == "Todos los sectores" ? 'contacta con la farmacia': 'Compruebe su filtro de red o contacte con la farmacia.'}}</span>
         </div>
     </div>
 </template>

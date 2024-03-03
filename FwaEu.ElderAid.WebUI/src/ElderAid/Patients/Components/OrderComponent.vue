@@ -38,7 +38,7 @@
 
         </div>
         <div v-if="article.isDeleted" style="text-align: center; color : darkorange;">
-            Cet article est supprimé
+            Este articulo esta eliminado
         </div>
         <div class="confirmation-container" v-else-if="showConfirmationDisplayed">
             <span>¿Está seguro de hacer un pedido??</span>
@@ -135,7 +135,7 @@
                         this.$router.push("/Orders")
                     }
                 } catch (error) {
-                    NotificationService.showError('Une erreur est survenue lors de la commande')
+                    NotificationService.showError('Se produjo un error durante el pedido.')
                 }
                 this.showConfirmationDisplayed = false;
                 this.$emit('order-done');
@@ -157,7 +157,7 @@
                 let textToDisplay = "Ordenar"
 
                 if (!this.isBox) {
-                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'comprimés' : 'comprimé'}`
+                    textToDisplay += ` ${this.selectedQuantity} ${this.selectedQuantity > 1 ? 'tabletas' : 'tableta'}`
                 }
 
                 return textToDisplay;

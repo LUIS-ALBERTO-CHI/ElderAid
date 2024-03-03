@@ -7,20 +7,20 @@
                     <span class="article-name">{{ article.title }}</span>
                 </div>
                 <div class="text-left">
-                    <span>Quantité en stock&nbsp;: {{this.$route?.query?.stockQuantity}}</span>
+                    <span>Cantidad en stock;: {{this.$route?.query?.stockQuantity}}</span>
                 </div>
             </div>
             <div class="info-container">
                 <div class="text-left">
-                    <span>Pour {{ patientName }}</span>
+                    <span>Para {{ patientName }}</span>
                 </div>
                 <div class="icon-right-container">
-                    <span @click="openSearchPatientComponent">Autre patient ?</span>
+                    <span @click="openSearchPatientComponent">Otro Paciente?</span>
                 </div>
             </div>
             <div class="info-container">
                 <div class="text-left">
-                    <span>Boîte entière</span>
+                    <span>Caja completa</span>
                 </div>
                 <div class="icon-right-container">
                     <InputSwitch :disabled="isSwitchDisabled" v-model="fullBox" class="custom-switch" />
@@ -28,7 +28,7 @@
             </div>
             <div class="info-container" v-if="fullBox">
                 <div class="text-left">
-                    <span>Boîte de</span>
+                    <span>Caja de</span>
                 </div>
                 <div class="icon-right-container">
                     <Dropdown v-model="selectedBoite" :options="boiteOptionsWithUnit" optionLabel="label" optionValue="countInBox" />
@@ -36,7 +36,7 @@
             </div>
             <div class="info-container" v-if="!fullBox">
                 <div class="text-left">
-                    <span>Quantité à sortir (comprimés)</span>
+                    <span>Cantidad para surtir(Tabletas)</span>
                 </div>
                 <div class="icon-right-container">
                     <InputNumber id="quantity" v-model="quantity" :min="1" :max="100" showButtons buttonLayout="horizontal"
@@ -46,15 +46,15 @@
                 </div>
             </div>
             <div class="confirmation-container" v-if="showConfirmationDisplayed">
-                <span>Etes vous sûr de faire sortir cette quantité ? <small>La quantité restante en stock va être négative</small></span>
+                <span>¿Seguro que desea retirar esta cantidad? <small>La cantidad restante en stock sera negativa</small></span>
                 <div class="confirmaton-button-container" style="margin-top: 10px;">
-                    <Button @click="confirmOrderAsync()" label="OUI" outlined class="button-confirmation" />
-                    <Button @click="() => showConfirmationDisplayed = false" label="NON" outlined class="button-confirmation" />
+                    <Button @click="confirmOrderAsync()" label="SI" outlined class="button-confirmation" />
+                    <Button @click="() => showConfirmationDisplayed = false" label="NO" outlined class="button-confirmation" />
                 </div>
             </div>
             <div v-else class="button-confirmer">
                 <Button @click="confirmOrderAsync" class="confirmer" style="width: 100%; margin-top: 50px; align-self: center;"
-                        label="Sortir de stock" />
+                        label="Retirar de stock" />
             </div>
         </div>
     </div>
@@ -163,10 +163,10 @@
                         this.quantity = this.quantity * this.selectedBoite;
                     }
                     await PharmacyStockService.updateAsync({ stockId: this.$route.params.stockId, quantity: this.quantity, patientId}).then(async () => {
-                        NotificationService.showConfirmation("L'opération de la sortie de l'article " + this.article.title + " du stock a été bien traitée.");
+                        NotificationService.showConfirmation("Se retiro el producto " + this.article.title + " del stock de manera correcta.");
                         this.$router.push({ name: "Cabinet" });
                     }).catch(() => {
-                        NotificationService.showError("Erreur lors de traitement de l'opération de la sortie de l'article " + this.article.title + " de stock.");
+                        NotificationService.showError("Error al procesar el retiro del articulo " + this.article.title + " del stock.");
                     });
                 }
                 else {
