@@ -21,13 +21,13 @@
 			</div>
 
 			<!--Componente de pagina de ordenes-->
-			 <!--<div @click="goToOrdersPage" class="vignette-item">
+			 <div @click="goToOrdersPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;" />
 					<span class="vignette-text">Pedidos unitarios</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>--> 
+			</div> 
 
 			<div @click="goToPeriodicPage" class="vignette-item">
 				<div class="vignette-main-info">
@@ -56,13 +56,13 @@
 				<i class="fa-regular fa-angle-right chevron-icon" />
 			</div> 
 
-			 <div @click="goToProfilPage" class="vignette-item">
+			 <!--<div @click="goToProfilPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-gear vignette-icon fa-fw" style="color: #bb8a7c;" />
 					<span class="vignette-text">Ajustes</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div> 
+			</div>--> 
 		</div>
 		<footer>
 			<application-footer-component />

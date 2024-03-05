@@ -3,9 +3,9 @@
     <patient-info-component v-if="patient" :patient="patient" />
     <span class="incontinence-info-label-title">Nivel de incontinencia : {{ $t(''+patientData.incontinenceLevel) }}</span>
     <div class="incontinence-info-container">
-        <span>Forfait annuel : {{ patientData.annualFixedPrice }} CHF</span>
-        <span>Forfait journalier : {{ patientData.dailyFixedPrice }} CHF</span>
-        <span>Protocole journalier saisi : {{ patientData.dailyProtocolEntered }} CHF</span>
+        <span>Paquete Anual : {{ patientData.annualFixedPrice }} CHF</span>
+        <span>Paquete diario : {{ patientData.dailyFixedPrice }} CHF</span>
+        <span>Registro diario ingresado : {{ patientData.dailyProtocolEntered }} CHF</span>
     </div>
     <div v-if="new Date(patientData.dateStart) >= new Date(new Date().getFullYear(), 0, 1)"  class="incontinence-info-container">
         <span class="incontinence-info-label-title">Analyse de consommation à date</span>
@@ -15,10 +15,10 @@
         <span v-else>Date virtuelle sans dépassement : Aucune</span>
     </div>
     <Button v-if="isUserCanToChangeIncontinence && !isIncontinenceLevelChange" @click="changeIncontinenceLevel"
-            label="Changer de niveau d'incontinence" />
+            label="Cambiar el nivel de incontinencia" />
     <div v-else-if="isUserCanToChangeIncontinence" class="incontinence-change-container">
         <span>A partir de <Calendar v-model="startDate" dateFormat="dd/mm/yy" style="width: 34% !important" dateOnly /></span>
-        <span class="incontinence-info-label-title">Changer de niveau d'incontinence</span>
+        <span class="incontinence-info-label-title">Cambiar el nivel de incontinencia</span>
         <Dropdown v-model="selectedIncontinence" :options="incontinenceOptions" optionValue="id" optionLabel="text" placeholder="Légère" />
         <Button @click="saveIncontinenceLevelAsync"
                 label="Confirmar" />
@@ -117,7 +117,7 @@ import { CanChangeIncontinenceLevel } from "../patients-permissions";
                     dateStart: this.startDate,
                     dateEnd: new Date(this.startDate.getFullYear(), 11, 31, 23, 59, 59)
                 }).then(async () => {
-                    NotificationService.showConfirmation("Le niveau d'incontinence a été changé");
+                    NotificationService.showConfirmation("Se ha modificado el nivel de incontinencia");
                     await this.getPatientDataAsync().then(async () => this.$forceUpdate());
                 });
             }
