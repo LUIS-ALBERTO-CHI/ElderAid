@@ -14,12 +14,12 @@
 
                             <div v-show="order.state == 'Pending'">
                                 <Button v-if="cancelOrderDisplayedIndex !== index" style="width: 100% !important;"
-                                        @click="showCancelOrderDisplay(index)" label="Annuler la commande" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
+                                        @click="showCancelOrderDisplay(index)" label="Cancelar pedido" icon="fa fa-solid fa-angle-right" iconPos="right"></Button>
                                 <div v-else class="cancel-confirmation-container">
-                                    <span>Etes vous sûr d'annuler la commande ?</span>
+                                    <span>¿Estás seguro de que estás cancelando el pedido?</span>
                                     <div class="confirmaton-button-container">
-                                        <Button @click="cancelOrder(order.id)" label="OUI" outlined class="button-confirmation " />
-                                        <Button @click="hideCancelOrderDisplay()" label="NON" outlined class="button-confirmation" />
+                                        <Button @click="cancelOrder(order.id)" label="Si" outlined class="button-confirmation " />
+                                        <Button @click="hideCancelOrderDisplay()" label="No" outlined class="button-confirmation" />
                                     </div>
                                 </div>
                             </div>
@@ -194,8 +194,8 @@
                         order?.patient?.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
                         order?.updatedOn.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
                         order?.state.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
-                        (this.selectedOrdersType == "Toutes" ||
-                            (this.selectedOrdersType == "Patients" && order.patientId != null) ||
+                        (this.selectedOrdersType == "Todos" ||
+                            (this.selectedOrdersType == "Pacientes" && order.patientId != null) ||
                             (this.selectedOrdersType == "EMS" && order.patientId == null))
                     );
                 });
