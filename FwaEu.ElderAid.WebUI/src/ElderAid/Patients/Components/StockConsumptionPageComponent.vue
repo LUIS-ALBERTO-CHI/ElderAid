@@ -12,7 +12,7 @@
             </div>
         </div>
         <empty-list-component v-show="stockConsumptions != null && stockConsumptions.length < 1" />
-        <span v-show="!isEndOfPagination" @click="getMoreStocks()" class="load-more-text">Charger plus</span>
+        <span v-show="!isEndOfPagination" @click="getMoreStocks()" class="load-more-text">Carga más</span>
     </div>
 </template>
 
@@ -82,7 +82,7 @@
                     this.fillStockConsumption();
 
                 } else {
-                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
+                    NotificationService.showError("Se perdió la conexión con el servidor. Vuelva a intentarlo más tarde")
                 }
             }
         },

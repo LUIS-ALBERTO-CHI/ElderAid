@@ -206,30 +206,30 @@
 
                     if (order.patientId === null || !order.patient) {
                         buttons.push({
-                            label: 'Commander pour EMS',
+                            label: 'Ordenar para EMS',
                             action: () => this.displayOrderComponent(true, index),
                         });
                         buttons.push({
-                            label: 'Commander pour un patient',
+                            label: 'Ordenar para un paciente',
                             action: () => this.goToSearchPatientWithArticleId(order.articleId),
                         });
                     } else {
                         buttons.push({
-                            label: `Commander à nouveau pour ${order.patient.fullName}`,
+                            label: `Ordenar de nuevo para ${order.patient.fullName}`,
                             action: () => this.displayOrderComponent(false, index),
                         });
                         buttons.push({
-                            label: 'Commander pour un autre patient',
+                            label: 'Ordenar para otro paciente',
                             action: () => this.goToSearchPatientWithArticleId(order.articleId),
                         });
                         buttons.push({
-                            label: 'Commander pour EMS',
+                            label: 'Ordenar para EMS',
                             action: () => this.displayOrderComponent(true, index),
                         });
                     }
 
                     buttons.push({
-                        label: 'Consulter la fiche article',
+                        label: 'Consultar la ficha del artículo.',
                         action: () => this.goToArticle(order.articleId),
                     });
 

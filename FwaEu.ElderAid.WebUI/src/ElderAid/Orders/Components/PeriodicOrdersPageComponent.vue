@@ -125,11 +125,11 @@
 						(patient.fullName.toLowerCase().includes(this.searchOrders.toLowerCase()) ||
 							patient.roomName.toLowerCase().includes(this.searchOrders.toLowerCase())) &&
 						(
-							this.selectedOrderType === "Tous les états des commandes" ||
-							(this.selectedOrderType === "Patients validés" && patient.id != null && isValidated) ||
-							(this.selectedOrderType === "Patients à valider" && patient.id != null && !isValidated && hasProtections)
+							this.selectedOrderType === "Todos los estados de los pedidos" ||
+							(this.selectedOrderType === "Pacientes validados" && patient.id != null && isValidated) ||
+							(this.selectedOrderType === "Pacientes a validar" && patient.id != null && !isValidated && hasProtections)
 						)
-						&& (this.selectedBuilding === "Tous les secteurs" || patient.buildingId === this.selectedBuilding.id));
+						&& (this.selectedBuilding === "Todos los sectores" || patient.buildingId === this.selectedBuilding.id));
 				});
 			}
 		}

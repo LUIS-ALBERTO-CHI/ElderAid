@@ -1,11 +1,11 @@
 <template>
     <div>
         <div v-show="showPage" class="page-articles">
-            <span>Articles en stock</span>
+            <span>Artículos en stocks</span>
             <span class="p-input-icon-right">
                 <i @click="removeSearch" class="fa fa-solid fa-close remove-icon"
                    :style="searchValue.length === 0 ? 'opacity: 0.5;' : ''" />
-                <InputText ref="searchInput" v-model="searchValue" class="search-input" placeholder="Rechercher un article">
+                <InputText ref="searchInput" v-model="searchValue" class="search-input" placeholder="Buscar un articulo">
                 </InputText>
                 <i @click="goToScanCode" class="fa-sharp fa-regular fa-qrcode qr-code-icon"></i>
             </span>
@@ -16,7 +16,7 @@
                         <span>{{ stockPharmacy.quantity }}</span>
                     </div>
                 </div>
-                <span v-show="filteredArticles.length >= pageSize"  @click="loadMoreArticlesAsync" class="load-more-text">Plus d'articles</span>
+                <span v-show="filteredArticles.length >= pageSize"  @click="loadMoreArticlesAsync" class="load-more-text">Más artículos</span>
             </div>
             <div v-show="filteredArticles.length === 0" class="article-not-found">
                 <i class="fa-solid fa-box-open icon-not-found"></i>
@@ -110,7 +110,7 @@
                     this.currentPage = nextPage;
                     await this.performSearch();
                 } else {
-                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
+                    NotificationService.showError("Se perdió la conexión con el servidor. Vuelve a intentarlo más tarde")
                 }
             },
             removeSearch() {
@@ -129,7 +129,7 @@
                 if (this.hasVideoInput)
                     this.showScanner = true;
                 else {
-                    NotificationService.showError("Aucune caméra n'est détectée sur votre appareil")
+                    NotificationService.showError("No se detectan cámaras en su dispositivo")
                 }
             },
             async getCurrentCabinetAsync() {
