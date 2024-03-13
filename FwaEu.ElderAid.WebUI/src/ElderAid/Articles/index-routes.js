@@ -69,7 +69,7 @@ export default [
 		meta: {
 			title: 'Commander un article',
 			breadcrumb: {
-				titleKey: 'Commander un article',
+				titleKey: 'Ordenar un pedido',
 				parentName: 'SearchArticle'
 			},
 		}

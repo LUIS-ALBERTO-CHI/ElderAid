@@ -34,7 +34,7 @@
             </div>
         </div>
         <div v-else class="new-order-container">
-            <span style="font-weight: bold; font-size: 18px;">Nouvelle commande :</span>
+            <span style="font-weight: bold; font-size: 18px;">Nuevo pedido:</span>
             <Button @click="goToSearchPatient" label="Por un paciente" icon="fa fa-solid fa-angle-right" iconPos="right" />
             <Button @click="goToSearchArticleForEms" label="Por EMS" icon="fa fa-solid fa-angle-right" iconPos="right" />
             <Button @click="displayNewOrder" label="Regresar" />

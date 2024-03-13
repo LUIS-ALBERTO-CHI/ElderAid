@@ -16,13 +16,13 @@ isGoodEndDate(protection.dateEnd, protection.dateStart) ?
             </template>
             <div v-if="protectionState == ProtectionState.Normal" class="accordion-content">
                 <Button @click="changePosology" label="Cambiar la dosis" style="height: 40px !important;"></Button>
-                <Button v-show="isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Arrêter" style="height: 40px !important;"></Button>
+                <Button v-show="isStopDatePassed(protection.dateEnd)" @click="stopPosology" label="Detener cuidado" style="height: 40px !important;"></Button>
             </div>
             <div v-else-if="protectionState == ProtectionState.Change">
                 <ChangePosologyComponent :protection="protection" :protectionDosages="protectionDosages" @changePosologySubmitted="changedPosology" />
             </div>
             <div v-else class="accordion-content">
-                <span style="font-weight: bold;">Arrêter</span>
+                <span style="font-weight: bold;">Detener cuidado</span>
                 <div class="label-container">
                     <span>Date de fin :</span>
                     <Calendar v-model="stopEndDate" style="width: 50% !important" showIcon />
@@ -100,7 +100,7 @@ isGoodEndDate(protection.dateEnd, protection.dateStart) ?
                 }
                 try {
                     await ProtectionService.stopAsync(model).then(() => {
-                        NotificationService.showConfirmation("La posologie a bien été arrêtée");
+						NotificationService.showConfirmation("Se ha suspendido la dosis");
                         this.protectionState = this.ProtectionState.Normal;
                         this.$emit('refreshData');
                     });

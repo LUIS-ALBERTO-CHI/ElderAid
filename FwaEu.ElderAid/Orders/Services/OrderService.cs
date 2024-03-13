@@ -64,7 +64,7 @@ namespace FwaEu.ElderAid.Orders.Services
 
             var storedProcedure = _genericsessionContext.NhibernateSession.CreateSQLQuery(query);
             storedProcedure.SetParameter("PatientId", model.PatientId);
-            storedProcedure.SetParameter("Page", model.Page);
+            storedProcedure.SetParameter("Page", model.Page <= 0 ? 1 : model.Page);
             storedProcedure.SetParameter("PageSize", model.PageSize);
 
             var models = await storedProcedure.SetResultTransformer(Transformers.AliasToBean<GetAllOrdersResponse>()).ListAsync<GetAllOrdersResponse>();
