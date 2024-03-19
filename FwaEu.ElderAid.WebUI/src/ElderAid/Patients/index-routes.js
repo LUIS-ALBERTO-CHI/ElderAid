@@ -112,7 +112,7 @@ export default [
 		name: "TreatmentsReserve",
 		component: TreatmentPageComponent,
 		meta: {
-			title: "Traitements de réserve",
+			title: "Tratamientos de reserva",
 			breadcrumb: {
 				titleKey: "Tratamientos de reserva",
 				parentName: "PatientMedications",
@@ -184,9 +184,9 @@ export default [
 		name: "IncontinenceLevel",
 		component: IncontinenceLevelPageComponent,
 		meta: {
-			title: "Niveau d'incontinence",
+			title: "Nivel de incontinencia",
 			breadcrumb: {
-				titleKey: "Grado de incontinencia",
+				titleKey: "Nivel de incontinencia",
 				parentName: "Protection",
 			},
 		},

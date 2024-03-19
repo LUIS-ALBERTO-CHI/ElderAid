@@ -1,5 +1,5 @@
 {
-	"firstName": "Prénom",
-	"lastName": "Nom",
-	"email": "Courriel"
+	"firstName": "Nombre",
+	"lastName": "Apellido",
+	"email": "Correo electrónico"
 }

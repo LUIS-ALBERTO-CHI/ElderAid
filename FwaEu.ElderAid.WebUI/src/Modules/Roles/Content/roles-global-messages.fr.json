@@ -1,6 +1,6 @@
 {
-	"roleTitle": "Rôles",
-	"name": "Nom",
-	"usersAndPermissions": "Utilisateurs et droits",
-	"CanAdministrateRoles": "Peut gérer les rôles"
+	"roleTitle": "Roles",
+	"name": "Nombre",
+	"usersAndPermissions": "Usuarios y permisos",
+	"CanAdministrateRoles": "Puede administrar roles"
 }

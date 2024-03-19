@@ -1,22 +1,22 @@
 {
 	"homeTitle": "Inicio",
-	"edit": "Détails",
-	"modification": "Modification",
+	"edit": "Detalles",
+	"modification": "Modificación",
 
-	"labelActivity": "Champs d'activité",
-	"labelDescription": "Description",
-	"labelTarget": "Public visé",
-	"labelContacts": "Coordonnées",
-	"labelSchedule": "Horaires",
-	"labelKeywords": "Mots-clés",
-	"labelActions": "Groupe thématique",
+	"labelActivity": "Campo de actividad",
+	"labelDescription": "Descripción",
+	"labelTarget": "Público objetivo",
+	"labelContacts": "Contactos",
+	"labelSchedule": "Horarios",
+	"labelKeywords": "Palabras clave",
+	"labelActions": "Grupo temático",
 
-	"textSubject": "Information a propos l'acteur : {actorName}",
-	"textSalutation": "Bonjour,",
-	"textBody": "Veuillez trouver ci-dessous les coordonnées afin de joindre l’interlocuteur souhaité :",
-	"textClosing": "Cordialement,",
-	"textSignatureLine": "L’administrateur",
+	"textSubject": "Información sobre el actor: {actorName}",
+	"textSalutation": "Hola,",
+	"textBody": "A continuación, encontrará los detalles para contactar al interlocutor deseado:",
+	"textClosing": "Saludos cordiales,",
+	"textSignatureLine": "El administrador",
 
-	"CanAdminstrateApplicationMasterData": "Peut gérer les données référentiels",
-	"CanChangeIncontinenceLevel": "Peut changer le niveau d'incontinence"
+	"CanAdminstrateApplicationMasterData": "Puede administrar los datos maestros de la aplicación",
+	"CanChangeIncontinenceLevel": "Puede cambiar el nivel de incontinencia"
 }

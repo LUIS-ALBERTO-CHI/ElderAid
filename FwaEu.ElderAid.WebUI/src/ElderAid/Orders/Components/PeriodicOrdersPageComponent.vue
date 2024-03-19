@@ -100,7 +100,7 @@
 				if (patientProtections.length > 0)
 					return `${patientProtections.length} protection${patientProtections.length > 1 ? 's' : ''}`
 				else
-					return "Aucune protection"
+					return "Ninguna protección"
 			},
 			getQuantityPeriodicOder(patient) {
 				const patientProtections = this.protections.filter(protection => protection.patientId === patient.id);

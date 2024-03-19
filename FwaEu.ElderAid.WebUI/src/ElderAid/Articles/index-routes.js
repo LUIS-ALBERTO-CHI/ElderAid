@@ -21,7 +21,7 @@ export default [
         meta: {
             title: 'Buscar un articulo',
             breadcrumb: {
-                titleKey: 'Rechercher un article',
+                titleKey: 'Buscar un artículo',
                 parentName: 'Protection'
             },
         }
@@ -33,7 +33,7 @@ export default [
         meta: {
             title: 'Buscar un articulo',
             breadcrumb: {
-                titleKey: 'Rechercher un article',
+                titleKey: 'Buscar un artículo',
                 parentName: 'SearchPatientFromOrder'
             },
         }
@@ -45,7 +45,7 @@ export default [
         meta: {
             title: 'Buscar un articulo',
             breadcrumb: {
-                titleKey: 'Rechercher un article',
+                titleKey: 'Buscar un artículo',
                 parentName: 'Orders'
             },
         }

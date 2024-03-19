@@ -8,11 +8,11 @@
         <span>Registro diario ingresado : {{ patientData.dailyProtocolEntered }} CHF</span>
     </div>
     <div v-if="new Date(patientData.dateStart) >= new Date(new Date().getFullYear(), 0, 1)"  class="incontinence-info-container">
-        <span class="incontinence-info-label-title">Analyse de consommation à date</span>
-        <span v-if="patientData.dateStart && patientData.dateEnd">Entre {{ $d(patientData.dateStart, 'short') }} et {{ $d(patientData.dateEnd, 'short') }}</span>
+        <span class="incontinence-info-label-title">Análisis de consumo hasta la fecha</span>
+        <span v-if="patientData.dateStart && patientData.dateEnd">Entre el {{ $d(patientData.dateStart, 'short') }} y el {{ $d(patientData.dateEnd, 'short') }}</span>
         <Chart type="bar" :data="chartData" :options="chartOptions"   />
-        <span v-if="patientData.virtualDateWithoutOverPassed">Date virtuelle sans dépassement : {{ $d(patientData.virtualDateWithoutOverPassed, 'short') }} </span>
-        <span v-else>Date virtuelle sans dépassement : Aucune</span>
+        <span v-if="patientData.virtualDateWithoutOverPassed">Fecha virtual sin exceder : {{ $d(patientData.virtualDateWithoutOverPassed, 'short') }} </span>
+        <span v-else>Fecha virtual sin exceder : Ninguna</span>
     </div>
     <Button v-if="isUserCanToChangeIncontinence && !isIncontinenceLevelChange" @click="changeIncontinenceLevel"
             label="Cambiar el nivel de incontinencia" />

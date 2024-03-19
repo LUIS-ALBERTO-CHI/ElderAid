@@ -15,7 +15,7 @@
 				>{{ patient.roomName }}</span
 			>
 		</div>
-		<span>Actualización : 29/10/22 à 9:12</span>
+		<span>Actualización : 29/10/22 a las 9:12</span>
 	</div>
 </template>
 

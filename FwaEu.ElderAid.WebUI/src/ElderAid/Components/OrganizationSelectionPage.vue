@@ -61,7 +61,7 @@ export default {
 
             await CachePreloaderService.loadAllMasterDataAsync(true, true);
 
-            NotificationService.showConfirmation("Organisation mis à jour avec succès");
+			NotificationService.showConfirmation("Organización actualizada exitosamente");
             this.$router.push({ name: 'default' });
 
         }),

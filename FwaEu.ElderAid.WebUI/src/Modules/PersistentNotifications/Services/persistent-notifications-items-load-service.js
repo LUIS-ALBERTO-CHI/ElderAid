@@ -7,12 +7,12 @@ export default {
 		const notifications = await NotificationDataService.getAllAsync();
 		let notificationsList = [];
 		let notifGetMessages = [];
-        //NOTE: Cherche parmi les *-persistent-notification.js toutes les notificationTypes que nous voudrons affichées
+		//NOTE:Busca entre todos los archivos *-persistent-notification.js los notificationTypes que queremos mostrar.
         const persistentNotificationTypes = await PersistentNotificationTypesService.getAllAsync();
         for (let persistentNotifType of persistentNotificationTypes) {
 			for (let notif of notifications) { 
 				if (notif.notificationType == persistentNotifType.notificationType) { 	
-					notificationsList.push( //NOTE: Ajouter l'objet persistent notification model à la liste des notificationsList
+					notificationsList.push( //NOTE: Adicionar el objeto modelo de notificación persistente a la lista de notificationsList.
 						new PersistentNotificationModel(notif.id, notif.notificationType, notif.sentOn, notif.seenOn, undefined, notif.isSticky) /* NOTE: model in undefined at this stage */
 					);
 					notifGetMessages.push( persistentNotifType.getMessageAsync(notif.model) );

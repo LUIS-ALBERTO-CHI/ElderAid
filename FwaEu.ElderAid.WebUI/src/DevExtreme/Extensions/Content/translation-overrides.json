@@ -1,23 +1,23 @@
 {
 	"fr": {
 
-		"dxLookup-searchPlaceholder": "Nombre minimum de caractères : {0}",
-		"dxList-refreshingText": "Mise à jour...",
-		"dxFileUploader-dropFile": "Ou déposez le ici",
-		"dxScheduler-recurrenceRepeatOn": "Répéter le",
-		"dxDataGrid-summaryMin": "Min : {0}",
-		"dxDataGrid-summaryMinOtherColumn": "Minimum de {1} est {0}",
-		"dxDataGrid-summaryMax": "Max : {0}",
-		"dxDataGrid-summaryMaxOtherColumn": "Maximum de {1} est {0}",
-		"dxDataGrid-summaryAvg": "Moy : {0}",
-		"dxDataGrid-summaryAvgOtherColumn": "Moyenne de {1} est {0}",
-		"dxDataGrid-summarySum": "Somme : {0}",
-		"dxDataGrid-summarySumOtherColumn": "Somme de {1} est {0}",
+		"dxLookup-searchPlaceholder": "Número mínimo de caracteres: {0}",
+		"dxList-refreshingText": "Actualizando...",
+		"dxFileUploader-dropFile": "O arrastra el archivo aquí",
+		"dxScheduler-recurrenceRepeatOn": "Repetir en",
+		"dxDataGrid-summaryMin": "Mínimo : {0}",
+		"dxDataGrid-summaryMinOtherColumn": "Mínimo de {1} es {0}",
+		"dxDataGrid-summaryMax": "Máximo : {0}",
+		"dxDataGrid-summaryMaxOtherColumn": "Máximo de {1} es {0}",
+		"dxDataGrid-summaryAvg": "Promedio : {0}",
+		"dxDataGrid-summaryAvgOtherColumn": "Promedio de {1} es {0}",
+		"dxDataGrid-summarySum": "Suma : {0}",
+		"dxDataGrid-summarySumOtherColumn": "Suma de {1} es {0}",
 		"dxDataGrid-summaryCount": "Total : {0}",
-		"dxDataGrid-editingEditRow": "Modifier",
-		"dxDataGrid-editingSaveRowChanges": "Enregistrer",
-		"dxSwitch-switchedOnText": "Oui",
-		"dxSwitch-switchedOffText": "Non"
+		"dxDataGrid-editingEditRow": "Modificar",
+		"dxDataGrid-editingSaveRowChanges": "Guardar",
+		"dxSwitch-switchedOnText": "Si",
+		"dxSwitch-switchedOffText": "No"
 
 	},
 	"en": {

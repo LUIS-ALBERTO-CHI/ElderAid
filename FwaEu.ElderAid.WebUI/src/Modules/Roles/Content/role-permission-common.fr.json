@@ -1,7 +1,7 @@
 {
-	"permissionInvariantId": "Permission",
-	"roleId": "Rôle",
-	"rolePermissionLinksTitle": "Rôles / Permissions",
-	"rolePermissionLinksDescription": "Gérer les associations des permissions aux rôles",
-	"usersAndPermissions": "Utilisateurs et droits"
+	"permissionInvariantId": "Permiso",
+	"roleId": "Rol",
+	"rolePermissionLinksTitle": "Roles / Permisos",
+	"rolePermissionLinksDescription": "Gestionar las asociaciones de permisos a roles",
+	"usersAndPermissions": "Usuarios y permisos"
 }

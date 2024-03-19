@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="title" style="text-align: center;">
-      Mettez le code QR à l'intérieur de la boîte.
-    </div>
+      <div class="title" style="text-align: center;">
+          Coloque el código QR dentro del recuadro.
+      </div>
     <div class="center stream">
       <qr-stream @decode="onDecode" class="mb">
         <div style="color: red;" class="frame"></div>
       </qr-stream>
-      Résultat du scan: {{ scannedCode }}
+      Resultado del escaneo: {{ scannedCode }}
     </div>
     <div class="buttons">
       <Button @click="confirm" label="Confirmer"></Button>
