@@ -142,7 +142,7 @@
                     this.fillOrders();
 
                 } else {
-                    NotificationService.showError("La connexion avec le serveur a été perdue. Retentez plus tard")
+                    NotificationService.showError("Se perdió la conexión con el servidor. Vuelve a intentarlo más tarde")
                 }
             },
             displayOrderComponent(isOrderForEms, index) {
@@ -181,7 +181,7 @@
                         this.hideCancelOrderDisplay();
                     })
                 } catch (error) {
-                    NotificationService.showError("Une erreur est survenue lors de l'annulation de la commande")
+                    NotificationService.showError("Se produjo un error al cancelar el pedido")
                 }
             },
         },

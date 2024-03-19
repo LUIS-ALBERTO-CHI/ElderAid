@@ -1,8 +1,8 @@
 {
-	"chooseFileButton": "Browse...",
-	"errorImport": "Error importing files",
-	"uploadFileButton": "Import",
-	"uploadOtherFiles": "Upload other files",
-	"dragFileText": "Drag and drop files here to upload",
-	"importResult": "Result"
+	"chooseFileButton": "Buscar...",
+	"errorImport": "Error al importar archivos",
+	"uploadFileButton": "Importar",
+	"uploadOtherFiles": "Sube otros archivos",
+	"dragFileText": "Arrastre y suelte archivos aquí para cargarlos",
+	"importResult": "Resultado"
 }

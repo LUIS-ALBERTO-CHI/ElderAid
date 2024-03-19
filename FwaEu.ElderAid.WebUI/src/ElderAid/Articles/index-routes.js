@@ -7,9 +7,9 @@ export default [
         name: 'SearchArticle',
         component: ArticlesSearchPageComponent,
         meta: {
-            title: 'Commander un autre produit',
+            title: 'Pedir otro producto',
             breadcrumb: {
-                titleKey: 'Pedir otro producto',
+                titleKey: 'Commander un article',
                 parentName: 'Patient'
             },
         }
@@ -55,7 +55,7 @@ export default [
 		name: 'AddPosology',
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Ajout d\'une protection, posologie',
+			title: 'Agregar protección, dosis.',
 			breadcrumb: {
 				titleKey: 'Ajout d\'une protection, posologie',
 				parentName: 'SearchArticleFromProtection'
@@ -67,9 +67,9 @@ export default [
 		name: 'OrderArticle',
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: 'Ordenar un artículo',
 			breadcrumb: {
-				titleKey: 'Ordenar un pedido',
+				titleKey: 'Commander un article',
 				parentName: 'SearchArticle'
 			},
 		}
@@ -79,7 +79,7 @@ export default [
 		name: 'OrderArticleFromOrder',
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: 'Ordenar un artículo',
 			breadcrumb: {
 				titleKey: 'Commander un article',
 				parentName: 'Orders'
@@ -91,7 +91,7 @@ export default [
 		name: 'OrderArticleFromOrderWithArticleId',
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: 'Ordenar un artículo',
 			breadcrumb: {
 				titleKey: 'Commander un article',
 				parentName: 'SearchPatientFromOrderWithArticleId'
@@ -103,7 +103,7 @@ export default [
 		name: 'OrderArticleForEmsFromOrder',
 		component: PatientOrderArticlePageComponent,
 		meta: {
-			title: 'Commander un article',
+			title: 'Ordenar un artículo',
 			breadcrumb: {
 				titleKey: 'Commander un article',
 				parentName: 'SearchArticleForEMSFromOrder'

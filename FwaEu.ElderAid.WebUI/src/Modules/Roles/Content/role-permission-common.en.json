@@ -2,6 +2,6 @@
 	"permissionInvariantId": "Permission",
 	"roleId": "Role",
 	"rolePermissionLinksTitle": "Roles / Permissions",
-	"rolePermissionLinksDescription": "Manage permissions linked to roles",
+	"rolePermissionLinksDescription": "Administrar permisos vinculados a roles",
 	"usersAndPermissions": "Users and permissions"
 }

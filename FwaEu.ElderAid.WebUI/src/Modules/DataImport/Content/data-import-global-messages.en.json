@@ -1,10 +1,10 @@
 {
 	"dataImportMenuItemText": "Data import",
-	"dataImportMenuItemDescription": "Mass creation and modification of data by importing files",
-	"nothingCreatedOrUpdated": "Nothing was created or updated",
-	"importOf": "Import of {0}",
-	"andOther": "None|and 1 other |and {n} others",
-	"added": "Nothing was created|1 row created|{n} rows created",
-	"updated": "Nothing was updated|1 row updated|{n} rows updated",
-	"CanImport": "Can import data"
+	"dataImportMenuItemDescription": "Creación y modificación masiva de datos mediante la importación de archivos.",
+	"nothingCreatedOrUpdated": "No se creó ni actualizó nada",
+	"importOf": "Importación de {0}",
+	"andOther": "Ninguno|y 1 más |y {n} más",
+	"added": "No se creó nada|1 fila creada|{n} filas creadas",
+	"updated": "No se actualizó nada|1 fila actualizada|{n} filas actualizadas",
+	"CanImport": "Puede importar datos"
 }

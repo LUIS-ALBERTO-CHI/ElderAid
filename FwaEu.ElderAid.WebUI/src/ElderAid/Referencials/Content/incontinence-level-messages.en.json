@@ -1,9 +1,9 @@
 {
-    "name": "Incontinence level",
-    "incontinenceLevelTitle": "Incontinence levels",
-    "incontinenceLevelDescription": "Manage incontinence levels",
-    "incontinenceLevelGroupTitle": "Referencials",
-    "amount": "Amount",
-    "year": "Year",
-    "level": "Level of incontinence"
+	"name": "Paquete de incontinencia",
+	"incontinenceLevelTitle": "Paquetes de incontinencia",
+	"incontinenceLevelDescription": "Administrar los paquetes de incontinencia",
+	"incontinenceLevelGroupTitle": "Referenciales",
+	"amount": "Cantidad",
+	"year": "Año",
+	"level": "Nivel de incontinencia"
 }

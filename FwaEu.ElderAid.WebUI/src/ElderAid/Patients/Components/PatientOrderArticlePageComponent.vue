@@ -51,7 +51,7 @@
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="text-align: center;">Pedir otro artúcilo por {{ patient.fullName }}</span>
+                    <span style="text-align: center;">Pedir otro articulo por {{ patient.fullName }}</span>
                     <i class="fa fa-solid fa-angle-right"></i>
                 </Button>
                 <Button style="height: 45px !important; width: 100%; display: flex; justify-content: space-between; align-items: center;">

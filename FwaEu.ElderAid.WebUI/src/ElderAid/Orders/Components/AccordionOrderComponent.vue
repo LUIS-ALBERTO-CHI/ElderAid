@@ -31,7 +31,7 @@
                         <span>{{ order.updatedBy }}</span>
                         <div v-if="order.state == 'Delivred'" style="color: #2ba859" class="accordion-header-title-area">
                             <i class="fa-solid fa-truck" />
-                            <span>Livrée</span>
+                            <span>Entregado</span>
                         </div>
                         <div v-else-if="order.state == 'Pending'" style="opacity: 0.8;" class="accordion-header-title-area">
                             <i class="fa-solid fa-hourglass"></i>
