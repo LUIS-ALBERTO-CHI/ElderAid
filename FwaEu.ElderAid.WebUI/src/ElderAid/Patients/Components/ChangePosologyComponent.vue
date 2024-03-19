@@ -122,7 +122,7 @@
                         this.$emit('changePosologySubmitted');
                     })
                 } catch {
-                    NotificationService.showError("Une erreur est survenue lors de la modification de la posologie");
+					NotificationService.showError("Se ha producido un error al modificar la posología");
                 }
             },
             posologyArrayToDictionnary() {
@@ -153,16 +153,16 @@
             async checkValidation() {
                 this.formError = "";
                 const validationSchema = Yup.object().shape({
-                    startDate: Yup.date().required("La date de changement est requise."),
+					startDate: Yup.date().required("Se requiere la fecha de cambio"),
                     endDate: Yup.date()
-                        .required("La date de fin est requise.")
-                        .min(Yup.ref('startDate'), "La date de fin doit être supérieure ou égale à la date de changement."),
+						.required("Se requiere la fecha de finalización")
+						.min(Yup.ref('startDate'), "La fecha de finalización debe ser posterior o igual a la fecha de cambio"),
                     posology: Yup.array().of(
                         Yup.object().shape({
                             quantity: Yup.number()
-                                .required("La quantité de la posologie est requise.")
-                                .min(1, "La quantité doit être supérieure à 0"),
-                            hour: Yup.date().required("L'heure est requise."),
+								.required("Se requiere la cantidad de la dosis")
+								.min(1, "La cantidad debe ser mayor que 0"),
+							hour: Yup.date().required("Se requiere la hora"),
                         })
                     ),
                 });

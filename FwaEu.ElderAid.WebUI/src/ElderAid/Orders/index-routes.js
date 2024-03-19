@@ -35,7 +35,7 @@ export default [
 		name: "PeriodicOrder",
 		component: PeriodicOrderPageComponent,
 		meta: {
-			title: "Commandes périodiques à valider",
+			title: "Pedidos periódicos a validar",
 			breadcrumb: {
 				titleKey: "Pedidos periódicos a validar",
 				parentName: "Patient",

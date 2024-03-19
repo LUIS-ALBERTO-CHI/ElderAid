@@ -26,7 +26,7 @@
                     <div v-else>
                         <span class="header-subtitle">{{ getSubtitle() }}</span>
                     </div>
-                    <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} à {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn)) }}</span>
+                    <span class="header-subtitle">{{ $d(new Date(order.updatedOn)) }} a las {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(order.updatedOn)) }}</span>
                     <div class="accordion-footer-area">
                         <span>{{ order.updatedBy }}</span>
                         <div v-if="order.state == 'Delivred'" style="color: #2ba859" class="accordion-header-title-area">

@@ -2,7 +2,7 @@
 	<div class="page-home">
 		<div class="flex-section justify-content-center" v-if="isSingleOrganization">
 			<span class="organization-text" v-if="organizations.length > 0">{{ organizations[0].name }}</span>
-			<span class="organization-text" v-else>Vous n'êtes affecté à aucun EMS (base de données)</span>
+			<span class="organization-text" v-else>Mo está asignado a ningún base de datos</span>
 		</div>
 		<div v-else class="change-organization-container">
 			<span @click="goToOrganizationSelectionPage">{{ organization?.name }}</span>
@@ -33,7 +33,7 @@
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-repeat vignette-icon fa-fw" style="color: #d8b291;" />
 					<div style="display: flex; flex-direction: column;">
-						<span class="vignette-text">Pedidos periodicos</span>
+						<span class="vignette-text">Pedidos periódicos</span>
 						 <!--<span class="vignette-text-subtitle">{{ getNumberOfPatientToValidate() }}</span>--> 
 					</div>
 				</div>
@@ -155,7 +155,7 @@
 			},
 			getNumberOfPatientToValidate() {
 				if (!this.protections || !this.periodicOrders) {
-					return '0 patients à valider';
+					return '0 pacientes a validar';
 				}
 
 				const patientsToValidate = this.protections
@@ -165,7 +165,7 @@
 					)
 					.length;
 
-				return `${patientsToValidate} ${patientsToValidate !== 1 ? 'patients' : 'patient'} à valider`;
+				return `${patientsToValidate} ${patientsToValidate !== 1 ? 'patients' : 'patient'} para validar`;
 			},
 			isPatientInPeriodicOrders(patientId) {
 				return this.periodicOrders.some(order => order.patientId === patientId);

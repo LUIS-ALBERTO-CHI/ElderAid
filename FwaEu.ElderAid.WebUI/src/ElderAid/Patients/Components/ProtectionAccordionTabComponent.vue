@@ -8,7 +8,7 @@
                     <span class="header-subtitle">
                         {{
 isGoodEndDate(protection.dateEnd, protection.dateStart) ?
-                    `De ${$d(new Date(protection.dateStart))} à ${$d(new Date(protection.dateEnd))}`
+                    `Del ${$d(new Date(protection.dateStart))} a las ${$d(new Date(protection.dateEnd))}`
                     : $d(new Date(protection.dateStart))
                         }}
                     </span>

@@ -7,7 +7,7 @@
                 <span class="stock-consumption-item-title">{{ stock.article?.title }}</span>
                 <span>{{ stock.quantity }} {{ stock.article?.invoicingUnit }}</span>
                 <span>
-                    {{$d(new Date(stock.updatedOn))}}  à {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(stock.updatedOn)) }} par {{ stock.updatedBy }}
+                    {{$d(new Date(stock.updatedOn))}}  a las {{ new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(stock.updatedOn)) }} por {{ stock.updatedBy }}
                 </span>
             </div>
         </div>

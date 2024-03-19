@@ -1,11 +1,12 @@
 {
-    "name": "Forfait d'incontinence",
-    "incontinenceLevelTitle": "Forfaits d'incontinence",
-    "incontinenceLevelDescription": "Administrer les forfaits  d'incontinence",
-    "incontinenceLevelGroupTitle": "Référentiels",
-    "amount": "Montant",
-    "year": "Année",
-    "level": "Niveau d'incontinence"
+	"name": "Paquete de incontinencia",
+	"incontinenceLevelTitle": "Paquetes de incontinencia",
+	"incontinenceLevelDescription": "Administrar los paquetes de incontinencia",
+	"incontinenceLevelGroupTitle": "Referenciales",
+	"amount": "Cantidad",
+	"year": "Año",
+	"level": "Nivel de incontinencia"
 }
+
   
   

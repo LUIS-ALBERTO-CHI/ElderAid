@@ -92,10 +92,10 @@ namespace FwaEu.ElderAid.Patients.Services
                     _logger.LogWarning($"TO CHECK: Patient id {id} has no consume but the start date is {result.DateStart.ToString()} ");
                 }
 
-                //date virtuelle de dépassement
-                //date du jour + (forfait à date du jour -dépense à date du jour) / (dépenses de protocole journalier - forfait du jour)
+				// fecha virtual de vencimiento
+				// fecha actual + (asignación actual - gasto actual) / (gastos diarios del protocolo - asignación diaria)
 
-                DateTime? virtualDateWithoutOverPassedFinal = null;
+				DateTime? virtualDateWithoutOverPassedFinal = null;
 
                 if (overPassed == 0)
                 {

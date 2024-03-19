@@ -1,8 +1,8 @@
 {
-	"importResult": "Résultat",
-	"chooseFileButton": "Parcourir...",
-	"dragFileText": "Glissez et déposez des fichiers ici",
-	"uploadOtherFiles": "Importer d'autres fichiers",
-	"errorImport": "Erreur lors de l'import de fichiers",
-	"uploadFileButton": "Importer"
+	"importResult": "Resultado",
+	"chooseFileButton": "Examinar...",
+	"dragFileText": "Arrastra y suelta archivos aquí",
+	"uploadOtherFiles": "Importar otros archivos",
+	"errorImport": "Error al importar archivos",
+	"uploadFileButton": "Importar"
 }

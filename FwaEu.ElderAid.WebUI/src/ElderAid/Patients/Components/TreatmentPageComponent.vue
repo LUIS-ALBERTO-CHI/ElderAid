@@ -15,7 +15,7 @@
                             </div>
                             <span v-show="treatment.appliedArticle != null" class="header-subtitle">{{treatment.appliedArticle?.title }}</span>
                             <span class="header-subtitle">{{treatment.dosageDescription}}</span>
-                            <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd, treatment.dateStart) ? `De ${$d(new Date(treatment.dateStart))} à ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
+                            <span class="header-subtitle">{{isGoodEndDate(treatment.dateEnd, treatment.dateStart) ? `Desde ${$d(new Date(treatment.dateStart))} a las ${$d(new Date(treatment.dateEnd))}` : $d(new Date(treatment.dateStart))}}</span>
                         </div>
                     </template>
                     <OrderComponent v-if="getArticleToOrder(treatment)" :article="getArticleToOrder(treatment)" :patientOrders="patientOrders" :patientId="patient.id" />

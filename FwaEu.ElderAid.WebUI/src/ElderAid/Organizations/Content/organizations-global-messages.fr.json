@@ -1,16 +1,16 @@
 {
-	"organizationGroupTitle": "Référentiels",
+	"organizationGroupTitle": "Última validación por",
 	"organizationTitle": "EMS",
 
-	"databaseName": "Base de données",
-	"isActive": "Actif",
-	"pharmacyEmail": "Courriel",
+	"databaseName": "Base de datos",
+	"isActive": "Activo",
+	"pharmacyEmail": "Correo",
 	"publicWebURL": "URL",
-	"publicMobileURL": "URL mobile",
-	"isStockPharmacyPerBox": "Sortie du stock en boîte par défaut",
-	"orderPeriodicityDays": "Périodicité des commandes (en jours)",
-	"orderPeriodicityDayOfWeek": "Jour de la semaine de la commande (1 = Lundi)",
-	"lastPeriodicityOrder": "Date de la dernière commande",
-	"periodicityOrderActivationDaysNumber": "Délais de validation des commandes (en jours)"
+	"publicMobileURL": "URL móvil",
+	"isStockPharmacyPerBox": "Salida del stock en caja por defecto",
+	"orderPeriodicityDays": "Periodicidad de los pedidos (en días)",
+	"orderPeriodicityDayOfWeek": "Día de la semana del pedido (1 = lunes)",
+	"lastPeriodicityOrder": "Fecha del último pedido",
+	"periodicityOrderActivationDaysNumber": "Plazo de validación de pedidos (en días)"
 }
 

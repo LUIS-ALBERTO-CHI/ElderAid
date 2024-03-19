@@ -16,7 +16,7 @@
             <div v-if="validatedById">
                 <span>{{showPeriodicOrderValidationUser(validatedById, validatedOn)}}</span>
             </div>
-            <Button @click="onSubmit" label="Valider" style="height: 40px !important;"></Button>
+            <Button @click="onSubmit" label="Validar" style="height: 40px !important;"></Button>
         </div>
         <empty-list-component v-show="periodicOrders != null && periodicOrders.length < 1" />
     </div>
@@ -85,8 +85,8 @@
                 })
             },
             quantityNeeded(periodicOrder) {
-                return `Besoin de ${periodicOrder.quantityPerDay * this.organization.orderPeriodicityDays} ${periodicOrder.article.invoicingUnit}
-                pour ${this.organization.orderPeriodicityDays} prochains jours`
+                return `Necesita de ${periodicOrder.quantityPerDay * this.organization.orderPeriodicityDays} ${periodicOrder.article.invoicingUnit}
+                para los ${this.organization.orderPeriodicityDays} próximos días`
             },
             getPeriodicQuantity(periodicOrder, article) {
                 const filteredPeriodicOrderValidations = this.periodicOrderValidations.filter(x => x.articleId == periodicOrder.articleId);
@@ -108,7 +108,7 @@
             showPeriodicOrderValidationUser(userId, date) {
                 const user = this.users.find(u => u.id === userId);
                 const userName = UserFormatterService.getUserFullName(user);
-                return `Dernière validation par ${userName} le ${new Date(date).toLocaleDateString() } à ${new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(date))}`;
+                return `Última validación por ${userName} el día ${new Date(date).toLocaleDateString() } a las ${new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' }).format(new Date(date))}`;
             },
             async onSubmit() {
                 var periodicOrders = this.periodicOrders.map(x => {
@@ -125,12 +125,12 @@
                 }
                 try {
                     await OrderService.validatePeriodicOrderAsync(model).then(() => {
-                        NotificationService.showConfirmation('Commandes périodiques validées')
+                        NotificationService.showConfirmation('Pedidos periódicos validados')
                         PeriodicOrdersMasterDataService.clearCacheAsync();
                         this.$router.push({ name: 'PeriodicOrders' })
                     })
                 } catch (error) {
-                    NotificationService.showError('Une erreur est survenue lors de la validation des commandes périodiques')
+                    NotificationService.showError('Ocurrió un error al intentar validar los pedidos periódicos')
                 }
             }
         }

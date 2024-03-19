@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FwaEu.Modules.GenericImporter
 {
-	// NOTE: Les valeurs d'enum ci-dessous doivent voir le 3e bit à 1 pour être considéré comme IsKey
+	// NOTA: Los valores de las enumeraciones a continuación deben tener el tercer bit establecido en 1 para ser considerados como IsKey
 	[Flags]
 	public enum IsKeyValue
 	{

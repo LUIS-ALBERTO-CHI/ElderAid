@@ -1,4 +1,4 @@
 {
-	"UniqueDbConstraint": "Cet élément ne peut être édité ou créé car il ne respecte pas une contrainte d'unicité imposée par la base de données.",
-	"DeleteDbConstraint": "Vous ne pouvez pas supprimer cet élément car il est utilisé dans l'application."
+	"UniqueDbConstraint": "Este elemento no puede ser editado o creado porque no cumple con una restricción de unicidad impuesta por la base de datos.",
+	"DeleteDbConstraint": "No puedes eliminar este elemento porque está siendo utilizado en la aplicación."
 }

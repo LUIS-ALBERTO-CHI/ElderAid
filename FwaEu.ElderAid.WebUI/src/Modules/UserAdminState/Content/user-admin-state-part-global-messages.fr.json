@@ -1,5 +1,5 @@
 {
-	"state": "État",
-	"isAdmin": "Est administrateur",
-	"OnlyAdminCanDefineAdminProperty": "Seul un administrateur peut définir qu'un autre utilisateur est administrateur."
+	"state": "Estado",
+	"isAdmin": "Es administrador",
+	"OnlyAdminCanDefineAdminProperty": "Solo un administrador puede definir que otro usuario es administrador."
 }

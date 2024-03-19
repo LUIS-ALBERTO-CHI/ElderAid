@@ -1,7 +1,6 @@
 {
-  "name": "Forme galénique",
-  "dosageFormTitle": "Formes galéniques",
-  "dosageFormDescription": "Administrer des formes galéniques",
-  "dosageFormGroupTitle": "Référentiels"
+	"name": "Forma galénica",
+	"dosageFormTitle": "Formas galénicas",
+	"dosageFormDescription": "Administrar formas galénicas",
+	"dosageFormGroupTitle": "Referenciales"
 }
-
