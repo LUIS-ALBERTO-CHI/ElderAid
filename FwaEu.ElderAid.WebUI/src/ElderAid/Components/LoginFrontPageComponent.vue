@@ -1,6 +1,6 @@
 <template>
 	<div class="login-page">
-		<img @click="goToHome" class="logo-login" alt="" src="../Content/logo2.jpeg" />
+		<img @click="goToHome" class="logo-login" alt="" src="../Content/elder-aid-logo.png" />
 		<page-container type="form">
 			<h3 class="login-box-content">{{ $t('welcomeMessage', { applicationName: applicationName }) }}</h3>
 			<div class="login-box-container">

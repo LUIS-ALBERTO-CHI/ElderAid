@@ -12,11 +12,12 @@
 }
 
 .main-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  padding: 0 10px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	height: 50px;
+	padding: 0 10px;
+	background-color: #1081D3;
 }
 
 /* .app-header .container-logo {
@@ -63,11 +64,12 @@
 
 /* Home Page */
 .page-home {
-  height: 100%;
-  margin: 0px !important;
-  display: flex;
-  flex-direction: column;
-  row-gap: 15px;
+	height: 100%;
+	margin: 0px !important;
+	display: flex;
+	flex-direction: column;
+	row-gap: 15px;
+	background-color: #D3D3D3
 }
 
 .home-content {
@@ -136,9 +138,9 @@
 }
 
 .vignette-list {
-  display: flex;
-  flex-direction: column;
-  row-gap: 15px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 15px;
 }
 
 .vignette-item {

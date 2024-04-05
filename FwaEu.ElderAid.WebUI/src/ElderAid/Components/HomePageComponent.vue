@@ -46,17 +46,17 @@
 					<span class="vignette-text">Stock de farmacia</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>--> 
+			</div> 
 
-			 <!-- <div class="vignette-item" style="opacity: 0.4;">
+			  <div class="vignette-item" style="opacity: 0.4;">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-truck vignette-icon fa-fw" style="color: #a5ae9d;" />
 					<span class="vignette-text">Livraison (en cours de développement)</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
-			</div>  -->
+			</div>  
 
-			 <!--<div @click="goToProfilPage" class="vignette-item">
+			 <div @click="goToProfilPage" class="vignette-item">
 				<div class="vignette-main-info">
 					<i class="fa-regular fa-gear vignette-icon fa-fw" style="color: #bb8a7c;" />
 					<span class="vignette-text">Ajustes</span>
@@ -64,9 +64,9 @@
 				<i class="fa-regular fa-angle-right chevron-icon" />
 			</div>--> 
 		</div>
-		<footer>
+		 <footer>
 			<application-footer-component />
-		</footer>
+		</footer> 
 	</div>
 </template>
 <script>

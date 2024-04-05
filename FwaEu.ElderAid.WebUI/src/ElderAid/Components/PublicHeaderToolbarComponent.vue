@@ -3,7 +3,7 @@
 	</vue-use-online> -->
 	<div v-show="isBreadcrumbsEnabled" class="header-container">
 		<breadcrumbs />
-		<img @click="goToHome" class="logo" alt="" src="../Content/logo2.jpeg" />
+		<img @click="goToHome" class="logo" alt="" src="../Content/elder-aid-logo.png" />
 	</div>
 </template>
 

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-	import CompanyLogo from '@/ElderAid/Content/logo-company.png';
+	import CompanyLogo from '@/ElderAid/Content/elder-aid-logo.png';
 
 	export default {
 		props: {

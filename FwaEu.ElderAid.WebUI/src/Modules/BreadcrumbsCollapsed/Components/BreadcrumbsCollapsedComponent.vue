@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <router-link v-if="parentNode !== null" :to="parentNode.to" class="breadcrumb-node-link" @click="nodeClicked(parentNode)">
-            <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: var(--primary-text-color); font-size: 26px;"></i>
+            <i @click="nodeClicked(parentNode)" class="fa-solid fa-angle-left" style="color: white; font-size: 26px;"></i>
         </router-link>
         <breadcrumbs-collapsed-reduce v-if="crumbs?.length > 0" :crumbs="crumbs"></breadcrumbs-collapsed-reduce>
 
