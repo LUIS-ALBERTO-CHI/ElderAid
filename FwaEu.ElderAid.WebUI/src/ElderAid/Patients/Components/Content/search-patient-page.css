@@ -27,6 +27,7 @@
 
 .search-input {
     width: 100%;
+  
 }
 
 .patient-list {
@@ -52,7 +53,7 @@
     padding: 5px;
     justify-content: space-between;
     align-items: center;
-    border-left: 12px solid #81d0c6;
+    border-left: 30px solid #1A78EB;
     opacity: 1;
     background-color: white;
 }
@@ -63,6 +64,7 @@
 
 .patient-item-inactive {
     opacity: 0.5;
+    border-left: 30px solid #E4E90B;
 }
 
 .name-patient-area {
@@ -89,6 +91,7 @@
     color: #1A0DAB;
     text-decoration: underline;
     align-self: center;
+    cursor: pointer;
 }
 
 .patient-not-found {

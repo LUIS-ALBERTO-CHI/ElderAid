@@ -64,7 +64,7 @@
 		padding: 0px 0px;
 		margin: 0px;
 		background-color: #0078D4;
-		color: #C7E0F4;
+		color: #E3F3F8;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); /* TODO: Use variables https://dev.azure.com/fwaeu/TemplateCore/_workitems/edit/4184/*/
 	}
 
