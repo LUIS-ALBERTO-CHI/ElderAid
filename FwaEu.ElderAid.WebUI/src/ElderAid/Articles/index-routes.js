@@ -57,7 +57,7 @@ export default [
 		meta: {
 			title: 'Agregar protección, dosis.',
 			breadcrumb: {
-				titleKey: 'Ajout d\'une protection, posologie',
+				titleKey: 'Agregar protección, dosis.',
 				parentName: 'SearchArticleFromProtection'
 			},
 		}

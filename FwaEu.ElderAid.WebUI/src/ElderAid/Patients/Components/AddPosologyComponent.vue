@@ -1,6 +1,6 @@
 <template>
     <div class="accordion-content">
-        <span style="font-weight: bold;">Ajouter la posologie</span>
+        <span style="font-weight: bold;">Agregar dosis</span>
         <div class="label-container">
             <span>Fecha de inicio :</span>
             <Calendar v-model="changeForm.startDate" style="width: 50% !important" showIcon />
