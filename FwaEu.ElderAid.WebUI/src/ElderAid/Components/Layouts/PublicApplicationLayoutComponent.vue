@@ -45,7 +45,7 @@
 
 	.anonymous-page-layout {
 		width: 100%;
-		background-color: #e3f3f8;
+		background-color: #FFFFFF;
 	}
 
 		.anonymous-page-layout .footer {
@@ -69,6 +69,6 @@
 	}
 
 	.layout-content-container {
-		background-color: #e3f3f8;
+		background-color: #FFFFFF;
 	}
 </style>

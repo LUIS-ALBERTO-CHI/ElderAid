@@ -2,7 +2,7 @@
 .breadcrumbs {
 	padding: 10px;
 	position: relative;
-	color: var(--primary-text-color);
+	color: #000000 !important;
 	width: 80%;
 	min-width: 320px;
 }
@@ -29,14 +29,14 @@
 .crumb {
 	text-decoration: none;
 	font-family: sans-serif;
-	color: var(--primary-text-color);
+	color: #000000;
 }
 
 .crumb-link {
 	display: inline-block;
 	padding: 3px 5px;
 	border-radius: 20px;
-	color: var(--primary-text-color);
+	color: #000000 !important;
 }
 
 .crumb a:hover,
@@ -46,11 +46,11 @@
 }
 
 .crumb-no-link {
-	color: var(--primary-text-color);
+	color: #000000 !important;
 }
 .crumb-separator {
 	padding-left: 5px;
-	color: white;
+	color: #000000;
 }
 
 .dropdown {
@@ -66,7 +66,7 @@
 }
 
 .dropdown-button-icon {
-	color: var(--secondary-text-color);
+	color: #000000 !important;
 	font-size: 18px;
 }
 

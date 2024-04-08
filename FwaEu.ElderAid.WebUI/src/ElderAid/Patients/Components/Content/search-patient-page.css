@@ -45,17 +45,17 @@
 }
 
 .patient-item {
-    color: var(--alt-secondary-text-color);
-    height: 60px;
-    border-radius: 6px;
-    box-shadow: 0px 0px 5px 0px var(--primary-text-color);
-    display: flex;
-    padding: 5px;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 30px solid #1A78EB;
-    opacity: 1;
-    background-color: white;
+	color: var(--alt-secondary-text-color);
+	height: 60px;
+	border-radius: 6px;
+	box-shadow: 0px 0px 5px 0px var(--primary-text-color);
+	display: flex;
+	padding: 5px;
+	justify-content: space-between;
+	align-items: center;
+	border-left: 20px solid #0088F6;
+	opacity: 1;
+	background-color: white;
 }
 
 .patient-item:hover {

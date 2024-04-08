@@ -6,7 +6,7 @@
 				<i
 					class="fa-solid fa-circle"
 					:class="
-						patient.isActive ? 'active-patient-text' : 'inactive-patient-text'
+						circleClass
 					"
 				/>
 			</div>
@@ -39,7 +39,11 @@ export default {
 				: patient?.fullName;
 		},
 	},
-	computed: {},
+		computed: {
+			circleClass() {
+				return this.patient.isActive ? "active-patient-text" : "inactive-patient-text";
+			},
+		},
 };
 </script>
 <style type="text/css">

@@ -13,7 +13,7 @@
                         <span>{{cuttedName(patient)}}</span>
                         <i v-show="!patient.isActive" class="fa-solid fa-circle patient-state" />
                     </div>
-                    <span><i class="fa fa-solid fa-bed" style="margin-right: 10px;"></i>{{patient.roomName}}</span>
+                    <span><i class="fa fa-solid fa-bed" style="margin-right: 10px; color: #0088F6"></i>{{patient.roomName}}</span>
                 </div>
             </div>
         </div>

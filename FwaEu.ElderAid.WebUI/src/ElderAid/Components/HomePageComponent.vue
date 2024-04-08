@@ -11,7 +11,7 @@
 			<!--componente de pagina de pacientes-->
 			<div class="vignette-item">
 				<div @click="goToPatientPage" class="vignette-main-info">
-					<i class="fa-regular fa-user fa-fw vignette-icon" style="color: #94a595;" />
+					<i class="fa-regular fa-user fa-fw vignette-icon" style="color: #0088F6;" />
 					<span v-show="patientsActive.length > 0" class="vignette-text">
 						{{ patientsActive.length }}
 						Pacientes
@@ -23,7 +23,7 @@
 			<!--Componente de pagina de ordenes-->
 			 <div @click="goToOrdersPage" class="vignette-item">
 				<div class="vignette-main-info">
-					<i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #bda6a0;" />
+					<i class="fa-regular fa-cart-plus fa-fw vignette-icon" style="color: #0088F6;" />
 					<span class="vignette-text">Pedidos unitarios</span>
 				</div>
 				<i class="fa-regular fa-angle-right chevron-icon" />
@@ -31,7 +31,7 @@
 
 			<div @click="goToPeriodicPage" class="vignette-item">
 				<div class="vignette-main-info">
-					<i class="fa-regular fa-repeat vignette-icon fa-fw" style="color: #d8b291;" />
+					<i class="fa-regular fa-repeat vignette-icon fa-fw" style="color: #0088F6;" />
 					<div style="display: flex; flex-direction: column;">
 						<span class="vignette-text">Pedidos periódicos</span>
 						 <!--<span class="vignette-text-subtitle">{{ getNumberOfPatientToValidate() }}</span>--> 
