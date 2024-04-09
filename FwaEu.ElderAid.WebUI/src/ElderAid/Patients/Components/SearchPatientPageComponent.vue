@@ -5,7 +5,11 @@
             <InputText ref="searchInput" v-model="searchPatient" class="search-input" placeholder="Buscar un paciente" />
         </span>
         <Dropdown v-show="buildings.length > 1" v-model="selectedBuilding" :options="buildingOptions" />
-        <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Excluir pacientes inactivos' : 'Incluir pacientes inactivos'}}</span>
+        <!-- <span class="display-patients-text" @click="changeDisplayInactive">{{displayInactivePatients ? 'Excluir pacientes inactivos' : 'Incluir pacientes inactivos'}}</span> -->
+        <div class="include-patients-switch-item">
+            <span class="display-patients-text" > Mostrar pacientes inactivos</span>
+            <InputSwitch  @click="changeDisplayInactive"  v-model="displayInactivePatients"  class="my-input-switch"/>
+        </div>    
         <div v-show="filteredPatients.length > 0" class="patient-list">
             <div v-for="patient in filteredPatients" :key="patient.firstname">
                 <div @click="onPatientClick(patient)" :class="[patient.isActive ? 'patient-item' : 'patient-item patient-item-inactive']">
@@ -28,6 +32,9 @@
 
 <script>
     import Dropdown from 'primevue/dropdown';
+    
+import InputSwitch from 'primevue/inputswitch';
+
     import InputText from 'primevue/inputtext';
     import PatientsMasterDataService from "@/ElderAid/Patients/Services/patients-master-data-service";
     import BuildingsMasterDataService from "@/ElderAid/Referencials/Services/buildings-master-data-service";
@@ -36,7 +43,9 @@
         inject: ["deviceInfo"],
         components: {
             Dropdown,
-            InputText
+            InputText,
+            InputSwitch,
+            
         },
         data() {
             return {
@@ -46,6 +55,7 @@
                 selectedBuilding: "Todos los sectores",
                 displayInactivePatients: false,
                 buildings: [],
+               
             };
         },
         async created() {

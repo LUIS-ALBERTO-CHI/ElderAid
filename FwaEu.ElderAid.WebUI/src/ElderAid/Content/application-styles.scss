@@ -9,12 +9,13 @@ $button-primary-color: #ff0000;
 
 
 :root {
-	--primary-bg-color: #FFFFFF;
+	--primary-bg-color: #f6f6f6;
 	--secondary-bg-color: #ffffff;
 	--primary-text-color: #000000;
 	--secondary-text-color: #000000;
 	--alt-secondary-text-color: #333333;
-	--button-background-color: #0088F6;
+	--button-background-color: #0088FP;
+	--item-shadow-color: #acacac59;
 }
 
 html,
@@ -218,7 +219,7 @@ body #nprogress .spinner .spinner-icon {
 	line-height: unset;
 }
 
-.title-toolbar-action-align h1 + div .toolbar {
+.title-toolbar-action-align h1+div .toolbar {
 	margin-top: -52px;
 }
 
@@ -229,8 +230,8 @@ body #nprogress .spinner .spinner-icon {
 }
 
 .date-and-numeric-column,
-.dx-datagrid-rowsview .dx-row > td.date-and-numeric-column,
-.dx-datagrid-rowsview .dx-row > tr > td.date-and-numeric-column {
+.dx-datagrid-rowsview .dx-row>td.date-and-numeric-column,
+.dx-datagrid-rowsview .dx-row>tr>td.date-and-numeric-column {
 	text-overflow: clip;
 	text-align: right;
 }
@@ -260,11 +261,13 @@ body .page-container {
 }
 
 /* VUE TRANSITIONS */
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
 	transition: opacity 200ms;
 }
 
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
 	opacity: 0;
 }
 

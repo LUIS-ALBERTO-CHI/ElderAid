@@ -42,10 +42,10 @@
     }
 
 
-
+	/* bg-app */
 	.anonymous-page-layout {
 		width: 100%;
-		background-color: #FFFFFF;
+		background-color: #f6f6f6;
 	}
 
 		.anonymous-page-layout .footer {
