@@ -17,8 +17,8 @@
 					   dataKey="id"
 					   :disabled="model.readOnly"
 					   showGridlines>
-				<Column :hidden="model.data.hasFullAccess" selectionMode="multiple" headerStyle="width: 3rem"></Column>
-				<Column field="name" :header="$t('name')"></Column>
+				<Column :hidden="model.data.hasFullAccess" selectionMode="multiple" headerStyle="width: 3rem" />
+				<Column field="name" :header="$t('name')" />
 			</DataTable>
 		</div>
 	</div>
@@ -63,7 +63,7 @@
 						id: p.id ?? p.invariantId, name: p.name, selected: $this.model.data.hasFullAccess || $this.model.data.accessibleIds.indexOf(p.id ?? p.invariantId) !== -1
 					};
 				});
-				this.selectedRows = this.masterDataModel.filter(p => p.selected).map(x => x.id);
+				this.selectedRows = this.masterDataModel.filter(p => p.selected);
 			},
 			setFullAccess(checked) {
 				this.masterDataModel.forEach(x => x.selected = checked);

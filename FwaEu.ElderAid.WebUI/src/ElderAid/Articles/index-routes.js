@@ -9,7 +9,7 @@ export default [
         meta: {
             title: 'Pedir otro producto',
             breadcrumb: {
-                titleKey: 'Commander un article',
+                titleKey: 'Buscar un ar´ticulo',
                 parentName: 'Patient'
             },
         }
@@ -69,7 +69,7 @@ export default [
 		meta: {
 			title: 'Ordenar un artículo',
 			breadcrumb: {
-				titleKey: 'Commander un article',
+				titleKey: 'Ordenar un artículo',
 				parentName: 'SearchArticle'
 			},
 		}
@@ -81,7 +81,7 @@ export default [
 		meta: {
 			title: 'Ordenar un artículo',
 			breadcrumb: {
-				titleKey: 'Commander un article',
+				titleKey: 'Ordenar un artículo',
 				parentName: 'Orders'
 			},
 		}
@@ -93,7 +93,7 @@ export default [
 		meta: {
 			title: 'Ordenar un artículo',
 			breadcrumb: {
-				titleKey: 'Commander un article',
+				titleKey: 'Ordenar un artículo',
 				parentName: 'SearchPatientFromOrderWithArticleId'
 			},
 		}
@@ -105,7 +105,7 @@ export default [
 		meta: {
 			title: 'Ordenar un artículo',
 			breadcrumb: {
-				titleKey: 'Commander un article',
+				titleKey: 'Ordenar un artículo',
 				parentName: 'SearchArticleForEMSFromOrder'
 			},
 		}

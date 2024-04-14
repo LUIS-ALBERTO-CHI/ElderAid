@@ -11,6 +11,8 @@ using FwaEu.ElderAid.Users.MasterData;
 using FwaEu.ElderAid.Users.UserGroups;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using FwaEu.ElderAid.Users.UsersOrganizations;
+using FwaEu.ElderAid.Organizations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +24,8 @@ using FwaEu.Modules.SimpleMasterData.MasterData;
 using FwaEu.Modules.SimpleMasterData.GenericAdmin;
 using FwaEu.Modules.SearchEngine;
 using FwaEu.ElderAid.Users.SearchEngine;
+using FwaEu.ElderAid.Articles.MasterData;
+using FwaEu.ElderAid.Organizations.MasterData;
 
 namespace FwaEu.ElderAid.Users
 {
@@ -48,6 +52,7 @@ namespace FwaEu.ElderAid.Users
 
 			var repositoryRegister = context.ServiceStore.Get<IRepositoryRegister>();
 			repositoryRegister.Add<UserGroupPerimeterEntityRepository>();
+			repositoryRegister.Add<UserOrganizationPerimeterEntityRepository>();
 			repositoryRegister.Add<ApplicationUserEntityRepository>();
 
 			services.For<UserGroupEntity>(context)
@@ -55,7 +60,11 @@ namespace FwaEu.ElderAid.Users
 					.AddMasterDataProviderFactory()
 					.AddGenericAdminModelConfiguration();
 
+			repositoryRegister.Add<OrganizationUserLinkEntityRepository>();
+			services.AddMasterDataProvider<UserOrganizationsMasterDataProvider>("UsersOrganizations");
+
 			services.AddUserPerimeterProvider<UserGroupUserPerimeterProvider>(UserGroupPerimeterEntity.ProviderKey);
+			services.AddUserPerimeterProvider<UserOrganizationUserPerimeterProvider>(UserOrganizationPerimeterEntity.ProviderKey);
 
 			services.AddTransient<IPermissionProviderFactory, DefaultPermissionProviderFactory<UserGroupPermissionProvider>>();
 			services.AddTransient<IUserDetailsService, ApplicationUserDetailsService>();

@@ -32,10 +32,10 @@ let globalRoutes = [
 		path: "/OrganizationSelection",
 		component: OrganizationSelection,
 		meta: {
-			title: "Selection de l'organisation",
+			title: "Selección de organización",
 			allowAnonymous: false,
 			breadcrumb: {
-				titleKey: "Selection de l'organisation",
+				titleKey: "Selección de organización",
 				parentName: "default",
 			},
 			layout: PublicLayoutComponent,

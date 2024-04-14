@@ -48,6 +48,7 @@ import { UserNotificationsModule } from "@/Modules/UserNotifications/user-notifi
 import SignalRUserNotificationsAdapter from "@/Modules/UserNotifications/Services/signalr-user-notifications-adapter";
 import { UserGroupsModule } from "@/Modules/UserGroups/user-groups-module";
 import { UserPerimeterPartsModule } from "@/Modules/UserPerimeter/user-perimeter-part-module";
+import { UserOrganizationsModule } from "@/Modules/UserOrganizations/user-organizations-module";
 
 import AdminRoutes from "./admin-routes";
 
@@ -73,6 +74,7 @@ const application = new Application(App)
 	}))
 	.useModule(new UsersModule())
 	.useModule(new UserGroupsModule())
+	.useModule(new UserOrganizationsModule())
 	.useModule(new UserPerimeterPartsModule())
 	.useModule(new CultureModule())
 	.useModule(new ErrorModule())

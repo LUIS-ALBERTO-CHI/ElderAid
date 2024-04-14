@@ -35,10 +35,6 @@ export default {
 				customizeText: function (cellInfo) {
 					return pageComponent.$i18n.t(cellInfo.valueText);
 				}
-			},
-			{
-				dataField: 'parts.farmer.pseudonym',
-				caption: pageComponent.$i18n.t('pseudonym')
 			}
 		);
 	}

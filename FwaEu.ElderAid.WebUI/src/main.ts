@@ -27,6 +27,7 @@ import { UserCultureModule } from "@/Modules/UserCulture/user-culture-module";
 import { UsersMasterDataModule } from "@/Modules/UserMasterData/users-master-data-module";
 import { UserHistoryPartModule } from "@/Modules/UserHistory/user-history-part-module";
 import { UserGroupsModule } from "@/Modules/UserGroups/user-groups-module";
+import { UserOrganizationsModule } from "@/Modules/UserOrganizations/user-organizations-module";
 import { UserPerimeterPartsModule } from "@/Modules/UserPerimeter/user-perimeter-part-module";
 import { PermissionsByRoleModule } from "@/Modules/Roles/permissions-by-role-module";
 import { UserAmdinStatePartModule } from "@/Modules/UserAdminState/user-admin-state-part-module";
@@ -108,6 +109,7 @@ const application = new Application(IndexApp)
 	.useModule(new UsersMasterDataModule())
 	.useModule(new UserHistoryPartModule())
 	.useModule(new UserGroupsModule())
+	.useModule(new UserOrganizationsModule())
 	.useModule(new UserPerimeterPartsModule())
 	.useModule(new UserAmdinStatePartModule())
 	.useModule(new UserSettingsModule())
