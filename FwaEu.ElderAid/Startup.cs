@@ -61,6 +61,7 @@ using FwaEu.Modules.UserNotifications;
 using FwaEu.Modules.SignalR;
 using FwaEu.Modules.UserTasksUserNotifications;
 using FwaEu.Modules.SearchEngine;
+using FwaEu.ElderAid.Permissions;
 using FwaEu.ElderAid.Users;
 using FwaEu.ElderAid.ViewContext;
 using FwaEu.Modules.EnumValues;
@@ -200,6 +201,7 @@ namespace FwaEu.ElderAid
 				services.AddFwameworkModuleAspose(typeof(Aspose.Cells.License)); //NOTE: You can add other Aspose licenses depending on your application needs
 				services.AddFwameworkModuleEnumValues();
 				services.AddFwameworkModuleAssemblyProvider();
+				services.AddApplicationPermissionsByIsAdmin();
 
 				services.AddFwameworkModulePermissionsByUser(context); //TODO: Choose between ByUser and others implementations
 				services.AddFwameworkModulePermissionsByRole(context); //TODO: Choose between ByRole and others implementations

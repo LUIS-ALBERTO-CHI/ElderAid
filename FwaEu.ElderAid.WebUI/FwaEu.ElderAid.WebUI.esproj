@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\ElderAid\Culture\Content\NewFolder\" />
+    <Folder Include="src\ElderAid\PermissionsByIsAdmin\Services\" />
     <Folder Include="src\Modules\UserOrganizations\Content\" />
     <Folder Include="src\Modules\UserOrganizations\Services\" />
   </ItemGroup>

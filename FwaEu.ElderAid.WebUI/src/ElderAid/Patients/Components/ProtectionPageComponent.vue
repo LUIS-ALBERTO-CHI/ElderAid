@@ -4,7 +4,7 @@
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
                 <span>
-                    Nivel de incontinencia : {{ $t(''+patient.incontinenceLevel) }}
+                    Nivel de incontinencia : {{ $t(''+patientData.incontinenceLevel) }}
                 </span>
                 <div v-if="patient.isIncontinenceLevelOverPassed" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
@@ -59,13 +59,15 @@
                 patient: null,
                 filteredProtections: [],
                 protectionDosages: [],
-                isLoading: false
+                isLoading: false,
+				patientData: {},
             };
         },
         async created() {
             this.patient = await this.patientLazy.getValueAsync();
             const incontinenceLevelData = await PatientService.getIncontinenceLevelAsync(this.patient.id);
             this.patient.isIncontinenceLevelOverPassed = incontinenceLevelData.overPassed > 0;
+			this.patientData = await PatientService.getIncontinenceLevelAsync(this.patient.id);
             this.refreshData();
         },
         methods: {

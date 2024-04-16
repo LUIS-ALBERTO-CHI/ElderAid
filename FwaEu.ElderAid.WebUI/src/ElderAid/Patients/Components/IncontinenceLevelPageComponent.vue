@@ -3,9 +3,9 @@
     <patient-info-component v-if="patient" :patient="patient" />
     <span class="incontinence-info-label-title">Nivel de incontinencia : {{ $t(''+patientData.incontinenceLevel) }}</span>
     <div class="incontinence-info-container">
-        <span>Paquete Anual : {{ patientData.annualFixedPrice }} CHF</span>
-        <span>Paquete diario : {{ patientData.dailyFixedPrice }} CHF</span>
-        <span>Registro diario ingresado : {{ patientData.dailyProtocolEntered }} CHF</span>
+        <span>Paquete Anual : ${{ patientData.annualFixedPrice }}</span>
+        <span>Paquete diario : ${{ patientData.dailyFixedPrice }}</span>
+        <span>Registro diario ingresado : ${{ patientData.dailyProtocolEntered }}</span>
     </div>
     <div v-if="new Date(patientData.dateStart) >= new Date(new Date().getFullYear(), 0, 1)"  class="incontinence-info-container">
         <span class="incontinence-info-label-title">Análisis de consumo hasta la fecha</span>

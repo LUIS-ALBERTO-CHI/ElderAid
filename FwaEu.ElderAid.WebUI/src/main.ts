@@ -37,6 +37,7 @@ import { DotNetTypeConversionModule } from "@/Fwamework/DotNetTypeConversion/dot
 import { UserNotificationsModule } from "@/Modules/UserNotifications/user-notifications-module";
 import SignalRUserNotificationsAdapter  from "@/Modules/UserNotifications/Services/signalr-user-notifications-adapter";
 import { DataModule } from "@/Fwamework/Data/data-module";
+import { PermissionsByIsAdminModule } from "@/ElderAid/PermissionsByIsAdmin/permissions-by-is-admin-module";
 
 import { ApplicationUsersModule } from "@/ElderAid/Users/users-module";
 import { ApplicationCultureModule } from "@/ElderAid/Culture/culture-module";
@@ -131,6 +132,7 @@ const application = new Application(IndexApp)
 	.useModule(new UserTasksUserNotificationsModule())
 	.useModule(new UserTasksNavigationMenuModule())
 	.useModule(new UserTasksNotificationModule())
+	.useModule(new PermissionsByIsAdminModule())
 	.useModule(new UserTasksListModule())
 	.useModule(new MasterDataNotificationsModule())
 	.useModule(new RoutingModule({
