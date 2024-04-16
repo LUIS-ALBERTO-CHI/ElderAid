@@ -4,7 +4,7 @@
         <div @click="goToIncontinenceLevelPage" class="protection-info-item">
             <div class="alert-content">
                 <span>
-                    Nivel de incontinencia : {{ $t(''+patientData.incontinenceLevel) }}
+                    Nivel de incontinencia : {{ $t(''+patient.incontinenceLevel) }}
                 </span>
                 <div v-if="patient.isIncontinenceLevelOverPassed" :style="{ color: '#f44538' }" class="alert-container">
                     <i class="fa-sharp fa-solid fa-circle-exclamation alert-icon"></i>
