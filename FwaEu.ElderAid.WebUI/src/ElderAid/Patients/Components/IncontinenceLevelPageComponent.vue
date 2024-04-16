@@ -92,7 +92,7 @@ import { CanChangeIncontinenceLevel } from "../patients-permissions";
                 this.selectedIncontinence = this.patientData?.incontinenceLevel;
                 if (this.patientData) {
                     this.chartData = {
-                        labels: ['Forfait', 'Consommé', 'Dépassement'],
+                        labels: ['Paquete', 'Consumido', 'Excedente'],
                         datasets: [
                             {
                                 label: 'Analyse de consommation',
